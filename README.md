@@ -15,7 +15,7 @@ cd client
 npm install
 ```
 
-Create database:
+Install postgres and Create database:
 
 ```
 \$ psql postgres
@@ -27,7 +27,6 @@ postgres=# CREATE DATABASE kcsa OWNER kcsa_admin;
 Put following under .env file on root;
 
 ```
-
 DB=kcsa
 DB_USER=kcsa_admin
 DB_PW=kcsa
@@ -41,19 +40,6 @@ This will start server and client and **create models into db**.
 
 Run seed:
 `npx sequelize-cli db:seed:all`
-
-Sequelize;
-Generate seed file;
-`npx sequelize-cli seed:generate --name [name of seed file]`
-Run seed file;
-`npx sequelize-cli db:seed:all`
-
-Generate migration;
-`npx sequelize-cli migration:generate --name [name_of_your_migration]`
-
-run migration;
-`npx sequelize-cli db:migrate`
-Above will create migration file.
 
 At root, running `npm run dev` will start both the server and client.
 
@@ -78,3 +64,18 @@ mutation {
 }
 
 ```
+
+**Sequelize**;
+Generate seed file;
+`npx sequelize-cli seed:generate --name [name of seed file]`
+
+Run seed file;
+`npx sequelize-cli db:seed:all`
+
+Generate migration;
+`npx sequelize-cli migration:generate --name [name_of_your_migration]`
+
+run migration;
+`npx sequelize-cli db:migrate`
+Above will create migration file.
+
