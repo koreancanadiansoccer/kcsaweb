@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
 import { useQuery } from "@apollo/client";
@@ -16,8 +16,13 @@ export const SummaryTable: FunctionComponent<SummaryTableProps> = ({
 }) => {
   /**BELOW QUERY IS EXMAPLE TO SHOW CONNETION BETWEEN GQL AND FRONTEND - TODO: REMOVE */
   const { loading, error, data } = useQuery(GET_USERS);
-  console.log("data!!");
-  console.log(data.getUsers);
+
+  useEffect(() => {
+    if (!loading) {
+      console.log("data!!");
+      console.log(data.getUsers);
+    }
+  }, [loading, data]);
   /** */
 
   return (
