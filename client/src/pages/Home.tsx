@@ -13,7 +13,7 @@ interface HomeProps {
 /**
  * Main home page.
  */
-export const UnstyledHome: FunctionComponent<HomeProps> = ({ className }) => {
+const UnstyledHome: FunctionComponent<HomeProps> = ({ className }) => {
   return (
     <>
       <Hero />

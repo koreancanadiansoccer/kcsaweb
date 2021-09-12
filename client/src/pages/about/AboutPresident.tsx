@@ -10,7 +10,7 @@ interface AboutPresidentProps {
 /**
  * About Page.
  */
-export const UnstyledAboutPresident: FunctionComponent<AboutPresidentProps> = ({
+const UnstyledAboutPresident: FunctionComponent<AboutPresidentProps> = ({
   className,
 }) => {
   return <Box>President page</Box>;

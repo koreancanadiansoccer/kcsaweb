@@ -18,7 +18,7 @@ interface HomeContentProps {
 /**
  * Main content section shown on home page (below hero component).
  */
-export const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
+const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
   className,
 }) => {
   const [league, setLeague] = useState<LeagueType>(LeagueType.OPEN);

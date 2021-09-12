@@ -29,7 +29,7 @@ interface LeagueTableProps {
 }
 
 // Simple summary table on home page.
-export const UnstyledLeagueTable: FunctionComponent<LeagueTableProps> = ({
+const UnstyledLeagueTable: FunctionComponent<LeagueTableProps> = ({
   tableType,
   leagueType,
   className,

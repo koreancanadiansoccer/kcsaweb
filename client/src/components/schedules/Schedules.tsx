@@ -18,7 +18,7 @@ interface SchedulesProps {
 /**
  * Schedule section shown on home page.
  */
-export const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
+const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
   className,
 }) => {
   const [league, setLeague] = useState<LeagueType>(LeagueType.OPEN);

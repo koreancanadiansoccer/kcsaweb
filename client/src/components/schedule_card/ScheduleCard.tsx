@@ -17,7 +17,7 @@ interface ScheduleCardProps {
 /**
  * Scheuld card used on main home page.
  */
-export const UnstyledScheduledCard: FunctionComponent<ScheduleCardProps> = ({
+const UnstyledScheduledCard: FunctionComponent<ScheduleCardProps> = ({
   time,
   location,
   homeTeam,

@@ -10,7 +10,7 @@ interface AnnouncementProps {
 /**
  * About Page.
  */
-export const UnstyledAnnouncement: FunctionComponent<AnnouncementProps> = ({
+const UnstyledAnnouncement: FunctionComponent<AnnouncementProps> = ({
   className,
 }) => {
   return <Box>Announcement page</Box>;

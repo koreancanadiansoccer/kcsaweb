@@ -13,7 +13,7 @@ interface LeagueSelectProps {
 /**
  * Main home page.
  */
-export const UnstyledLeagueSelect: FunctionComponent<LeagueSelectProps> = ({
+const UnstyledLeagueSelect: FunctionComponent<LeagueSelectProps> = ({
   className,
   title,
   selected,

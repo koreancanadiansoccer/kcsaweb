@@ -18,7 +18,7 @@ interface NavigationProps {
   className?: string;
 }
 
-export const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
+const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
   className,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

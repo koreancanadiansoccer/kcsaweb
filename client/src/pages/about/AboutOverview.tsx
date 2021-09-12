@@ -10,7 +10,7 @@ interface AboutOverviewProps {
 /**
  * About Page.
  */
-export const UnstyledAboutOverview: FunctionComponent<AboutOverviewProps> = ({
+const UnstyledAboutOverview: FunctionComponent<AboutOverviewProps> = ({
   className,
 }) => {
   return <Box>Overview page</Box>;
