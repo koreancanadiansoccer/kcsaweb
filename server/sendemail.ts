@@ -1,5 +1,8 @@
 import { SES } from "aws-sdk";
 import { SendEmailRequest } from "aws-sdk/clients/ses";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export const sendEmail = (email: string) => {
   try {
@@ -24,9 +27,7 @@ export const sendEmail = (email: string) => {
       </body>
       </html>`;
 
-    const ses = new SES({ region: REGION });
-
-    const params: SendEmailRequest = {
+    const email_data: SendEmailRequest = {
       Source: "koreancanadiansoccer@gmail.com",
       Destination: {
         ToAddresses: [email],
@@ -44,7 +45,14 @@ export const sendEmail = (email: string) => {
         },
       },
     };
-    ses.sendEmail(params).promise();
+
+    const ses = new SES({
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      region: REGION,
+    });
+
+    ses.sendEmail(email_data).promise();
   } catch (error) {
     console.error(error);
   }

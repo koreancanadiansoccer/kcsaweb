@@ -33,7 +33,7 @@ export const createUser = {
   async resolve(parent: object, args: object) {
     const user = await User.create({ ...args, isAdmin: false });
 
-    sendEmail(user.email);
+    await sendEmail(user.email);
 
     return user;
   },
