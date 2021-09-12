@@ -17,7 +17,7 @@ interface HomeProps {
 /**
  * Hero for main home page.
  */
-export const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
+const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
   return (
     <Box className={className}>
       <Box className="hero" display="flex" alignItems="center">
