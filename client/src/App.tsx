@@ -1,11 +1,13 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useMemo } from "react";
+import includes from "lodash/includes";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { ApolloProvider } from "@apollo/client";
-import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
+import { Switch, Route, useLocation } from "react-router-dom";
 import { Navigation } from "./components/navigation/Navigation";
 
 import { Home } from "./pages/Home";
+import { Admin } from "./pages/admin/Admin";
 import { AboutOverview } from "./pages/about/AboutOverview";
 import { AboutPresident } from "./pages/about/AboutPresident";
 import { AboutContact } from "./pages/about/AboutContact";
@@ -17,46 +19,56 @@ import { client } from "./graphql/client";
 
 const App: FunctionComponent = () => {
   const theme = createAppTheme();
+  const { pathname } = useLocation();
+
+  const isAdminRoute = useMemo(() => includes(pathname.split("/"), "admin"), [
+    pathname,
+  ]);
 
   return (
     <ApolloProvider client={client}>
       <ThemeProvider theme={theme}>
-        <Router>
-          <CssBaseline />
+        <CssBaseline />
+        {!isAdminRoute && <Navigation />}
 
-          <Navigation />
+        <Switch>
+          {/* ADMIN ROUTE */}
+          {/* This route should be guarded for admin access only!! */}
+          <Route path="/admin">
+            <Admin />
+          </Route>
 
-          <Switch>
-            <Route exact path="/">
-              <Home />
-            </Route>
+          <Route exact path="/">
+            <Home />
+          </Route>
 
-            {/* About section */}
-            <Route path="/overview">
-              <AboutOverview />
-            </Route>
-            <Route path="/president">
-              <AboutPresident />
-            </Route>
-            <Route path="/contact">
-              <AboutContact />
-            </Route>
+          {/* About section */}
+          <Route path="/overview">
+            <AboutOverview />
+          </Route>
 
-            {/* This might be broken into per season */}
-            <Route path="/league">
-              <League />
-            </Route>
+          <Route path="/president">
+            <AboutPresident />
+          </Route>
 
-            {/* This might be broken into per season */}
-            <Route path="/team">
-              <Team />
-            </Route>
+          <Route path="/contact">
+            <AboutContact />
+          </Route>
 
-            <Route path="/announcement">
-              <Announcement />
-            </Route>
-          </Switch>
-        </Router>
+          {/* This might be broken into per season */}
+          <Route path="/league">
+            <League />
+          </Route>
+
+          {/* This might be broken into per season */}
+          <Route path="/team">
+            <Team />
+          </Route>
+
+          <Route path="/announcement">
+            <Announcement />
+          </Route>
+        </Switch>
       </ThemeProvider>
     </ApolloProvider>
   );
