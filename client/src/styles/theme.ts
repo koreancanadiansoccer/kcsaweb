@@ -1,5 +1,6 @@
 import { createTheme, Theme, ThemeOptions } from "@material-ui/core/styles";
-import blueGrey from "@material-ui/core/colors/blueGrey";
+
+export const primary = "#274555";
 
 // Base theme.
 const theme = {
@@ -8,11 +9,11 @@ const theme = {
       default: "#F1F4F6",
     },
     primary: {
-      main: "#203946",
+      main: primary,
     },
-  },
-  typography: {
-    subtitle2: { color: blueGrey[300] },
+    text: {
+      primary: primary,
+    },
   },
   /** Global CSS */
   overrides: {
@@ -21,12 +22,18 @@ const theme = {
         body: {
           scrollBehavior: "smooth",
           margin: 0,
+          backgroundColor: "white",
         },
       },
     },
-    MuiFormControl: {
+    MuiPaper: {
+      elevation3: {
+        borderRadius: "8px",
+      },
+    },
+    MuiGrid: {
       root: {
-        minWidth: "120px",
+        flexGrow: 1,
       },
     },
     MuiButton: {
