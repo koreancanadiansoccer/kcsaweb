@@ -108,3 +108,4 @@ dist
 client/build
 
 .DS_Store
+client/.DS_Store
