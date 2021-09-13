@@ -7,6 +7,8 @@ import {
   AccountStatus,
 } from "../../../db/models/user.model";
 
+import { sendEmail } from "../../../sendemail";
+
 interface Args {
   name: string;
   password: string;
@@ -30,6 +32,8 @@ export const createUser = {
   },
   async resolve(parent: object, args: object) {
     const user = await User.create({ ...args, isAdmin: false });
+
+    await sendEmail(user.email);
 
     return user;
   },
