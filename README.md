@@ -32,6 +32,9 @@ DB_USER=kcsa_admin
 DB_PW=kcsa
 DB_HOST=localhost
 
+AWS_ACCESS_KEY_ID = YOUR_AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY = YOUR_AWS_SECRET_ACCESS_KEY
+
 ```
 
 Run
@@ -78,4 +81,3 @@ Generate migration;
 run migration;
 `npx sequelize-cli db:migrate`
 Above will create migration file.
-
