@@ -3,6 +3,7 @@ import { withTheme } from "@material-ui/core/styles";
 import styled from "styled-components";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
+import { motion } from "framer-motion";
 
 import { LeagueTable } from "../league_table/LeagueTable";
 import { LeagueSelect } from "../league_select/LeagueSelect";
@@ -55,26 +56,48 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
             </Box>
 
             {/* League table */}
-            <LeagueTable
-              tableType={TableType.STANDING}
-              leagueType={
-                league === LeagueType.SENIOR
-                  ? LeagueType.SENIOR
-                  : LeagueType.OPEN
-              }
-            />
+            {league === LeagueType.OPEN && (
+              <motion.div
+                initial={{ opacity: 0, x: -50, y: -50 }}
+                animate={{ opacity: 1, x: 0, y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                {/* League table */}
+                <LeagueTable
+                  tableType={TableType.STANDING}
+                  leagueType={LeagueType.OPEN}
+                />
+                {/* Score table */}
+                <Box mt={5}>
+                  <LeagueTable
+                    tableType={TableType.SCORER}
+                    leagueType={LeagueType.OPEN}
+                  />
+                </Box>
+              </motion.div>
+            )}
 
-            {/* Score table */}
-            <Box mt={5}>
-              <LeagueTable
-                tableType={TableType.SCORER}
-                leagueType={
-                  league === LeagueType.SENIOR
-                    ? LeagueType.SENIOR
-                    : LeagueType.OPEN
-                }
-              />
-            </Box>
+            {league === LeagueType.SENIOR && (
+              <motion.div
+                initial={{ opacity: 0, x: -50, y: -50 }}
+                animate={{ opacity: 1, x: 0, y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                {/* League table */}
+                <LeagueTable
+                  tableType={TableType.STANDING}
+                  leagueType={LeagueType.SENIOR}
+                />
+
+                {/* Score table */}
+                <Box mt={5}>
+                  <LeagueTable
+                    tableType={TableType.SCORER}
+                    leagueType={LeagueType.SENIOR}
+                  />
+                </Box>
+              </motion.div>
+            )}
           </Box>
 
           {/* Main image */}

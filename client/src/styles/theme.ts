@@ -11,6 +11,9 @@ const theme = {
     primary: {
       main: primary,
     },
+    secondary: {
+      main: "#F17F42",
+    },
     text: {
       primary: primary,
     },
