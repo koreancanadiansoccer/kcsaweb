@@ -44,9 +44,9 @@ export const createUser = {
         // encrypted password
         const hashed = await hash(args.password, 8);
 
-        const user = await User.create({ ...args, password: hashed, isAdmin: false });
+        //TODO: generate Token
 
-        await sendEmail(user.email);
+        const user = await User.create({ ...args, password: hashed, isAdmin: false });
 
         return user;
       } else {
