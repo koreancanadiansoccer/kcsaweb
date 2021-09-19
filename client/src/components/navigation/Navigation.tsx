@@ -99,7 +99,7 @@ const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
               <Button component={RouteLink} to="/league">
                 League
               </Button>
-              <Button component={RouteLink} to="/Teams">
+              <Button component={RouteLink} to="/teams">
                 Teams
               </Button>
 
