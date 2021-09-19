@@ -7,7 +7,7 @@ import {
   AccountStatus,
 } from "../../../db/models/user.model";
 
-import { sendEmail } from "../../../sendemail";
+import { sendEmail } from "../../../utils/sendemail";
 
 interface Args {
   name: string;
