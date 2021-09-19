@@ -11,6 +11,8 @@ import { Link as RouteLink } from "react-router-dom";
 
 import { Button } from "../button/Button";
 import { Logo } from "../icons/Logo";
+import { AboutNav } from "./components/AboutNav";
+import { TeamsNav } from "./components/TeamsNav";
 
 interface NavigationProps {
   className?: string;
@@ -48,49 +50,7 @@ const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
               </Box>
 
               {/* Example of submenu - should be factored out */}
-              <Button
-                color="primary"
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                onClick={handleClick}
-              >
-                <Box color="white">About KCSA</Box>
-              </Button>
-
-              <Menu
-                id="simple-menu"
-                anchorEl={anchorEl}
-                getContentAnchorEl={null}
-                keepMounted
-                open={Boolean(anchorEl)}
-                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-                transformOrigin={{ vertical: "top", horizontal: "left" }}
-                onClose={handleClose}
-              >
-                <MenuItem
-                  onClick={handleClose}
-                  component={RouteLink}
-                  to="/overview"
-                >
-                  Overview
-                </MenuItem>
-
-                <MenuItem
-                  onClick={handleClose}
-                  component={RouteLink}
-                  to="/president"
-                >
-                  President
-                </MenuItem>
-
-                <MenuItem
-                  onClick={handleClose}
-                  component={RouteLink}
-                  to="/contact"
-                >
-                  Contact us
-                </MenuItem>
-              </Menu>
+              <AboutNav />
 
               <Button component={RouteLink} to="/announcement">
                 announcement
@@ -99,9 +59,8 @@ const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
               <Button component={RouteLink} to="/league">
                 League
               </Button>
-              <Button component={RouteLink} to="/teams">
-                Teams
-              </Button>
+
+              <TeamsNav />
 
               <Box ml="auto">
                 <Button component={RouteLink} to={"/login"} color="secondary">
