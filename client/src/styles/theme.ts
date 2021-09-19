@@ -27,8 +27,12 @@ const theme = {
           margin: 0,
           backgroundColor: "white",
         },
+        ".boldText": {
+          fontWeight: "700 !important",
+        },
       },
     },
+
     MuiPaper: {
       elevation3: {
         borderRadius: "8px",

@@ -61,7 +61,7 @@ const App: FunctionComponent = () => {
           </Route>
 
           {/* This might be broken into per season */}
-          <Route path="/team">
+          <Route path="/teams/:id">
             <Team />
           </Route>
 
