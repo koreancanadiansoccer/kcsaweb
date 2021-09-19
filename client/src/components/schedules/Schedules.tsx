@@ -1,12 +1,13 @@
-import React, { FunctionComponent, useState, useMemo } from "react";
+import React, { FunctionComponent, useState, useRef, useEffect } from "react";
 import { withTheme } from "@material-ui/core/styles";
 import styled from "styled-components";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import map from "lodash/map";
+import { motion } from "framer-motion";
 import ScrollContainer from "react-indiana-drag-scroll";
 
-import { ScheduleCard } from "../schedule_card/ScheduleCard";
+import { ScheduleCard } from "./components/schedule_card/ScheduleCard";
 import { LeagueSelect } from "../league_select/LeagueSelect";
 import { sampleScheduleDataOpen, sampleScheduleDataSenior } from "./sampleData";
 import { LeagueType } from "../../types/league_type";
@@ -21,15 +22,15 @@ interface SchedulesProps {
 const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
   className,
 }) => {
+  const ref = useRef<HTMLElement | null>(null);
   const [league, setLeague] = useState<LeagueType>(LeagueType.OPEN);
 
-  const scheduleData = useMemo(
-    () =>
-      league === LeagueType.SENIOR
-        ? sampleScheduleDataSenior
-        : sampleScheduleDataOpen,
-    [league]
-  );
+  // Reset scroll upon league change.
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.scrollLeft = 0;
+    }
+  }, [league]);
 
   return (
     <>
@@ -67,17 +68,46 @@ const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
           </Container>
 
           {/* Scrollable schedule section */}
-          <ScrollContainer className="schedules-card-container">
-            {map(scheduleData, (data, idx) => (
-              <Box key={`sched-${idx}`} className="scheudle-card">
-                <ScheduleCard
-                  time={data.time}
-                  location={data.location}
-                  homeTeam={data.homeTeam}
-                  awayTeam={data.awayTeam}
-                />
-              </Box>
-            ))}
+          <ScrollContainer className="schedules-card-container" innerRef={ref}>
+            {league === LeagueType.OPEN &&
+              map(sampleScheduleDataOpen, (data, idx) => (
+                <Box key={`sched-${idx}`} className="scheudle-card">
+                  <motion.div
+                    initial={{ opacity: 0, x: -50, y: -50 }}
+                    animate={{ opacity: 1, x: 0, y: 0 }}
+                    transition={{
+                      delay: idx * 0.2,
+                    }}
+                  >
+                    <ScheduleCard
+                      time={data.time}
+                      location={data.location}
+                      homeTeam={data.homeTeam}
+                      awayTeam={data.awayTeam}
+                    />
+                  </motion.div>
+                </Box>
+              ))}
+
+            {league === LeagueType.SENIOR &&
+              map(sampleScheduleDataSenior, (data, idx) => (
+                <Box key={`sched-${idx}`} className="scheudle-card">
+                  <motion.div
+                    initial={{ opacity: 0, x: -50, y: -50 }}
+                    animate={{ opacity: 1, x: 0, y: 0 }}
+                    transition={{
+                      delay: idx * 0.2,
+                    }}
+                  >
+                    <ScheduleCard
+                      time={data.time}
+                      location={data.location}
+                      homeTeam={data.homeTeam}
+                      awayTeam={data.awayTeam}
+                    />
+                  </motion.div>
+                </Box>
+              ))}
           </ScrollContainer>
         </Box>
       </Box>
