@@ -58,9 +58,6 @@ const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
             </Box>
           </Container>
         </Toolbar>
-        <Box display='flex' sx={{ justifyContent: 'flex-end' }}>
-          <Link title="Login" link="/login" />
-        </Box>
       </AppBar>
     </Box>
   );
