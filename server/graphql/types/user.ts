@@ -13,6 +13,7 @@ export const UserType = new GraphQLObjectType({
     name: { type: GraphQLString },
     email: { type: GraphQLString },
     password: { type: GraphQLString },
+    phoneNumber: { type: GraphQLString },
     isAdmin: { type: GraphQLBoolean },
   }),
 });

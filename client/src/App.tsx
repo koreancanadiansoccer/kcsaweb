@@ -17,6 +17,8 @@ import { Team } from "./pages/Team";
 import { createAppTheme } from "./styles/theme";
 import { client } from "./graphql/client";
 
+import { Login } from "./pages/Login";
+
 const App: FunctionComponent = () => {
   const theme = createAppTheme();
   const { pathname } = useLocation();
@@ -67,6 +69,11 @@ const App: FunctionComponent = () => {
 
           <Route path="/announcement">
             <Announcement />
+          </Route>
+
+          {/* This router is for login testing */}
+          <Route path="/login">
+            <Login />
           </Route>
         </Switch>
       </ThemeProvider>

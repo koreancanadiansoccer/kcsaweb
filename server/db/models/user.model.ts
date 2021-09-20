@@ -32,11 +32,16 @@ export class User extends Model {
   @Column
   password!: string;
 
+  @AllowNull(false)
   @Column email!: string;
 
   @Default(false)
   @Column({ field: "is_admin" })
   isAdmin!: boolean;
+
+  @AllowNull(false)
+  @Column
+  phoneNumber!: string;
 
   @Column({ type: DataType.ENUM({ values: keys(AccountType) }) })
   type!: AccountType;
