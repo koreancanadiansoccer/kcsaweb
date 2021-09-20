@@ -15,12 +15,14 @@ import MailIcon from "@material-ui/icons/Mail";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import SportsSoccerIcon from "@material-ui/icons/SportsSoccer";
 import GroupIcon from "@material-ui/icons/Group";
+import AnnouncementIcon from '@material-ui/icons/Announcement';
 import {
   Switch,
   Route,
   useRouteMatch,
   Link as RouteLink,
 } from "react-router-dom";
+import { CreateAnnouncement } from "./admin_components/announcement/CreateAnnouncement";
 
 const drawerWidth = 240;
 
@@ -93,6 +95,13 @@ export const Admin = () => {
                 <GroupIcon />
               </ListItemIcon>
               <ListItemText primary="Teams" />
+            </ListItem>
+
+             <ListItem component={RouteLink} to={`${url}/announcement`} button>
+              <ListItemIcon>
+                <AnnouncementIcon />
+              </ListItemIcon>
+              <ListItemText primary="Announcement" />
             </ListItem>
           </List>
           <Divider />
@@ -171,6 +180,10 @@ export const Admin = () => {
               varius duis at consectetur lorem. Velit sed ullamcorper morbi
               tincidunt. Lorem donec massa sapien faucibus et molestie ac.
             </Typography>
+          </Route>
+
+          <Route path={`${url}/announcement`}>
+            <CreateAnnouncement/>
           </Route>
         </Switch>
       </main>
