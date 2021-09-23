@@ -112,7 +112,7 @@ const colourNameToHex = (color: string) => {
     pink: "#ffc0cb",
     plum: "#dda0dd",
     powderblue: "#b0e0e6",
-    purple: "#800080",
+    purple: "#ee82ee",
     rebeccapurple: "#663399",
     red: "#ff0000",
     rosybrown: "#bc8f8f",

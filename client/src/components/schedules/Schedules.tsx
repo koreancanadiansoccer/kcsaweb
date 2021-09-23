@@ -83,7 +83,9 @@ const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
                       time={data.time}
                       location={data.location}
                       homeTeam={data.homeTeam}
+                      homeTeamLogo={data.homeTeamLogo}
                       awayTeam={data.awayTeam}
+                      awayTeamLogo={data.awayTeamLogo}
                     />
                   </motion.div>
                 </Box>
@@ -102,8 +104,9 @@ const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
                     <ScheduleCard
                       time={data.time}
                       location={data.location}
-                      homeTeam={data.homeTeam}
+                      homeTeamLogo={data.homeTeamLogo}
                       awayTeam={data.awayTeam}
+                      awayTeamLogo={data.awayTeamLogo}
                     />
                   </motion.div>
                 </Box>

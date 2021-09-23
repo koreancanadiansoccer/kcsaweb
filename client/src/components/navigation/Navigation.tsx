@@ -64,7 +64,7 @@ const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
 
               <Box ml="auto">
                 <Button component={RouteLink} to={"/login"} color="secondary">
-                  Captain Login
+                  Team Login
                 </Button>
               </Box>
             </Box>
