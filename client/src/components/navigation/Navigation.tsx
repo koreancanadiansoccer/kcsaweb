@@ -1,10 +1,8 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent } from "react";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
 import { withTheme } from "@material-ui/core/styles";
 import styled from "styled-components";
 import { Link as RouteLink } from "react-router-dom";
@@ -21,16 +19,6 @@ interface NavigationProps {
 const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
   className,
 }) => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   return (
     <Box className={className}>
       {/* Team emblem section */}
