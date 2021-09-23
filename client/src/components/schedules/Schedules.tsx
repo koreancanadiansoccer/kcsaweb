@@ -10,7 +10,7 @@ import ScrollContainer from "react-indiana-drag-scroll";
 import { ScheduleCard } from "./components/schedule_card/ScheduleCard";
 import { LeagueSelect } from "../league_select/LeagueSelect";
 import { sampleScheduleDataOpen, sampleScheduleDataSenior } from "./sampleData";
-import { LeagueType } from "../../types/league_type";
+import { LeagueType } from "../../types/league";
 
 interface SchedulesProps {
   className?: string;
