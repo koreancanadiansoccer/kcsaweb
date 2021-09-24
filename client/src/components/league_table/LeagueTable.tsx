@@ -19,7 +19,7 @@ import {
   TableRow,
 } from "./sampleData";
 import { TableType } from "../../types/table_type";
-import { LeagueType } from "../../types/league_type";
+import { LeagueType } from "../../types/league";
 
 interface LeagueTableProps {
   title: string;

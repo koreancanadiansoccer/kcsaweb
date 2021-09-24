@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 
 import { LeagueTable } from "../league_table/LeagueTable";
 import { LeagueSelect } from "../league_select/LeagueSelect";
-import { LeagueType } from "../../types/league_type";
+import { LeagueType } from "../../types/league";
 import { TableType } from "../../types/table_type";
 
 import MainContentImg from "../../assets/main_content.png";

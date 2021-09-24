@@ -9,6 +9,8 @@ import find from "lodash/find";
 import { TeamHero } from "../components/team_hero.tsx/TeamHero";
 import { LeagueSelect } from "../components/league_select/LeagueSelect";
 import { darkenColor } from "../utils/color";
+import GunnersLogo from "../assets/gunners_logo.svg";
+
 interface TeamProps {
   className?: string;
 }
@@ -26,6 +28,7 @@ const teamSampleData = [
     captain: "Justin Kim",
     foundedDate: "August 2008",
     mission: "Create a community for players to play and improve together.",
+    teamLogo: GunnersLogo,
   },
   {
     id: "2",
@@ -69,7 +72,7 @@ const UnstyledTeam: FunctionComponent<TeamProps> = ({ className }) => {
   const [league, setLeague] = useState<TabType>(TabType.SQUAD);
   const { id } = useParams<{ id: string }>();
 
-  const { name, color, captain, foundedDate, mission } = useMemo(
+  const { name, color, captain, foundedDate, mission, teamLogo } = useMemo(
     () =>
       find(teamSampleData, (data) => data.id === id) || {
         id: "1",
@@ -91,6 +94,7 @@ const UnstyledTeam: FunctionComponent<TeamProps> = ({ className }) => {
         captain={captain}
         foundedDate={foundedDate}
         mission={mission}
+        teamLogo={teamLogo}
       />
 
       <Box borderRadius={64} mt={-6} bgcolor="white" py={5}>

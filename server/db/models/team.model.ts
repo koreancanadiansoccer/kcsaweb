@@ -11,8 +11,9 @@ import keys from "lodash/keys";
 
 import { Player } from "./player.model";
 import { User } from "./user.model";
+import { League } from "./league.model";
 
-export enum LeagueType {
+enum LeagueType {
   OPEN = "OPEN",
   SENIOR = "SENIOR",
 }
@@ -46,6 +47,7 @@ export class Team extends Model {
   @Column({ field: "is_active" }) isActive!: boolean;
 
   @ForeignKey(() => User) @Column({ field: "captain_id" }) captainId!: number;
-
   @HasMany(() => Player) players!: Player[];
+
+  @ForeignKey(() => League) @Column({ field: "league_id" }) leagueId!: number;
 }

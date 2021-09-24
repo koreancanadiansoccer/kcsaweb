@@ -11,7 +11,9 @@ interface ScheduleCardProps {
   time: string;
   location: string;
   homeTeam: string;
+  homeTeamLogo?: string;
   awayTeam: string;
+  awayTeamLogo?: string;
   className?: string;
 }
 
@@ -22,7 +24,9 @@ const UnstyledScheduledCard: FunctionComponent<ScheduleCardProps> = ({
   time,
   location,
   homeTeam,
+  homeTeamLogo,
   awayTeam,
+  awayTeamLogo,
   className,
 }) => {
   return (
@@ -42,9 +46,12 @@ const UnstyledScheduledCard: FunctionComponent<ScheduleCardProps> = ({
             >
               {/* Home team emblem and name */}
               <Box display="flex" flexDirection="column" alignItems="center">
-                {/* <CircleGreyIcon large /> */}
                 <Box minWidth={80} minHeight={40}>
-                  <img src={LogoGrey} alt="hero-main" className="hero-main" />
+                  <img
+                    src={homeTeamLogo || LogoGrey}
+                    alt="hero-main"
+                    className="hero-main"
+                  />
                 </Box>
                 <Box>{homeTeam}</Box>
               </Box>
@@ -58,9 +65,12 @@ const UnstyledScheduledCard: FunctionComponent<ScheduleCardProps> = ({
                 alignItems="center"
                 ml="auto"
               >
-                {/* <CircleGreyIcon large /> */}
                 <Box minWidth={80} minHeight={40}>
-                  <img src={LogoGrey} alt="hero-main" className="hero-main" />
+                  <img
+                    src={awayTeamLogo || LogoGrey}
+                    alt="hero-main"
+                    className="hero-main"
+                  />
                 </Box>
                 <Box>{awayTeam}</Box>
               </Box>

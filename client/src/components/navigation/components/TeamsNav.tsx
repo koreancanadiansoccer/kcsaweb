@@ -25,7 +25,7 @@ export const TeamsNav = () => {
         aria-haspopup="true"
         onClick={handleClick}
       >
-        <Box color="white">Teams</Box>
+        <Box color="white">Clubs</Box>
       </Button>
 
       <Menu

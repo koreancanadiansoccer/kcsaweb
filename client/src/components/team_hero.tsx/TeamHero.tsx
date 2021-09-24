@@ -13,6 +13,7 @@ interface TeamHeroProps {
   captain?: string;
   foundedDate?: string;
   mission?: string;
+  teamLogo?: string;
 }
 
 /**
@@ -24,6 +25,7 @@ const UnstyledTeamHero: FunctionComponent<TeamHeroProps> = ({
   captain,
   foundedDate,
   mission,
+  teamLogo,
 }) => {
   return (
     <Box className={className}>
@@ -36,7 +38,11 @@ const UnstyledTeamHero: FunctionComponent<TeamHeroProps> = ({
       >
         {/* Logo */}
         <Box minWidth={326} minHeight={341}>
-          <img src={LogoGrey} alt="hero-main" className="hero-main" />
+          <img
+            src={teamLogo ? teamLogo : LogoGrey}
+            alt="hero-main"
+            className="hero-main"
+          />
         </Box>
 
         {/* Team meta data */}
@@ -47,13 +53,13 @@ const UnstyledTeamHero: FunctionComponent<TeamHeroProps> = ({
 
           <Box mt={9}>
             <Typography variant="h6" className="boldText">
-              Team Officials: {captain}
+              Club Officials: {captain}
             </Typography>
           </Box>
 
           <Box mt={1}>
             <Typography variant="h6" className="boldText">
-              Team Founded Date:{foundedDate}
+              Founded Date:{foundedDate}
             </Typography>
           </Box>
 

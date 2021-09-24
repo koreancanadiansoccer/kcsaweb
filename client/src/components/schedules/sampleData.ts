@@ -1,8 +1,19 @@
-export const sampleScheduleDataOpen = [
+import GunnersLogo from "../../assets/gunners_logo.svg";
+
+interface ScheduleSampleData {
+  time: string;
+  location: string;
+  homeTeam: string;
+  homeTeamLogo?: string;
+  awayTeam: string;
+  awayTeamLogo?: string;
+}
+export const sampleScheduleDataOpen: ScheduleSampleData[] = [
   {
     time: "4:00 PM 8.31.2021 SUN",
     location: "Esther Shiner #7",
     homeTeam: "Gunners",
+    homeTeamLogo: GunnersLogo,
     awayTeam: "Outliers",
   },
   {
@@ -22,6 +33,7 @@ export const sampleScheduleDataOpen = [
     time: "4:00 PM 8.31.2021 SUN",
     location: "Esther Shiner #3",
     homeTeam: "Gunners",
+    homeTeamLogo: GunnersLogo,
     awayTeam: "HynBaek",
   },
 
@@ -35,6 +47,7 @@ export const sampleScheduleDataOpen = [
     time: "4:00 PM 8.31.2021 SUN",
     location: "Esther Shiner #5",
     homeTeam: "Gunners",
+    homeTeamLogo: GunnersLogo,
     awayTeam: "CICC",
   },
 
@@ -42,6 +55,7 @@ export const sampleScheduleDataOpen = [
     time: "4:00 PM 8.31.2021 SUN",
     location: "Esther Shiner #3",
     homeTeam: "Gunners",
+    homeTeamLogo: GunnersLogo,
     awayTeam: "HynBaek",
   },
 
@@ -55,11 +69,12 @@ export const sampleScheduleDataOpen = [
     time: "4:00 PM 8.31.2021 SUN",
     location: "Esther Shiner #5",
     homeTeam: "Gunners",
+    homeTeamLogo: GunnersLogo,
     awayTeam: "CICC",
   },
 ];
 
-export const sampleScheduleDataSenior = [
+export const sampleScheduleDataSenior: ScheduleSampleData[] = [
   {
     time: "6:00 PM 8.31.2021 SUN",
     location: "Esther Shiner #7",
