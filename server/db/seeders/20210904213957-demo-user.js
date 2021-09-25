@@ -1,4 +1,6 @@
-"use strict";
+'use strict';
+
+const { hash } = require('bcrypt');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -12,32 +14,34 @@ module.exports = {
      * }], {});
      */
 
-    await queryInterface.bulkInsert("user", [
+    await queryInterface.bulkInsert('user', [
       {
-        name: "admin",
-        password: "1234",
-        email: "example@example.com",
+        name: 'admin',
+        password: await hash('1234', 8),
+        email: 'example_admin@example.com',
+        phoneNumber: '123-456-7890',
         is_admin: true,
-        type: "ADMIN",
+        type: 'ADMIN',
         status: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
 
       {
-        name: "stanley",
-        password: "1234",
-        email: "example@example.com",
-        type: "CAPTAIN",
-        status: "ACCEPTED",
+        name: 'stanley',
+        password: await hash('1234', 8),
+        email: 'example@example.com',
+        phoneNumber: '987-654-3210',
+        type: 'CAPTAIN',
+        status: 'ACCEPTED',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
     ]);
 
-    await queryInterface.bulkInsert("team", [
+    await queryInterface.bulkInsert('team', [
       {
-        name: "Gunners",
+        name: 'Gunners',
         emblem_img_link: null,
         season: null,
         played: 2,
@@ -45,7 +49,7 @@ module.exports = {
         loss: 0,
         goal_scored: 5,
         goal_conceded: 1,
-        league_type: "OPEN",
+        league_type: 'OPEN',
         is_active: true,
         captain_id: 2,
         createdAt: new Date(),
@@ -64,32 +68,34 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
 
-    await queryInterface.bulkDelete("user", [
+    await queryInterface.bulkDelete('user', [
       {
-        name: "admin",
-        password: "1234",
-        email: "example@example.com",
+        name: 'admin',
+        password: await hash('1234', 8),
+        email: 'example_admin@example.com',
+        phoneNumber: '123-456-7890',
         is_admin: true,
-        type: "ADMIN",
+        type: 'ADMIN',
         status: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
 
       {
-        name: "stanley",
-        password: "1234",
-        email: "example@example.com",
-        type: "CAPTAIN",
-        status: "ACCEPTED",
+        name: 'stanley',
+        password: await hash('1234', 8),
+        email: 'example@example.com',
+        phoneNumber: '987-654-3210',
+        type: 'CAPTAIN',
+        status: 'ACCEPTED',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
     ]);
 
-    await queryInterface.bulkDelete("team", [
+    await queryInterface.bulkDelete('team', [
       {
-        name: "Gunners",
+        name: 'Gunners',
         emblem_img_link: null,
         season: null,
         played: 2,
@@ -97,7 +103,7 @@ module.exports = {
         loss: 0,
         goal_scored: 5,
         goal_conceded: 1,
-        league_type: "OPEN",
+        league_type: 'OPEN',
         is_active: true,
         captain_id: 2,
         createdAt: new Date(),

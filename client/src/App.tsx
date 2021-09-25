@@ -17,6 +17,9 @@ import { Team } from "./pages/Team";
 import { createAppTheme } from "./styles/theme";
 import { client } from "./graphql/client";
 
+import { Login } from "./pages/Login";
+import { Create } from"./pages/create/Create"
+
 const App: FunctionComponent = () => {
   const theme = createAppTheme();
   const { pathname } = useLocation();
@@ -67,6 +70,15 @@ const App: FunctionComponent = () => {
 
           <Route path="/announcement">
             <Announcement />
+          </Route>
+
+          {/*TODO: passport.authenticate 연결해서 cookies session 확인*/}
+          <Route path="/login">
+            <Login />
+          </Route>
+
+          <Route path="/create">
+            <Create />
           </Route>
         </Switch>
       </ThemeProvider>

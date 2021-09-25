@@ -1,24 +1,27 @@
-import { GraphQLObjectType, GraphQLSchema } from "graphql";
+import { GraphQLObjectType, GraphQLSchema } from 'graphql';
 
 // Queries
-import { getUsers } from "./queries//getUsers";
+import { getUsers } from './queries//getUsers';
 
 // Mutations
 import { createUser } from "./mutations/createUser";
 import { createLeague } from "./mutations/createLeague";
+import { loginUser } from './mutations/loginUser';
+
 
 const RootQuery = new GraphQLObjectType({
-  name: "RootQueryType",
+  name: 'RootQueryType',
   fields: {
     getUsers,
   },
 });
 
 const Mutation = new GraphQLObjectType({
-  name: "Mutation",
+  name: 'Mutation',
   fields: {
     createUser,
     createLeague,
+    loginUser,
   },
 });
 
