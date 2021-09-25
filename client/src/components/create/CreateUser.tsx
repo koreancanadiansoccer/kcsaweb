@@ -8,12 +8,12 @@ import React, {
 import { withTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import styled from 'styled-components';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
 import { Input } from '../input/Input';
-import { UserInput } from "../../types/create_user";
+import { Button } from "../button/Button";
+import { UserInput } from '../../types/create_user';
 
 interface CreateProps {
   className?: string;
@@ -24,7 +24,8 @@ interface CreateProps {
  *
  * Form to handle user addition
  */
-const UnstyledCreate: FunctionComponent<CreateProps> = ({ className, onAdd
+const UnstyledCreate: FunctionComponent<CreateProps> = ({
+  className, onAdd
 }) => {
   const [newUser, setNewUser] = useState<UserInput>({
     name: "",
@@ -35,8 +36,8 @@ const UnstyledCreate: FunctionComponent<CreateProps> = ({ className, onAdd
 
   const isValid = useMemo(() =>
     !!newUser?.name && !!newUser?.password && !!newUser?.email && !!newUser?.phoneNumber,
-    [
-      newUser,
+  [
+    newUser,
   ]);
 
   // Reset 'newUser' when closing/opening
@@ -55,7 +56,7 @@ const UnstyledCreate: FunctionComponent<CreateProps> = ({ className, onAdd
     <Box className={className} mt={20}>
       <Box>
         <Typography className="create-title" variant="h4" align="center">
-          Create Captin
+          Create Captain
         </Typography>
       </Box>
 
@@ -122,8 +123,14 @@ const UnstyledCreate: FunctionComponent<CreateProps> = ({ className, onAdd
           />
 
           <Box textAlign="center" mt={3}>
-            <Button disabled={!isValid} size="large" variant="contained" color="primary" onClick={() => void onAdd(newUser)}>
-              LOGIN
+            <Button
+              disabled={!isValid}
+              size="large"
+              variant="contained"
+              color="primary"
+              onClick={() => void onAdd(newUser)}
+            >
+              SIGN UP
             </Button>
           </Box>
         </Paper>

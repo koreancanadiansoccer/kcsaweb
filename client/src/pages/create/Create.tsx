@@ -11,9 +11,6 @@ import {
   CreateUserDataInput
 } from "../../graphql/users/create_users.mutation";
 import { parseError } from '../../graphql/client';
-import { Switch, Route, useLocation } from 'react-router-dom';
-import { TurnedIn } from '@material-ui/icons';
-
 
 interface CreateProps {
   className?: string;
@@ -25,9 +22,9 @@ interface CreateProps {
 
 const UnstyledCreate: FunctionComponent<CreateProps> = ({ className }) => {
   const [createUserMut, createUserMutObj] = useMutation<
-  UserData,
-  CreateUserDataInput
->(CREATE_USER);
+    UserData,
+    CreateUserDataInput
+  >(CREATE_USER);
 
   const createUser = async (newUser: UserInput) => {
     console.log('create user');
@@ -43,7 +40,6 @@ const UnstyledCreate: FunctionComponent<CreateProps> = ({ className }) => {
 
       // 로그인라우터로 이동 후 등록하면서 로그인
 
-
       console.log('result!');
       console.log(res);
     } catch (e) {
@@ -55,7 +51,10 @@ const UnstyledCreate: FunctionComponent<CreateProps> = ({ className }) => {
 
   return (
     <>
-      <CreateUser className="Create" onAdd={(newUser: UserInput) => createUser(newUser)} />
+      <CreateUser
+        className="Create"
+        onAdd={(newUser: UserInput) => createUser(newUser)}
+      />
     </>
   );
 };
