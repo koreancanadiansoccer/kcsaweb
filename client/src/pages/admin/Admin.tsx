@@ -22,7 +22,7 @@ import {
   useRouteMatch,
   Link as RouteLink,
 } from "react-router-dom";
-import { CreateAnnouncement } from "./admin_components/announcement/CreateAnnouncement";
+import { Announcement } from "./pages/Announcement";
 
 import { League } from "./pages/League";
 
@@ -170,7 +170,7 @@ export const Admin = () => {
           </Route>
 
           <Route path={`${url}/announcement`}>
-            <CreateAnnouncement/>
+            <Announcement/>
           </Route>
         </Switch>
       </main>

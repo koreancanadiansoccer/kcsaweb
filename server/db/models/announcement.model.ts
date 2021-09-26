@@ -16,7 +16,7 @@ export class Announcement extends Model {
   @Column
   title!: string;
 
-  @Column({ field: "sub-title" }) subTitle!: string;
+  @Column subtitle!: string;
 
   @Column content!: string;
 
@@ -24,9 +24,9 @@ export class Announcement extends Model {
   @Column({ field: "show_on_homepage" })
   showOnHomepage!: boolean;
 
-  @ForeignKey(() => AnnouncementImage)
-  @Column({ field: "announcement_id" })
-  announcementId!: number;
+  // @ForeignKey(() => AnnouncementImage)
+  // @Column({ field: "announcement_image_id" })
+  // announcementImageId!: number;
 
-  @HasMany(() => AnnouncementImage) players!: AnnouncementImage[];
+  @HasMany(() => AnnouncementImage) announcementImages!: AnnouncementImage[];
 }
