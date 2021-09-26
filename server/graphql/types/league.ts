@@ -4,7 +4,10 @@ import {
   GraphQLString,
   GraphQLBoolean,
   GraphQLEnumType,
+  GraphQLList,
 } from "graphql";
+
+import { TeamType } from "./team";
 
 export const LegaueTypeEnum = new GraphQLEnumType({
   name: "LegaueTypeEnum",
@@ -26,5 +29,6 @@ export const LeagueType = new GraphQLObjectType({
     name: { type: GraphQLString },
     isActive: { type: GraphQLBoolean },
     leagueType: { type: LegaueTypeEnum },
+    teams: { type: new GraphQLList(TeamType) },
   }),
 });

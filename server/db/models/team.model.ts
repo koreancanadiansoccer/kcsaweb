@@ -6,6 +6,7 @@ import {
   ForeignKey,
   DataType,
   AllowNull,
+  BelongsTo,
 } from "sequelize-typescript";
 import keys from "lodash/keys";
 
@@ -49,5 +50,10 @@ export class Team extends Model {
   @ForeignKey(() => User) @Column({ field: "captain_id" }) captainId!: number;
   @HasMany(() => Player) players!: Player[];
 
-  @ForeignKey(() => League) @Column({ field: "league_id" }) leagueId!: number;
+  @ForeignKey(() => League)
+  @Column({ field: "league_id" })
+  leagueId!: number;
+
+  @BelongsTo(() => League)
+  league!: League;
 }

@@ -1,9 +1,9 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useEffect, useState, useMemo } from "react";
 import { withTheme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import styled from "styled-components";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 
 import { LeagueInput } from "../../../types/league";
 import { AddLeagueModal } from "../../../components/admin_league/AddLeagueModal";
@@ -12,6 +12,10 @@ import {
   LeagueData,
   CreateLeagueDataInput,
 } from "../../../graphql/league/create_league.mutation";
+import {
+  GET_LEAGUES,
+  LeagueQueryData,
+} from "../../../graphql/league/get_leagues.query";
 import { parseError } from "../../../graphql/client";
 
 export enum LeagueModalType {
@@ -29,13 +33,34 @@ interface LeagueProps {
 const UnstyledLeague: FunctionComponent<LeagueProps> = ({ className }) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
 
+  const [leagues, setLeagues] = useState<LeagueQueryData | undefined>();
+  // Get League data.
+  const leagueDataQuery = useQuery(GET_LEAGUES);
+
   const [createLeagueMut, createLeagueMutObj] = useMutation<
     LeagueData,
     CreateLeagueDataInput
   >(CREATE_LEAGUE);
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    setLoading(leagueDataQuery.loading);
+
+    // If no error/loading set values.
+    if (!loading && !error && leagueDataQuery?.data?.getLeagues) {
+      setLeagues(leagueDataQuery.data.getLeagues);
+    }
+
+    if (leagueDataQuery.error) {
+      setError(parseError(leagueDataQuery.error));
+    }
+  }, [leagueDataQuery, loading, error]);
+
   const createLeague = async (newLeague: LeagueInput) => {
-    console.log("create league");
+    setLoading(true);
+
     try {
       const res = await createLeagueMut({
         variables: {
@@ -43,13 +68,10 @@ const UnstyledLeague: FunctionComponent<LeagueProps> = ({ className }) => {
           leagueType: newLeague.leagueType,
         },
       });
-
-      console.log("result!");
-      console.log(res);
+      if (res.data) {
+      }
     } catch (e) {
-      const error = parseError(e);
-      console.log("erro");
-      console.log(error);
+      setError(parseError(e));
     }
   };
 

@@ -1,5 +1,7 @@
 "use strict";
 
+const { hash } = require("bcrypt");
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     /**
@@ -15,8 +17,9 @@ module.exports = {
     await queryInterface.bulkInsert("user", [
       {
         name: "admin",
-        password: "1234",
-        email: "example@example.com",
+        password: await hash("1234", 8),
+        email: "example_admin@example.com",
+        phone_number: "1234567890",
         is_admin: true,
         type: "ADMIN",
         status: null,
@@ -26,10 +29,28 @@ module.exports = {
 
       {
         name: "stanley",
-        password: "1234",
+        password: await hash("1234", 8),
         email: "example@example.com",
+        phone_number: "9876543210",
         type: "CAPTAIN",
         status: "ACCEPTED",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ]);
+
+    await queryInterface.bulkInsert("league", [
+      {
+        name: "KCSA 2021 Outdoor",
+        is_active: false,
+        league_type: "OPEN",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "KCSA 2021 Outdoor",
+        is_active: false,
+        league_type: "SENIOR",
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -46,6 +67,7 @@ module.exports = {
         goal_scored: 5,
         goal_conceded: 1,
         league_type: "OPEN",
+        league_id: 1,
         is_active: true,
         captain_id: 2,
         createdAt: new Date(),
@@ -67,8 +89,9 @@ module.exports = {
     await queryInterface.bulkDelete("user", [
       {
         name: "admin",
-        password: "1234",
-        email: "example@example.com",
+        password: await hash("1234", 8),
+        email: "example_admin@example.com",
+        phoneNumber: "123-456-7890",
         is_admin: true,
         type: "ADMIN",
         status: null,
@@ -78,10 +101,28 @@ module.exports = {
 
       {
         name: "stanley",
-        password: "1234",
+        password: await hash("1234", 8),
         email: "example@example.com",
+        phoneNumber: "987-654-3210",
         type: "CAPTAIN",
         status: "ACCEPTED",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ]);
+
+    await queryInterface.bulkDelete("league", [
+      {
+        name: "KCSA 2021 Outdoor",
+        is_active: false,
+        league_type: "OPEN",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "KCSA 2021 Outdoor",
+        is_active: false,
+        league_type: "SENIOR",
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -99,6 +140,7 @@ module.exports = {
         goal_conceded: 1,
         league_type: "OPEN",
         is_active: true,
+        league_id: 1,
         captain_id: 2,
         createdAt: new Date(),
         updatedAt: new Date(),
