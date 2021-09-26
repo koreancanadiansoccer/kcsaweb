@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-const { hash } = require('bcrypt');
+const { hash } = require("bcrypt");
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -14,34 +14,51 @@ module.exports = {
      * }], {});
      */
 
-    await queryInterface.bulkInsert('user', [
+    await queryInterface.bulkInsert("user", [
       {
-        name: 'admin',
-        password: await hash('1234', 8),
-        email: 'example_admin@example.com',
-        phoneNumber: '123-456-7890',
+        name: "admin",
+        password: await hash("1234", 8),
+        email: "example_admin@example.com",
+        phone_number: "1234567890",
         is_admin: true,
-        type: 'ADMIN',
+        type: "ADMIN",
         status: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
 
       {
-        name: 'stanley',
-        password: await hash('1234', 8),
-        email: 'example@example.com',
-        phoneNumber: '987-654-3210',
-        type: 'CAPTAIN',
-        status: 'ACCEPTED',
+        name: "stanley",
+        password: await hash("1234", 8),
+        email: "example@example.com",
+        phone_number: "9876543210",
+        type: "CAPTAIN",
+        status: "ACCEPTED",
         createdAt: new Date(),
         updatedAt: new Date(),
       },
     ]);
 
-    await queryInterface.bulkInsert('team', [
+    await queryInterface.bulkInsert("league", [
       {
-        name: 'Gunners',
+        name: "KCSA 2021 Outdoor",
+        is_active: false,
+        league_type: "OPEN",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "KCSA 2021 Outdoor",
+        is_active: false,
+        league_type: "SENIOR",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ]);
+
+    await queryInterface.bulkInsert("team", [
+      {
+        name: "Gunners",
         emblem_img_link: null,
         season: null,
         played: 2,
@@ -49,7 +66,8 @@ module.exports = {
         loss: 0,
         goal_scored: 5,
         goal_conceded: 1,
-        league_type: 'OPEN',
+        league_type: "OPEN",
+        league_id: 1,
         is_active: true,
         captain_id: 2,
         createdAt: new Date(),
@@ -68,34 +86,51 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
 
-    await queryInterface.bulkDelete('user', [
+    await queryInterface.bulkDelete("user", [
       {
-        name: 'admin',
-        password: await hash('1234', 8),
-        email: 'example_admin@example.com',
-        phoneNumber: '123-456-7890',
+        name: "admin",
+        password: await hash("1234", 8),
+        email: "example_admin@example.com",
+        phoneNumber: "123-456-7890",
         is_admin: true,
-        type: 'ADMIN',
+        type: "ADMIN",
         status: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
 
       {
-        name: 'stanley',
-        password: await hash('1234', 8),
-        email: 'example@example.com',
-        phoneNumber: '987-654-3210',
-        type: 'CAPTAIN',
-        status: 'ACCEPTED',
+        name: "stanley",
+        password: await hash("1234", 8),
+        email: "example@example.com",
+        phoneNumber: "987-654-3210",
+        type: "CAPTAIN",
+        status: "ACCEPTED",
         createdAt: new Date(),
         updatedAt: new Date(),
       },
     ]);
 
-    await queryInterface.bulkDelete('team', [
+    await queryInterface.bulkDelete("league", [
       {
-        name: 'Gunners',
+        name: "KCSA 2021 Outdoor",
+        is_active: false,
+        league_type: "OPEN",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "KCSA 2021 Outdoor",
+        is_active: false,
+        league_type: "SENIOR",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ]);
+
+    await queryInterface.bulkDelete("team", [
+      {
+        name: "Gunners",
         emblem_img_link: null,
         season: null,
         played: 2,
@@ -103,8 +138,9 @@ module.exports = {
         loss: 0,
         goal_scored: 5,
         goal_conceded: 1,
-        league_type: 'OPEN',
+        league_type: "OPEN",
         is_active: true,
+        league_id: 1,
         captain_id: 2,
         createdAt: new Date(),
         updatedAt: new Date(),
