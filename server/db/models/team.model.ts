@@ -14,11 +14,6 @@ import { Player } from "./player.model";
 import { User } from "./user.model";
 import { League } from "./league.model";
 
-enum LeagueType {
-  OPEN = "OPEN",
-  SENIOR = "SENIOR",
-}
-
 @Table({ tableName: "team" })
 export class Team extends Model {
   @AllowNull(false)
@@ -40,10 +35,9 @@ export class Team extends Model {
   @Column({ field: "goal_conceded" }) goalConceded!: number;
 
   @Column({
-    field: "league_type",
-    type: DataType.ENUM({ values: keys(LeagueType) }),
+    field: "team_age_type",
   })
-  leagueType!: LeagueType;
+  teamAgeType!: string;
 
   @Column({ field: "is_active" }) isActive!: boolean;
 

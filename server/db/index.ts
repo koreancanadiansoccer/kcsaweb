@@ -15,7 +15,8 @@ export const sequelize = new Sequelize({
       filename.substring(0, filename.indexOf(".model")) === member.toLowerCase()
     );
   },
-  // define: {
-  //   freezeTableName: true,
-  // },
+  define: {
+    createdAt: "createdAt",
+    updatedAt: "updatedAt",
+  },
 });

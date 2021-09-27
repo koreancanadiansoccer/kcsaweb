@@ -18,7 +18,7 @@ import { Modal } from "../modal/Modal";
 import { Input } from "../input/Input";
 import { Button } from "../button/Button";
 
-import { LeagueInput, LeagueType } from "../../types/league";
+import { LeagueInput, LeagueAgeType, LeagueType } from "../../types/league";
 
 interface AddLeagueModalProp extends Pick<DialogProps, "open" | "onClose"> {
   onAdd: (league: LeagueInput) => Promise<void>;
@@ -35,7 +35,9 @@ export const AddLeagueModal: FunctionComponent<AddLeagueModalProp> = ({
   // Init state for new product.
   const [newLeague, setNewLeague] = useState<LeagueInput>({
     name: "",
+    leagueAgeType: "",
     leagueType: "",
+    maxYellowCard: undefined,
   });
 
   const isValid = useMemo(() => !!newLeague?.name && !!newLeague?.leagueType, [
@@ -47,7 +49,9 @@ export const AddLeagueModal: FunctionComponent<AddLeagueModalProp> = ({
     () =>
       setNewLeague({
         name: "",
+        leagueAgeType: "",
         leagueType: "",
+        maxYellowCard: undefined,
       }),
     [open]
   );
@@ -59,8 +63,8 @@ export const AddLeagueModal: FunctionComponent<AddLeagueModalProp> = ({
         justifyContent="space-evenly"
         alignItems="start"
         flexDirection="column"
-        width="80%"
       >
+        <Typography variant="body1"> League Name</Typography>
         <Input
           label="Name"
           placeholder="League name"
@@ -72,14 +76,56 @@ export const AddLeagueModal: FunctionComponent<AddLeagueModalProp> = ({
           }}
         />
 
-        <Box width="30%" mx={1}>
-          <FormControl fullWidth>
-            <InputLabel id="league-select-label">League Group</InputLabel>
+        <Typography variant="body1"> League Age Group</Typography>
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          width="100%"
+        >
+          <Input
+            label="Custom League Age"
+            placeholder="League name"
+            value={newLeague?.leagueAgeType}
+            fullWidth
+            onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+              setNewLeague({ ...newLeague, leagueAgeType: evt.target.value });
+            }}
+          />
+
+          <Box mx={1} width="50%">
+            <FormControl fullWidth variant="outlined">
+              <InputLabel id="league-select-label">League Age</InputLabel>
+              <Select
+                labelId="league-select-label"
+                id="demo-simple-select"
+                value={newLeague.leagueAgeType}
+                onChange={(evt) => {
+                  setNewLeague({
+                    ...newLeague,
+                    leagueAgeType: evt.target.value as LeagueAgeType,
+                  });
+                }}
+              >
+                <MenuItem value={LeagueAgeType.OPEN}>
+                  {LeagueAgeType.OPEN}
+                </MenuItem>
+                <MenuItem value={LeagueAgeType.SENIOR}>
+                  {LeagueAgeType.SENIOR}
+                </MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+        </Box>
+
+        <Box my={3}>
+          <Typography variant="body1">League Type</Typography>
+          <FormControl fullWidth variant="outlined">
+            <InputLabel id="league-select-label">Type</InputLabel>
             <Select
               labelId="league-select-label"
               id="demo-simple-select"
               value={newLeague.leagueType}
-              variant="standard"
               onChange={(evt) => {
                 setNewLeague({
                   ...newLeague,
@@ -87,10 +133,33 @@ export const AddLeagueModal: FunctionComponent<AddLeagueModalProp> = ({
                 });
               }}
             >
-              <MenuItem value={LeagueType.OPEN}>{LeagueType.OPEN}</MenuItem>
-              <MenuItem value={LeagueType.SENIOR}>{LeagueType.SENIOR}</MenuItem>
+              <MenuItem value={LeagueType.INDOOR}>{LeagueType.INDOOR}</MenuItem>
+              <MenuItem value={LeagueType.OUTDOOR}>
+                {LeagueType.OUTDOOR}
+              </MenuItem>
             </Select>
           </FormControl>
+        </Box>
+
+        <Box>
+          <Typography variant="body1">
+            Accumulated Yellow card for suspension
+          </Typography>
+
+          <Input
+            label="Max YellowCard"
+            placeholder="Yellowcard"
+            required
+            value={newLeague?.maxYellowCard}
+            type="number"
+            fullWidth
+            onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+              setNewLeague({
+                ...newLeague,
+                maxYellowCard: parseInt(evt.target.value, 10),
+              });
+            }}
+          />
         </Box>
 
         <DialogActions>
