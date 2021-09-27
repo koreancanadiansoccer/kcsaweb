@@ -15,6 +15,7 @@ import MailIcon from "@material-ui/icons/Mail";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import SportsSoccerIcon from "@material-ui/icons/SportsSoccer";
 import GroupIcon from "@material-ui/icons/Group";
+import CollectionsIcon from '@material-ui/icons/Collections';
 import {
   Switch,
   Route,
@@ -25,6 +26,7 @@ import {
 import { Leagues } from "./pages/Leagues";
 import { LeagueDetail } from "./pages/LeagueDetail";
 import { Teams } from "./pages/Teams";
+import { Gallery } from "./pages/Gallery";
 
 const drawerWidth = 240;
 
@@ -98,6 +100,12 @@ export const Admin = () => {
               </ListItemIcon>
               <ListItemText primary="Teams" />
             </ListItem>
+            <ListItem component={RouteLink} to={`${url}/gallery`} button>
+              <ListItemIcon>
+                <CollectionsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Gallery" />
+            </ListItem>
           </List>
           <Divider />
           NOT USED
@@ -145,6 +153,10 @@ export const Admin = () => {
 
           <Route path={`${url}/league/:id`}>
             <LeagueDetail />
+          </Route>
+
+          <Route path={`${url}/gallery`}>
+            <Gallery />
           </Route>
 
           <Route path={`${url}/teams`}>
