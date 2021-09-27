@@ -4,7 +4,7 @@ import Box from "@material-ui/core/Box";
 import AddIcon from "@material-ui/icons/Add";
 import Typography from "@material-ui/core/Typography";
 import styled from "styled-components";
-import { useMutation, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { useHistory } from "react-router-dom";
 import { map } from "lodash";
 

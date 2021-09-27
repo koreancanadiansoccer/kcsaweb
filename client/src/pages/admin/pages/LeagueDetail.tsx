@@ -1,5 +1,5 @@
-import React, { FunctionComponent, useEffect, useState, useMemo } from "react";
-import { useMutation, useQuery } from "@apollo/client";
+import React, { FunctionComponent, useEffect, useState } from "react";
+import { useQuery } from "@apollo/client";
 import { withTheme } from "@material-ui/core/styles";
 import styled from "styled-components";
 import Box from "@material-ui/core/Box";
@@ -18,6 +18,7 @@ import { GET_LEAGUE } from "../../../graphql/league/get_league.query";
 import { parseError } from "../../../graphql/client";
 import { LeagueTeams } from "../../../components/admin_league/LeagueTeams";
 import { LeagueGeneral } from "../../../components/admin_league/LeagueGeneral";
+import { Loader } from "../../../components/loader/Loader";
 
 interface LeagueDetailProps {
   className?: string;
@@ -82,12 +83,7 @@ export const UnstyledLeagueDetail: FunctionComponent<LeagueDetailProps> = ({
 
   return (
     <Box className={className}>
-      {!league ||
-        (leagueDataQuery.loading && (
-          <Backdrop open={loading} style={{ color: "white", zIndex: 1500 }}>
-            <CircularProgress color="inherit" />
-          </Backdrop>
-        ))}
+      {!league || (leagueDataQuery.loading && <Loader open={loading} />)}
 
       {league && (
         <>
