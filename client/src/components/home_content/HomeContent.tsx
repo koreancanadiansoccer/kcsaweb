@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 
 import { LeagueTable } from "../league_table/LeagueTable";
 import { LeagueSelect } from "../league_select/LeagueSelect";
-import { LeagueType } from "../../types/league";
+import { LeagueAgeType } from "../../types/league";
 import { TableType } from "../../types/table_type";
 
 import MainContentImg from "../../assets/main_content.png";
@@ -22,7 +22,7 @@ interface HomeContentProps {
 const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
   className,
 }) => {
-  const [league, setLeague] = useState<LeagueType>(LeagueType.OPEN);
+  const [league, setLeague] = useState<LeagueAgeType>(LeagueAgeType.OPEN);
 
   return (
     <Box my={5} className={className}>
@@ -44,19 +44,19 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
             >
               <LeagueSelect
                 title="OPEN"
-                selected={league === LeagueType.OPEN}
-                onClick={() => setLeague(LeagueType.OPEN)}
+                selected={league === LeagueAgeType.OPEN}
+                onClick={() => setLeague(LeagueAgeType.OPEN)}
               />
 
               <LeagueSelect
                 title="SENIOR"
-                selected={league === LeagueType.SENIOR}
-                onClick={() => setLeague(LeagueType.SENIOR)}
+                selected={league === LeagueAgeType.SENIOR}
+                onClick={() => setLeague(LeagueAgeType.SENIOR)}
               />
             </Box>
 
             {/* League table */}
-            {league === LeagueType.OPEN && (
+            {league === LeagueAgeType.OPEN && (
               <motion.div
                 initial={{ opacity: 0, x: -50, y: -50 }}
                 animate={{ opacity: 1, x: 0, y: 0 }}
@@ -65,19 +65,19 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
                 {/* League table */}
                 <LeagueTable
                   tableType={TableType.STANDING}
-                  leagueType={LeagueType.OPEN}
+                  leagueType={LeagueAgeType.OPEN}
                 />
                 {/* Score table */}
                 <Box mt={5}>
                   <LeagueTable
                     tableType={TableType.SCORER}
-                    leagueType={LeagueType.OPEN}
+                    leagueType={LeagueAgeType.OPEN}
                   />
                 </Box>
               </motion.div>
             )}
 
-            {league === LeagueType.SENIOR && (
+            {league === LeagueAgeType.SENIOR && (
               <motion.div
                 initial={{ opacity: 0, x: -50, y: -50 }}
                 animate={{ opacity: 1, x: 0, y: 0 }}
@@ -86,14 +86,14 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
                 {/* League table */}
                 <LeagueTable
                   tableType={TableType.STANDING}
-                  leagueType={LeagueType.SENIOR}
+                  leagueType={LeagueAgeType.SENIOR}
                 />
 
                 {/* Score table */}
                 <Box mt={5}>
                   <LeagueTable
                     tableType={TableType.SCORER}
-                    leagueType={LeagueType.SENIOR}
+                    leagueType={LeagueAgeType.SENIOR}
                   />
                 </Box>
               </motion.div>

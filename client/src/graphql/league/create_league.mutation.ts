@@ -19,11 +19,30 @@ export interface CreateLeagueDataInput {
  * Mutation for creating a new user account.
  */
 export const CREATE_LEAGUE = gql`
-  mutation CreateLeague($name: String!, $leagueType: LegaueTypeEnum!) {
-    createLeague(name: $name, leagueType: $leagueType) {
-      id
+  mutation CreateLeague(
+    $name: String!
+    $leagueAgeType: String!
+    $leagueType: String!
+    $maxYellowCard: number!
+  ) {
+    createLeague(
+      name: $name
+      leagueType: $leagueType
+      leagueAgeType: $leagueAgeType
+      maxYellowCard: $maxYellowCard
+    ) {
+      name
       isActive
+      leagueAgeType
       leagueType
+      maxYellowCard
+      createdAt
+      teams {
+        id
+        name
+        played
+        goalScored
+      }
     }
   }
 `;

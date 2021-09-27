@@ -6,8 +6,8 @@ import {
   GraphQLEnumType,
   GraphQLList,
 } from "graphql";
-
 import { TeamType } from "./team";
+import { DateTime } from "./utils/dateType";
 
 export const LegaueTypeEnum = new GraphQLEnumType({
   name: "LegaueTypeEnum",
@@ -28,7 +28,10 @@ export const LeagueType = new GraphQLObjectType({
     id: { type: GraphQLInt },
     name: { type: GraphQLString },
     isActive: { type: GraphQLBoolean },
-    leagueType: { type: LegaueTypeEnum },
+    leagueAgeType: { type: GraphQLString },
+    leagueType: { type: GraphQLString },
+    maxYellowCard: { type: GraphQLInt },
+    createdAt: { type: DateTime },
     teams: { type: new GraphQLList(TeamType) },
   }),
 });

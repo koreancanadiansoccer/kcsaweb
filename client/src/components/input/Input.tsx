@@ -28,7 +28,7 @@ const UnStyledInput: FunctionComponent<InputProps> = (props) => {
     ...otherProps,
   };
   return (
-    <Box mx={1} my={2}>
+    <Box my={2}>
       <TextField {...textProps}>{children}</TextField>
     </Box>
   );

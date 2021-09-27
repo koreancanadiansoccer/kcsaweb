@@ -10,7 +10,7 @@ import ScrollContainer from "react-indiana-drag-scroll";
 import { ScheduleCard } from "./components/schedule_card/ScheduleCard";
 import { LeagueSelect } from "../league_select/LeagueSelect";
 import { sampleScheduleDataOpen, sampleScheduleDataSenior } from "./sampleData";
-import { LeagueType } from "../../types/league";
+import { LeagueAgeType } from "../../types/league";
 
 interface SchedulesProps {
   className?: string;
@@ -23,7 +23,7 @@ const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
   className,
 }) => {
   const ref = useRef<HTMLElement | null>(null);
-  const [league, setLeague] = useState<LeagueType>(LeagueType.OPEN);
+  const [league, setLeague] = useState<LeagueAgeType>(LeagueAgeType.OPEN);
 
   // Reset scroll upon league change.
   useEffect(() => {
@@ -47,14 +47,14 @@ const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
                 <Box display="flex">
                   <LeagueSelect
                     title="OPEN"
-                    selected={league === LeagueType.OPEN}
-                    onClick={() => setLeague(LeagueType.OPEN)}
+                    selected={league === LeagueAgeType.OPEN}
+                    onClick={() => setLeague(LeagueAgeType.OPEN)}
                   />
 
                   <LeagueSelect
                     title="SENIOR"
-                    selected={league === LeagueType.SENIOR}
-                    onClick={() => setLeague(LeagueType.SENIOR)}
+                    selected={league === LeagueAgeType.SENIOR}
+                    onClick={() => setLeague(LeagueAgeType.SENIOR)}
                   />
                 </Box>
               </Box>
@@ -69,7 +69,7 @@ const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
 
           {/* Scrollable schedule section */}
           <ScrollContainer className="schedules-card-container" innerRef={ref}>
-            {league === LeagueType.OPEN &&
+            {league === LeagueAgeType.OPEN &&
               map(sampleScheduleDataOpen, (data, idx) => (
                 <Box key={`sched-${idx}`} className="scheudle-card">
                   <motion.div
@@ -91,7 +91,7 @@ const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
                 </Box>
               ))}
 
-            {league === LeagueType.SENIOR &&
+            {league === LeagueAgeType.SENIOR &&
               map(sampleScheduleDataSenior, (data, idx) => (
                 <Box key={`sched-${idx}`} className="scheudle-card">
                   <motion.div

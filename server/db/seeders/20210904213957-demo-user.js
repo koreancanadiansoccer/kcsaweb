@@ -4,16 +4,6 @@ const { hash } = require("bcrypt");
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     * await queryInterface.bulkInsert('People', [{
-     *   name: 'John Doe',
-     *   isBetaMember: false
-     * }], {});
-     */
-
     await queryInterface.bulkInsert("user", [
       {
         name: "admin",
@@ -34,42 +24,6 @@ module.exports = {
         phone_number: "9876543210",
         type: "CAPTAIN",
         status: "ACCEPTED",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    ]);
-
-    await queryInterface.bulkInsert("league", [
-      {
-        name: "KCSA 2021 Outdoor",
-        is_active: false,
-        league_type: "OPEN",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        name: "KCSA 2021 Outdoor",
-        is_active: false,
-        league_type: "SENIOR",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    ]);
-
-    await queryInterface.bulkInsert("team", [
-      {
-        name: "Gunners",
-        emblem_img_link: null,
-        season: null,
-        played: 2,
-        win: 2,
-        loss: 0,
-        goal_scored: 5,
-        goal_conceded: 1,
-        league_type: "OPEN",
-        league_id: 1,
-        is_active: true,
-        captain_id: 2,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -106,42 +60,6 @@ module.exports = {
         phoneNumber: "987-654-3210",
         type: "CAPTAIN",
         status: "ACCEPTED",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    ]);
-
-    await queryInterface.bulkDelete("league", [
-      {
-        name: "KCSA 2021 Outdoor",
-        is_active: false,
-        league_type: "OPEN",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        name: "KCSA 2021 Outdoor",
-        is_active: false,
-        league_type: "SENIOR",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    ]);
-
-    await queryInterface.bulkDelete("team", [
-      {
-        name: "Gunners",
-        emblem_img_link: null,
-        season: null,
-        played: 2,
-        win: 2,
-        loss: 0,
-        goal_scored: 5,
-        goal_conceded: 1,
-        league_type: "OPEN",
-        is_active: true,
-        league_id: 1,
-        captain_id: 2,
         createdAt: new Date(),
         updatedAt: new Date(),
       },

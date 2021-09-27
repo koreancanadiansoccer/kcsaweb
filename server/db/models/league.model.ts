@@ -4,11 +4,13 @@ import {
   Column,
   AllowNull,
   HasMany,
-  DataType,
   Default,
 } from "sequelize-typescript";
-import keys from "lodash/keys";
 
+/**
+ * This is not used on backend atm.
+ * We need flexibility on league type column since admin can newly add it.
+ */
 enum LeagueType {
   OPEN = "OPEN",
   SENIOR = "SENIOR",
@@ -26,10 +28,15 @@ export class League extends Model {
   isActive!: boolean;
 
   @Column({
-    field: "league_type",
-    type: DataType.ENUM({ values: keys(LeagueType) }),
+    field: "league_age_type",
   })
-  leagueType!: LeagueType;
+  leagueAgeType!: string;
+
+  @Column({ field: "league_type" })
+  leagueType!: string;
+
+  @Column({ field: "max_yellow_card" })
+  maxYellowCard!: number;
 
   @HasMany(() => Team) teams!: Team[];
 }

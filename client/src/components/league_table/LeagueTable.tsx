@@ -19,12 +19,12 @@ import {
   TableRow,
 } from "./sampleData";
 import { TableType } from "../../types/table_type";
-import { LeagueType } from "../../types/league";
+import { LeagueAgeType } from "../../types/league";
 
 interface LeagueTableProps {
   title: string;
   tableType: TableType;
-  leagueType: LeagueType;
+  leagueType: LeagueAgeType;
   className?: string;
 }
 
@@ -46,8 +46,8 @@ const UnstyledLeagueTable: FunctionComponent<LeagueTableProps> = ({
   // Get table row data based on props.
   const tableRowData: TableRow[] = useMemo(() => {
     if (tableType === TableType.SCORER)
-      return leagueType === LeagueType.SENIOR ? scorerSenior : scorerOpen;
-    return leagueType === LeagueType.SENIOR ? standingSenior : standingOpen;
+      return leagueType === LeagueAgeType.SENIOR ? scorerSenior : scorerOpen;
+    return leagueType === LeagueAgeType.SENIOR ? standingSenior : standingOpen;
   }, [tableType, leagueType]);
 
   // Get table tile data based on props.

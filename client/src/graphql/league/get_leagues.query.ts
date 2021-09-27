@@ -17,9 +17,13 @@ export interface LeagueQueryData {
 export const GET_LEAGUES = gql`
   query {
     getLeagues {
+      id
       name
       isActive
+      leagueAgeType
       leagueType
+      maxYellowCard
+      createdAt
       teams {
         id
         name

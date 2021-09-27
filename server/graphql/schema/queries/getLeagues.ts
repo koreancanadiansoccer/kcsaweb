@@ -10,7 +10,11 @@ import { Team } from "../../../db/models/team.model";
 export const getLeagues = {
   type: new GraphQLList(LeagueType),
   async resolve() {
-    const leagues = await League.findAll({ include: [Team] });
+    const leagues = await League.findAll({
+      include: [Team],
+      order: [["createdAt", "DESC"]],
+    });
+
     return leagues;
   },
 };

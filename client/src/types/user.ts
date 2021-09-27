@@ -1,8 +1,8 @@
 export interface User {
   name: string;
-  password: string;
   email: string;
   phoneNumber: string;
+  isAdmin: boolean;
 }
 
 export interface UserInput {
