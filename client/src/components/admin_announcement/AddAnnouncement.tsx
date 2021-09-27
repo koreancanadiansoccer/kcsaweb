@@ -4,8 +4,8 @@ import React, {
   useState,
   useMemo,
   ChangeEvent,
-  useCallback,
 } from "react";
+
 import { withTheme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import styled from "styled-components";
@@ -21,7 +21,15 @@ import { convertToRaw, EditorState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
 
+import ReactS3Client from "react-aws-s3-typescript";
+
+import { useHistory } from "react-router-dom";
+
 import { AnnouncementInput } from "../../types/announcement";
+import { AnnouncementImageInput } from "../../types/announcement_image";
+
+import dotenv from "dotenv";
+dotenv.config();
 
 interface AddAnnouncementProps {
   className?: string;
@@ -38,20 +46,16 @@ const UnstyledAddAnnouncement: FunctionComponent<AddAnnouncementProps> = ({
   const [editorState, setEditorState] = useState<EditorState>(
     EditorState.createEmpty()
   );
-  const [bodyState, setBodyState] = useState("");
 
-  // TODO: put announcement image type here
-  const [uploadImage, setUploadImage] = useState({
-    uploadedImages: [],
-  });
-
-  // Need to implement OnSubmit with useState
   const [newAnnouncement, setNewAnnouncement] = useState<AnnouncementInput>({
     title: "",
     subtitle: "",
     content: "",
     showOnHomepage: false,
+    images: [],
   });
+
+  const history = useHistory();
 
   const isValid = useMemo(
     () =>
@@ -73,39 +77,60 @@ const UnstyledAddAnnouncement: FunctionComponent<AddAnnouncementProps> = ({
   );
 
   const uploadImageCallBack = (file: File) => {
-    // long story short, every time we upload an image, we
-    // need to save it to the state so we can get it's data
-    // later when we decide what to do with it.
-
     const imageObject = {
       file: file,
       localSrc: URL.createObjectURL(file),
     };
 
-    // We need to return a promise with the image src
-    // the img src we will use here will be what's needed
-    // to preview it in the browser. This will be different than what
-    // we will see in the index.md file we generate.
     return new Promise((resolve, reject) => {
       resolve({ data: { link: imageObject.localSrc } });
     });
+  };
+
+  const sendFileToS3 = async () => {
+    const s3 = new ReactS3Client({
+      bucketName: "kcsa-demo",
+      region: "us-east-1",
+      accessKeyId: "AKIAQKZEFGFJE5KXFQY7",
+      secretAccessKey: "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",
+    });
+
+    const parser = new DOMParser();
+    const htmlDoc = parser.parseFromString(
+      newAnnouncement.content,
+      "text/html"
+    );
+
+    const getAllElement = htmlDoc.getElementsByTagName("img");
+    console.log(getAllElement);
+
+    const firstElement = htmlDoc.getElementsByTagName("img")[0].src;
+    const fileName = firstElement.split("/").slice(-1)[0];
+    const file = new File([firstElement], fileName);
+
+    console.log(firstElement);
+    console.log(file);
+
+    try {
+      const res = await s3.uploadFile(file, fileName);
+      console.log(res);
+    } catch (exception) {
+      console.log(exception);
+    }
   };
 
   return (
     <Box className={className}>
       <Box display="flex">
         <Paper className="announcement-paper">
-          <Box
-            className="announcement-title"
-            display="flex"
-            justifyContent="center"
-          >
-            <h1>Announcement Form</h1>
+          <Box className="announcement-title">
+            <Typography variant="h5">Announcement Form</Typography>
           </Box>
 
-          <Box className="form-fields">
-            <Typography> Title </Typography>
+          <Box className="form-fields" display="flex">
+            <Typography> Title* </Typography>
             <TextField
+              className="title-textfield"
               fullWidth
               variant="outlined"
               color="secondary"
@@ -119,9 +144,10 @@ const UnstyledAddAnnouncement: FunctionComponent<AddAnnouncementProps> = ({
             ></TextField>
           </Box>
 
-          <Box className="form-fields">
-            <Typography> Subtitle </Typography>
+          <Box className="form-fields" display="flex">
+            <Typography> Subtitle* </Typography>
             <TextField
+              className="subtitle-textfield"
               fullWidth
               variant="outlined"
               color="secondary"
@@ -136,7 +162,7 @@ const UnstyledAddAnnouncement: FunctionComponent<AddAnnouncementProps> = ({
           </Box>
 
           <Box className="form-fields">
-            <Typography> Body Content </Typography>
+            <Typography> Body Content* </Typography>
 
             <Editor
               editorState={editorState}
@@ -145,12 +171,11 @@ const UnstyledAddAnnouncement: FunctionComponent<AddAnnouncementProps> = ({
               editorClassName="editorClassName"
               onEditorStateChange={(newContent) => {
                 setEditorState(newContent);
-                setBodyState(
-                  draftToHtml(convertToRaw(newContent.getCurrentContent()))
-                );
                 setNewAnnouncement({
                   ...newAnnouncement,
-                  content: bodyState,
+                  content: draftToHtml(
+                    convertToRaw(newContent.getCurrentContent())
+                  ),
                 });
               }}
               toolbar={{
@@ -175,6 +200,10 @@ const UnstyledAddAnnouncement: FunctionComponent<AddAnnouncementProps> = ({
                   previewImage: true,
                   inputAccept:
                     "image/gif,image/jpeg,image/jpg,image/png,image/svg",
+                  defaultSize: {
+                    height: "500",
+                    width: "750",
+                  },
                 },
               }}
             />
@@ -203,7 +232,11 @@ const UnstyledAddAnnouncement: FunctionComponent<AddAnnouncementProps> = ({
               color="primary"
               size="large"
               disabled={!isValid}
-              onClick={() => void onAdd(newAnnouncement)}
+              onClick={() => {
+                sendFileToS3();
+                void onAdd(newAnnouncement);
+                history.goBack();
+              }}
             >
               Submit
             </Button>
@@ -216,21 +249,62 @@ const UnstyledAddAnnouncement: FunctionComponent<AddAnnouncementProps> = ({
 
 export const AddAnnouncement = withTheme(styled(UnstyledAddAnnouncement)`
   .announcement-paper {
-    width: 50%;
-    padding: 25px;
-    border: 2px solid rgba(142, 142, 147, 0.2);
+    width: 100%;
+    padding: 2rem 1.5rem;
+    border: 2px solid rgba(142, 142, 147, 0.4);
   }
 
   .form-fields {
     margin-bottom: 1.5rem;
   }
 
+  .form-fields:nth-child(-n + 3) {
+    width: 60%;
+  }
+
+  .MuiOutlinedInput-input {
+    padding: 0 0 0 1rem;
+    height: 2.5rem;
+  }
+
+  .title-textfield {
+    margin-left: 2.5rem;
+    padding: 0;
+  }
+  .subtitle-textfield {
+    margin-left: 1rem;
+    padding: 0;
+  }
+
+  .toolbarClassName {
+    border: 1px solid rgba(142, 142, 147, 0.4);
+  }
+
   .editorClassName {
-    border: 1px solid rgba(142, 142, 147, 0.2);
-    height: 20rem;
+    border: 1px solid rgba(142, 142, 147, 0.4);
+    height: 25rem;
   }
 
   .announcement-title {
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .editorClassName figure {
+    margin: 0;
+  }
+  .editorClassName .rdw-image-left {
+    display: inline;
+    float: left;
+    margin-right: 1rem;
+  }
+  .editorClassName .rdw-image-right {
+    display: inline;
+    justify-content: unset;
+    float: right;
+    margin-left: 1rem;
+  }
+
+  .public-DraftStyleDefault-block {
+    margin: 0;
   }
 `);

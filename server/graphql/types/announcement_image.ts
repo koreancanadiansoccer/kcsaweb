@@ -1,12 +1,7 @@
-import {
-  GraphQLInt,
-  GraphQLObjectType,
-  GraphQLString,
-  GraphQLBoolean,
-} from "graphql";
+import { GraphQLInt, GraphQLObjectType, GraphQLString } from "graphql";
 
-// Definition of types of 'league' that will be returned from graphql operations.
-export const AnnouncemenImagetType = new GraphQLObjectType({
+// Definition of types of 'announcement image' that will be returned from graphql operations.
+export const AnnouncemenImageType = new GraphQLObjectType({
   name: "AnnouncementImage",
   fields: () => ({
     id: { type: GraphQLInt },

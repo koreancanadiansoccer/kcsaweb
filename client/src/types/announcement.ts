@@ -5,6 +5,7 @@ export interface Announcement {
   subtitle: string;
   content: string;
   showOnHomepage: boolean;
+  images?: AnnouncementImage[];
 }
 
 export interface AnnouncementInput {
@@ -12,4 +13,5 @@ export interface AnnouncementInput {
   subtitle: string;
   content: string;
   showOnHomepage?: boolean;
+  images?: AnnouncementImage[];
 }

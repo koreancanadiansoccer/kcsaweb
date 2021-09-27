@@ -3,10 +3,12 @@ import {
   GraphQLObjectType,
   GraphQLString,
   GraphQLBoolean,
-  GraphQLEnumType,
+  GraphQLList,
 } from "graphql";
 
-// Definition of types of 'league' that will be returned from graphql operations.
+import { AnnouncemenImageType } from "./announcement_image";
+
+// Definition of types of 'announcement' that will be returned from graphql operations.
 export const AnnouncementType = new GraphQLObjectType({
   name: "Announcement",
   fields: () => ({
@@ -15,5 +17,6 @@ export const AnnouncementType = new GraphQLObjectType({
     subtitle: { type: GraphQLString },
     content: { type: GraphQLString },
     showOnHomepage: { type: GraphQLBoolean },
+    images: { type: new GraphQLList(AnnouncemenImageType) },
   }),
 });

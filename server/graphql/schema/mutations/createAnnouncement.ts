@@ -11,7 +11,7 @@ import { Announcement } from "../../../db/models/announcement.model";
 /**
  * Create new announcement.
  */
-export const addAnnouncement = {
+export const createAnnouncement = {
   type: new GraphQLList(AnnouncementType),
   args: {
     title: { type: new GraphQLNonNull(GraphQLString) },
@@ -20,7 +20,7 @@ export const addAnnouncement = {
     showOnHomepage: { type: GraphQLBoolean },
   },
   async resolve(parent: object, args: object) {
-    console.log("add announcement");
+    console.log("create announcement");
     await Announcement.create({ ...args });
 
     const announcements = await Announcement.findAll();

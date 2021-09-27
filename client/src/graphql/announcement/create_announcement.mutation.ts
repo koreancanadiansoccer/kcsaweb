@@ -7,26 +7,28 @@ export interface AnnouncementData {
   subtitle: string;
   content: string;
   showOnHomepage?: boolean;
+  images?: AnnouncementImage[];
 }
 
-export interface AddAnnouncementDataInput {
+export interface CreateAnnouncementDataInput {
   title: string;
   subtitle: string;
   content: string;
   showOnHomepage?: boolean;
+  images?: AnnouncementImage[];
 }
 
 /**
  * Mutation for creating a new user account.
  */
-export const ADD_ANNOUNCEMENT = gql`
-  mutation AddAnnouncement(
+export const CREATE_ANNOUNCEMENT = gql`
+  mutation CreateAnnouncement(
     $title: String!
     $subtitle: String!
     $content: String!
     $showOnHomepage: Boolean
   ) {
-    addAnnouncement(
+    createAnnouncement(
       title: $title
       subtitle: $subtitle
       content: $content
