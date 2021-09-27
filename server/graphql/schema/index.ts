@@ -1,11 +1,11 @@
 import { GraphQLObjectType, GraphQLSchema } from "graphql";
-import { resolvers as scalarResolvers } from "graphql-scalars";
 
 // Queries
 import { getUsers } from "./queries//getUsers";
 import { getLeagues } from "./queries//getLeagues";
 import { getLeague } from "./queries//getLeague";
 import { getTeams } from "./queries//getTeams";
+import { getHomeViewer } from "./queries//getHomeViewer";
 
 // Mutations
 import { createUser } from "./mutations/createUser";
@@ -19,6 +19,7 @@ const RootQuery = new GraphQLObjectType({
     getLeagues,
     getLeague,
     getTeams,
+    getHomeViewer,
   },
 });
 
