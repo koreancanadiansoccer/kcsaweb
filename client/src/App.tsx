@@ -18,7 +18,7 @@ import { createAppTheme } from "./styles/theme";
 import { client } from "./graphql/client";
 
 import { Login } from "./pages/Login";
-import { Create } from"./pages/create/Create"
+import { Create } from "./pages/create/Create";
 
 const App: FunctionComponent = () => {
   const theme = createAppTheme();
@@ -29,60 +29,61 @@ const App: FunctionComponent = () => {
   ]);
 
   return (
-    <ApolloProvider client={client}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        {!isAdminRoute && <Navigation />}
+    <ViewerConext.Provider value={{ viewer, setViewer }}>
+      <ApolloProvider client={client}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          {!isAdminRoute && <Navigation />}
 
-        <Switch>
-          {/* ADMIN ROUTE */}
-          {/* This route should be guarded for admin access only!! */}
-          <Route path="/admin">
-            <Admin />
-          </Route>
+          <Switch>
+            {/* ADMIN ROUTE */}
+            {/* This route should be guarded for admin access only!! */}
+            <Route path="/admin">
+              <Admin />
+            </Route>
 
-          <Route exact path="/">
-            <Home />
-          </Route>
+            <Route exact path="/">
+              <Home />
+            </Route>
 
-          {/* About section */}
-          <Route path="/overview">
-            <AboutOverview />
-          </Route>
+            {/* About section */}
+            <Route path="/overview">
+              <AboutOverview />
+            </Route>
 
-          <Route path="/president">
-            <AboutPresident />
-          </Route>
+            <Route path="/president">
+              <AboutPresident />
+            </Route>
 
-          <Route path="/contact">
-            <AboutContact />
-          </Route>
+            <Route path="/contact">
+              <AboutContact />
+            </Route>
 
-          {/* This might be broken into per season */}
-          <Route path="/league">
-            <League />
-          </Route>
+            {/* This might be broken into per season */}
+            <Route path="/league">
+              <League />
+            </Route>
 
-          {/* This might be broken into per season */}
-          <Route path="/teams/:id">
-            <Team />
-          </Route>
+            {/* This might be broken into per season */}
+            <Route path="/teams/:id">
+              <Team />
+            </Route>
 
-          <Route path="/announcement">
-            <Announcement />
-          </Route>
+            <Route path="/announcement">
+              <Announcement />
+            </Route>
 
-          {/*TODO: passport.authenticate 연결해서 cookies session 확인*/}
-          <Route path="/login">
-            <Login />
-          </Route>
+            <Route path="/login">
+              <Login />
+            </Route>
 
-          <Route path="/create">
-            <Create />
-          </Route>
-        </Switch>
-      </ThemeProvider>
-    </ApolloProvider>
+            <Route path="/create">
+              <Create />
+            </Route>
+          </Switch>
+        </ThemeProvider>
+      </ApolloProvider>
+    </ViewerConext.Provider>
   );
 };
 
