@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useContext } from "react";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import AppBar from "@material-ui/core/AppBar";
@@ -11,6 +11,7 @@ import { Button } from "../button/Button";
 import { Logo } from "../icons/Logo";
 import { AboutNav } from "./components/AboutNav";
 import { TeamsNav } from "./components/TeamsNav";
+import { ViewerConext } from "../../context/homeViewer";
 
 interface NavigationProps {
   className?: string;
@@ -19,6 +20,8 @@ interface NavigationProps {
 const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
   className,
 }) => {
+  const { viewer } = useContext(ViewerConext);
+
   return (
     <Box className={className}>
       {/* Team emblem section */}
@@ -50,10 +53,26 @@ const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
 
               <TeamsNav />
 
-              <Box ml="auto">
-                <Button component={RouteLink} to={"/login"} color="secondary">
-                  Team Login
-                </Button>
+              <Box ml="auto" display="flex">
+                {viewer?.user && viewer?.user?.isAdmin && (
+                  <Button component={RouteLink} to={"/admin"} color="secondary">
+                    Admin Panel
+                  </Button>
+                )}
+
+                {viewer?.user && !viewer?.user?.isAdmin && (
+                  <Button component={RouteLink} to={"/login"} color="secondary">
+                    Update Club
+                  </Button>
+                )}
+
+                {!viewer?.user && (
+                  <Button component={RouteLink} to={"/login"} color="secondary">
+                    Team Login
+                  </Button>
+                )}
+
+                {viewer?.user && <Button color="secondary">Logout</Button>}
               </Box>
             </Box>
           </Container>

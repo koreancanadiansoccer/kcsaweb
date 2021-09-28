@@ -5,15 +5,15 @@ import React, {
   useMemo,
   useEffect,
 } from "react";
-import { withTheme } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
-import styled from 'styled-components';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
+import { withTheme } from "@material-ui/core/styles";
+import Box from "@material-ui/core/Box";
+import styled from "styled-components";
+import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
 
-import { Input } from '../input/Input';
+import { Input } from "../input/Input";
 import { Button } from "../button/Button";
-import { UserInput } from '../../types/create_user';
+import { UserInput } from "../../types/user";
 
 interface CreateProps {
   className?: string;
@@ -25,20 +25,24 @@ interface CreateProps {
  * Form to handle user addition
  */
 const UnstyledCreate: FunctionComponent<CreateProps> = ({
-  className, onAdd
+  className,
+  onAdd,
 }) => {
   const [newUser, setNewUser] = useState<UserInput>({
     name: "",
     password: "",
     email: "",
-    phoneNumber: ""
+    phoneNumber: "",
   });
 
-  const isValid = useMemo(() =>
-    !!newUser?.name && !!newUser?.password && !!newUser?.email && !!newUser?.phoneNumber,
-  [
-    newUser,
-  ]);
+  const isValid = useMemo(
+    () =>
+      !!newUser?.name &&
+      !!newUser?.password &&
+      !!newUser?.email &&
+      !!newUser?.phoneNumber,
+    [newUser]
+  );
 
   // Reset 'newUser' when closing/opening
   useEffect(
@@ -47,8 +51,8 @@ const UnstyledCreate: FunctionComponent<CreateProps> = ({
         name: "",
         password: "",
         email: "",
-        phoneNumber: ""
-    }),
+        phoneNumber: "",
+      }),
     []
   );
 
