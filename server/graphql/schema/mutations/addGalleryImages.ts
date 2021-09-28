@@ -2,7 +2,6 @@ import {
   GraphQLString,
   GraphQLList,
   GraphQLNonNull,
-  GraphQLBoolean,
 } from "graphql";
 
 import { GalleryImageType } from '../../types/gallery_image';
@@ -15,7 +14,6 @@ export const addGalleryImages = {
   type: new GraphQLList(GalleryImageType),
   args: {
     imageURL: { type: new GraphQLNonNull(GraphQLString) },
-    showOnHomepage: { type: GraphQLBoolean },
   },
   async resolve(parent: object, args: object) {
     console.log('add announcement');
