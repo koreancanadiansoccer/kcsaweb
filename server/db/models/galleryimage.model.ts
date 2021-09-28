@@ -19,5 +19,5 @@ export class GalleryImage extends Model {
   @Column({ field: 'gallery_id' })
   galleryId!: number;
 
-  @BelongsTo(() => Gallery) galleery!: Gallery;
+  @BelongsTo(() => Gallery) gallery!: Gallery;
 }

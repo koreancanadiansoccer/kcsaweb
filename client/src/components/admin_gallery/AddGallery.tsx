@@ -8,64 +8,21 @@ import React, {
 import { DialogProps } from "@material-ui/core/Dialog";
 import Box from "@material-ui/core/Box";
 import DialogActions from "@material-ui/core/DialogActions";
+import styled from "styled-components";
+import { withTheme } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import { DropzoneArea } from 'material-ui-dropzone';
-import AWS from 'aws-sdk';
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Button from '@material-ui/core/Button';
 
 import { Modal } from '../modal/Modal';
-import { Input } from '../input/Input';
-import { Button } from '../button/Button';
+
+import { sendFileToS3 } from '../../utils/sendFileToS3';
+import AWS from 'aws-sdk';
 
 import { GalleryInput } from '../../types/gallery';
-
-//! AWS TETING
-// import dotenv from 'dotenv';
-// dotenv.config();
-
-// export const AWS_SDK_LOAD_CONFIG = 1;
-
-// AWS.config.update({
-//   region: 'us-east-1',
-//   credentials: new AWS.CognitoIdentityCredentials({
-//     IdentityPoolId: 'us-east-1:17b8090d-d5b9-4dc9-b05d-8b3a3839731c',
-//   }),
-//   signatureVersion: 'v4',
-//   accessKeyId: 'AKIAQKZEFGFJJLQS2OH3',
-//   secretAccessKey: '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',
-// });
-
-// const handleFileInput = (e: any) => {
-//   console.log("test:" + e)
-//   console.log("test:" + e.target.files[0])
-
-
-//   const file = e.target.files[0];
-//   console.log(typeof file.name)
-
-
-//   const upload = new AWS.S3.ManagedUpload({
-//     params: {
-//       Bucket: 'kcsa-images',
-//       Key: file.name!,
-//       Body: file,
-//     },
-//   });
-
-//   const promise = upload.promise();
-
-//   promise.then(
-//     function (data) {
-//       console.log('success');
-//     },
-//     function (err) {
-//       console.log(err.message);
-//     }
-//   );
-// };
-//!
-
-//@
-
-//@
 
 
 interface AddGalleryModalProp extends Pick<DialogProps, 'open' | 'onClose'> {
@@ -75,7 +32,7 @@ interface AddGalleryModalProp extends Pick<DialogProps, 'open' | 'onClose'> {
 /**
  * Modal to handle gallery addition.
  */
-export const AddGalleryModal: FunctionComponent<AddGalleryModalProp> = ({
+const UnstyledAddGalleryModal: FunctionComponent<AddGalleryModalProp> = ({
   open,
   onClose,
   onAdd,
@@ -83,24 +40,23 @@ export const AddGalleryModal: FunctionComponent<AddGalleryModalProp> = ({
   // Init state for new product.
   const [newGallery, setNewGallery] = useState<GalleryInput>({
     title: '',
-    content: '',
+    description: '',
     showOnHomepage: false,
     images: [],
   });
 
   const isValid = useMemo(
     () =>
-      !!newGallery?.title &&
-      !!newGallery?.content,
+      !!newGallery?.title,
     [newGallery]
   );
 
-  // Reset 'newLeague' when closing/opening the modal.
+  // Reset 'newGallery' when closing/opening the modal.
   useEffect(
     () =>
       setNewGallery({
         title: '',
-        content: '',
+        description: '',
         showOnHomepage: false,
         images: [],
       }),
@@ -109,60 +65,89 @@ export const AddGalleryModal: FunctionComponent<AddGalleryModalProp> = ({
 
   //!
     const [inputImages, setInputImages] = useState<File[]>([]);
-    // const [inputImages, setInputImages] = useState<File>();
 
-
+    const sendFiles = async (files: any) => {
+      // for (var i = 0; i < files.length; i++) {
+        sendFileToS3(files)
+      // }
+    }
   //!
 
   return (
-    <Modal open={open} onClose={onClose} title="Create New League">
-      <Box display="flex" justifyContent="space-evenly" alignItems="start" flexDirection="column" width="80%">
-        <Input
-          label="Title"
-          placeholder="Gallery Title"
-          required
-          value={newGallery?.title}
-          fullWidth
-          onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-            setNewGallery({ ...newGallery, title: evt.target.value });
-          }}
-        />
+    <Modal open={open} onClose={onClose} title="Create New Gallery">
+      <Box display="flex" justifyContent="space-evenly" alignItems="start" flexDirection="column" width="100%">
+        <Typography variant="body1"> Title</Typography>
+        <Box mt={1} mb={3}>
+          <TextField
+            label="Title"
+            placeholder="Gallery Title"
+            color="primary"
+            variant="outlined"
+            required
+            value={newGallery?.title}
+            fullWidth
+            onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+              setNewGallery({ ...newGallery, title: evt.target.value });
+            }}
+          />
+        </Box>
 
-        <Input
-          label="Content"
-          placeholder="Gallery Content"
-          required
-          value={newGallery?.content}
-          fullWidth
-          onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-            setNewGallery({ ...newGallery, content: evt.target.value });
-          }}
-        />
+        <Typography variant="body1"> Description</Typography>
+        <Box mt={1} mb={3} width="100%">
+          <TextField
+            label="Description"
+            placeholder="Gallery Description"
+            color="primary"
+            variant="outlined"
+            value={newGallery?.description}
+            fullWidth
+            onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+              setNewGallery({ ...newGallery, description: evt.target.value });
+            }}
+          />
+        </Box>
 
-        <DropzoneArea
-          dropzoneText={'Drag and drop an image here or click'}
-          filesLimit={100}
-          maxFileSize={20971520} // 20MB
-          acceptedFiles={['image/gif', 'image/jpeg', 'image/jpg', 'image/png', 'image/svg']}
-          onChange={(files) => {
-            console.log('what is your name:', files);
-            setInputImages([...files])
-            // setInputImages(existing => existing.concat(Array.from(files)))
-            // console.log(inputImages);
-          }}
-        />
+        <Box width="100%" my={1}>
+          <DropzoneArea
+            dropzoneText={'Drag and drop an image here or click'}
+            filesLimit={100}
+            maxFileSize={20971520} // 20MB
+            acceptedFiles={['image/gif', 'image/jpeg', 'image/jpg', 'image/png', 'image/svg']}
+            previewGridProps={{
+              container: { spacing: 0 },
+            }}
+            onChange={(files) => {
+              setInputImages([...files]);
+            }}
+          />
+        </Box>
 
-        {/* <input type="file" id="upload" className="image-upload" onChange={handleFileInput} /> */}
+        {/* TODO: 만약 showOnHomepage 가 3개 선택이면 checkbox 불가능 */}
+        <Box mb={2}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={newGallery?.showOnHomepage}
+                onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+                  setNewGallery({
+                    ...newGallery,
+                    showOnHomepage: evt.target.checked,
+                  });
+                }}
+              />
+            }
+            label="Main Page"
+          />
+        </Box>
 
         <DialogActions>
           <Button
             disabled={!isValid}
-            size="large"
+            size = "large"
+            color = "primary"
+            variant = "contained"
             onClick={() => {
               void onAdd(newGallery);
-
-              console.log('TEST::');
-              console.log(inputImages);
             }}
           >
             Create
@@ -172,3 +157,9 @@ export const AddGalleryModal: FunctionComponent<AddGalleryModalProp> = ({
     </Modal>
   );
 };
+
+export const AddGalleryModal = withTheme(styled(UnstyledAddGalleryModal)`
+  ..MuiDialogActions-root {
+    padding: 0px;
+  }
+`);

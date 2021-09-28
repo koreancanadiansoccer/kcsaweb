@@ -12,6 +12,7 @@ import { Logo } from "../icons/Logo";
 import { AboutNav } from "./components/AboutNav";
 import { TeamsNav } from "./components/TeamsNav";
 import { ViewerConext } from "../../context/homeViewer";
+import { AnnouncementNav } from './components/Announcement';
 
 interface NavigationProps {
   className?: string;
@@ -43,9 +44,10 @@ const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
               {/* Example of submenu - should be factored out */}
               <AboutNav />
 
-              <Button component={RouteLink} to="/announcement">
+              {/* <Button component={RouteLink} to="/announcement">
                 announcement
-              </Button>
+              </Button> */}
+              <AnnouncementNav />
 
               <Button component={RouteLink} to="/league">
                 League
