@@ -16,14 +16,11 @@ import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
+import { useRouteMatch } from 'react-router-dom';
 
 import { Modal } from '../modal/Modal';
 
-import { sendFileToS3 } from '../../utils/sendFileToS3';
-import AWS from 'aws-sdk';
-
 import { GalleryInput } from '../../types/gallery';
-
 
 interface AddGalleryModalProp extends Pick<DialogProps, 'open' | 'onClose'> {
   onAdd: (league: GalleryInput) => Promise<void>;
@@ -63,15 +60,9 @@ const UnstyledAddGalleryModal: FunctionComponent<AddGalleryModalProp> = ({
     [open]
   );
 
-  //!
-    const [inputImages, setInputImages] = useState<File[]>([]);
+  const [inputImages, setInputImages] = useState<File[]>([]); // list of File || TODO: newGallery.images에 저장
 
-    const sendFiles = async (files: any) => {
-      // for (var i = 0; i < files.length; i++) {
-        sendFileToS3(files)
-      // }
-    }
-  //!
+  const { url } = useRouteMatch();
 
   return (
     <Modal open={open} onClose={onClose} title="Create New Gallery">
@@ -147,7 +138,7 @@ const UnstyledAddGalleryModal: FunctionComponent<AddGalleryModalProp> = ({
             color = "primary"
             variant = "contained"
             onClick={() => {
-              void onAdd(newGallery);
+              void onAdd(newGallery);  // click ->
             }}
           >
             Create
