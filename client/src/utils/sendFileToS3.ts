@@ -2,10 +2,10 @@ import ReactS3Client from 'react-aws-s3-typescript';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const NAME: string = 'kcsa-images-bucket';
-const REGION: string = 'us-east-1';
-const ACCKEY: string = 'AKIAQKZEFGFJJLQS2OH3';
-const SECRETKEY: string = '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';
+const NAME: string = 'AWS_BUCKET_NAME';
+const REGION: string = 'AWS_BUCKET_REGION';
+const ACCKEY: string = 'AWS_ACCESSKEY_ID';
+const SECRETKEY: string = 'AWS_SECRETACCESSKEY';
 
 export const sendFileToS3 = async (file: File) => {
   console.log("test")
@@ -17,7 +17,6 @@ export const sendFileToS3 = async (file: File) => {
   });
 
   try {
-    console.log("check")
     const res = await s3.uploadFile(file);
     console.log(res);
   } catch (exception) {

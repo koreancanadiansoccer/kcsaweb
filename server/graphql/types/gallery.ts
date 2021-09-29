@@ -1,5 +1,5 @@
-import { GraphQLList } from "graphql";
 import {
+  GraphQLList,
   GraphQLInt,
   GraphQLObjectType,
   GraphQLString,

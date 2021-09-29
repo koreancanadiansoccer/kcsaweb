@@ -17,16 +17,14 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 
+import { Modal } from '../modal/Modal';
+
 import { sendFileToS3 } from '../../utils/sendFileToS3';
 import AWS from 'aws-sdk';
-
-import { Modal } from '../modal/Modal';
 
 import { GalleryInput } from '../../types/gallery';
 
 
-//! AWS TETING
-//!
 interface AddGalleryModalProp extends Pick<DialogProps, 'open' | 'onClose'> {
   onAdd: (league: GalleryInput) => Promise<void>;
 }
@@ -68,27 +66,11 @@ const UnstyledAddGalleryModal: FunctionComponent<AddGalleryModalProp> = ({
   //!
     const [inputImages, setInputImages] = useState<File[]>([]);
 
-    const test = async (files: any) => {
+    const sendFiles = async (files: any) => {
       // for (var i = 0; i < files.length; i++) {
         sendFileToS3(files)
       // }
     }
-
-
-    // const testtttt = async (files: File[]) => {
-    //   const s3 = new AWS.S3({
-    //     accessKeyId: process.env.AWS_ACCESSKEY_ID,
-    //     secretAccessKey: process.env.AWS_SECRETACCESSKEY,
-    //     region: process.env.AWS_BUCKET_REGION,
-    //   });
-
-    //   const param = {
-    //     'Bucket': process.env.AWS_BUCKET_NAME,
-    //     'Key': "Testing",
-    //     'ACL': 'public-read',
-    //     'Body': file
-    //   };
-    // }
   //!
 
   return (
@@ -140,8 +122,7 @@ const UnstyledAddGalleryModal: FunctionComponent<AddGalleryModalProp> = ({
           />
         </Box>
 
-        {/* <input type="file" id="upload" className="image-upload" onChange={(e) => test(e)} /> */}
-
+        {/* TODO: 만약 showOnHomepage 가 3개 선택이면 checkbox 불가능 */}
         <Box mb={2}>
           <FormControlLabel
             control={
@@ -178,11 +159,7 @@ const UnstyledAddGalleryModal: FunctionComponent<AddGalleryModalProp> = ({
 };
 
 export const AddGalleryModal = withTheme(styled(UnstyledAddGalleryModal)`
-  .MuiDialogActions-root {
+  ..MuiDialogActions-root {
     padding: 0px;
-  },
-
-  .MuiDialogActions-root > div {
-    margin-left: 0px;
   }
 `);

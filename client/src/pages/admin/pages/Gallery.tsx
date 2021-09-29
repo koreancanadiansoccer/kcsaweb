@@ -62,7 +62,7 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
         onClose={() => setOpenModal(false)}
         onAdd={(newGallery: GalleryInput) => {
           createGallery(newGallery);
-        }} // Add되면서 check 하도록 만들기
+        }}
         onupload
       />
 

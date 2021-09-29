@@ -1,11 +1,8 @@
-import { Gallery } from './gallery';
-
 export interface GalleryImage {
-  imgURL: string;
-  galleryId?: Gallery[];
+  id: string;
+  imageURL: string;
 }
 
 export interface GalleryImageInput {
-  imgURL: string;
-  galleryId?: Gallery[];
+  imageURL: string;
 }
