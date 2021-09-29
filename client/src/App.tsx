@@ -14,16 +14,16 @@ import { Admin } from "./pages/admin/Admin";
 import { AboutOverview } from "./pages/about/AboutOverview";
 import { AboutPresident } from "./pages/about/AboutPresident";
 import { AboutContact } from "./pages/about/AboutContact";
-import { Announcement } from "./pages/Announcement";
+import { Announcement } from "./pages/announcement/Announcement";
 import { League } from "./pages/League";
 import { Team } from "./pages/Team";
 import { createAppTheme } from "./styles/theme";
 import { client } from "./graphql/client";
 import { Login } from "./pages/Login";
 import { Create } from "./pages/create/Create";
+import { Gallery } from "./pages/Gallery";
 import { GET_HOME_VIEWER } from "./graphql/homeViewer";
 import { ViewerConext } from "./context/homeViewer";
-import { Gallery } from "./pages/Gallery";  //TODO: gallery show up on client side
 
 const App: FunctionComponent = () => {
   const theme = createAppTheme();
@@ -91,7 +91,10 @@ const App: FunctionComponent = () => {
               <Announcement />
             </Route>
 
-            {/*TODO: passport.authenticate 연결해서 cookies session 확인*/}
+            <Route path="/gallery">
+              <Gallery />
+            </Route>
+
             <Route path="/login">
               <Login />
             </Route>

@@ -8,7 +8,7 @@ interface AnnouncementProps {
 }
 
 /**
- * About Page.
+ * Announcement Page.
  */
 const UnstyledAnnouncement: FunctionComponent<AnnouncementProps> = ({
   className,

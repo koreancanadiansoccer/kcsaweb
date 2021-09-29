@@ -15,11 +15,10 @@ export const addGallery = {
   type: new GraphQLList(GalleryType),
   args: {
     title: { type: new GraphQLNonNull(GraphQLString) },
-    content: { type: new GraphQLNonNull(GraphQLString) },
+    description: { type: GraphQLString },
     showOnHomepage: { type: GraphQLBoolean },
   },
   async resolve(parent: object, args: object) {
-    console.log('add announcement');
     await Gallery.create({ ...args });
 
     const galleries = await Gallery.findAll();

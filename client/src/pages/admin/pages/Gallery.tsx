@@ -4,10 +4,12 @@
 
 import React, { FunctionComponent, useState } from "react";
 import { withTheme } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import styled from "styled-components";
-import { useMutation, useQuery } from "@apollo/client"; //TODO: useQuery 쓰기
+import { Button } from '../../../components/button/Button';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import { useMutation, useQuery } from '@apollo/client'; //TODO: useQuery 쓰기
 
 import { GalleryInput } from '../../../types/gallery';
 import { AddGalleryModal } from "../../../components/admin_gallery/AddGallery"
@@ -17,6 +19,7 @@ import {
   AddGalleryDataInput,
 } from "../../../graphql/gallery/add.gallery.mutation";
 import { parseError } from "../../../graphql/client";
+import { Redirect } from "react-router-dom";
 
 interface GalleryProps {
   className?: string;
@@ -32,14 +35,14 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
   GalleryData, AddGalleryDataInput
 >(ADD_GALLERY);
 
-  const createLeague = async (newGallery: GalleryInput) => {
+  const createGallery = async (newGallery: GalleryInput) => {
     console.log('create gallery');
     try {
       const res = await createGalleryMut({
         variables: {
           title: newGallery.title,
-          content: newGallery.content,
-          showOnHomepage: newGallery.showOnHomepage as boolean
+          description: newGallery.description,
+          showOnHomepage: newGallery.showOnHomepage as boolean,
         },
       });
 
@@ -57,13 +60,19 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
       <AddGalleryModal
         open={openModal}
         onClose={() => setOpenModal(false)}
-        onAdd={(newGallery) => createLeague(newGallery)} // Add되면서 check 하도록 만들기
+        onAdd={(newGallery: GalleryInput) => {
+          createGallery(newGallery);
+        }} // Add되면서 check 하도록 만들기
+        onupload
       />
 
-      <h3>Gallery</h3>
-      <Button startIcon={<AddIcon />} onClick={() => setOpenModal(true)}>
-        Create New Gallery
-      </Button>
+      <Typography variant="h4">Gallery</Typography>
+
+      <Box my={3}>
+        <Button startIcon={<AddIcon />} onClick={() => setOpenModal(true)} color="secondary">
+          Create New Gallery
+        </Button>
+      </Box>
     </>
   );
 };

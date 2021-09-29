@@ -12,6 +12,8 @@ import { createUser } from "./mutations/createUser";
 import { createLeague } from "./mutations/createLeague";
 import { loginUser } from "./mutations/loginUser";
 import { addGallery } from "./mutations/addGallery";
+import { addGalleryImages } from './mutations/addGalleryImages';
+
 
 const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
@@ -25,12 +27,13 @@ const RootQuery = new GraphQLObjectType({
 });
 
 const Mutation = new GraphQLObjectType({
-  name: "Mutation",
+  name: 'Mutation',
   fields: {
     createUser,
     createLeague,
     loginUser,
-    addGallery
+    addGallery,
+    addGalleryImages,
   },
 });
 
