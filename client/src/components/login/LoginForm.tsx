@@ -5,16 +5,15 @@ import React, {
   useMemo,
   useEffect,
 } from "react";
-import { withTheme } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
-import styled from 'styled-components';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
+import { withTheme } from "@material-ui/core/styles";
+import Box from "@material-ui/core/Box";
+import styled from "styled-components";
+import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
 
-import { Input } from '../input/Input';
-import { Button } from '../button/Button';
-import { LoginInput } from '../../types/login';
-
+import { Input } from "../input/Input";
+import { Button } from "../button/Button";
+import { LoginInput } from "../../types/login";
 
 interface LoginProps {
   className?: string;
@@ -22,30 +21,27 @@ interface LoginProps {
 }
 
 /**
- * TODO:
- * - input data 와 passport middleware 연결
  * Form to handle log in
  */
 const UnstyledLoginForm: FunctionComponent<LoginProps> = ({
-  className, onAdd
+  className,
+  onAdd,
 }) => {
   const [newLogin, setNewLogin] = useState<LoginInput>({
     email: "",
-    password: ""
+    password: "",
   });
 
-  const isValid = useMemo(() =>
-    !!newLogin?.email && !!newLogin?.password,
-  [
-    newLogin
+  const isValid = useMemo(() => !!newLogin?.email && !!newLogin?.password, [
+    newLogin,
   ]);
 
   useEffect(
     () =>
       setNewLogin({
         email: "",
-        password: ""
-    }),
+        password: "",
+      }),
     []
   );
 

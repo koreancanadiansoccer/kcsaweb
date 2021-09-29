@@ -89,7 +89,6 @@ const App: FunctionComponent = () => {
               <Announcement />
             </Route>
 
-            {/*TODO: passport.authenticate 연결해서 cookies session 확인*/}
             <Route path="/login">
               <Login />
             </Route>
