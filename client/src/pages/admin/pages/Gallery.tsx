@@ -19,8 +19,6 @@ import {
   AddGalleryDataInput,
 } from "../../../graphql/gallery/add.gallery.mutation";
 import { parseError } from "../../../graphql/client";
-import { Redirect } from "react-router-dom";
-
 interface GalleryProps {
   className?: string;
 }

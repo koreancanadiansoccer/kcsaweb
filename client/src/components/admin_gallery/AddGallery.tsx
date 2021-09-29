@@ -19,11 +19,7 @@ import Button from '@material-ui/core/Button';
 
 import { Modal } from '../modal/Modal';
 
-import { sendFileToS3 } from '../../utils/sendFileToS3';
-import AWS from 'aws-sdk';
-
 import { GalleryInput } from '../../types/gallery';
-
 
 interface AddGalleryModalProp extends Pick<DialogProps, 'open' | 'onClose'> {
   onAdd: (league: GalleryInput) => Promise<void>;
@@ -63,15 +59,7 @@ const UnstyledAddGalleryModal: FunctionComponent<AddGalleryModalProp> = ({
     [open]
   );
 
-  //!
-    const [inputImages, setInputImages] = useState<File[]>([]);
-
-    const sendFiles = async (files: any) => {
-      // for (var i = 0; i < files.length; i++) {
-        sendFileToS3(files)
-      // }
-    }
-  //!
+  const [inputImages, setInputImages] = useState<File[]>([]); // list of File Object || TODO: newGallery.images 에 저장
 
   return (
     <Modal open={open} onClose={onClose} title="Create New Gallery">

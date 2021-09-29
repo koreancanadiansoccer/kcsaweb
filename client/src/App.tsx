@@ -46,67 +46,6 @@ const App: FunctionComponent = () => {
   if (loading) return <Loader open={loading} />;
 
   return (
-<<<<<<< HEAD
-    <ViewerConext.Provider value={{ viewer, setViewer }}>
-      <ApolloProvider client={client}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          {!isAdminRoute && <Navigation />}
-
-          <Switch>
-            {/* ADMIN ROUTE */}
-            {/* This route should be guarded for admin access only!! */}
-            <Route path="/admin">
-              <Admin />
-            </Route>
-
-            <Route exact path="/">
-              <Home />
-            </Route>
-
-            {/* About section */}
-            <Route path="/overview">
-              <AboutOverview />
-            </Route>
-
-            <Route path="/president">
-              <AboutPresident />
-            </Route>
-
-            <Route path="/contact">
-              <AboutContact />
-            </Route>
-
-            {/* This might be broken into per season */}
-            <Route path="/league">
-              <League />
-            </Route>
-
-            {/* This might be broken into per season */}
-            <Route path="/teams/:id">
-              <Team />
-            </Route>
-
-            <Route path="/announcement">
-              <Announcement />
-            </Route>
-
-            <Route path="/gallery">
-              <Gallery />
-            </Route>
-
-            <Route path="/login">
-              <Login />
-            </Route>
-
-            <Route path="/create">
-              <Create />
-            </Route>
-          </Switch>
-        </ThemeProvider>
-      </ApolloProvider>
-    </ViewerConext.Provider>
-=======
     <ApolloProvider client={client}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
@@ -165,7 +104,6 @@ const App: FunctionComponent = () => {
         </Switch>
       </ThemeProvider>
     </ApolloProvider>
->>>>>>> b213002 (first commit)
   );
 };
 
