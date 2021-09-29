@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useState, useEffect } from "react";
 import { withTheme } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
+// import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 import AddIcon from "@material-ui/icons/Add";
 import styled from "styled-components";
 import { useMutation } from "@apollo/client";
@@ -12,6 +13,9 @@ import {
   useRouteMatch,
   Link as RouteLink,
 } from "react-router-dom";
+
+import { Button } from "../../../components/button/Button";
+import { Table } from "../../../components/table/Table";
 
 import { AddAnnouncement } from "../../../components/admin_announcement/AddAnnouncement";
 import {
@@ -65,19 +69,25 @@ const UnstyledAnnouncement: FunctionComponent<AnnouncementProps> = ({
     <>
       {showButton && (
         <Box>
-          <h3>Announcement</h3>
-          <Button
-            component={RouteLink}
-            to={`${url}/create_announcement`}
-            startIcon={<AddIcon />}
-            onClick={() => {
-              setShowButton(false);
-            }}
-          >
-            Create New Announcement
-          </Button>
+          <Typography variant="h4">Announcement</Typography>
+
+          <Box my={3}>
+            <Button
+              component={RouteLink}
+              to={`${url}/create_announcement`}
+              startIcon={<AddIcon />}
+              color="secondary"
+              onClick={() => {
+                setShowButton(false);
+              }}
+            >
+              Create New Announcement
+            </Button>
+          </Box>
         </Box>
       )}
+
+      {/* <Table></Table> */}
 
       <Switch>
         <Route path={`${url}/create_announcement`}>

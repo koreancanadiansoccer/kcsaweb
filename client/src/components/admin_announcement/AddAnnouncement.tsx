@@ -14,22 +14,17 @@ import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Button from "@material-ui/core/Button";
-
 import { Editor } from "react-draft-wysiwyg";
 import { convertToRaw, EditorState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
 
-import ReactS3Client from "react-aws-s3-typescript";
-
 import { useHistory } from "react-router-dom";
+
+import { Button } from "../button/Button";
 
 import { AnnouncementInput } from "../../types/announcement";
 import { AnnouncementImageInput } from "../../types/announcement_image";
-
-import dotenv from "dotenv";
-dotenv.config();
 
 interface AddAnnouncementProps {
   className?: string;
@@ -87,37 +82,24 @@ const UnstyledAddAnnouncement: FunctionComponent<AddAnnouncementProps> = ({
     });
   };
 
-  const sendFileToS3 = async () => {
-    const s3 = new ReactS3Client({
-      bucketName: "kcsa-demo",
-      region: "us-east-1",
-      accessKeyId: "AKIAQKZEFGFJE5KXFQY7",
-      secretAccessKey: "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",
-    });
+  // const convertSendS3 = () => {
+  //   const parser = new DOMParser();
+  //   const htmlDoc = parser.parseFromString(
+  //     newAnnouncement.content,
+  //     "text/html"
+  //   );
 
-    const parser = new DOMParser();
-    const htmlDoc = parser.parseFromString(
-      newAnnouncement.content,
-      "text/html"
-    );
+  //   const getAllElement = htmlDoc.getElementsByTagName("img");
+  //   console.log(getAllElement);
 
-    const getAllElement = htmlDoc.getElementsByTagName("img");
-    console.log(getAllElement);
+  //   // const fileArray: File[] = [];
 
-    const firstElement = htmlDoc.getElementsByTagName("img")[0].src;
-    const fileName = firstElement.split("/").slice(-1)[0];
-    const file = new File([firstElement], fileName);
-
-    console.log(firstElement);
-    console.log(file);
-
-    try {
-      const res = await s3.uploadFile(file, fileName);
-      console.log(res);
-    } catch (exception) {
-      console.log(exception);
-    }
-  };
+  //   for (var i = 0; i < getAllElement.length; i++) {
+  //     const imageBlob = htmlDoc.getElementsByTagName("img")[i].src;
+  //     const fileName = imageBlob.split("/").slice(-1)[0];
+  //     const file = new File([imageBlob], fileName);
+  //   }
+  // };
 
   return (
     <Box className={className}>
@@ -226,14 +208,15 @@ const UnstyledAddAnnouncement: FunctionComponent<AddAnnouncementProps> = ({
             />
           </Box>
 
-          <Box>
+          <Box mx={-1}>
             <Button
+              className="submit_button"
               variant="contained"
               color="primary"
               size="large"
               disabled={!isValid}
               onClick={() => {
-                sendFileToS3();
+                // convertSendS3();
                 void onAdd(newAnnouncement);
                 history.goBack();
               }}
