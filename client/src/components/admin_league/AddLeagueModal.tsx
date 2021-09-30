@@ -37,12 +37,17 @@ export const AddLeagueModal: FunctionComponent<AddLeagueModalProp> = ({
     name: "",
     leagueAgeType: "",
     leagueType: "",
-    maxYellowCard: undefined,
+    maxYellowCard: 0,
   });
 
-  const isValid = useMemo(() => !!newLeague?.name && !!newLeague?.leagueType, [
-    newLeague,
-  ]);
+  const isValid = useMemo(
+    () =>
+      !!newLeague?.name &&
+      !!newLeague?.leagueType &&
+      !!newLeague?.leagueAgeType &&
+      !!newLeague?.maxYellowCard,
+    [newLeague]
+  );
 
   // Reset 'newLeague' when closing/opening the modal.
   useEffect(
@@ -51,7 +56,7 @@ export const AddLeagueModal: FunctionComponent<AddLeagueModalProp> = ({
         name: "",
         leagueAgeType: "",
         leagueType: "",
-        maxYellowCard: undefined,
+        maxYellowCard: 0,
       }),
     [open]
   );

@@ -81,3 +81,8 @@ Generate migration;
 run migration;
 `npx sequelize-cli db:migrate`
 Above will create migration file.
+
+**Troubleshooting**;
+If you run into issue on address in use;
+`sudo lsof -i :3000`
+Grab PID -> `kill -9 {PID}`

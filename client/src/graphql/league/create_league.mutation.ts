@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { LeagueType } from "../../types/league";
+import { LeagueType, League } from "../../types/league";
 import { Team } from "../../types/team";
 
 export interface LeagueData {
@@ -13,6 +13,12 @@ export interface CreateLeagueDataInput {
   name: string;
   isActive?: boolean;
   leagueType?: LeagueType | string;
+  leagueAgeType?: LeagueType | string;
+  maxYellowCard?: number;
+}
+
+export interface CreateLeagueResult {
+  createLeague: League[];
 }
 
 /**
@@ -23,7 +29,7 @@ export const CREATE_LEAGUE = gql`
     $name: String!
     $leagueAgeType: String!
     $leagueType: String!
-    $maxYellowCard: number!
+    $maxYellowCard: Int!
   ) {
     createLeague(
       name: $name

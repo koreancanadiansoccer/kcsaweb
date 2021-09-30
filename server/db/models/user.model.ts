@@ -11,6 +11,7 @@ import {
 import keys from "lodash/keys";
 
 import { Team } from "./team.model";
+import { LeagueTeam } from "./leagueteam.model";
 
 export enum AccountType {
   ADMIN = "ADMIN",
@@ -51,4 +52,6 @@ export class User extends Model {
   status!: AccountStatus;
 
   @HasOne(() => Team) team?: Team[];
+
+  @HasMany(() => LeagueTeam) leagueTeams?: LeagueTeam[];
 }

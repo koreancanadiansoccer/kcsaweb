@@ -10,6 +10,8 @@ import { getHomeViewer } from "./queries//getHomeViewer";
 // Mutations
 import { createUser } from "./mutations/createUser";
 import { createLeague } from "./mutations/createLeague";
+import { updateLeague } from "./mutations/updateLeague";
+import { createTeam } from "./mutations/createTeam";
 import { loginUser } from "./mutations/loginUser";
 import { addGallery } from "./mutations/addGallery";
 import { addGalleryImages } from './mutations/addGalleryImages';
@@ -31,6 +33,8 @@ const Mutation = new GraphQLObjectType({
   fields: {
     createUser,
     createLeague,
+    updateLeague,
+    createTeam,
     loginUser,
     addGallery,
     addGalleryImages,

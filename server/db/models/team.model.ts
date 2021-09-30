@@ -4,16 +4,15 @@ import {
   Column,
   HasMany,
   ForeignKey,
-  DataType,
+  Default,
   AllowNull,
-  BelongsTo,
 } from "sequelize-typescript";
-import keys from "lodash/keys";
 
 import { Player } from "./player.model";
 import { User } from "./user.model";
-import { League } from "./league.model";
+import { LeagueTeam } from "./leagueteam.model";
 
+// Master team table.
 @Table({ tableName: "team" })
 export class Team extends Model {
   @AllowNull(false)
@@ -22,32 +21,41 @@ export class Team extends Model {
 
   @Column({ field: "emblem_img_link" }) emblemImgLink!: string;
 
-  @Column season!: string;
+  @Default(0)
+  @Column
+  played!: number;
 
-  @Column played!: number;
+  @Default(0)
+  @Column
+  win!: number;
 
-  @Column win!: number;
+  @Default(0)
+  @Column
+  loss!: number;
 
-  @Column loss!: number;
+  @Default(0)
+  @Column({ field: "goal_scored" })
+  goalScored!: number;
 
-  @Column({ field: "goal_scored" }) goalScored!: number;
-
-  @Column({ field: "goal_conceded" }) goalConceded!: number;
+  @Default(0)
+  @Column({ field: "goal_conceded" })
+  goalConceded!: number;
 
   @Column({
     field: "team_age_type",
   })
   teamAgeType!: string;
 
-  @Column({ field: "is_active" }) isActive!: boolean;
+  // TODO: Do we need this?
+  @Default(0)
+  @Column({ field: "is_active" })
+  isActive!: boolean;
 
   @ForeignKey(() => User) @Column({ field: "captain_id" }) captainId!: number;
+
+  // Association with all players
   @HasMany(() => Player) players!: Player[];
 
-  @ForeignKey(() => League)
-  @Column({ field: "league_id" })
-  leagueId!: number;
-
-  @BelongsTo(() => League)
-  league!: League;
+  // Association with league teams data.
+  @HasMany(() => LeagueTeam) leagueTeams!: LeagueTeam[];
 }

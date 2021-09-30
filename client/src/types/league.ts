@@ -17,7 +17,7 @@ export interface League {
   leagueAgeType: LeagueAgeType | string;
   leagueType: LeagueType | string;
   maxYellowCard: number;
-  teams?: Team[];
+  leagueTeams: Team[];
 }
 
 export interface LeagueInput {
@@ -26,5 +26,5 @@ export interface LeagueInput {
   leagueAgeType?: LeagueAgeType | string;
   leagueType?: LeagueType | string;
   maxYellowCard?: number;
-  teams?: Team[];
+  leagueTeams?: Team[];
 }
