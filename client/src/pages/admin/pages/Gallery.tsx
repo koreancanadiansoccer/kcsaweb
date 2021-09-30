@@ -44,11 +44,8 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
         },
       });
 
-      console.log('result!');
-      console.log(res);
     } catch (e) {
       const error = parseError(e);
-      console.log('erro');
       console.log(error);
     }
   };

@@ -1,5 +1,3 @@
-import { GalleryImage } from './gallery_image';
-
 export interface Gallery {
   id: string;
   title: string;
@@ -13,4 +11,13 @@ export interface GalleryInput {
   description: string;
   showOnHomepage?: boolean;
   images?: GalleryImage[];
+}
+
+export interface GalleryImage {
+  id: string;
+  imageURL: string;
+}
+
+export interface GalleryImageInput {
+  imageURL: string;
 }
