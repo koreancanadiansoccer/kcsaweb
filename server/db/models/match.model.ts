@@ -1,5 +1,14 @@
-import { Model, Table, Column, AllowNull } from "sequelize-typescript";
+import {
+  Model,
+  Table,
+  Column,
+  AllowNull,
+  ForeignKey,
+  BelongsTo,
+} from "sequelize-typescript";
 
+import { LeagueTeam } from "./leagueteam.model";
+import { League } from "./league.model";
 @Table({ tableName: "match" })
 export class Match extends Model {
   @AllowNull(false)
@@ -10,13 +19,27 @@ export class Match extends Model {
   @Column
   location!: string;
 
-  @Column({ field: "home_team" }) homeTeam!: string;
-  @Column({ field: "home_team_score" }) homeTeamScore!: number;
+  @ForeignKey(() => League)
+  @Column({ field: "league_id" })
+  leagueId!: string;
+
+  @ForeignKey(() => LeagueTeam)
+  @Column({ field: "home_team_id" })
+  homeTeamId!: string;
+  @BelongsTo(() => LeagueTeam, { foreignKey: "home_team_id" })
+  homeTeam!: LeagueTeam;
+  @Column({ field: "home_team_score" })
+  homeTeamScore!: number;
   @Column({ field: "home_team_game_sheet_link" })
   homeTeamGameSheetLink!: string;
 
-  @Column({ field: "away_team" }) awayTeam!: string;
-  @Column({ field: "away_team_score" }) awayTeamScore!: number;
+  @ForeignKey(() => LeagueTeam)
+  @Column({ field: "away_team_id" })
+  awayTeamId!: string;
+  @BelongsTo(() => LeagueTeam, { foreignKey: "away_team_id" })
+  awayTeam!: LeagueTeam;
+  @Column({ field: "away_team_score" })
+  awayTeamScore!: number;
   @Column({ field: "away_team_game_sheet_link" })
   awayTeamGameSheetLink!: string;
 }

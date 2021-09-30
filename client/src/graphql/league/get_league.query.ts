@@ -1,5 +1,7 @@
 import { gql } from "@apollo/client";
+import { TEAM_FRAGMENT } from "../teams/team.fragment";
 
+//TODO check if we need separate fragment for league teams.
 export const GET_LEAGUE = gql`
   query GetLeague($id: String!) {
     getLeague(id: $id) {
@@ -10,11 +12,8 @@ export const GET_LEAGUE = gql`
       leagueType
       maxYellowCard
       createdAt
-      teams {
-        id
-        name
-        played
-        goalScored
+      leagueTeams {
+        ${TEAM_FRAGMENT}
       }
     }
   }

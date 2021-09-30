@@ -7,7 +7,7 @@ import {
 
 import { LeagueType } from "../../types/league";
 import { League } from "../../../db/models/league.model";
-import { Team } from "../../../db/models/team.model";
+import { LeagueTeam } from "../../../db/models/leagueteam.model";
 
 /**
  * Create new league.
@@ -24,7 +24,7 @@ export const createLeague = {
     await League.create({ ...args });
 
     const leagues = await League.findAll({
-      include: [Team],
+      include: [LeagueTeam],
       order: [["createdAt", "DESC"]],
     });
 

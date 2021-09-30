@@ -4,15 +4,17 @@ import Box from "@material-ui/core/Box";
 import AddIcon from "@material-ui/icons/Add";
 import Typography from "@material-ui/core/Typography";
 import styled from "styled-components";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { useHistory } from "react-router-dom";
 import { map } from "lodash";
 
+import { CREATE_TEAM } from "../../../graphql/teams/create_team.mutation";
 import { GET_TEAMS } from "../../../graphql/teams/get_teams.query";
 import { parseError } from "../../../graphql/client";
 import { Table } from "../../../components/table/Table";
 import { Button } from "../../../components/button/Button";
-import { Team } from "../../../types/team";
+import { CreateTeamModal } from "../../../components/admin_teams/CreateTeamModal";
+import { Team, TeamInput } from "../../../types/team";
 
 interface TeamsProps {
   className?: string;
@@ -26,13 +28,19 @@ const tableColumns = [
 ];
 
 const UnstyledTeams: FunctionComponent<TeamsProps> = ({ className }) => {
+  const [openModal, setOpenModal] = useState<boolean>(false);
   const [teams, setTeams] = useState<Team[]>();
+
   // Get Teams data.
   const teamsQuery = useQuery(GET_TEAMS);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const history = useHistory();
+
+  const [createTeamMut] = useMutation<{ createTeam: Team[] }, TeamInput>(
+    CREATE_TEAM
+  );
 
   // Pull league data.
   useEffect(() => {
@@ -48,6 +56,26 @@ const UnstyledTeams: FunctionComponent<TeamsProps> = ({ className }) => {
     }
   }, [teamsQuery, loading, error]);
 
+  const createTeam = async (newTeam: TeamInput) => {
+    setLoading(true);
+
+    try {
+      const res = await createTeamMut({
+        variables: {
+          name: newTeam.name,
+          teamAgeType: newTeam.teamAgeType,
+        },
+      });
+
+      if (res.data) {
+        setTeams(res.data.createTeam);
+        setOpenModal(false);
+      }
+    } catch (e) {
+      setError(parseError(e));
+    }
+  };
+
   /**
    * Set table data.
    */
@@ -58,38 +86,46 @@ const UnstyledTeams: FunctionComponent<TeamsProps> = ({ className }) => {
   }, [teams]);
 
   return (
-    <Box>
-      <Typography variant="h4">Teams</Typography>
-
-      <Box my={3}>
-        <Button
-          startIcon={<AddIcon />}
-          // onClick={() => setOpenModal(true)}
-          color="secondary"
-        >
-          Create New Team
-        </Button>
-      </Box>
-
-      <Table
-        title="Team Info"
-        columns={tableColumns}
-        data={tableData}
-        onRowClick={(evt, data) => {
-          if (data?.id) {
-            history.push(`/admin/team/${data.id}`);
-          }
-        }}
-        options={{
-          pageSize: 10,
-          rowStyle: (data) => {
-            return data.isActive
-              ? { background: "white" }
-              : { background: "#EEEEEE" };
-          },
-        }}
+    <>
+      <CreateTeamModal
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        onAdd={(newTeam) => createTeam(newTeam)}
       />
-    </Box>
+
+      <Box>
+        <Typography variant="h4">Teams</Typography>
+
+        <Box my={3}>
+          <Button
+            startIcon={<AddIcon />}
+            onClick={() => setOpenModal(true)}
+            color="secondary"
+          >
+            Create New Team
+          </Button>
+        </Box>
+
+        <Table
+          title="Team Info"
+          columns={tableColumns}
+          data={tableData}
+          onRowClick={(evt, data) => {
+            if (data?.id) {
+              history.push(`/admin/team/${data.id}`);
+            }
+          }}
+          options={{
+            pageSize: 10,
+            rowStyle: (data) => {
+              return data.isActive
+                ? { background: "white" }
+                : { background: "#EEEEEE" };
+            },
+          }}
+        />
+      </Box>
+    </>
   );
 };
 

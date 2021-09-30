@@ -14,6 +14,7 @@ import { Table } from "../../../components/table/Table";
 import { Button } from "../../../components/button/Button";
 import {
   CREATE_LEAGUE,
+  CreateLeagueResult,
   CreateLeagueDataInput,
 } from "../../../graphql/league/create_league.mutation";
 import { GET_LEAGUES } from "../../../graphql/league/get_leagues.query";
@@ -52,7 +53,7 @@ const UnstyledLeagues: FunctionComponent<LeaguesProps> = ({ className }) => {
   const history = useHistory();
 
   const [createLeagueMut] = useMutation<
-    { createLeague: League[] },
+    CreateLeagueResult,
     CreateLeagueDataInput
   >(CREATE_LEAGUE);
 
@@ -81,6 +82,8 @@ const UnstyledLeagues: FunctionComponent<LeaguesProps> = ({ className }) => {
         variables: {
           name: newLeague.name,
           leagueType: newLeague.leagueType,
+          leagueAgeType: newLeague.leagueAgeType,
+          maxYellowCard: newLeague.maxYellowCard,
         },
       });
       if (res.data) {
@@ -97,7 +100,7 @@ const UnstyledLeagues: FunctionComponent<LeaguesProps> = ({ className }) => {
    */
   const tableData: League[] = useMemo(() => {
     return map(leagues, (league) => {
-      return { ...league, teamCount: league.teams?.length };
+      return { ...league, teamCount: league.leagueTeams?.length };
     });
   }, [leagues]);
 
