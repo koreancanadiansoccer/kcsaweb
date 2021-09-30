@@ -14,7 +14,8 @@ export class Gallery extends Model {
   @Column
   title!: string;
 
-  @Column description!: string;
+  @Column ({ field: 'sub_title' })
+  subTitle!: string;
 
   @Default(false)
   @Column({ field: 'show_on_homepage' })

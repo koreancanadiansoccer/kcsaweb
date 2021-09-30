@@ -21,14 +21,14 @@ import { Modal } from '../modal/Modal';
 
 import { GalleryInput } from '../../types/gallery';
 
-interface AddGalleryModalProp extends Pick<DialogProps, 'open' | 'onClose'> {
+interface CreateGalleryModalProp extends Pick<DialogProps, 'open' | 'onClose'> {
   onAdd: (league: GalleryInput) => Promise<void>;
 }
 
 /**
  * Modal to handle gallery addition.
  */
-const UnstyledAddGalleryModal: FunctionComponent<AddGalleryModalProp> = ({
+const UnstyledCreateGalleryModal: FunctionComponent<CreateGalleryModalProp> = ({
   open,
   onClose,
   onAdd,
@@ -36,7 +36,7 @@ const UnstyledAddGalleryModal: FunctionComponent<AddGalleryModalProp> = ({
   // Init state for new product.
   const [newGallery, setNewGallery] = useState<GalleryInput>({
     title: '',
-    description: '',
+    subTitle: '',
     showOnHomepage: false,
     images: [],
   });
@@ -52,7 +52,7 @@ const UnstyledAddGalleryModal: FunctionComponent<AddGalleryModalProp> = ({
     () =>
       setNewGallery({
         title: '',
-        description: '',
+        subTitle: '',
         showOnHomepage: false,
         images: [],
       }),
@@ -80,17 +80,17 @@ const UnstyledAddGalleryModal: FunctionComponent<AddGalleryModalProp> = ({
           />
         </Box>
 
-        <Typography variant="body1"> Description</Typography>
+        <Typography variant="body1"> Subtitle</Typography>
         <Box mt={1} mb={3} width="100%">
           <TextField
-            label="Description"
-            placeholder="Gallery Description"
+            label="Subtitle"
+            placeholder="Gallery Subtitle"
             color="primary"
             variant="outlined"
-            value={newGallery?.description}
+            value={newGallery?.subTitle}
             fullWidth
             onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-              setNewGallery({ ...newGallery, description: evt.target.value });
+              setNewGallery({ ...newGallery, subTitle: evt.target.value });
             }}
           />
         </Box>
@@ -131,9 +131,9 @@ const UnstyledAddGalleryModal: FunctionComponent<AddGalleryModalProp> = ({
         <DialogActions>
           <Button
             disabled={!isValid}
-            size = "large"
-            color = "primary"
-            variant = "contained"
+            size="large"
+            color="primary"
+            variant="contained"
             onClick={() => {
               void onAdd(newGallery);
             }}
@@ -146,7 +146,7 @@ const UnstyledAddGalleryModal: FunctionComponent<AddGalleryModalProp> = ({
   );
 };
 
-export const AddGalleryModal = withTheme(styled(UnstyledAddGalleryModal)`
+export const CreateGalleryModal = withTheme(styled(UnstyledCreateGalleryModal)`
   ..MuiDialogActions-root {
     padding: 0px;
   }

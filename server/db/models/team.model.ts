@@ -47,7 +47,7 @@ export class Team extends Model {
   teamAgeType!: string;
 
   // TODO: Do we need this?
-  @Default(0)
+  @Default(false)
   @Column({ field: "is_active" })
   isActive!: boolean;
 

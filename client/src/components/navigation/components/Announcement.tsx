@@ -37,8 +37,7 @@ export const AnnouncementNav = () => {
           Announcement
         </MenuItem>
 
-        <MenuItem
-        onClick={handleClose} component={RouteLink} to="/gallery">
+        <MenuItem onClick={handleClose} component={RouteLink} to="/gallery">
           Gallery
         </MenuItem>
       </Menu>

@@ -12,12 +12,12 @@ import Box from '@material-ui/core/Box';
 import { useMutation, useQuery } from '@apollo/client'; //TODO: useQuery 쓰기
 
 import { GalleryInput } from '../../../types/gallery';
-import { AddGalleryModal } from "../../../components/admin_gallery/AddGallery"
+import { CreateGalleryModal } from '../../../components/admin_gallery/AddGallery';
 import {
-  ADD_GALLERY,
+  CREATE_GALLERY,
   GalleryData,
   AddGalleryDataInput,
-} from "../../../graphql/gallery/add.gallery.mutation";
+} from "../../../graphql/gallery/create.gallery.mutation";
 import { parseError } from "../../../graphql/client";
 interface GalleryProps {
   className?: string;
@@ -31,15 +31,14 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
 
   const [createGalleryMut, createGalleryMutObj] = useMutation<
   GalleryData, AddGalleryDataInput
->(ADD_GALLERY);
+>(CREATE_GALLERY);
 
   const createGallery = async (newGallery: GalleryInput) => {
-    console.log('create gallery');
     try {
       const res = await createGalleryMut({
         variables: {
           title: newGallery.title,
-          description: newGallery.description,
+          subTitle: newGallery.subTitle,
           showOnHomepage: newGallery.showOnHomepage as boolean,
         },
       });
@@ -52,12 +51,12 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
 
   return (
     <>
-      <AddGalleryModal
+      <CreateGalleryModal
         open={openModal}
         onClose={() => setOpenModal(false)}
         onAdd={(newGallery: GalleryInput) => {
           createGallery(newGallery);
-          setOpenModal(false)
+          setOpenModal(false);
         }}
         onupload
       />

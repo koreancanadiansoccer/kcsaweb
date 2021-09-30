@@ -44,9 +44,6 @@ const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
               {/* Example of submenu - should be factored out */}
               <AboutNav />
 
-              {/* <Button component={RouteLink} to="/announcement">
-                announcement
-              </Button> */}
               <AnnouncementNav />
 
               <Button component={RouteLink} to="/league">

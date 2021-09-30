@@ -11,11 +11,11 @@ import { GalleryImage } from "../../../db/models/galleryimage.model";
 /**
  * Create new gallery.
  */
-export const addGallery = {
+export const createGallery = {
   type: new GraphQLList(GalleryType),
   args: {
     title: { type: new GraphQLNonNull(GraphQLString) },
-    description: { type: GraphQLString },
+    subTitle: { type: GraphQLString },
     showOnHomepage: { type: GraphQLBoolean },
   },
   async resolve(parent: object, args: object) {
@@ -23,6 +23,7 @@ export const addGallery = {
 
     const galleries = await Gallery.findAll({
       include: [GalleryImage],
+      order: [['createdAt', 'DESC']],
     });
     return galleries;
   },

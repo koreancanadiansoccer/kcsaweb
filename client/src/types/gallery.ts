@@ -1,14 +1,14 @@
 export interface Gallery {
   id: string;
   title: string;
-  description: string;
+  subTitle: string;
   showOnHomepage: boolean;
   images?: GalleryImage[];
 }
 
 export interface GalleryInput {
   title: string;
-  description: string;
+  subTitle: string;
   showOnHomepage?: boolean;
   images?: GalleryImage[];
 }

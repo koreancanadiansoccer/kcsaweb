@@ -3,14 +3,14 @@ import { GalleryImage } from '../../types/gallery';
 
 export interface GalleryData {
   title: string;
-  description: string;
+  subTitle: string;
   showOnHomepage?: boolean;
   galleryImages?: GalleryImage[];
 }
 
 export interface AddGalleryDataInput {
   title: string;
-  description: string;
+  subTitle: string;
   showOnHomepage?: boolean;
   galleryImages?: GalleryImage[];
 }
@@ -18,19 +18,20 @@ export interface AddGalleryDataInput {
 /**
  * Mutation for creating a new user account.
  */
-export const ADD_GALLERY = gql`
-  mutation AddGallery (
+export const CREATE_GALLERY = gql`
+  mutation CreateGallery (
     $title: String!,
-    $description: String!,
+    $subTitle: String!,
     $showOnHomepage: Boolean
 ) {
-    addGallery (
+    createGallery (
       title: $title,
-      description: $description,
+      subTitle: $subTitle,
       showOnHomepage: $showOnHomepage
     ) {
       title
-      description
+      subTitle
+      createdAt
     }
   }
 `;

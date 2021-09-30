@@ -21,7 +21,7 @@ import { createAppTheme } from "./styles/theme";
 import { client } from "./graphql/client";
 import { Login } from "./pages/Login";
 import { Create } from "./pages/create/Create";
-import { Gallery } from "./pages/Gallery";
+import { Gallery } from "./pages/announcement/Gallery";
 import { GET_HOME_VIEWER } from "./graphql/homeViewer";
 import { ViewerConext } from "./context/homeViewer";
 
@@ -96,6 +96,10 @@ const App: FunctionComponent = () => {
 
             <Route path="/create">
               <Create />
+            </Route>
+
+            <Route path="/gallery">
+              <Gallery />
             </Route>
           </Switch>
         </ThemeProvider>
