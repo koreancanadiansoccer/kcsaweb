@@ -16,7 +16,8 @@ enum LeagueType {
   SENIOR = "SENIOR",
 }
 
-import { Team } from "./team.model";
+import { LeagueTeam } from "./leagueteam.model";
+
 @Table({ tableName: "league" })
 export class League extends Model {
   @AllowNull(false)
@@ -38,5 +39,5 @@ export class League extends Model {
   @Column({ field: "max_yellow_card" })
   maxYellowCard!: number;
 
-  @HasMany(() => Team) teams!: Team[];
+  @HasMany(() => LeagueTeam) leagueTeams!: LeagueTeam[];
 }

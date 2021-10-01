@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { withTheme } from "@material-ui/core/styles";
 import styled from "styled-components";
 import Box from "@material-ui/core/Box";
@@ -14,10 +14,17 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { useParams } from "react-router";
 
 import { League } from "../../../types/league";
+import { Team } from "../../../types/team";
 import { GET_LEAGUE } from "../../../graphql/league/get_league.query";
+import {
+  UPDATE_LEAGUE,
+  UpdateLeagueResult,
+  UpdateLeagueInput,
+} from "../../../graphql/league/update_league.mutation";
 import { parseError } from "../../../graphql/client";
 import { LeagueTeams } from "../../../components/admin_league/LeagueTeams";
 import { LeagueGeneral } from "../../../components/admin_league/LeagueGeneral";
+import { LeagueMatch } from "../../../components/admin_league/LeagueMatch";
 import { Loader } from "../../../components/loader/Loader";
 
 interface LeagueDetailProps {
@@ -53,6 +60,7 @@ export const UnstyledLeagueDetail: FunctionComponent<LeagueDetailProps> = ({
 }) => {
   const { id } = useParams<{ id: string }>();
   const [value, setValue] = React.useState(0);
+  // TODO: Use context.
   const [league, setLeague] = useState<League>();
 
   // Get League data.
@@ -60,6 +68,11 @@ export const UnstyledLeagueDetail: FunctionComponent<LeagueDetailProps> = ({
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const [updateLeagueMutation] = useMutation<
+    UpdateLeagueResult,
+    UpdateLeagueInput
+  >(UPDATE_LEAGUE);
 
   // Pull league data.
   useEffect(() => {
@@ -79,7 +92,22 @@ export const UnstyledLeagueDetail: FunctionComponent<LeagueDetailProps> = ({
    * Update league
    * @param updateLeague
    */
-  const updateLeague = (updateLeague: League) => {};
+  const updateLeague = async (newTeams?: Team[]) => {
+    setLoading(true);
+    try {
+      const res = await updateLeagueMutation({
+        variables: {
+          newTeams: newTeams,
+          league: league,
+        },
+      });
+      if (res.data) {
+        // setLeagues(res.data.createLeague);
+      }
+    } catch (e) {
+      setError(parseError(e));
+    }
+  };
 
   return (
     <Box className={className}>
@@ -114,17 +142,32 @@ export const UnstyledLeagueDetail: FunctionComponent<LeagueDetailProps> = ({
               <LeagueGeneral
                 league={league}
                 updateLeague={(updatedLeague: League) =>
-                  updateLeague(updatedLeague)
+                  // updateLeague(updatedLeague)
+                  // TODO: Temporal update to call mutation
+                  console.log("league general")
                 }
               />
             </TabPanel>
 
             <TabPanel value={value} index={1}>
-              <LeagueTeams league={league} />
+              <LeagueTeams
+                league={league}
+                updateLeague={(newLeagueTeams: Team[]) => {
+                  updateLeague(newLeagueTeams);
+                }}
+              />
             </TabPanel>
 
             <TabPanel value={value} index={2}>
               Item Three
+              <LeagueMatch
+                league={league}
+                updateLeague={(updatedLeague: League) =>
+                  // updateLeague(updatedLeague)
+                  // TODO: Temporal update to call mutation
+                  console.log("league general")
+                }
+              />
             </TabPanel>
           </Box>
         </>

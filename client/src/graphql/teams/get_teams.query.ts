@@ -1,15 +1,10 @@
 import { gql } from "@apollo/client";
+import { TEAM_FRAGMENT } from "./team.fragment";
 
 export const GET_TEAMS = gql`
-  query {
-    getTeams {
-      id
-      name
-      played
-      isActive
-      goalScored
-      teamAgeType
-      createdAt
+  query GetTeams($leagueAgeType: String) {
+    getTeams(leagueAgeType: $leagueAgeType) {
+      ${TEAM_FRAGMENT}
     }
   }
 `;

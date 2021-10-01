@@ -13,6 +13,8 @@ import { getAnnouncements } from "./queries/getAnnouncements";
 import { createUser } from "./mutations/createUser";
 import { createLeague } from "./mutations/createLeague";
 import { createAnnouncement } from "./mutations/createAnnouncement";
+import { updateLeague } from "./mutations/updateLeague";
+import { createTeam } from "./mutations/createTeam";
 import { loginUser } from "./mutations/loginUser";
 
 const RootQuery = new GraphQLObjectType({
@@ -34,6 +36,8 @@ const Mutation = new GraphQLObjectType({
     createUser,
     createLeague,
     createAnnouncement,
+    updateLeague,
+    createTeam,
     loginUser,
   },
 });
