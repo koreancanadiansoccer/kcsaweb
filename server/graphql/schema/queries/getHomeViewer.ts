@@ -21,7 +21,6 @@ export const getHomeViewer = {
         where: { id: userId },
       });
     }
-
     return { user };
   },
 };

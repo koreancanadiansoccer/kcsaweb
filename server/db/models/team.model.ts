@@ -47,11 +47,11 @@ export class Team extends Model {
   teamAgeType!: string;
 
   // TODO: Do we need this?
-  @Default(0)
+  @Default(false)
   @Column({ field: "is_active" })
   isActive!: boolean;
 
-  @ForeignKey(() => User) @Column({ field: "captain_id" }) captainId!: number;
+  @ForeignKey(() => User) @Column({ field: "captain_id" }) captainId!: string;
 
   // Association with all players
   @HasMany(() => Player) players!: Player[];
