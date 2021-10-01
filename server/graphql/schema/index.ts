@@ -6,6 +6,8 @@ import { getLeagues } from "./queries//getLeagues";
 import { getLeague } from "./queries//getLeague";
 import { getTeams } from "./queries//getTeams";
 import { getHomeViewer } from "./queries//getHomeViewer";
+import { getGallery } from './queries//getGallery';
+import { getGalleries } from './queries//getGalleries';
 
 // Mutations
 import { createUser } from "./mutations/createUser";
@@ -16,13 +18,15 @@ import { loginUser } from "./mutations/loginUser";
 import { createGallery } from './mutations/createGallery';
 
 const RootQuery = new GraphQLObjectType({
-  name: "RootQueryType",
+  name: 'RootQueryType',
   fields: {
     getUsers,
     getLeagues,
     getLeague,
     getTeams,
     getHomeViewer,
+    getGallery,
+    getGalleries,
   },
 });
 

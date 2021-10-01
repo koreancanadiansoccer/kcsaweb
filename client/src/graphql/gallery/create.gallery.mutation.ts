@@ -31,6 +31,7 @@ export const CREATE_GALLERY = gql`
     ) {
       title
       subTitle
+      showOnHomepage
       createdAt
     }
   }

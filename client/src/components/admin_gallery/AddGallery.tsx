@@ -147,7 +147,7 @@ const UnstyledCreateGalleryModal: FunctionComponent<CreateGalleryModalProp> = ({
 };
 
 export const CreateGalleryModal = withTheme(styled(UnstyledCreateGalleryModal)`
-  ..MuiDialogActions-root {
+  .MuiDialogActions-root {
     padding: 0px;
   }
 `);
