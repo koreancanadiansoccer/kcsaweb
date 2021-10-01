@@ -37,6 +37,14 @@ export const CREATE_ANNOUNCEMENT = gql`
       title
       subtitle
       content
+      showOnHomepage
+      createdAt
+      announcement_image
+      createdAt
+      announcementImages {
+        id
+        imageURL
+      }
     }
   }
 `;

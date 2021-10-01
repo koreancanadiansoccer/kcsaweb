@@ -15,14 +15,14 @@ import MailIcon from "@material-ui/icons/Mail";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import SportsSoccerIcon from "@material-ui/icons/SportsSoccer";
 import GroupIcon from "@material-ui/icons/Group";
-import AnnouncementIcon from '@material-ui/icons/Announcement';
+import AnnouncementIcon from "@material-ui/icons/Announcement";
 import {
   Switch,
   Route,
   useRouteMatch,
   Link as RouteLink,
 } from "react-router-dom";
-import { Announcement } from "./pages/Announcement";
+import { Announcements } from "./pages/Announcements";
 
 import { Leagues } from "./pages/Leagues";
 import { LeagueDetail } from "./pages/LeagueDetail";
@@ -101,7 +101,7 @@ export const Admin = () => {
               <ListItemText primary="Teams" />
             </ListItem>
 
-             <ListItem component={RouteLink} to={`${url}/announcement`} button>
+            <ListItem component={RouteLink} to={`${url}/announcement`} button>
               <ListItemIcon>
                 <AnnouncementIcon />
               </ListItemIcon>
@@ -161,7 +161,7 @@ export const Admin = () => {
           </Route>
 
           <Route path={`${url}/announcement`}>
-            <Announcement/>
+            <Announcements />
           </Route>
         </Switch>
       </main>

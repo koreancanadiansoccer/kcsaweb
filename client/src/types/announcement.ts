@@ -1,6 +1,7 @@
 import { AnnouncementImage } from "./announcement_image";
 
 export interface Announcement {
+  id: string;
   title: string;
   subtitle: string;
   content: string;

@@ -24,7 +24,6 @@ import { useHistory } from "react-router-dom";
 import { Button } from "../button/Button";
 
 import { AnnouncementInput } from "../../types/announcement";
-import { AnnouncementImageInput } from "../../types/announcement_image";
 
 interface AddAnnouncementProps {
   className?: string;

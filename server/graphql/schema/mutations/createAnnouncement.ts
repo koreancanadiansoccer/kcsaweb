@@ -6,6 +6,7 @@ import {
 } from "graphql";
 
 import { AnnouncementType } from "../../types/announcement";
+import { AnnouncementImage } from "../../../db/models/announcementimage.model";
 import { Announcement } from "../../../db/models/announcement.model";
 
 /**
@@ -20,10 +21,12 @@ export const createAnnouncement = {
     showOnHomepage: { type: GraphQLBoolean },
   },
   async resolve(parent: object, args: object) {
-    console.log("create announcement");
     await Announcement.create({ ...args });
 
-    const announcements = await Announcement.findAll();
+    const announcements = await Announcement.findAll({
+      include: [AnnouncementImage],
+      order: [["createdAt", "DESC"]],
+    });
     return announcements;
   },
 };
