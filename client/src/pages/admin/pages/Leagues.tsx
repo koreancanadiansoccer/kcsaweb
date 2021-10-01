@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 import { map } from "lodash";
 
 import { LeagueInput } from "../../../types/league";
-import { AddLeagueModal } from "../../../components/admin_league/AddLeagueModal";
+import { AddLeagueModal } from "../../../components/admin_league/modals/AddLeagueModal";
 import { Table } from "../../../components/table/Table";
 import { Button } from "../../../components/button/Button";
 import {
@@ -17,7 +17,10 @@ import {
   CreateLeagueResult,
   CreateLeagueDataInput,
 } from "../../../graphql/league/create_league.mutation";
-import { GET_LEAGUES } from "../../../graphql/league/get_leagues.query";
+import {
+  GET_LEAGUES,
+  LeagueQueryData,
+} from "../../../graphql/league/get_leagues.query";
 import { League } from "../../../types/league";
 import { parseError } from "../../../graphql/client";
 
@@ -48,7 +51,7 @@ const UnstyledLeagues: FunctionComponent<LeaguesProps> = ({ className }) => {
   const [leagues, setLeagues] = useState<League[]>();
 
   // Get League data.
-  const leagueDataQuery = useQuery(GET_LEAGUES);
+  const leagueDataQuery = useQuery<LeagueQueryData>(GET_LEAGUES);
 
   const history = useHistory();
 

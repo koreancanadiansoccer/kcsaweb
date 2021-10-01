@@ -14,11 +14,11 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Typography from "@material-ui/core/Typography";
 
-import { Modal } from "../modal/Modal";
-import { Input } from "../input/Input";
-import { Button } from "../button/Button";
+import { Modal } from "../../modal/Modal";
+import { Input } from "../../input/Input";
+import { Button } from "../../button/Button";
 
-import { LeagueInput, LeagueAgeType, LeagueType } from "../../types/league";
+import { LeagueInput, LeagueAgeType, LeagueType } from "../../../types/league";
 
 interface AddLeagueModalProp extends Pick<DialogProps, "open" | "onClose"> {
   onAdd: (league: LeagueInput) => Promise<void>;

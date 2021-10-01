@@ -20,3 +20,19 @@ export interface Team {
   isActive: boolean;
   leagueId: number;
 }
+
+export interface LeagueTeam {
+  id: string;
+  name: string;
+  played: number;
+  win: number;
+  loss: number;
+  goalScored: number;
+  goalConceded: number;
+  teamAgeType: string;
+  isActive: boolean;
+  captainId: string;
+  teamId: string;
+  leagueId: number;
+  createdAt: string;
+}

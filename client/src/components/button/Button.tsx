@@ -39,11 +39,7 @@ const UnstyledButton: FunctionComponent<ButtonProps> = (props) => {
     ...otherProps,
   };
 
-  return (
-    <Box mx={1}>
-      <OrigButton {...btnProps}>{children}</OrigButton>
-    </Box>
-  );
+  return <OrigButton {...btnProps}>{children}</OrigButton>;
 };
 
 export const Button = withStyles(() => ({
