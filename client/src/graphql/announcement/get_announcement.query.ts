@@ -9,6 +9,10 @@ export const GET_ANNOUNCEMENT = gql`
       content
       showOnHomepage
       createdAt
+      announcementImages {
+        id
+        imageURL
+      }
     }
   }
 `;

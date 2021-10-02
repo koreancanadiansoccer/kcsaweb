@@ -14,7 +14,7 @@ import { Admin } from "./pages/admin/Admin";
 import { AboutOverview } from "./pages/about/AboutOverview";
 import { AboutPresident } from "./pages/about/AboutPresident";
 import { AboutContact } from "./pages/about/AboutContact";
-import { Announcements } from "./pages/Announcement";
+import { Announcement } from "./pages/Announcement";
 import { League } from "./pages/League";
 import { Team } from "./pages/Team";
 import { createAppTheme } from "./styles/theme";
@@ -28,10 +28,9 @@ const App: FunctionComponent = () => {
   const theme = createAppTheme();
   const { pathname } = useLocation();
   const [viewer, setViewer] = useState<any>();
-  const isAdminRoute = useMemo(
-    () => includes(pathname.split("/"), "admin"),
-    [pathname]
-  );
+  const isAdminRoute = useMemo(() => includes(pathname.split("/"), "admin"), [
+    pathname,
+  ]);
 
   /**BELOW QUERY IS EXMAPLE TO SHOW CONNETION BETWEEN GQL AND FRONTEND - TODO: REMOVE */
   const { loading, data } = useQuery(GET_HOME_VIEWER, { client: client });
@@ -87,7 +86,7 @@ const App: FunctionComponent = () => {
             </Route>
 
             <Route path="/announcement">
-              <Announcements />
+              <Announcement />
             </Route>
 
             <Route path="/login">

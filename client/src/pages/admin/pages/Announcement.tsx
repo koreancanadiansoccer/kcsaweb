@@ -46,11 +46,11 @@ const tableColumns = [
 const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
   className,
 }) => {
-  const { url } = useRouteMatch();
+  const { path, url } = useRouteMatch();
 
   const history = useHistory();
 
-  const [showButton, setShowButton] = useState(true);
+  // const [showButton, setShowButton] = useState(true);
 
   const [announcements, setAnnouncements] = useState<Announcement[]>();
 
@@ -112,56 +112,55 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
 
   return (
     <>
-      {showButton && (
-        <Box>
-          <Typography variant="h4">Announcement</Typography>
+      <Box>
+        <Typography variant="h4">Announcement</Typography>
 
-          <Box my={3}>
-            <Button
-              component={RouteLink}
-              to={`${url}/create_announcement`}
-              startIcon={<AddIcon />}
-              color="secondary"
-              onClick={() => {
-                setShowButton(false);
-              }}
-            >
-              Create New Announcement
-            </Button>
-          </Box>
-        </Box>
-      )}
-
-      <Table
-        title="Announcement Info"
-        columns={tableColumns}
-        data={tableData}
-        onRowClick={(evt, data) => {
-          if (data?.id) {
-            history.push(`/admin/announcement/${data.id}`);
-          }
-        }}
-        options={{
-          pageSize: 10,
-          rowStyle: (data) => {
-            return data.isActive
-              ? { background: "white" }
-              : { background: "#EEEEEE" };
-          },
-        }}
-      />
-
-      <Switch>
-        <Route path={`${url}/create_announcement`}>
-          <AddAnnouncement
-            className="announcement-form"
-            onAdd={(newAnnouncement: AnnouncementInput) => {
-              createAnnouncement(newAnnouncement);
-              setShowButton(true);
+        <Box my={3}>
+          <Button
+            component={RouteLink}
+            to={`${url}/create_announcement`}
+            startIcon={<AddIcon />}
+            color="secondary"
+            onClick={() => {
+              // setShowButton(false);
             }}
-          />
-        </Route>
-      </Switch>
+          >
+            Create New Announcement
+          </Button>
+        </Box>
+
+        <Table
+          title="Announcement Info"
+          columns={tableColumns}
+          data={tableData}
+          onRowClick={(evt, data) => {
+            if (data?.id) {
+              history.push(`/admin/announcement/${data.id}`);
+            }
+          }}
+          options={{
+            pageSize: 10,
+            rowStyle: (data) => {
+              return data.isActive
+                ? { background: "white" }
+                : { background: "#EEEEEE" };
+            },
+          }}
+        />
+      </Box>
+
+      <main>
+        <Switch>
+          <Route path={`${url}/create_announcement`}>
+            <AddAnnouncement
+              className="announcement-form"
+              onAdd={(newAnnouncement: AnnouncementInput) => {
+                createAnnouncement(newAnnouncement);
+              }}
+            />
+          </Route>
+        </Switch>
+      </main>
     </>
   );
 };
