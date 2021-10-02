@@ -22,10 +22,6 @@ export const GET_ANNOUNCEMENTS = gql`
       content
       showOnHomepage
       createdAt
-      announcementImages {
-        id
-        imageURL
-      }
     }
   }
 `;

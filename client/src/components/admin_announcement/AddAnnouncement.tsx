@@ -81,7 +81,7 @@ const UnstyledAddAnnouncement: FunctionComponent<AddAnnouncementProps> = ({
     });
   };
 
-  // const convertSendS3 = () => {
+  // const saveImageBlobs = () => {
   //   const parser = new DOMParser();
   //   const htmlDoc = parser.parseFromString(
   //     newAnnouncement.content,
@@ -89,15 +89,18 @@ const UnstyledAddAnnouncement: FunctionComponent<AddAnnouncementProps> = ({
   //   );
 
   //   const getAllElement = htmlDoc.getElementsByTagName("img");
-  //   console.log(getAllElement);
 
-  //   // const fileArray: File[] = [];
+  //   const imageArray: string[] = [];
 
   //   for (var i = 0; i < getAllElement.length; i++) {
   //     const imageBlob = htmlDoc.getElementsByTagName("img")[i].src;
-  //     const fileName = imageBlob.split("/").slice(-1)[0];
-  //     const file = new File([imageBlob], fileName);
+  //     imageArray.concat(imageBlob);
   //   }
+
+  //   setNewAnnouncement((newAnnouncement) => [
+  //     ...newAnnouncement,
+  //     { images: imageArray },
+  //   ]);
   // };
 
   return (
@@ -215,7 +218,6 @@ const UnstyledAddAnnouncement: FunctionComponent<AddAnnouncementProps> = ({
               size="large"
               disabled={!isValid}
               onClick={() => {
-                // convertSendS3();
                 void onAdd(newAnnouncement);
                 history.goBack();
               }}

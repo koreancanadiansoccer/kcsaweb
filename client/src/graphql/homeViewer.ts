@@ -7,10 +7,6 @@ export const GET_HOME_VIEWER = gql`
         name
         isAdmin
       }
-      announcement {
-        title
-        subtitle
-      }
     }
   }
 `;
