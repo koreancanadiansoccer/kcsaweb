@@ -23,12 +23,12 @@ export class LeaguePlayer extends Model {
   // Associations with league team.
   @ForeignKey(() => LeagueTeam)
   @Column({ field: "league_team_id" })
-  leagueTeamId!: number;
+  leagueTeamId!: string;
   @BelongsTo(() => LeagueTeam) leagueTeam!: LeagueTeam;
 
   // Associations with player.
   @ForeignKey(() => Player)
   @Column({ field: "player_id" })
-  playerId!: number;
+  playerId!: string;
   @BelongsTo(() => Player) palyer!: Player;
 }

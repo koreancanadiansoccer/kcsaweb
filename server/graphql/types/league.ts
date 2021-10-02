@@ -26,7 +26,7 @@ export const LegaueTypeEnum = new GraphQLEnumType({
 export const LeagueType = new GraphQLObjectType({
   name: "League",
   fields: () => ({
-    id: { type: GraphQLInt },
+    id: { type: GraphQLString },
     name: { type: GraphQLString },
     isActive: { type: GraphQLBoolean },
     leagueAgeType: { type: GraphQLString },
@@ -40,7 +40,7 @@ export const LeagueType = new GraphQLObjectType({
 export const LeagueInputType = new GraphQLInputObjectType({
   name: "LeagueInput",
   fields: () => ({
-    id: { type: GraphQLInt },
+    id: { type: GraphQLString },
     name: { type: GraphQLString },
     isActive: { type: GraphQLBoolean },
     leagueAgeType: { type: GraphQLString },

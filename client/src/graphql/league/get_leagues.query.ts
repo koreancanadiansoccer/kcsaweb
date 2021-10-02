@@ -1,33 +1,16 @@
 import { gql } from "@apollo/client";
 
-import { Team } from "../../types/team";
-import { TEAM_FRAGMENT } from "../teams/team.fragment";
-import { LeagueType } from "../../types/league";
+import { LEAGUE_FRAGMENT } from "./league.fragment";
+import { League } from "../../types/league";
 
 export interface LeagueQueryData {
-  data: {
-    getLeagues: {
-      name: string;
-      isActive: boolean;
-      leagueType: LeagueType;
-      leagueTeams?: Team[];
-    };
-  };
+  getLeagues: League[];
 }
 
 export const GET_LEAGUES = gql`
   query {
     getLeagues {
-      id
-      name
-      isActive
-      leagueAgeType
-      leagueType
-      maxYellowCard
-      createdAt
-      leagueTeams {
-        ${TEAM_FRAGMENT}
-      }
+      ${LEAGUE_FRAGMENT}
     }
   }
 `;

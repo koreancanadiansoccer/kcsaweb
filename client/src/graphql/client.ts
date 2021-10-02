@@ -51,7 +51,18 @@ export const parseError = (
   return parseGraphqlError(error);
 };
 
+// TODO: Look into disabling cache per individual queries.
 export const client = new ApolloClient({
   uri: "/graphql",
   cache: new InMemoryCache({ addTypename: false }),
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: "network-only",
+      errorPolicy: "ignore",
+    },
+    query: {
+      fetchPolicy: "network-only",
+      errorPolicy: "all",
+    },
+  },
 });

@@ -11,7 +11,7 @@ import { DateTime } from "./utils/dateType";
 export const TeamType = new GraphQLObjectType({
   name: "Team",
   fields: () => ({
-    id: { type: GraphQLInt },
+    id: { type: GraphQLString },
     name: { type: GraphQLString },
     played: { type: GraphQLInt },
     goalScored: { type: GraphQLInt },
@@ -28,15 +28,18 @@ export const TeamType = new GraphQLObjectType({
 export const LeagueTeamType = new GraphQLObjectType({
   name: "LeagueTeam",
   fields: () => ({
-    id: { type: GraphQLInt },
+    id: { type: GraphQLString },
     name: { type: GraphQLString },
     played: { type: GraphQLInt },
+    win: { type: GraphQLInt },
+    loss: { type: GraphQLInt },
     goalScored: { type: GraphQLInt },
     goalConceded: { type: GraphQLInt },
     isActive: { type: GraphQLBoolean },
     teamAgeType: { type: GraphQLString },
-    win: { type: GraphQLInt },
-    loss: { type: GraphQLInt },
+    captainId: { type: GraphQLString },
+    teamId: { type: GraphQLString },
+    leagueId: { type: GraphQLString },
     createdAt: { type: DateTime },
   }),
 });
@@ -44,15 +47,18 @@ export const LeagueTeamType = new GraphQLObjectType({
 export const LeagueTeamInputType = new GraphQLInputObjectType({
   name: "LeagueTeamInput",
   fields: () => ({
-    id: { type: GraphQLInt },
+    id: { type: GraphQLString },
     name: { type: GraphQLString },
     played: { type: GraphQLInt },
+    win: { type: GraphQLInt },
+    loss: { type: GraphQLInt },
     goalScored: { type: GraphQLInt },
     goalConceded: { type: GraphQLInt },
     isActive: { type: GraphQLBoolean },
     teamAgeType: { type: GraphQLString },
-    win: { type: GraphQLInt },
-    loss: { type: GraphQLInt },
+    captainId: { type: GraphQLString },
+    teamId: { type: GraphQLString },
+    leagueId: { type: GraphQLString },
     createdAt: { type: DateTime },
   }),
 });

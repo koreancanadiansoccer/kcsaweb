@@ -50,14 +50,16 @@ export class LeagueTeam extends Model {
   })
   teamAgeType!: string;
 
-  @Column({ field: "is_active" }) isActive!: boolean;
+  @Default(false)
+  @Column({ field: "is_active" })
+  isActive!: boolean;
 
-  @ForeignKey(() => User) @Column({ field: "captain_id" }) captainId!: number;
+  @ForeignKey(() => User) @Column({ field: "captain_id" }) captainId!: string;
 
   // Association with league.
   @ForeignKey(() => League)
   @Column({ field: "league_id" })
-  leagueId!: number;
+  leagueId!: string;
 
   @BelongsTo(() => League)
   league!: League;
@@ -65,7 +67,7 @@ export class LeagueTeam extends Model {
   // Association with master team data.
   @ForeignKey(() => Team)
   @Column({ field: "team_id" })
-  teamId!: number;
+  teamId!: string;
 
   @BelongsTo(() => Team)
   team!: Team;

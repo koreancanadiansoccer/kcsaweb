@@ -22,7 +22,7 @@ export class Player extends Model {
   @Column email!: string;
 
   // Associations.
-  @ForeignKey(() => Team) @Column({ field: "team_id" }) teamId!: number;
+  @ForeignKey(() => Team) @Column({ field: "team_id" }) teamId!: string;
 
   @BelongsTo(() => Team) team!: Team;
 
