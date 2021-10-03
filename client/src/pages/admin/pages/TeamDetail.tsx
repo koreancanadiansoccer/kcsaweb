@@ -34,7 +34,7 @@ interface TeamDetailProps {
 }
 
 /**
- * Display all info about a tea,.
+ * Display all info about a team.
  * Uses tab views.
  */
 export const UnstyledTeamDetail: FunctionComponent<TeamDetailProps> = ({
@@ -63,7 +63,6 @@ export const UnstyledTeamDetail: FunctionComponent<TeamDetailProps> = ({
 
     // If no error/loading set values.
     if (!loading && !error && teamQuery?.data?.getTeam) {
-      console.log("query ran");
       setTeam(teamQuery.data.getTeam);
     }
 
@@ -87,8 +86,6 @@ export const UnstyledTeamDetail: FunctionComponent<TeamDetailProps> = ({
         });
 
         if (res.data) {
-          console.log("update complete");
-          console.log(res.data.updateTeam);
           setTeam(res.data.updateTeam);
         }
       } catch (e) {
@@ -107,7 +104,6 @@ export const UnstyledTeamDetail: FunctionComponent<TeamDetailProps> = ({
           <TeamGeneral
             team={team}
             updateTeam={(updateTeamData: Team) => {
-              console.log("team general");
               void updateTeam(updateTeamData);
             }}
           />

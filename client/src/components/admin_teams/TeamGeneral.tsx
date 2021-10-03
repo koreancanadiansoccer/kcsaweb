@@ -3,6 +3,7 @@ import React, {
   useState,
   ChangeEvent,
   useCallback,
+  useEffect,
 } from "react";
 import { withTheme } from "@material-ui/core/styles";
 import styled from "styled-components";
@@ -32,6 +33,14 @@ const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = ({
   const [fileLink, setFileLink] = useState("");
 
   const { generateUploadUrls } = useImgUpload();
+
+  /**
+   * Orig team data can be updated from parent
+   * Keep data in sync.
+   */
+  useEffect(() => {
+    setTeam(origTeam);
+  }, [origTeam]);
 
   const handleUploadChange = async (files: File[]) => {
     // Dropzone uploader can accept multiple files.
