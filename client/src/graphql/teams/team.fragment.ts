@@ -1,6 +1,7 @@
 export const TEAM_FRAGMENT = `
 id
 name
+teamLogoURL
 played
 win
 loss
@@ -8,7 +9,6 @@ goalScored
 goalConceded
 teamAgeType
 isActive
-createdAt
 `;
 
 export const LEAGUE_TEAM_FRAGMENT = `

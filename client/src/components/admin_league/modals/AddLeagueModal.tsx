@@ -25,7 +25,7 @@ interface AddLeagueModalProp extends Pick<DialogProps, "open" | "onClose"> {
 }
 
 /**
- * Modal to handle league addition.
+ * Modal to handle league creation.
  */
 export const AddLeagueModal: FunctionComponent<AddLeagueModalProp> = ({
   open,

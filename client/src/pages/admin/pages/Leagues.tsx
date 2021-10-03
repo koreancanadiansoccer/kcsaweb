@@ -43,7 +43,7 @@ const tableColumns = [
 ];
 
 /**
- * Main home page.
+ * Displays table of all leagues.
  */
 const UnstyledLeagues: FunctionComponent<LeaguesProps> = ({ className }) => {
   const [openModal, setOpenModal] = useState<boolean>(false);

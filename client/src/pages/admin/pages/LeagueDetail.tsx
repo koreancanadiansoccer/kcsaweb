@@ -1,15 +1,16 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, {
+  FunctionComponent,
+  useEffect,
+  useState,
+  useMemo,
+  useCallback,
+} from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { withTheme } from "@material-ui/core/styles";
 import styled from "styled-components";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import AppBar from "@material-ui/core/AppBar";
-import Tabs from "@material-ui/core/Tabs";
 import Chip from "@material-ui/core/Chip";
-import Tab from "@material-ui/core/Tab";
-import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { useParams } from "react-router";
 
@@ -26,40 +27,22 @@ import { LeagueTeams } from "../../../components/admin_league/LeagueTeams";
 import { LeagueGeneral } from "../../../components/admin_league/LeagueGeneral";
 import { LeagueMatch } from "../../../components/admin_league/LeagueMatch";
 import { Loader } from "../../../components/loader/Loader";
+import { Tabs, PanelOptions } from "../../../components/tabs/Tabs";
 
 interface LeagueDetailProps {
   className?: string;
 }
 
-interface TabPanelProps {
-  value: number;
-  index: number;
-}
-
-const TabPanel: FunctionComponent<TabPanelProps> = (props) => {
-  const { children, value, index } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-    >
-      {value === index && (
-        <Box p={3}>
-          <Typography component={"div"}>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-};
-
+/**
+ * Display all info about a league.
+ * Uses tab views.
+ */
 export const UnstyledLeagueDetail: FunctionComponent<LeagueDetailProps> = ({
   className,
 }) => {
   const { id } = useParams<{ id: string }>();
-  const [value, setValue] = React.useState(0);
+  const [tabSelected, setTabSelected] = React.useState(0);
+
   // TODO: Use context.
   const [league, setLeague] = useState<League>();
 
@@ -92,22 +75,71 @@ export const UnstyledLeagueDetail: FunctionComponent<LeagueDetailProps> = ({
    * Update league
    * @param updateLeague
    */
-  const updateLeague = async (newTeams?: Team[]) => {
-    setLoading(true);
-    try {
-      const res = await updateLeagueMutation({
-        variables: {
-          newTeams: newTeams,
-          league: league,
-        },
-      });
-      if (res.data) {
-        // setLeagues(res.data.createLeague);
+  const updateLeague = useCallback(
+    async (newTeams?: Team[]) => {
+      setLoading(true);
+      try {
+        const res = await updateLeagueMutation({
+          variables: {
+            newTeams: newTeams,
+            league: league,
+          },
+        });
+        if (res.data) {
+          // setLeagues(res.data.createLeague);
+        }
+      } catch (e) {
+        setError(parseError(e));
       }
-    } catch (e) {
-      setError(parseError(e));
-    }
-  };
+    },
+    [league, updateLeagueMutation]
+  );
+
+  // Tabs Panel
+  const panelOptions: PanelOptions[] = useMemo(
+    () => [
+      {
+        label: "General",
+        comp: (
+          <LeagueGeneral
+            league={league}
+            updateLeague={(updatedLeague: League) =>
+              // updateLeague(updatedLeague)
+              // TODO: Temporal update to call mutation
+              console.log("league general")
+            }
+          />
+        ),
+      },
+
+      {
+        label: "Teams",
+        comp: (
+          <LeagueTeams
+            league={league}
+            updateLeague={(newLeagueTeams: Team[]) => {
+              void updateLeague(newLeagueTeams);
+            }}
+          />
+        ),
+      },
+
+      {
+        label: "Match",
+        comp: (
+          <LeagueMatch
+            league={league}
+            updateLeague={(updatedLeague: League) =>
+              // updateLeague(updatedLeague)
+              // TODO: Temporal update to call mutation
+              console.log("league general")
+            }
+          />
+        ),
+      },
+    ],
+    [league, updateLeague]
+  );
 
   return (
     <Box className={className}>
@@ -123,52 +155,11 @@ export const UnstyledLeagueDetail: FunctionComponent<LeagueDetailProps> = ({
           <Chip label={league.leagueType} />
 
           <Box mt={5}>
-            <AppBar position="static">
-              <Tabs
-                textColor="primary"
-                value={value}
-                onChange={(e, newValue) => {
-                  setValue(newValue);
-                }}
-                aria-label="simple tabs example"
-              >
-                <Tab label="General" />
-                <Tab label="Teams" />
-                <Tab label="Match" />
-              </Tabs>
-            </AppBar>
-
-            <TabPanel value={value} index={0}>
-              <LeagueGeneral
-                league={league}
-                updateLeague={(updatedLeague: League) =>
-                  // updateLeague(updatedLeague)
-                  // TODO: Temporal update to call mutation
-                  console.log("league general")
-                }
-              />
-            </TabPanel>
-
-            <TabPanel value={value} index={1}>
-              <LeagueTeams
-                league={league}
-                updateLeague={(newLeagueTeams: Team[]) => {
-                  updateLeague(newLeagueTeams);
-                }}
-              />
-            </TabPanel>
-
-            <TabPanel value={value} index={2}>
-              Item Three
-              <LeagueMatch
-                league={league}
-                updateLeague={(updatedLeague: League) =>
-                  // updateLeague(updatedLeague)
-                  // TODO: Temporal update to call mutation
-                  console.log("league general")
-                }
-              />
-            </TabPanel>
+            <Tabs
+              value={tabSelected}
+              setValue={(value: number) => setTabSelected(value)}
+              panelOptions={panelOptions}
+            />
           </Box>
         </>
       )}

@@ -26,6 +26,9 @@ interface LeagueMatchProps {
   updateLeague: (updateLeague: League) => void;
 }
 
+/**
+ * Show and allow update to matches associated with league.
+ */
 const UnstyledLeagueMatch: FunctionComponent<LeagueMatchProps> = ({
   league: origLeague,
   updateLeague,

@@ -20,10 +20,9 @@ interface LoginProps {
  */
 
 const UnstyledLogin: FunctionComponent<LoginProps> = ({ className }) => {
-  const [loginUserMut, loginUserMutObj] = useMutation<
-    LoginData,
-    CreateLoginDataInput
-  >(LOGIN_USER);
+  const [loginUserMut] = useMutation<LoginData, CreateLoginDataInput>(
+    LOGIN_USER
+  );
 
   const loginUser = async (newLogin: LoginInput) => {
     try {

@@ -18,7 +18,7 @@ export const getTeams = {
       order: [["createdAt", "DESC"]],
       where: whereStatement,
     });
-    console.table(teams);
+
     return teams;
   },
 };

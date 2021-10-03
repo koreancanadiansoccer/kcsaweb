@@ -25,18 +25,18 @@ export class MatchPlayer extends Model {
   // Associations with league team.
   @ForeignKey(() => LeagueTeam)
   @Column({ field: "league_team_id" })
-  leagueTeamId!: string;
+  leagueTeamId!: number;
   @BelongsTo(() => LeagueTeam) leagueTeam!: LeagueTeam;
 
   // Associations with match.
   @ForeignKey(() => Match)
   @Column({ field: "match_id" })
-  matchId!: string;
+  matchId!: number;
   @BelongsTo(() => Match) match!: Match;
 
   // Associations with player.
   @ForeignKey(() => Player)
   @Column({ field: "player_id" })
-  playerId!: string;
+  playerId!: number;
   @BelongsTo(() => Player) palyer!: Player;
 }

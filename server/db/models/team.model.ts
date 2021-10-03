@@ -19,7 +19,7 @@ export class Team extends Model {
   @Column
   name!: string;
 
-  @Column({ field: "emblem_img_link" }) emblemImgLink!: string;
+  @Column({ field: "team_logo_url" }) teamLogoURL!: string;
 
   @Default(0)
   @Column
@@ -51,7 +51,7 @@ export class Team extends Model {
   @Column({ field: "is_active" })
   isActive!: boolean;
 
-  @ForeignKey(() => User) @Column({ field: "captain_id" }) captainId!: string;
+  @ForeignKey(() => User) @Column({ field: "captain_id" }) captainId!: number;
 
   // Association with all players
   @HasMany(() => Player) players!: Player[];

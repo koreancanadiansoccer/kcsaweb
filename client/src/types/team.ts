@@ -11,6 +11,7 @@ export interface TeamInput {
 export interface Team {
   id: string;
   name: string;
+  teamLogoURL?: string;
   teamAgeType: string;
   played: number;
   win: number;
@@ -18,7 +19,6 @@ export interface Team {
   goalScored: number;
   goalConceded: number;
   isActive: boolean;
-  leagueId: number;
 }
 
 export interface LeagueTeam {
