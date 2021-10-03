@@ -1,11 +1,11 @@
 import { gql } from "@apollo/client";
 import { TEAM_FRAGMENT } from "./team.fragment";
 import { Team } from "../../types/team";
-export interface TeamQueryData {
+export interface TeamsQueryData {
   getTeams: Team[];
 }
 
-export interface TeamQueryVariable {
+export interface TeamsQueryVariable {
   leagueAgeType: string;
 }
 
@@ -13,6 +13,7 @@ export const GET_TEAMS = gql`
   query GetTeams($leagueAgeType: String) {
     getTeams(leagueAgeType: $leagueAgeType) {
       ${TEAM_FRAGMENT}
+      createdAt
     }
   }
 `;

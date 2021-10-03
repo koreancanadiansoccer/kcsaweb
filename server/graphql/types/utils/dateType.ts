@@ -2,7 +2,8 @@ import { GraphQLScalarType } from "graphql";
 import { Kind } from "graphql/language";
 import dayjs from "dayjs";
 
-// Custom Scalar type
+// Custom Scalar type 'DateTime' to return date values to client.
+// Note: this is needed since GraphQL doens't have any default type related to date.
 export const DateTime: GraphQLScalarType = new GraphQLScalarType({
   name: "Date",
   description: "Date custom scalar type",

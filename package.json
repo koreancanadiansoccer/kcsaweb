@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dist/app.js",
     "client": "cd client && npm start",
-    "server": "nodemon server/app.ts",
+    "server": "nodemon --delay 500ms server/app.ts",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "tsc -p .",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -43,7 +43,7 @@
     "@types/nodemailer": "^6.4.4",
     "@types/nodemailer-direct-transport": "^1.0.32",
     "@types/nodemailer-smtp-transport": "^2.7.5",
-    "aws-sdk": "^2.987.0",
+    "aws-sdk": "^2.999.0",
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
     "connect-redis": "^6.0.0",
@@ -64,6 +64,7 @@
     "redis": "^3.1.2",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.6.5",
-    "sequelize-typescript": "^2.1.0"
+    "sequelize-typescript": "^2.1.0",
+    "uuid": "^8.3.2"
   }
 }

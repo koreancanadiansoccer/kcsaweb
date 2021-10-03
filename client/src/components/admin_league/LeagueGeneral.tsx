@@ -26,6 +26,9 @@ interface LeageGeneralProps {
   updateLeague: (updateLeague: League) => void;
 }
 
+/**
+ * Show and allow update to general league info
+ */
 const UnstyledLeagueGeneral: FunctionComponent<LeageGeneralProps> = ({
   league: origLeague,
   updateLeague,
@@ -67,7 +70,7 @@ const UnstyledLeagueGeneral: FunctionComponent<LeageGeneralProps> = ({
 
           <Select
             labelId="league-select-label"
-            id="demo-simple-select"
+            id="league-select"
             value={league.leagueType}
             onChange={(evt) => {
               setLeague({

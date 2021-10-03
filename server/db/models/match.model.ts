@@ -21,11 +21,11 @@ export class Match extends Model {
 
   @ForeignKey(() => League)
   @Column({ field: "league_id" })
-  leagueId!: string;
+  leagueId!: number;
 
   @ForeignKey(() => LeagueTeam)
   @Column({ field: "home_team_id" })
-  homeTeamId!: string;
+  homeTeamId!: number;
   @BelongsTo(() => LeagueTeam, { foreignKey: "home_team_id" })
   homeTeam!: LeagueTeam;
   @Column({ field: "home_team_score" })
@@ -35,7 +35,7 @@ export class Match extends Model {
 
   @ForeignKey(() => LeagueTeam)
   @Column({ field: "away_team_id" })
-  awayTeamId!: string;
+  awayTeamId!: number;
   @BelongsTo(() => LeagueTeam, { foreignKey: "away_team_id" })
   awayTeam!: LeagueTeam;
   @Column({ field: "away_team_score" })

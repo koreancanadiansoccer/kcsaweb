@@ -10,8 +10,6 @@ import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import SportsSoccerIcon from "@material-ui/icons/SportsSoccer";
 import GroupIcon from "@material-ui/icons/Group";
@@ -27,6 +25,7 @@ import { Announcements } from "./pages/Announcements";
 import { Leagues } from "./pages/Leagues";
 import { LeagueDetail } from "./pages/LeagueDetail";
 import { Teams } from "./pages/Teams";
+import { TeamDetail } from "./pages/TeamDetail";
 
 const drawerWidth = 240;
 
@@ -55,6 +54,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+// Main Admin page container.
 export const Admin = () => {
   const classes = useStyles();
   const { path, url } = useRouteMatch();
@@ -79,6 +79,7 @@ export const Admin = () => {
       >
         <Toolbar />
         <div className={classes.drawerContainer}>
+          {/* Direct user to /invite */}
           <List>
             <ListItem component={RouteLink} to={`${url}/invite`} button>
               <ListItemIcon>
@@ -87,6 +88,7 @@ export const Admin = () => {
               <ListItemText primary="Invite Captain" />
             </ListItem>
 
+            {/* Direct user to /league */}
             <ListItem component={RouteLink} to={`${url}/league`} button>
               <ListItemIcon>
                 <SportsSoccerIcon />
@@ -94,6 +96,7 @@ export const Admin = () => {
               <ListItemText primary="League" />
             </ListItem>
 
+            {/* Direct user to /teams */}
             <ListItem component={RouteLink} to={`${url}/teams`} button>
               <ListItemIcon>
                 <GroupIcon />
@@ -108,27 +111,20 @@ export const Admin = () => {
               <ListItemText primary="Announcement" />
             </ListItem>
           </List>
+
           <Divider />
-          NOT USED
-          <List>
-            {["All mail", "Trash", "Spam"].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
         </div>
       </Drawer>
+
       <main className={classes.content}>
         <Toolbar />
+
         <Switch>
           <Route exact path={path}>
-            <h3>Please select a topic.</h3>
+            <h3>Please select a menu.</h3>
           </Route>
 
+          {/* Render page for /invite */}
           <Route path={`${url}/invite`}>
             <h3>Invite captains</h3>
             <Typography paragraph>
@@ -148,20 +144,29 @@ export const Admin = () => {
             </Typography>
           </Route>
 
+          {/* Render page for /league */}
           <Route exact path={`${url}/league`}>
             <Leagues />
           </Route>
 
+          {/* Render page for /league/{id} - a page for specific league} */}
           <Route path={`${url}/league/:id`}>
             <LeagueDetail />
           </Route>
 
-          <Route path={`${url}/teams`}>
+          {/* Render page for /teams */}
+          <Route exact path={`${url}/teams`}>
             <Teams />
           </Route>
 
+<<<<<<< HEAD
           <Route path={`${url}/announcement`}>
             <Announcements />
+=======
+          {/* Render page for /team/{id} - a page for specific team} */}
+          <Route path={`${url}/teams/:id`}>
+            <TeamDetail />
+>>>>>>> 0bbbf0fb0372eb2d8f698696ec7cfee832c4630a
           </Route>
         </Switch>
       </main>

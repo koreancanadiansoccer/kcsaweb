@@ -2,7 +2,6 @@ import React, { FunctionComponent } from "react";
 import OrigButton, {
   ButtonProps as OrigButtonProps,
 } from "@material-ui/core/Button";
-import Box from "@material-ui/core/Box";
 import { withStyles } from "@material-ui/core/styles";
 import deepOrange from "@material-ui/core/colors/deepOrange";
 

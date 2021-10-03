@@ -27,7 +27,7 @@ interface AddLeagueTeamModalProps
 }
 
 /**
- * Modal to handle league addition.
+ * Modal to handle team additino to the league.
  */
 export const AddLeagueTeamModal: FunctionComponent<AddLeagueTeamModalProps> = ({
   open,
@@ -67,7 +67,7 @@ export const AddLeagueTeamModal: FunctionComponent<AddLeagueTeamModalProps> = ({
 
   // Grab original team data when user selects teams.
   const handleChange = useCallback(
-    (selectedOption: any) => {
+    async (selectedOption: any) => {
       const newTeams = map(selectedOption, (selected) => {
         const newTeam = find(
           teams,

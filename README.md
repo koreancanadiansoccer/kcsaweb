@@ -32,14 +32,21 @@ DB_USER=kcsa_admin
 DB_PW=kcsa
 DB_HOST=localhost
 
-AWS_ACCESS_KEY_ID = YOUR_AWS_ACCESS_KEY_ID
-AWS_SECRET_ACCESS_KEY = YOUR_AWS_SECRET_ACCESS_KEY
+Ping Stanley to create AWS account for you.
+AWS_ACCESS_KEY_ID=YOUR_AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY=YOUR_AWS_SECRET_ACCESS_KEY
+REGION=us-east-2
+TEAM_LOGO_BUCKET=kcsa-team-logo
 
 ```
 
 Run
 `npm run server`
 This will start server and client and **create models into db**.
+
+**Note: It is best practice to use migration files to update table definitions.  
+As we are in early stage of development + tables are frequently changing,  
+we decided to sync the DB by wiping out all tables from db -> run server which triggers Sequelize's sync method to create tables and properties against model definitions.**
 
 Run seed:
 `npx sequelize-cli db:seed:all`

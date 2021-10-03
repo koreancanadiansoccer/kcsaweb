@@ -4,13 +4,11 @@ import {
   Column,
   HasMany,
   ForeignKey,
-  DataType,
   Default,
   AllowNull,
   BelongsTo,
 } from "sequelize-typescript";
 
-import { Player } from "./player.model";
 import { User } from "./user.model";
 import { Team } from "./team.model";
 import { League } from "./league.model";
@@ -54,12 +52,12 @@ export class LeagueTeam extends Model {
   @Column({ field: "is_active" })
   isActive!: boolean;
 
-  @ForeignKey(() => User) @Column({ field: "captain_id" }) captainId!: string;
+  @ForeignKey(() => User) @Column({ field: "captain_id" }) captainId!: number;
 
   // Association with league.
   @ForeignKey(() => League)
   @Column({ field: "league_id" })
-  leagueId!: string;
+  leagueId!: number;
 
   @BelongsTo(() => League)
   league!: League;
@@ -67,7 +65,7 @@ export class LeagueTeam extends Model {
   // Association with master team data.
   @ForeignKey(() => Team)
   @Column({ field: "team_id" })
-  teamId!: string;
+  teamId!: number;
 
   @BelongsTo(() => Team)
   team!: Team;
