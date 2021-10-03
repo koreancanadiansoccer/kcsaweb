@@ -10,8 +10,8 @@ import { League } from "../../types/league";
 import { Team, LeagueTeam } from "../../types/team";
 import {
   GET_TEAMS,
-  TeamQueryData,
-  TeamQueryVariable,
+  TeamsQueryData,
+  TeamsQueryVariable,
 } from "../../graphql/teams/get_teams.query";
 import { Table } from "../table/Table";
 import { AddLeagueTeamModal } from "./modals/AddLeagueTeamModal";
@@ -33,18 +33,19 @@ interface LeagueTeamsProps {
   updateLeague: (newTeams: Team[]) => Promise<void>;
 }
 
+/**
+ * Show and allow update to teams associated with league.
+ */
 const UnstyledLeagueTeams: FunctionComponent<LeagueTeamsProps> = ({
   league,
   updateLeague,
 }) => {
-  const [leagueTeams, setLeagueTeams] = useState<LeagueTeam[]>(
-    league.leagueTeams
-  );
+  const [leagueTeams] = useState<LeagueTeam[]>(league.leagueTeams);
 
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   // Get all teams.
-  const teamQuery = useQuery<TeamQueryData, TeamQueryVariable>(GET_TEAMS, {
+  const teamQuery = useQuery<TeamsQueryData, TeamsQueryVariable>(GET_TEAMS, {
     variables: { leagueAgeType: league.leagueAgeType },
   });
 

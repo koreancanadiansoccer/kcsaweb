@@ -25,7 +25,7 @@ interface CreateTeamModalProp extends Pick<DialogProps, "open" | "onClose"> {
 }
 
 /**
- * Modal to handle team addition.
+ * Modal to handle team creation.
  */
 export const CreateTeamModal: FunctionComponent<CreateTeamModalProp> = ({
   open,
