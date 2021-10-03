@@ -84,7 +84,9 @@ Stacks:
 >**Backend:**
 >
 >Express.js
->>
+>
+>Sequelize & Sequelize-typescript
+>
 >Graphql
 
 >**Front:**
