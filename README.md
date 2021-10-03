@@ -75,6 +75,25 @@ mutation {
 
 ```
 
+Stacks: 
+TypeScript
+PostgreSQL
+
+Backend:
+Express.js
+Graphql
+
+Front:
+React
+Material-UI for styling (Version 4).
+Apollo for graphql interaction to backend.
+
+Cloud: 
+EC2 (TBD)
+S3
+SES
+
+
 **Sequelize**;
 Generate seed file;
 `npx sequelize-cli seed:generate --name [name of seed file]`
