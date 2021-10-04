@@ -4,12 +4,13 @@ import {
   GraphQLString,
   GraphQLBoolean,
   GraphQLInputObjectType,
-} from "graphql";
-import { DateTime } from "./utils/dateType";
+} from 'graphql';
+
+import { DateTime } from './utils/dateType';
 
 // Definition of types of 'Team' that will be returned from graphql operations.
 export const TeamType = new GraphQLObjectType({
-  name: "Team",
+  name: 'Team',
   fields: () => ({
     id: { type: GraphQLString },
     name: { type: GraphQLString },
@@ -27,7 +28,7 @@ export const TeamType = new GraphQLObjectType({
 
 //Definition of types of 'Team' that will be used as input to graphql operation
 export const TeamInputType = new GraphQLInputObjectType({
-  name: "TeamInput",
+  name: 'TeamInput',
   fields: () => ({
     id: { type: GraphQLString },
     name: { type: GraphQLString },
@@ -45,7 +46,7 @@ export const TeamInputType = new GraphQLInputObjectType({
 
 // Definition of types of 'LeagueTeam' that will be returned from graphql operations.
 export const LeagueTeamType = new GraphQLObjectType({
-  name: "LeagueTeam",
+  name: 'LeagueTeam',
   fields: () => ({
     id: { type: GraphQLString },
     name: { type: GraphQLString },
@@ -65,7 +66,7 @@ export const LeagueTeamType = new GraphQLObjectType({
 
 //Definition of types of 'LeagueTeam' that will be used as input to graphql operation
 export const LeagueTeamInputType = new GraphQLInputObjectType({
-  name: "LeagueTeamInput",
+  name: 'LeagueTeamInput',
   fields: () => ({
     id: { type: GraphQLString },
     name: { type: GraphQLString },

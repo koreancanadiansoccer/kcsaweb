@@ -1,10 +1,10 @@
-import React, { FunctionComponent } from "react";
-import { withTheme } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
-import styled from "styled-components";
+import React, { FunctionComponent } from 'react';
+import { withTheme } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+import styled from 'styled-components';
 
-import LogoGrey from "../../assets/logo_grey.svg";
+import LogoGrey from '../../assets/logo_grey.svg';
 
 interface TeamHeroProps {
   className?: string;
@@ -65,7 +65,7 @@ const UnstyledTeamHero: FunctionComponent<TeamHeroProps> = ({
 
           <Box mt={1}>
             <Typography variant="h6" className="boldText">
-              Team's mission & Vision: {mission}
+              Team&apos;s mission & Vision: {mission}
             </Typography>
           </Box>
         </Box>

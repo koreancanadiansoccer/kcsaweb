@@ -4,23 +4,22 @@ import React, {
   ChangeEvent,
   useMemo,
   useEffect,
-} from "react";
-import { DialogProps } from "@material-ui/core/Dialog";
-import Box from "@material-ui/core/Box";
-import DialogActions from "@material-ui/core/DialogActions";
-import MenuItem from "@material-ui/core/MenuItem";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import Typography from "@material-ui/core/Typography";
+} from 'react';
+import { DialogProps } from '@material-ui/core/Dialog';
+import Box from '@material-ui/core/Box';
+import DialogActions from '@material-ui/core/DialogActions';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import Typography from '@material-ui/core/Typography';
 
-import { Modal } from "../modal/Modal";
-import { Input } from "../input/Input";
-import { Button } from "../button/Button";
+import { Modal } from '../modal/Modal';
+import { Input } from '../input/Input';
+import { Button } from '../button/Button';
+import { TeamInput, TeamAgeType } from '../../types/team';
 
-import { TeamInput, TeamAgeType } from "../../types/team";
-
-interface CreateTeamModalProp extends Pick<DialogProps, "open" | "onClose"> {
+interface CreateTeamModalProp extends Pick<DialogProps, 'open' | 'onClose'> {
   onAdd: (newTeam: TeamInput) => Promise<void>;
 }
 
@@ -34,8 +33,8 @@ export const CreateTeamModal: FunctionComponent<CreateTeamModalProp> = ({
 }) => {
   // Init state for new product.
   const [newTeam, setNewTeam] = useState<TeamInput>({
-    name: "",
-    teamAgeType: "",
+    name: '',
+    teamAgeType: '',
   });
 
   const isValid = useMemo(() => !!newTeam?.name && !!newTeam?.teamAgeType, [
@@ -46,8 +45,8 @@ export const CreateTeamModal: FunctionComponent<CreateTeamModalProp> = ({
   useEffect(
     () =>
       setNewTeam({
-        name: "",
-        teamAgeType: "",
+        name: '',
+        teamAgeType: '',
       }),
     [open]
   );

@@ -1,12 +1,14 @@
 import { GraphQLString, GraphQLNonNull } from 'graphql';
-
-import { UserType } from '../../types/user';
-import { User, AccountType, AccountStatus } from '../../../db/models/user.model';
-
-import { sendEmail } from '../../../utils/sendemail';
-
 // password encryption
 import { hash } from 'bcryptjs';
+
+import { UserType } from '../../types/user';
+import {
+  User,
+  AccountType,
+  AccountStatus,
+} from '../../../db/models/user.model';
+import { sendEmail } from '../../../utils/sendemail';
 
 // defined custom type to make temporary object
 interface Args {
@@ -30,7 +32,12 @@ export const createUser = {
   async resolve(parent: object, args: Args) {
     try {
       // check if all required forms exist or not
-      if (!args.name.length || !args.password.length || !args.email.length || !args.phoneNumber.length) {
+      if (
+        !args.name.length ||
+        !args.password.length ||
+        !args.email.length ||
+        !args.phoneNumber.length
+      ) {
         throw 'You have to enter all required fields!';
       } else {
         args.password = args.password.trim();
@@ -46,14 +53,18 @@ export const createUser = {
 
         //TODO: generate Token
 
-        const user = await User.create({ ...args, password: hashed, isAdmin: false });
+        const user = await User.create({
+          ...args,
+          password: hashed,
+          isAdmin: false,
+        });
 
         return user;
       } else {
         throw 'You have already registerd!';
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   },
 };

@@ -30,7 +30,7 @@ const App: FunctionComponent = () => {
   const theme = createAppTheme();
   const { pathname } = useLocation();
   const [viewer, setViewer] = useState<any>();
-  const isAdminRoute = useMemo(() => includes(pathname.split("/"), "admin"), [
+  const isAdminRoute = useMemo(() => includes(pathname.split('/'), 'admin'), [
     pathname,
   ]);
 

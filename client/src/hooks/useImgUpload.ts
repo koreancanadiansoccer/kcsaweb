@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { useMutation } from "@apollo/client";
+import { useState } from 'react';
+import { useMutation } from '@apollo/client';
 
-import { CREATE_S3_SIGNED_URL } from "../graphql/create_s3_signed_url.mutation";
-import { parseError } from "../graphql/client";
+import { CREATE_S3_SIGNED_URL } from '../graphql/create_s3_signed_url.mutation';
+import { parseError } from '../graphql/client';
 
 /**
  * Custom hook to handle S3 Upload and generate 'signedURL' and 'objectURL'.
@@ -10,7 +10,7 @@ import { parseError } from "../graphql/client";
  * Should we extend this hook to handle model mutations?
  */
 export const useImgUpload = () => {
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const [createS3SignedUrl] = useMutation<{
@@ -30,9 +30,9 @@ export const useImgUpload = () => {
 
       // Once we retrieve signedUrl, init uploading to S3 from client side.
       if (res.data?.createS3SignedUrl.s3SignedUrl) {
-        const myHeaders = new Headers({ "Content-Type": file.type });
+        const myHeaders = new Headers({ 'Content-Type': file.type });
         const response = await fetch(res.data?.createS3SignedUrl.s3SignedUrl, {
-          method: "PUT",
+          method: 'PUT',
           headers: myHeaders,
           body: file,
         });
@@ -43,9 +43,9 @@ export const useImgUpload = () => {
         }
       }
 
-      throw new Error("Upload unsuccessful. Please try again.");
+      throw new Error('Upload unsuccessful. Please try again.');
     } catch (err) {
-      console.log(parseError(err));
+      console.info(parseError(err));
       // setError(err);
     } finally {
       setLoading(false);

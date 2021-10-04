@@ -19,7 +19,7 @@ import {
   Route,
   useRouteMatch,
   Link as RouteLink,
-} from "react-router-dom";
+} from 'react-router-dom';
 
 import { Leagues } from "./pages/Leagues";
 import { LeagueDetail } from "./pages/LeagueDetail";
@@ -32,7 +32,7 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      display: "flex",
+      display: 'flex',
     },
     appBar: {
       zIndex: theme.zIndex.drawer + 1,
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme: Theme) =>
       width: drawerWidth,
     },
     drawerContainer: {
-      overflow: "auto",
+      overflow: 'auto',
     },
     content: {
       flexGrow: 1,

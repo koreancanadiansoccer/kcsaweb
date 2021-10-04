@@ -4,30 +4,29 @@ import React, {
   useState,
   useEffect,
   useCallback,
-} from "react";
-import { useQuery, useMutation } from "@apollo/client";
-import { withTheme } from "@material-ui/core/styles";
-import styled from "styled-components";
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
-import Chip from "@material-ui/core/Chip";
+} from 'react';
+import { useQuery, useMutation } from '@apollo/client';
+import { useParams } from 'react-router';
+import { withTheme } from '@material-ui/core/styles';
+import styled from 'styled-components';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+import Chip from '@material-ui/core/Chip';
 
-import { useParams } from "react-router";
-
-import { Team } from "../../../types/team";
-import { Tabs, PanelOptions } from "../../../components/tabs/Tabs";
-import { TeamGeneral } from "../../../components/admin_teams/TeamGeneral";
+import { Team } from '../../../types/team';
+import { Tabs, PanelOptions } from '../../../components/tabs/Tabs';
+import { TeamGeneral } from '../../../components/admin_teams/TeamGeneral';
 import {
   GET_TEAM,
   TeamQueryData,
   TeamQueryVariable,
-} from "../../../graphql/teams/get_team.query";
+} from '../../../graphql/teams/get_team.query';
 import {
   UPDATE_TEAM,
   UpdateTeamInput,
   UpdateTeamResult,
-} from "../../../graphql/teams/update_team.mutation";
-import { parseError } from "../../../graphql/client";
+} from '../../../graphql/teams/update_team.mutation';
+import { parseError } from '../../../graphql/client';
 
 interface TeamDetailProps {
   className?: string;
@@ -55,7 +54,7 @@ export const UnstyledTeamDetail: FunctionComponent<TeamDetailProps> = ({
   const [team, setTeam] = useState<Team>();
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   // Pull team data.
   useEffect(() => {
@@ -99,7 +98,7 @@ export const UnstyledTeamDetail: FunctionComponent<TeamDetailProps> = ({
   const panelOptions: PanelOptions[] = useMemo(
     () => [
       {
-        label: "General",
+        label: 'General',
         comp: (
           <TeamGeneral
             team={team}
@@ -117,7 +116,7 @@ export const UnstyledTeamDetail: FunctionComponent<TeamDetailProps> = ({
     <Box className={className}>
       {team && (
         <>
-          <Typography component={"div"} variant="h5">
+          <Typography component={'div'} variant="h5">
             {team?.name}
           </Typography>
           <Chip label={`${team?.teamAgeType} AGE`} />

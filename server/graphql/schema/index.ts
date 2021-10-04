@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLSchema } from "graphql";
+import { GraphQLObjectType, GraphQLSchema } from 'graphql';
 
 // Queries
 import { getUsers } from "./queries/getUsers";

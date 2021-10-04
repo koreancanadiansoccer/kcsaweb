@@ -1,28 +1,27 @@
-import React, { FunctionComponent, useEffect, useState, useMemo } from "react";
-import { withTheme } from "@material-ui/core/styles";
-import AddIcon from "@material-ui/icons/Add";
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
-import styled from "styled-components";
-import { useMutation, useQuery } from "@apollo/client";
-import { useHistory } from "react-router-dom";
-import { map } from "lodash";
+import React, { FunctionComponent, useEffect, useState, useMemo } from 'react';
+import { withTheme } from '@material-ui/core/styles';
+import AddIcon from '@material-ui/icons/Add';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+import styled from 'styled-components';
+import { useMutation, useQuery } from '@apollo/client';
+import { useHistory } from 'react-router-dom';
+import { map } from 'lodash';
 
-import { LeagueInput } from "../../../types/league";
-import { AddLeagueModal } from "../../../components/admin_league/modals/AddLeagueModal";
-import { Table } from "../../../components/table/Table";
-import { Button } from "../../../components/button/Button";
+import { AddLeagueModal } from '../../../components/admin_league/modals/AddLeagueModal';
+import { Table } from '../../../components/table/Table';
+import { Button } from '../../../components/button/Button';
 import {
   CREATE_LEAGUE,
   CreateLeagueResult,
   CreateLeagueDataInput,
-} from "../../../graphql/league/create_league.mutation";
+} from '../../../graphql/league/create_league.mutation';
 import {
   GET_LEAGUES,
   LeagueQueryData,
-} from "../../../graphql/league/get_leagues.query";
-import { League } from "../../../types/league";
-import { parseError } from "../../../graphql/client";
+} from '../../../graphql/league/get_leagues.query';
+import { League, LeagueInput } from '../../../types/league';
+import { parseError } from '../../../graphql/client';
 
 export enum LeagueModalType {
   Open,
@@ -34,12 +33,12 @@ interface LeaguesProps {
 }
 
 const tableColumns = [
-  { title: "Name", field: "name" },
-  { title: "League Age", field: "leagueAgeType" },
-  { title: "League Type", field: "leagueType" },
-  { title: "Active", field: "isActive" },
-  { title: "Team count", field: "teamCount" },
-  { title: "Created", field: "createdAt" },
+  { title: 'Name', field: 'name' },
+  { title: 'League Age', field: 'leagueAgeType' },
+  { title: 'League Type', field: 'leagueType' },
+  { title: 'Active', field: 'isActive' },
+  { title: 'Team count', field: 'teamCount' },
+  { title: 'Created', field: 'createdAt' },
 ];
 
 /**
@@ -61,7 +60,7 @@ const UnstyledLeagues: FunctionComponent<LeaguesProps> = ({ className }) => {
   >(CREATE_LEAGUE);
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   // Pull league data.
   useEffect(() => {
@@ -140,8 +139,8 @@ const UnstyledLeagues: FunctionComponent<LeaguesProps> = ({ className }) => {
           pageSize: 10,
           rowStyle: (data) => {
             return data.isActive
-              ? { background: "white" }
-              : { background: "#EEEEEE" };
+              ? { background: 'white' }
+              : { background: '#EEEEEE' };
           },
         }}
       />
