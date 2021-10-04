@@ -71,15 +71,15 @@
     "sequelize-typescript": "^2.1.0",
     "uuid": "^8.3.2"
   },
+  "lint-staged": {
+    "**/*.{ts,tsx}": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
-  },
-  "lint-staged": {
-    "**/*.js": [
-      "eslint --fix",
-      "git add"
-    ]
   }
 }
