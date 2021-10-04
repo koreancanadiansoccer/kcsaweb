@@ -14,7 +14,7 @@ import { Admin } from "./pages/admin/Admin";
 import { AboutOverview } from "./pages/about/AboutOverview";
 import { AboutPresident } from "./pages/about/AboutPresident";
 import { AboutContact } from "./pages/about/AboutContact";
-import { Announcements } from "./pages/Announcement";
+import { Announcements } from "./pages/news_notice/Announcement";
 import { League } from "./pages/League";
 import { Team } from "./pages/Team";
 import { createAppTheme } from "./styles/theme";
@@ -23,6 +23,8 @@ import { Login } from "./pages/Login";
 import { Create } from "./pages/create/Create";
 import { GET_HOME_VIEWER } from "./graphql/homeViewer";
 import { ViewerConext } from "./context/homeViewer";
+
+import { SelectedAnnouncement } from "./pages/news_notice/SelectedAnnouncement";
 
 const App: FunctionComponent = () => {
   const theme = createAppTheme();
@@ -86,7 +88,12 @@ const App: FunctionComponent = () => {
               <Team />
             </Route>
 
-            <Route path="/announcement">
+            <Route exact path="/announcement">
+              <Announcements />
+            </Route>
+
+            <Route path={`/announcement/:id`}>
+              <SelectedAnnouncement />
               <Announcements />
             </Route>
 

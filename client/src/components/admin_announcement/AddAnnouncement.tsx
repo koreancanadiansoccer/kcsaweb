@@ -81,28 +81,6 @@ const UnstyledAddAnnouncement: FunctionComponent<AddAnnouncementProps> = ({
     });
   };
 
-  // const saveImageBlobs = () => {
-  //   const parser = new DOMParser();
-  //   const htmlDoc = parser.parseFromString(
-  //     newAnnouncement.content,
-  //     "text/html"
-  //   );
-
-  //   const getAllElement = htmlDoc.getElementsByTagName("img");
-
-  //   const imageArray: string[] = [];
-
-  //   for (var i = 0; i < getAllElement.length; i++) {
-  //     const imageBlob = htmlDoc.getElementsByTagName("img")[i].src;
-  //     imageArray.concat(imageBlob);
-  //   }
-
-  //   setNewAnnouncement((newAnnouncement) => [
-  //     ...newAnnouncement,
-  //     { images: imageArray },
-  //   ]);
-  // };
-
   return (
     <Box className={className}>
       <Box display="flex">

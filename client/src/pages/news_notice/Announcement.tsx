@@ -6,17 +6,10 @@ import { useQuery } from "@apollo/client";
 import { useHistory } from "react-router-dom";
 import { map } from "lodash";
 
-import {
-  Switch,
-  Route,
-  useRouteMatch,
-  Link as RouteLink,
-} from "react-router-dom";
-
-import { Table } from "../components/table/Table";
-import { Announcement } from "../types/announcement";
-import { GET_ANNOUNCEMENTS } from "../graphql/announcement/get_announcements.query";
-import { parseError } from "../graphql/client";
+import { Table } from "../../components/table/Table";
+import { Announcement } from "../../types/announcement";
+import { GET_ANNOUNCEMENTS } from "../../graphql/announcement/get_announcements.query";
+import { parseError } from "../../graphql/client";
 
 interface AnnouncementProps {
   className?: string;
@@ -33,7 +26,6 @@ const tableColumns = [
 const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
   className,
 }) => {
-  const { path, url } = useRouteMatch();
   const [announcements, setAnnouncements] = useState<Announcement[]>();
 
   // Get Announcement data.
@@ -67,33 +59,27 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
   }, [announcements]);
 
   return (
-    <Switch>
-      <Route exact path={path}>
-        <Box my={5}>
-          <Box display="flex" justifyContent="center" alignItems="center">
-            <Table
-              style={{ width: 1250 }}
-              title="Announcement Info"
-              columns={tableColumns}
-              data={tableData}
-              onRowClick={(evt, data) => {
-                if (data?.id) {
-                  history.push(`/admin/announcement/${data.id}`);
-                }
-              }}
-              options={{
-                pageSize: 10,
-                rowStyle: (data) => {
-                  return data.isActive
-                    ? { background: "white" }
-                    : { background: "#EEEEEE" };
-                },
-              }}
-            />
-          </Box>
-        </Box>
-      </Route>
-    </Switch>
+    <Box my={5}>
+      <Box display="flex" justifyContent="center" alignItems="center">
+        <Table
+          style={{ width: 1250 }}
+          title="Announcement Info"
+          columns={tableColumns}
+          data={tableData}
+          onRowClick={(evt, data) => {
+            history.push(`/announcement/${data?.id}`);
+          }}
+          options={{
+            pageSize: 10,
+            rowStyle: (data) => {
+              return data.isActive
+                ? { background: "white" }
+                : { background: "#EEEEEE" };
+            },
+          }}
+        />
+      </Box>
+    </Box>
   );
 };
 

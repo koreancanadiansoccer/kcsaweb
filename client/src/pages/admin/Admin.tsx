@@ -26,6 +26,7 @@ import { Leagues } from "./pages/Leagues";
 import { LeagueDetail } from "./pages/LeagueDetail";
 import { Teams } from "./pages/Teams";
 import { TeamDetail } from "./pages/TeamDetail";
+import { CreateAnnouncements } from "../../components/admin_announcement/CreateAnnouncement";
 
 const drawerWidth = 240;
 
@@ -159,14 +160,17 @@ export const Admin = () => {
             <Teams />
           </Route>
 
-<<<<<<< HEAD
-          <Route path={`${url}/announcement`}>
+          <Route exact path={`${url}/announcement`}>
             <Announcements />
-=======
+          </Route>
+
+          <Route path={`${url}/announcement/createAnnouncement`}>
+            <CreateAnnouncements />
+          </Route>
+
           {/* Render page for /team/{id} - a page for specific team} */}
           <Route path={`${url}/teams/:id`}>
             <TeamDetail />
->>>>>>> 0bbbf0fb0372eb2d8f698696ec7cfee832c4630a
           </Route>
         </Switch>
       </main>

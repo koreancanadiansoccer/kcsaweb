@@ -6,6 +6,7 @@ import {
   Default,
   AllowNull,
   ForeignKey,
+  DataType,
 } from "sequelize-typescript";
 
 import { AnnouncementImage } from "./announcementimage.model";
@@ -18,7 +19,12 @@ export class Announcement extends Model {
 
   @Column subtitle!: string;
 
-  @Column content!: string;
+  // This was put because the input of the content is HTML form and varchar(255) is
+  // not enough to store all the info
+  @Column({
+    type: DataType.STRING(99999),
+  })
+  content!: string;
 
   @Default(false)
   @Column({ field: "show_on_homepage" })

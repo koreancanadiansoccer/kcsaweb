@@ -1,14 +1,23 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useState, useEffect, useMemo } from "react";
 import { withTheme } from "@material-ui/core/styles";
 import styled from "styled-components";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
+
+import { useQuery } from "@apollo/client";
+import { parseError } from "../../graphql/client";
+
+import { map } from "lodash";
 
 import HeroImage from "../../assets/hero.png";
 import HeroMainImage from "../../assets/demo_hero_main.png";
 import HeroSubImage from "../../assets/demo_hero_sub.png";
 
 import { VerticalDivider } from "../divider/VerticalDivider";
+
+import { GET_HERO_ANNOUNCEMENTS } from "../../graphql/announcement/get_announcements.query";
+
+import { Announcement } from "../../types/announcement";
 
 interface HomeProps {
   className?: string;
@@ -18,6 +27,42 @@ interface HomeProps {
  * Hero for main home page.
  */
 const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
+  const [announcements, setAnnouncements] = useState<Announcement[]>();
+
+  // Get Announcement data.
+
+  const announcementDataQuery = useQuery(GET_HERO_ANNOUNCEMENTS);
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  // Pull announcement data.
+  useEffect(() => {
+    setLoading(announcementDataQuery.loading);
+
+    // If no error/loading set values.
+    if (
+      !loading &&
+      !error &&
+      announcementDataQuery?.data?.getHeroAnnouncements
+    ) {
+      setAnnouncements(announcementDataQuery.data.getHeroAnnouncements);
+    }
+
+    if (announcementDataQuery.error) {
+      setError(parseError(announcementDataQuery.error));
+    }
+  }, [announcementDataQuery, loading, error]);
+
+  const announcementsData: Announcement[] = useMemo(() => {
+    return map(announcements, (announcement) => {
+      return { ...announcement };
+    });
+  }, [announcements]);
+
+  console.log(announcementsData[0]?.title);
+  console.log(announcementsData[1]?.subtitle);
+  console.log(announcementsData[2]?.subtitle);
   return (
     <Box className={className}>
       <Box className="hero" display="flex" alignItems="center">
@@ -58,23 +103,23 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
                     justifyContent="space-between"
                   >
                     <Box className="hero-text-medium">
-                      Korean Soccer Community
+                      {announcementsData[1]?.title}
                     </Box>
 
                     <Box className="hero-text-small">
-                      Excepteur sint occaecat cupidatat non proident, sunt in
-                      culpa qui officia deserunt
+                      {announcementsData[1]?.subtitle}
                     </Box>
                   </Box>
                 </Box>
               </Box>
 
               <Box className="hero-text">
-                <Box className="hero-text-large">Korean Soccer Community</Box>
+                <Box className="hero-text-large">
+                  {announcementsData[0]?.title}
+                </Box>
 
                 <Box className="hero-text-medium" mt={2}>
-                  Excepteur sint occaecat cupidatat non proident, sunt in culpa
-                  qui officia deserunt
+                  {announcementsData[0]?.subtitle}
                 </Box>
 
                 <Box className="hero-text-medium" mt={4}>
