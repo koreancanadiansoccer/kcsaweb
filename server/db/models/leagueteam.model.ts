@@ -4,13 +4,11 @@ import {
   Column,
   HasMany,
   ForeignKey,
-  DataType,
   Default,
   AllowNull,
   BelongsTo,
 } from "sequelize-typescript";
 
-import { Player } from "./player.model";
 import { User } from "./user.model";
 import { Team } from "./team.model";
 import { League } from "./league.model";
@@ -50,7 +48,9 @@ export class LeagueTeam extends Model {
   })
   teamAgeType!: string;
 
-  @Column({ field: "is_active" }) isActive!: boolean;
+  @Default(false)
+  @Column({ field: "is_active" })
+  isActive!: boolean;
 
   @ForeignKey(() => User) @Column({ field: "captain_id" }) captainId!: number;
 

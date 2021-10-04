@@ -5,15 +5,13 @@ module.exports = {
     await queryInterface.bulkInsert("team", [
       {
         name: "Gunners",
-        emblem_img_link: null,
-        season: null,
+        team_logo_url: null,
         played: 2,
         win: 2,
         loss: 0,
         goal_scored: 5,
         goal_conceded: 1,
         team_age_type: "OPEN",
-        league_id: 1,
         is_active: true,
         captain_id: 2,
         createdAt: new Date(),
@@ -32,8 +30,7 @@ module.exports = {
     await queryInterface.bulkDelete("team", [
       {
         name: "Gunners",
-        emblem_img_link: null,
-        season: null,
+        team_logo_url: null,
         played: 2,
         win: 2,
         loss: 0,
@@ -41,7 +38,6 @@ module.exports = {
         goal_conceded: 1,
         team_age_type: "OPEN",
         is_active: true,
-        league_id: 1,
         captain_id: 2,
         createdAt: new Date(),
         updatedAt: new Date(),

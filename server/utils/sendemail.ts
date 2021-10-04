@@ -6,8 +6,6 @@ dotenv.config();
 
 export const sendEmail = (email: string) => {
   try {
-    const REGION = "us-east-1";
-
     const charset = "UTF-8";
 
     const html = `<html>
@@ -46,10 +44,11 @@ export const sendEmail = (email: string) => {
       },
     };
 
+    // orginal region was 'us-east-1'. Switch to 'us-east-2'.
     const ses = new SES({
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-      region: REGION,
+      region: process.env.REGION,
     });
 
     ses.sendEmail(email_data).promise();

@@ -9,7 +9,11 @@ import { useHistory } from "react-router-dom";
 import { map } from "lodash";
 
 import { CREATE_TEAM } from "../../../graphql/teams/create_team.mutation";
-import { GET_TEAMS } from "../../../graphql/teams/get_teams.query";
+import {
+  GET_TEAMS,
+  TeamsQueryData,
+  TeamsQueryVariable,
+} from "../../../graphql/teams/get_teams.query";
 import { parseError } from "../../../graphql/client";
 import { Table } from "../../../components/table/Table";
 import { Button } from "../../../components/button/Button";
@@ -20,6 +24,7 @@ interface TeamsProps {
   className?: string;
 }
 
+// Table columns to show.
 const tableColumns = [
   { title: "Name", field: "name" },
   { title: "Age Group", field: "teamAgeType" },
@@ -27,12 +32,15 @@ const tableColumns = [
   { title: "Created", field: "createdAt" },
 ];
 
+/**
+ * Displays table of all leagues.
+ */
 const UnstyledTeams: FunctionComponent<TeamsProps> = ({ className }) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [teams, setTeams] = useState<Team[]>();
 
   // Get Teams data.
-  const teamsQuery = useQuery(GET_TEAMS);
+  const teamsQuery = useQuery<TeamsQueryData, TeamsQueryVariable>(GET_TEAMS);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -112,7 +120,7 @@ const UnstyledTeams: FunctionComponent<TeamsProps> = ({ className }) => {
           data={tableData}
           onRowClick={(evt, data) => {
             if (data?.id) {
-              history.push(`/admin/team/${data.id}`);
+              history.push(`/admin/teams/${data.id}`);
             }
           }}
           options={{

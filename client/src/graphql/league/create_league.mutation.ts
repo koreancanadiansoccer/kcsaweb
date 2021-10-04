@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import { LeagueType, League } from "../../types/league";
 import { Team } from "../../types/team";
-
+import { TEAM_FRAGMENT } from "../teams/team.fragment";
 export interface LeagueData {
   name: string;
   isActive: boolean;
@@ -43,11 +43,8 @@ export const CREATE_LEAGUE = gql`
       leagueType
       maxYellowCard
       createdAt
-      teams {
-        id
-        name
-        played
-        goalScored
+      leagueTeams {
+        ${TEAM_FRAGMENT}
       }
     }
   }

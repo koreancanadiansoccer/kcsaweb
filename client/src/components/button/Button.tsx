@@ -2,7 +2,6 @@ import React, { FunctionComponent } from "react";
 import OrigButton, {
   ButtonProps as OrigButtonProps,
 } from "@material-ui/core/Button";
-import Box from "@material-ui/core/Box";
 import { withStyles } from "@material-ui/core/styles";
 import deepOrange from "@material-ui/core/colors/deepOrange";
 
@@ -39,11 +38,7 @@ const UnstyledButton: FunctionComponent<ButtonProps> = (props) => {
     ...otherProps,
   };
 
-  return (
-    <Box mx={1}>
-      <OrigButton {...btnProps}>{children}</OrigButton>
-    </Box>
-  );
+  return <OrigButton {...btnProps}>{children}</OrigButton>;
 };
 
 export const Button = withStyles(() => ({

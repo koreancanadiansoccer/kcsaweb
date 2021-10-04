@@ -26,6 +26,9 @@ interface LeageGeneralProps {
   updateLeague: (updateLeague: League) => void;
 }
 
+/**
+ * Show and allow update to general league info
+ */
 const UnstyledLeagueGeneral: FunctionComponent<LeageGeneralProps> = ({
   league: origLeague,
   updateLeague,
@@ -40,10 +43,12 @@ const UnstyledLeagueGeneral: FunctionComponent<LeageGeneralProps> = ({
     <Box>
       <Box>
         <Typography variant="body1">Active</Typography>
+
         <Typography variant="body2" color="error">
           *Make sure you disabled other leagues of same league type and age
           group before activating this league.
         </Typography>
+
         <Checkbox
           checked={league.isActive}
           color="primary"
@@ -65,7 +70,7 @@ const UnstyledLeagueGeneral: FunctionComponent<LeageGeneralProps> = ({
 
           <Select
             labelId="league-select-label"
-            id="demo-simple-select"
+            id="league-select"
             value={league.leagueType}
             onChange={(evt) => {
               setLeague({

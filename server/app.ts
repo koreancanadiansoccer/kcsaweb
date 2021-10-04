@@ -69,3 +69,13 @@ const SECRET = "KCSA_SECRET_WEB";
 
   app.listen(5000, () => console.log("Server running"));
 })();
+
+// Graceful shutdown
+process.once("SIGUSR2", function () {
+  process.kill(process.pid, "SIGUSR2");
+});
+
+process.on("SIGINT", function () {
+  // this is only called on ctrl+c, not restart
+  process.kill(process.pid, "SIGINT");
+});

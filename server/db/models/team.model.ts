@@ -19,7 +19,7 @@ export class Team extends Model {
   @Column
   name!: string;
 
-  @Column({ field: "emblem_img_link" }) emblemImgLink!: string;
+  @Column({ field: "team_logo_url" }) teamLogoURL!: string;
 
   @Default(0)
   @Column

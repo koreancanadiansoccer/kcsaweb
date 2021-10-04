@@ -1,4 +1,4 @@
-import { Team } from "./team";
+import { LeagueTeam } from "./team";
 
 export enum LeagueAgeType {
   OPEN = "OPEN",
@@ -17,7 +17,7 @@ export interface League {
   leagueAgeType: LeagueAgeType | string;
   leagueType: LeagueType | string;
   maxYellowCard: number;
-  leagueTeams: Team[];
+  leagueTeams: LeagueTeam[];
 }
 
 export interface LeagueInput {
@@ -26,5 +26,5 @@ export interface LeagueInput {
   leagueAgeType?: LeagueAgeType | string;
   leagueType?: LeagueType | string;
   maxYellowCard?: number;
-  leagueTeams?: Team[];
+  leagueTeams?: LeagueTeam[];
 }

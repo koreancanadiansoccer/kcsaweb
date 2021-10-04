@@ -58,8 +58,6 @@ const UnstyledLeagueTable: FunctionComponent<LeagueTableProps> = ({
 
   useEffect(() => {
     if (!loading) {
-      console.log("data!!");
-      // console.log(data.getUsers);
     }
   }, [loading, data]);
 
