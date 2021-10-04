@@ -1,36 +1,36 @@
-import React from "react";
-import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import AppBar from "@material-ui/core/AppBar";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
-import SportsSoccerIcon from "@material-ui/icons/SportsSoccer";
-import GroupIcon from "@material-ui/icons/Group";
+import React from 'react';
+import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
+import AppBar from '@material-ui/core/AppBar';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Toolbar from '@material-ui/core/Toolbar';
+import List from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import SportsSoccerIcon from '@material-ui/icons/SportsSoccer';
+import GroupIcon from '@material-ui/icons/Group';
 import {
   Switch,
   Route,
   useRouteMatch,
   Link as RouteLink,
-} from "react-router-dom";
+} from 'react-router-dom';
 
-import { Leagues } from "./pages/Leagues";
-import { LeagueDetail } from "./pages/LeagueDetail";
-import { Teams } from "./pages/Teams";
-import { TeamDetail } from "./pages/TeamDetail";
+import { Leagues } from './pages/Leagues';
+import { LeagueDetail } from './pages/LeagueDetail';
+import { Teams } from './pages/Teams';
+import { TeamDetail } from './pages/TeamDetail';
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      display: "flex",
+      display: 'flex',
     },
     appBar: {
       zIndex: theme.zIndex.drawer + 1,
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
       width: drawerWidth,
     },
     drawerContainer: {
-      overflow: "auto",
+      overflow: 'auto',
     },
     content: {
       flexGrow: 1,

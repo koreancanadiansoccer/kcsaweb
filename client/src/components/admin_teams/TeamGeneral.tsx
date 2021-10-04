@@ -4,17 +4,17 @@ import React, {
   ChangeEvent,
   useCallback,
   useEffect,
-} from "react";
-import { withTheme } from "@material-ui/core/styles";
-import styled from "styled-components";
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
+} from 'react';
+import { withTheme } from '@material-ui/core/styles';
+import styled from 'styled-components';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
 
-import { Team } from "../../types/team";
-import { Input } from "../input/Input";
-import { Button } from "../button/Button";
-import { ImgDropzone } from "../dropzone/DropZone";
-import { useImgUpload } from "../../hooks/useImgUpload";
+import { Team } from '../../types/team';
+import { Input } from '../input/Input';
+import { Button } from '../button/Button';
+import { ImgDropzone } from '../dropzone/DropZone';
+import { useImgUpload } from '../../hooks/useImgUpload';
 
 interface TeamGeneralProps {
   team: Team;
@@ -30,7 +30,7 @@ const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = ({
 }) => {
   const [team, setTeam] = useState<Team>(origTeam);
   const [file, setFile] = useState<File>();
-  const [fileLink, setFileLink] = useState("");
+  const [fileLink, setFileLink] = useState('');
 
   const { generateUploadUrls } = useImgUpload();
 
@@ -64,9 +64,9 @@ const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = ({
       try {
         await updateTeam({ ...team, teamLogoURL: teamLogoURL });
         setFile(undefined);
-        setFileLink("");
+        setFileLink('');
       } catch (e) {
-        console.log(e);
+        console.info(e);
       }
     },
     [file, updateTeam, generateUploadUrls, team]
@@ -89,7 +89,7 @@ const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = ({
           onChange={(evt: ChangeEvent<HTMLInputElement>) => {
             setTeam({ ...team, teamAgeType: evt.target.value });
           }}
-          inputProps={{ style: { textTransform: "uppercase" } }}
+          inputProps={{ style: { textTransform: 'uppercase' } }}
         />
       </Box>
 

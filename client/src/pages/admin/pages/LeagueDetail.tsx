@@ -4,30 +4,30 @@ import React, {
   useState,
   useMemo,
   useCallback,
-} from "react";
-import { useQuery, useMutation } from "@apollo/client";
-import { withTheme } from "@material-ui/core/styles";
-import styled from "styled-components";
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
-import Chip from "@material-ui/core/Chip";
+} from 'react';
+import { useQuery, useMutation } from '@apollo/client';
+import { withTheme } from '@material-ui/core/styles';
+import styled from 'styled-components';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+import Chip from '@material-ui/core/Chip';
 
-import { useParams } from "react-router";
+import { useParams } from 'react-router';
 
-import { League } from "../../../types/league";
-import { Team } from "../../../types/team";
-import { GET_LEAGUE } from "../../../graphql/league/get_league.query";
+import { League } from '../../../types/league';
+import { Team } from '../../../types/team';
+import { GET_LEAGUE } from '../../../graphql/league/get_league.query';
 import {
   UPDATE_LEAGUE,
   UpdateLeagueResult,
   UpdateLeagueInput,
-} from "../../../graphql/league/update_league.mutation";
-import { parseError } from "../../../graphql/client";
-import { LeagueTeams } from "../../../components/admin_league/LeagueTeams";
-import { LeagueGeneral } from "../../../components/admin_league/LeagueGeneral";
-import { LeagueMatch } from "../../../components/admin_league/LeagueMatch";
-import { Loader } from "../../../components/loader/Loader";
-import { Tabs, PanelOptions } from "../../../components/tabs/Tabs";
+} from '../../../graphql/league/update_league.mutation';
+import { parseError } from '../../../graphql/client';
+import { LeagueTeams } from '../../../components/admin_league/LeagueTeams';
+import { LeagueGeneral } from '../../../components/admin_league/LeagueGeneral';
+import { LeagueMatch } from '../../../components/admin_league/LeagueMatch';
+import { Loader } from '../../../components/loader/Loader';
+import { Tabs, PanelOptions } from '../../../components/tabs/Tabs';
 
 interface LeagueDetailProps {
   className?: string;
@@ -50,7 +50,7 @@ export const UnstyledLeagueDetail: FunctionComponent<LeagueDetailProps> = ({
   const leagueDataQuery = useQuery(GET_LEAGUE, { variables: { id } });
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   const [updateLeagueMutation] = useMutation<
     UpdateLeagueResult,
@@ -99,21 +99,21 @@ export const UnstyledLeagueDetail: FunctionComponent<LeagueDetailProps> = ({
   const panelOptions: PanelOptions[] = useMemo(
     () => [
       {
-        label: "General",
+        label: 'General',
         comp: (
           <LeagueGeneral
             league={league}
             updateLeague={(updatedLeague: League) =>
               // updateLeague(updatedLeague)
               // TODO: Temporal update to call mutation
-              console.log("league general")
+              console.info('league general')
             }
           />
         ),
       },
 
       {
-        label: "Teams",
+        label: 'Teams',
         comp: (
           <LeagueTeams
             league={league}
@@ -125,14 +125,14 @@ export const UnstyledLeagueDetail: FunctionComponent<LeagueDetailProps> = ({
       },
 
       {
-        label: "Match",
+        label: 'Match',
         comp: (
           <LeagueMatch
             league={league}
             updateLeague={(updatedLeague: League) =>
               // updateLeague(updatedLeague)
               // TODO: Temporal update to call mutation
-              console.log("league general")
+              console.info('league general')
             }
           />
         ),
@@ -147,7 +147,7 @@ export const UnstyledLeagueDetail: FunctionComponent<LeagueDetailProps> = ({
 
       {league && (
         <>
-          <Typography component={"div"} variant="h5">
+          <Typography component={'div'} variant="h5">
             {league?.name}
           </Typography>
 

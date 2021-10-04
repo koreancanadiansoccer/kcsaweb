@@ -1,16 +1,16 @@
-import React, { FunctionComponent, useState, useRef, useEffect } from "react";
-import { withTheme } from "@material-ui/core/styles";
-import styled from "styled-components";
-import Box from "@material-ui/core/Box";
-import Container from "@material-ui/core/Container";
-import map from "lodash/map";
-import { motion } from "framer-motion";
-import ScrollContainer from "react-indiana-drag-scroll";
+import React, { FunctionComponent, useState, useRef, useEffect } from 'react';
+import { withTheme } from '@material-ui/core/styles';
+import styled from 'styled-components';
+import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
+import map from 'lodash/map';
+import { motion } from 'framer-motion';
+import ScrollContainer from 'react-indiana-drag-scroll';
 
-import { ScheduleCard } from "./components/schedule_card/ScheduleCard";
-import { LeagueSelect } from "../league_select/LeagueSelect";
-import { sampleScheduleDataOpen, sampleScheduleDataSenior } from "./sampleData";
-import { LeagueAgeType } from "../../types/league";
+import { ScheduleCard } from './components/schedule_card/ScheduleCard';
+import { LeagueSelect } from '../league_select/LeagueSelect';
+import { sampleScheduleDataOpen, sampleScheduleDataSenior } from './sampleData';
+import { LeagueAgeType } from '../../types/league';
 
 interface SchedulesProps {
   className?: string;
