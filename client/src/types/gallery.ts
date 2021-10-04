@@ -3,14 +3,15 @@ export interface Gallery {
   title: string;
   subTitle: string;
   showOnHomepage: boolean;
-  images?: GalleryImage[];
+  galleryImages?: GalleryImage[];
+  createdAt: string;
 }
 
 export interface GalleryInput {
   title: string;
   subTitle: string;
   showOnHomepage?: boolean;
-  images?: GalleryImage[];
+  galleryImages?: GalleryImage[];
 }
 
 export interface GalleryImage {

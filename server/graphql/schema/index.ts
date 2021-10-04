@@ -7,7 +7,8 @@ import { getLeague } from "./queries//getLeague";
 import { getTeams } from "./queries//getTeams";
 import { getHomeViewer } from "./queries//getHomeViewer";
 import { getGallery } from './queries//getGallery';
-import { getGalleries } from './queries//getGalleries';
+import { getGalleries } from './queries/getGalleries';
+import { getMainGalleries } from './queries/getMainGalleries';
 
 // Mutations
 import { createUser } from "./mutations/createUser";
@@ -27,6 +28,7 @@ const RootQuery = new GraphQLObjectType({
     getHomeViewer,
     getGallery,
     getGalleries,
+    getMainGalleries,
   },
 });
 

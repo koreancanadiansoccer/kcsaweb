@@ -1,5 +1,4 @@
 import {
-  GraphQLInt,
   GraphQLObjectType,
   GraphQLString,
 } from "graphql";
@@ -10,7 +9,7 @@ import { DateTime } from "./utils/dateType";
 export const GalleryImageType = new GraphQLObjectType({
   name: 'GalleryImage',
   fields: () => ({
-    id: { type: GraphQLInt },
+    id: { type: GraphQLString },
     imageURL: { type: GraphQLString },
     createdAt: { type: DateTime },
   }),

@@ -38,14 +38,10 @@ const UnstyledCreateGalleryModal: FunctionComponent<CreateGalleryModalProp> = ({
     title: '',
     subTitle: '',
     showOnHomepage: false,
-    images: [],
+    galleryImages: [],
   });
 
-  const isValid = useMemo(
-    () =>
-      !!newGallery?.title,
-    [newGallery]
-  );
+  const isValid = useMemo(() => !!newGallery?.title, [newGallery]);
 
   // Reset 'newGallery' when closing/opening the modal.
   useEffect(
@@ -54,12 +50,12 @@ const UnstyledCreateGalleryModal: FunctionComponent<CreateGalleryModalProp> = ({
         title: '',
         subTitle: '',
         showOnHomepage: false,
-        images: [],
+        galleryImages: [],
       }),
     [open]
   );
 
-  const [inputImages, setInputImages] = useState<File[]>([]); // list of File Object || TODO: newGallery.images 에 저장
+  const [inputImages, setInputImages] = useState<File[]>([]); // list of File Object || TODO: newGallery.galleryImages에 저장
 
   return (
     <Modal open={open} onClose={onClose} title="Create New Gallery">

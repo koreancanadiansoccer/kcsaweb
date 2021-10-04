@@ -21,5 +21,5 @@ export class Gallery extends Model {
   @Column({ field: 'show_on_homepage' })
   showOnHomepage!: boolean;
 
-  @HasMany(() => GalleryImage) galleryImage!: GalleryImage[];
+  @HasMany(() => GalleryImage) galleryImages!: GalleryImage[];
 }

@@ -9,7 +9,7 @@ import styled from "styled-components";
 import { Button } from '../../../components/button/Button';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import { useMutation, useQuery } from '@apollo/client'; //TODO: useQuery 쓰기
+import { useMutation, useQuery } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
 import { map } from 'lodash';
 import { Table } from '../../../components/table/Table';
@@ -48,7 +48,7 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
 
   const [createGalleryMut] = useMutation<{ createGallery: Gallery[] }, GalleryInput>(CREATE_GALLERY);
 
-  // Pull league data.
+  // Pull gallery data.
   useEffect(() => {
     setLoading(galleriesQuery.loading);
 

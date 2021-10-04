@@ -1,6 +1,5 @@
 import {
   GraphQLList,
-  GraphQLInt,
   GraphQLObjectType,
   GraphQLString,
   GraphQLBoolean,
@@ -13,11 +12,11 @@ import { DateTime } from './utils/dateType';
 export const GalleryType = new GraphQLObjectType({
   name: 'Gallery',
   fields: () => ({
-    id: { type: GraphQLInt },
+    id: { type: GraphQLString },
     title: { type: GraphQLString },
     subTitle: { type: GraphQLString },
     showOnHomepage: { type: GraphQLBoolean },
     createdAt: { type: DateTime },
-    images: { type: new GraphQLList(GalleryImageType) },
+    galleryImages: { type: new GraphQLList(GalleryImageType) },
   }),
 });

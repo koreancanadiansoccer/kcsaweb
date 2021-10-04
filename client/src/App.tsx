@@ -21,9 +21,10 @@ import { createAppTheme } from "./styles/theme";
 import { client } from "./graphql/client";
 import { Login } from "./pages/Login";
 import { Create } from "./pages/create/Create";
-import { Gallery } from "./pages/announcement/Gallery";
+import { GalleryTable } from './pages/announcement/gallery/Gallery';
 import { GET_HOME_VIEWER } from "./graphql/homeViewer";
 import { ViewerConext } from "./context/homeViewer";
+import { SelectedGallery } from "./pages/announcement/gallery/SelectedGallery";
 
 const App: FunctionComponent = () => {
   const theme = createAppTheme();
@@ -98,8 +99,12 @@ const App: FunctionComponent = () => {
               <Create />
             </Route>
 
-            <Route path="/gallery">
-              <Gallery />
+            <Route exact path="/gallery">
+              <GalleryTable />
+            </Route>
+
+            <Route path="/gallery/:id">
+              <SelectedGallery />
             </Route>
           </Switch>
         </ThemeProvider>
