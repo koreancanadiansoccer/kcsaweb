@@ -7,10 +7,11 @@ import map from 'lodash/map';
 import { motion } from 'framer-motion';
 import ScrollContainer from 'react-indiana-drag-scroll';
 
-import { ScheduleCard } from './components/schedule_card/ScheduleCard';
 import { LeagueSelect } from '../league_select/LeagueSelect';
-import { sampleScheduleDataOpen, sampleScheduleDataSenior } from './sampleData';
 import { LeagueAgeType } from '../../types/league';
+
+import { sampleScheduleDataOpen, sampleScheduleDataSenior } from './sampleData';
+import { ScheduleCard } from './components/schedule_card/ScheduleCard';
 
 interface SchedulesProps {
   className?: string;

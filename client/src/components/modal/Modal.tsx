@@ -1,16 +1,15 @@
-import React, { FunctionComponent } from "react";
-import styled from "styled-components";
-import { withTheme } from "@material-ui/core/styles";
-import Dialog, { DialogProps } from "@material-ui/core/Dialog";
-import Box from "@material-ui/core/Box";
+import React, { FunctionComponent } from 'react';
+import styled from 'styled-components';
+import { withTheme } from '@material-ui/core/styles';
+import Dialog, { DialogProps } from '@material-ui/core/Dialog';
+import Box from '@material-ui/core/Box';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import Grey from '@material-ui/core/colors/grey';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import Grey from "@material-ui/core/colors/grey";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
-
-interface ModalProps extends Pick<DialogProps, "open" | "onClose"> {
+interface ModalProps extends Pick<DialogProps, 'open' | 'onClose'> {
   title: string;
   className?: string;
 }
@@ -38,7 +37,7 @@ export const UnstyledModal: FunctionComponent<ModalProps> = ({
             aria-label="close"
             onClick={() => {
               if (onClose) {
-                onClose({}, "backdropClick");
+                onClose({}, 'backdropClick');
               }
             }}
           >

@@ -6,13 +6,12 @@ import React, {
   useCallback,
 } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
+import { useParams } from 'react-router';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
-
-import { useParams } from 'react-router';
 
 import { League } from '../../../types/league';
 import { Team } from '../../../types/team';

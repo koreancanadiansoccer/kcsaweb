@@ -10,7 +10,7 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "tsc -p .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint client/src"
+    "lint": "eslint client/src && eslint server"
   },
   "repository": {
     "type": "git",
@@ -71,15 +71,15 @@
     "sequelize-typescript": "^2.1.0",
     "uuid": "^8.3.2"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
+  },
   "lint-staged": {
     "**/*.{ts,tsx}": [
       "eslint --fix",
       "git add"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   }
 }

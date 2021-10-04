@@ -1,10 +1,9 @@
-import React, { FunctionComponent } from "react";
-
-import Box from "@material-ui/core/Box";
-import Tab from "@material-ui/core/Tab";
-import AppBar from "@material-ui/core/AppBar";
-import OrigTabs, { TabsProps as OrigTabsProps } from "@material-ui/core/Tabs";
-import map from "lodash/map";
+import React, { FunctionComponent } from 'react';
+import Box from '@material-ui/core/Box';
+import Tab from '@material-ui/core/Tab';
+import AppBar from '@material-ui/core/AppBar';
+import OrigTabs, { TabsProps as OrigTabsProps } from '@material-ui/core/Tabs';
+import map from 'lodash/map';
 
 interface TabPanelProps {
   value: number;
@@ -48,7 +47,10 @@ export const Tabs: FunctionComponent<TabsProps> = ({
         <OrigTabs
           textColor="primary"
           value={value}
-          onChange={(e: React.ChangeEvent<{}>, newValue: number) => {
+          onChange={(
+            e: React.ChangeEvent<Record<string, unknown>>,
+            newValue: number
+          ) => {
             setValue(newValue);
           }}
         >

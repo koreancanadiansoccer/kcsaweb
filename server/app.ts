@@ -27,10 +27,10 @@ const SECRET = 'KCSA_SECRET_WEB';
   });
 
   redisClient.on('error', function (err) {
-    console.log('Could not establish a connection with redis. ' + err);
+    console.info('Could not establish a connection with redis. ' + err);
   });
   redisClient.on('connect', function (err) {
-    console.log('Connected to redis successfully');
+    console.info('Connected to redis successfully');
   });
 
   // Setting session
@@ -67,7 +67,7 @@ const SECRET = 'KCSA_SECRET_WEB';
     res.send('Hello');
   });
 
-  app.listen(5000, () => console.log('Server running'));
+  app.listen(5000, () => console.info('Server running'));
 })();
 
 // Graceful shutdown

@@ -40,7 +40,14 @@
     "no-console": [
       "error",
       {
-        "allow": ["warn", "info", "group", "groupEnd", "groupCollapsed"]
+        "allow": [
+          "warn",
+          "info",
+          "group",
+          "groupEnd",
+          "error",
+          "groupCollapsed"
+        ]
       }
     ],
     "import/order": [
@@ -50,6 +57,14 @@
         "pathGroupsExcludedImportTypes": ["builtin"]
       }
     ],
-    "import/no-duplicates": "error"
+    "import/no-duplicates": "error",
+    "@typescript-eslint/ban-types": [
+      "error",
+      {
+        "types": {
+          "object": false
+        }
+      }
+    ]
   }
 }

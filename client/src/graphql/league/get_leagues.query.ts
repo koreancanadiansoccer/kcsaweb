@@ -1,7 +1,8 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
-import { LEAGUE_FRAGMENT } from "./league.fragment";
-import { League } from "../../types/league";
+import { League } from '../../types/league';
+
+import { LEAGUE_FRAGMENT } from './league.fragment';
 
 export interface LeagueQueryData {
   getLeagues: League[];

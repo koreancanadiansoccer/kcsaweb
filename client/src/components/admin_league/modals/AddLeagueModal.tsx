@@ -4,23 +4,22 @@ import React, {
   ChangeEvent,
   useMemo,
   useEffect,
-} from "react";
-import { DialogProps } from "@material-ui/core/Dialog";
-import Box from "@material-ui/core/Box";
-import DialogActions from "@material-ui/core/DialogActions";
-import MenuItem from "@material-ui/core/MenuItem";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import Typography from "@material-ui/core/Typography";
+} from 'react';
+import { DialogProps } from '@material-ui/core/Dialog';
+import Box from '@material-ui/core/Box';
+import DialogActions from '@material-ui/core/DialogActions';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import Typography from '@material-ui/core/Typography';
 
-import { Modal } from "../../modal/Modal";
-import { Input } from "../../input/Input";
-import { Button } from "../../button/Button";
+import { Modal } from '../../modal/Modal';
+import { Input } from '../../input/Input';
+import { Button } from '../../button/Button';
+import { LeagueInput, LeagueAgeType, LeagueType } from '../../../types/league';
 
-import { LeagueInput, LeagueAgeType, LeagueType } from "../../../types/league";
-
-interface AddLeagueModalProp extends Pick<DialogProps, "open" | "onClose"> {
+interface AddLeagueModalProp extends Pick<DialogProps, 'open' | 'onClose'> {
   onAdd: (league: LeagueInput) => Promise<void>;
 }
 
@@ -34,9 +33,9 @@ export const AddLeagueModal: FunctionComponent<AddLeagueModalProp> = ({
 }) => {
   // Init state for new product.
   const [newLeague, setNewLeague] = useState<LeagueInput>({
-    name: "",
-    leagueAgeType: "",
-    leagueType: "",
+    name: '',
+    leagueAgeType: '',
+    leagueType: '',
     maxYellowCard: 0,
   });
 
@@ -53,9 +52,9 @@ export const AddLeagueModal: FunctionComponent<AddLeagueModalProp> = ({
   useEffect(
     () =>
       setNewLeague({
-        name: "",
-        leagueAgeType: "",
-        leagueType: "",
+        name: '',
+        leagueAgeType: '',
+        leagueType: '',
         maxYellowCard: 0,
       }),
     [open]

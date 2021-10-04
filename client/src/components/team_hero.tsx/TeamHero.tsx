@@ -65,7 +65,7 @@ const UnstyledTeamHero: FunctionComponent<TeamHeroProps> = ({
 
           <Box mt={1}>
             <Typography variant="h6" className="boldText">
-              Team's mission & Vision: {mission}
+              Team&apos;s mission & Vision: {mission}
             </Typography>
           </Box>
         </Box>
