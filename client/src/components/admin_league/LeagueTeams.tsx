@@ -1,31 +1,32 @@
-import React, { FunctionComponent, useMemo, useState } from "react";
-import { withTheme } from "@material-ui/core/styles";
-import styled from "styled-components";
-import Box from "@material-ui/core/Box";
-import AddIcon from "@material-ui/icons/Add";
-import { useQuery } from "@apollo/client";
-import map from "lodash/map";
+import React, { FunctionComponent, useMemo, useState } from 'react';
+import { withTheme } from '@material-ui/core/styles';
+import styled from 'styled-components';
+import Box from '@material-ui/core/Box';
+import AddIcon from '@material-ui/icons/Add';
+import { useQuery } from '@apollo/client';
+import map from 'lodash/map';
 
-import { League } from "../../types/league";
-import { Team, LeagueTeam } from "../../types/team";
+import { League } from '../../types/league';
+import { Team, LeagueTeam } from '../../types/team';
 import {
   GET_TEAMS,
   TeamsQueryData,
   TeamsQueryVariable,
-} from "../../graphql/teams/get_teams.query";
-import { Table } from "../table/Table";
-import { AddLeagueTeamModal } from "./modals/AddLeagueTeamModal";
-import { Button } from "../button/Button";
+} from '../../graphql/teams/get_teams.query';
+import { Table } from '../table/Table';
+import { Button } from '../button/Button';
+
+import { AddLeagueTeamModal } from './modals/AddLeagueTeamModal';
 
 const tableColumns = [
-  { title: "Name", field: "name" },
-  { title: "Age", field: "teamAgeType" },
-  { title: "Played", field: "played" },
-  { title: "Gs", field: "goalScored" },
-  { title: "GCs ", field: "goalConceded" },
-  { title: "Win", field: "win" },
-  { title: "Loss", field: "loss" },
-  { title: "Created at", field: "createdAt" },
+  { title: 'Name', field: 'name' },
+  { title: 'Age', field: 'teamAgeType' },
+  { title: 'Played', field: 'played' },
+  { title: 'Gs', field: 'goalScored' },
+  { title: 'GCs ', field: 'goalConceded' },
+  { title: 'Win', field: 'win' },
+  { title: 'Loss', field: 'loss' },
+  { title: 'Created at', field: 'createdAt' },
 ];
 
 interface LeagueTeamsProps {
@@ -100,8 +101,8 @@ const UnstyledLeagueTeams: FunctionComponent<LeagueTeamsProps> = ({
             pageSize: 10,
             rowStyle: (data) => {
               return data.isActive
-                ? { background: "white" }
-                : { background: "#EEEEEE" };
+                ? { background: 'white' }
+                : { background: '#EEEEEE' };
             },
           }}
         />

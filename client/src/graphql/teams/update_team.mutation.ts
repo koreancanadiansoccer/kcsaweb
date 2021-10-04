@@ -1,6 +1,8 @@
-import { gql } from "@apollo/client";
-import { Team } from "../../types/team";
-import { TEAM_FRAGMENT } from "./team.fragment";
+import { gql } from '@apollo/client';
+
+import { Team } from '../../types/team';
+
+import { TEAM_FRAGMENT } from './team.fragment';
 export interface UpdateTeamInput {
   updateTeam: Team;
 }

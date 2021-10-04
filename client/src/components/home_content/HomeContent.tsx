@@ -1,16 +1,15 @@
-import React, { FunctionComponent, useState } from "react";
-import { withTheme } from "@material-ui/core/styles";
-import styled from "styled-components";
-import Box from "@material-ui/core/Box";
-import Container from "@material-ui/core/Container";
-import { motion } from "framer-motion";
+import React, { FunctionComponent, useState } from 'react';
+import { withTheme } from '@material-ui/core/styles';
+import styled from 'styled-components';
+import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
+import { motion } from 'framer-motion';
 
-import { LeagueTable } from "../league_table/LeagueTable";
-import { LeagueSelect } from "../league_select/LeagueSelect";
-import { LeagueAgeType } from "../../types/league";
-import { TableType } from "../../types/table_type";
-
-import MainContentImg from "../../assets/main_content.png";
+import { LeagueTable } from '../league_table/LeagueTable';
+import { LeagueSelect } from '../league_select/LeagueSelect';
+import { LeagueAgeType } from '../../types/league';
+import { TableType } from '../../types/table_type';
+import MainContentImg from '../../assets/main_content.png';
 
 interface HomeContentProps {
   className?: string;

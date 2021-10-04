@@ -1,7 +1,8 @@
-import { gql } from "@apollo/client";
-import { LeagueType, League } from "../../types/league";
-import { Team } from "../../types/team";
-import { TEAM_FRAGMENT } from "../teams/team.fragment";
+import { gql } from '@apollo/client';
+
+import { LeagueType, League } from '../../types/league';
+import { Team } from '../../types/team';
+import { TEAM_FRAGMENT } from '../teams/team.fragment';
 export interface LeagueData {
   name: string;
   isActive: boolean;

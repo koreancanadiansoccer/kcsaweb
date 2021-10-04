@@ -3,23 +3,22 @@ import React, {
   useState,
   useMemo,
   ChangeEvent,
-} from "react";
-import { withTheme } from "@material-ui/core/styles";
-import styled from "styled-components";
-import Box from "@material-ui/core/Box";
-import Checkbox from "@material-ui/core/Checkbox";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import MenuItem from "@material-ui/core/MenuItem";
-import InputLabel from "@material-ui/core/InputLabel";
+} from 'react';
+import { withTheme } from '@material-ui/core/styles';
+import styled from 'styled-components';
+import Box from '@material-ui/core/Box';
+import Checkbox from '@material-ui/core/Checkbox';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import isEqual from 'lodash/isEqual';
 
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import isEqual from "lodash/isEqual";
-
-import { League, LeagueType } from "../../types/league";
-import { Input } from "../input/Input";
-import { Button } from "../button/Button";
+import { League, LeagueType } from '../../types/league';
+import { Input } from '../input/Input';
+import { Button } from '../button/Button';
 
 interface LeageGeneralProps {
   league: League;
@@ -102,7 +101,7 @@ const UnstyledLeagueGeneral: FunctionComponent<LeageGeneralProps> = ({
           onChange={(evt: ChangeEvent<HTMLInputElement>) => {
             setLeague({ ...league, leagueAgeType: evt.target.value });
           }}
-          inputProps={{ style: { textTransform: "uppercase" } }}
+          inputProps={{ style: { textTransform: 'uppercase' } }}
         />
       </Box>
 

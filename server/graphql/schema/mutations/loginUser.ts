@@ -1,9 +1,8 @@
-import { GraphQLString, GraphQLNonNull } from "graphql";
+import { GraphQLString, GraphQLNonNull } from 'graphql';
+import { compare } from 'bcryptjs';
 
-import { LoginType } from "../../types/login";
-import { User } from "../../../db/models/user.model";
-
-import { compare } from "bcryptjs";
+import { LoginType } from '../../types/login';
+import { User } from '../../../db/models/user.model';
 
 interface Args {
   [key: string]: string;
@@ -20,13 +19,13 @@ export const loginUser = {
       // find the user from database
       const user = await User.findOne({ where: { email: args.email } });
       if (!user) {
-        throw "Unable to Find User!";
+        throw 'Unable to Find User!';
       }
 
       // check the password is vaild or not
       const validPassword = await compare(args.password, user.password);
       if (!validPassword) {
-        throw "Incorrect Password!";
+        throw 'Incorrect Password!';
       }
 
       // Set userId to session upon successful login.
@@ -34,7 +33,7 @@ export const loginUser = {
 
       return user;
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   },
 };

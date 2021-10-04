@@ -1,6 +1,7 @@
-import { gql } from "@apollo/client";
-import { League } from "../../types/league";
-import { Team } from "../../types/team";
+import { gql } from '@apollo/client';
+
+import { League } from '../../types/league';
+import { Team } from '../../types/team';
 
 export interface UpdateLeagueInput {
   newTeams?: Team[];

@@ -1,16 +1,16 @@
-import express, { Application, Request, Response } from "express";
-import { graphqlHTTP } from "express-graphql";
-import dotenv from "dotenv";
-import session from "express-session";
-import redis from "redis";
-import connectRedis from "connect-redis";
+import express, { Application, Request, Response } from 'express';
+import { graphqlHTTP } from 'express-graphql';
+import dotenv from 'dotenv';
+import session from 'express-session';
+import redis from 'redis';
+import connectRedis from 'connect-redis';
 
-import { sequelize } from "./db";
-import { schema } from "./graphql/schema";
+import { sequelize } from './db';
+import { schema } from './graphql/schema';
 
 dotenv.config();
 
-const SECRET = "KCSA_SECRET_WEB";
+const SECRET = 'KCSA_SECRET_WEB';
 
 (async () => {
   // Sync sequelize.
@@ -22,36 +22,36 @@ const SECRET = "KCSA_SECRET_WEB";
 
   // Configure redis client to store session.
   const redisClient = redis.createClient({
-    host: "localhost",
+    host: 'localhost',
     port: 6379,
   });
 
-  redisClient.on("error", function (err) {
-    console.log("Could not establish a connection with redis. " + err);
+  redisClient.on('error', function (err) {
+    console.info('Could not establish a connection with redis. ' + err);
   });
-  redisClient.on("connect", function (err) {
-    console.log("Connected to redis successfully");
+  redisClient.on('connect', function (err) {
+    console.info('Connected to redis successfully');
   });
 
   // Setting session
   app.use(
     session({
       store: new RedisStore({ client: redisClient }),
-      name: "kcsaid",
+      name: 'kcsaid',
       secret: SECRET,
       resave: false,
       saveUninitialized: false,
       cookie: {
-        path: "/",
+        path: '/',
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: process.env.NODE_ENV === 'production',
         maxAge: 1000 * 60 * 60 * 24 * 90, //90 days
       },
     })
   );
 
   app.use(
-    "/graphql",
+    '/graphql',
     graphqlHTTP((req) => {
       return {
         schema: schema,
@@ -63,19 +63,19 @@ const SECRET = "KCSA_SECRET_WEB";
     })
   );
 
-  app.get("/", (req: Request, res: Response) => {
-    res.send("Hello");
+  app.get('/', (req: Request, res: Response) => {
+    res.send('Hello');
   });
 
-  app.listen(5000, () => console.log("Server running"));
+  app.listen(5000, () => console.info('Server running'));
 })();
 
 // Graceful shutdown
-process.once("SIGUSR2", function () {
-  process.kill(process.pid, "SIGUSR2");
+process.once('SIGUSR2', function () {
+  process.kill(process.pid, 'SIGUSR2');
 });
 
-process.on("SIGINT", function () {
+process.on('SIGINT', function () {
   // this is only called on ctrl+c, not restart
-  process.kill(process.pid, "SIGINT");
+  process.kill(process.pid, 'SIGINT');
 });
