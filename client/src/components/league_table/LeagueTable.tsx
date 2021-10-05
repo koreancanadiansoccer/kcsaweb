@@ -5,7 +5,6 @@ import { withTheme } from '@material-ui/core';
 import { useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import map from 'lodash/map';
-import mapValues from 'lodash/mapValues';
 
 import { GET_USERS } from '../../graphql/users/get_users.query';
 import { HorizontalDivider } from '../divider/HorizontalDivider';
@@ -109,7 +108,7 @@ const UnstyledLeagueTable: FunctionComponent<LeagueTableProps> = ({
                 py={0.75}
                 px={1}
               >
-                {mapValues(data, (property, key, idx) => {
+                {map(data, (property, key, idx) => {
                   const isNameField = key === 'name' || key === 'club';
                   return (
                     <Box
