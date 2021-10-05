@@ -4,15 +4,15 @@ import styled from 'styled-components';
 import { useParams } from 'react-router';
 import Box from '@material-ui/core/Box';
 import { useQuery } from '@apollo/client';
-import { parseError } from '../../../graphql/client';
 import Grid from '@material-ui/core/Grid';
-import { cardStyles } from '../../../pages/announcement/gallery/GalleryCard'
-import { HorizontalDivider } from '../../../components/divider/HorizontalDivider';
 import CardMedia from '@material-ui/core/CardMedia';
+import { Typography } from '@material-ui/core';
 
 import { GET_GALLERY, GalleryQueryData, GalleryQueryVariable } from '../../../graphql/gallery/get_gallery.query';
+import { cardStyles } from '../../../pages/announcement/gallery/GalleryCard'
+import { parseError } from '../../../graphql/client';
+import { HorizontalDivider } from '../../../components/divider/HorizontalDivider';
 import { Gallery, GalleryImage } from '../../../types/gallery';
-import { Typography } from '@material-ui/core';
 
 
 interface GalleryProps {
@@ -64,7 +64,7 @@ const UnstyledSelectedGallery: FunctionComponent<GalleryProps> = ({ className })
           </GalleryBanner>
           <Grid container spacing={7} direction="row" className={classes.GridContainer}>
             {gallery.galleryImages?.map((element: GalleryImage, index) => (
-              <Grid item xs={3}>
+              <Grid item xs={3} key={index}>
                 <CardMedia className={classes.media} image={element.imageURL} component="img" />
               </Grid>
             ))}

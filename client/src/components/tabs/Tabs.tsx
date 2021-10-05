@@ -8,6 +8,7 @@ import map from 'lodash/map';
 interface TabPanelProps {
   value: number;
   index: number;
+  children: React.ReactNode;
 }
 
 // Panel component that gets used for each tab views.

@@ -18,7 +18,6 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 
 import { Modal } from '../modal/Modal';
-
 import { GalleryInput } from '../../types/gallery';
 
 interface CreateGalleryModalProp extends Pick<DialogProps, 'open' | 'onClose'> {

@@ -103,7 +103,7 @@ const UnstyledGalleryCard: FunctionComponent<GalleryProps> = ({ className }) => 
   return (
     <Grid container spacing={7} direction="row" className={classes.GridContainer}>
       {tableData.map((item) => (
-        <Grid item xs={3}>
+        <Grid item xs={3} key={item.id}>
           <CardActionArea
             className={classes.action}
             onClick={() => {

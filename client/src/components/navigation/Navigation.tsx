@@ -9,9 +9,10 @@ import { Link as RouteLink } from 'react-router-dom';
 
 import { Button } from "../button/Button";
 import { Logo } from "../icons/Logo";
+import { ViewerConext } from "../../context/homeViewer";
+
 import { AboutNav } from "./components/AboutNav";
 import { TeamsNav } from "./components/TeamsNav";
-import { ViewerConext } from "../../context/homeViewer";
 import { AnnouncementNav } from './components/Announcement';
 
 interface NavigationProps {

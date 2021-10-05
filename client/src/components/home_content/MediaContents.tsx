@@ -2,10 +2,10 @@ import React, { FunctionComponent, useState, useEffect, useMemo } from 'react';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import { useQuery } from '@apollo/client';
-import { parseError } from '../../graphql/client';
-import { map } from 'lodash';
 import Box from "@material-ui/core/Box";
+import { map } from 'lodash';
 
+import { parseError } from '../../graphql/client';
 import { GET_MAIN_GALLERIES, GalleryQueryData } from '../../graphql/gallery/get_galleries.query';
 import { Gallery, GalleryImage } from '../../types/gallery';
 

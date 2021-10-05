@@ -2,13 +2,11 @@ import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
 import includes from "lodash/includes";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { ApolloProvider } from "@apollo/client";
+import { ApolloProvider, useQuery } from '@apollo/client';
 import { Switch, Route, useLocation } from "react-router-dom";
-import { useQuery } from "@apollo/client";
 
 import { Navigation } from "./components/navigation/Navigation";
 import { Loader } from "./components/loader/Loader";
-
 import { Home } from "./pages/Home";
 import { Admin } from "./pages/admin/Admin";
 import { AboutOverview } from "./pages/about/AboutOverview";

@@ -4,8 +4,9 @@ import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 
-import { GalleryCard } from "./GalleryCard"
 import { HorizontalDivider } from "../../../components/divider/HorizontalDivider"
+
+import { GalleryCard } from "./GalleryCard"
 
 interface GalleryProps {
   className?: string;

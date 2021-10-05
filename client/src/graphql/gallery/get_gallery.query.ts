@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client';
+
 import { Gallery } from "../../types/gallery"
 
 export interface GalleryQueryData {
