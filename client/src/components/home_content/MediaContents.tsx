@@ -51,7 +51,7 @@ const UnstyledMediaContents: FunctionComponent<GalleryProps> = ({ className }) =
   return (
     <Box>
       {MediaData.map((images: Gallery) =>
-        images.galleryImages!.map((element: GalleryImage, index) => (
+        images.galleryImages?.map((element: GalleryImage, index) => (
           // <div className={className}
           // style={{ backgroundImage: `url(${element.imageURL})`,
           // width: "993px",
