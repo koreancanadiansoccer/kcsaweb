@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import Box from "@material-ui/core/Box";
+import React from 'react';
+import styled from 'styled-components';
+import Box from '@material-ui/core/Box';
 
 const Divider = styled.div`
   background: linear-gradient(
@@ -17,7 +17,7 @@ const Divider = styled.div`
   margin: 0 auto;
 `;
 
-export const HorizontalDivider = () => {
+export const HorizontalDivider: React.FC = () => {
   return (
     <Box>
       <Divider />

@@ -1,5 +1,5 @@
-import { TeamType, TeamInputType } from "../../types/team";
-import { Team } from "../../../db/models/team.model";
+import { TeamType, TeamInputType } from '../../types/team';
+import { Team } from '../../../db/models/team.model';
 
 /**
  * Update team data
@@ -15,7 +15,7 @@ export const updateTeam = {
     });
 
     if (!team) {
-      throw Error("Team to update could not be found");
+      throw Error('Team to update could not be found');
     }
 
     await Team.update(args.updateTeam, { where: { id: args.updateTeam.id } });
@@ -23,6 +23,10 @@ export const updateTeam = {
     const updatedTeam = await Team.findOne({
       where: { id: args.updateTeam.id },
     });
+
+    if (!updatedTeam) {
+      throw Error('Updated Team could not be retrieved');
+    }
 
     return updatedTeam;
   },

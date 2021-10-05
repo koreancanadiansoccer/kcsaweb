@@ -8,6 +8,7 @@ loss
 goalScored
 goalConceded
 teamAgeType
+teamColor
 isActive
 `;
 

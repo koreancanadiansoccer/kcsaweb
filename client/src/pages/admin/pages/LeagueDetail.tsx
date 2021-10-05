@@ -75,17 +75,19 @@ export const UnstyledLeagueDetail: FunctionComponent<LeagueDetailProps> = ({
    * @param updateLeague
    */
   const updateLeague = useCallback(
-    async (newTeams?: Team[]) => {
+    async (league: League, newTeams?: Team[]) => {
       setLoading(true);
+
       try {
         const res = await updateLeagueMutation({
           variables: {
-            newTeams: newTeams,
             league: league,
+            newTeams: newTeams,
           },
         });
+
         if (res.data) {
-          // setLeagues(res.data.createLeague);
+          setLeague(res.data.updateLeague);
         }
       } catch (e) {
         setError(parseError(e));
@@ -103,21 +105,22 @@ export const UnstyledLeagueDetail: FunctionComponent<LeagueDetailProps> = ({
           <LeagueGeneral
             league={league}
             updateLeague={(updatedLeague: League) =>
-              // updateLeague(updatedLeague)
-              // TODO: Temporal update to call mutation
-              console.info('league general')
+              updateLeague(updatedLeague)
             }
           />
         ),
       },
 
       {
-        label: 'Teams',
+        label: 'Clubs',
         comp: (
           <LeagueTeams
             league={league}
-            updateLeague={(newLeagueTeams: Team[]) => {
-              void updateLeague(newLeagueTeams);
+            updateLeague={(newTeams: Team[]) => {
+              // This shouldn't hit but having it as safe type guard.
+              if (league) {
+                void updateLeague(league, newTeams);
+              }
             }}
           />
         ),

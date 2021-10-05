@@ -1,7 +1,7 @@
-import { GraphQLList, GraphQLString } from "graphql";
+import { GraphQLList, GraphQLString } from 'graphql';
 
-import { TeamType } from "../../types/team";
-import { Team } from "../../../db/models/team.model";
+import { TeamType } from '../../types/team';
+import { Team } from '../../../db/models/team.model';
 
 /**
  * Get all teams data.
@@ -9,13 +9,13 @@ import { Team } from "../../../db/models/team.model";
 export const getTeams = {
   type: new GraphQLList(TeamType),
   args: { leagueAgeType: { type: GraphQLString } },
-  async resolve(parent: object, args: any) {
+  async resolve(parent: object, args: any): Promise<Team[]> {
     const whereStatement: { [key: string]: string } = {};
 
     if (args.leagueAgeType) whereStatement.teamAgeType = args.leagueAgeType;
 
     const teams = await Team.findAll({
-      order: [["createdAt", "DESC"]],
+      order: [['createdAt', 'DESC']],
       where: whereStatement,
     });
 

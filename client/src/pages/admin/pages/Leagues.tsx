@@ -34,8 +34,9 @@ interface LeaguesProps {
 
 const tableColumns = [
   { title: 'Name', field: 'name' },
-  { title: 'League Age', field: 'leagueAgeType' },
+  { title: 'Year', field: 'year' },
   { title: 'League Type', field: 'leagueType' },
+  { title: 'League Age', field: 'leagueAgeType' },
   { title: 'Active', field: 'isActive' },
   { title: 'Team count', field: 'teamCount' },
   { title: 'Created', field: 'createdAt' },
@@ -82,10 +83,7 @@ const UnstyledLeagues: FunctionComponent<LeaguesProps> = ({ className }) => {
     try {
       const res = await createLeagueMut({
         variables: {
-          name: newLeague.name,
-          leagueType: newLeague.leagueType,
-          leagueAgeType: newLeague.leagueAgeType,
-          maxYellowCard: newLeague.maxYellowCard,
+          ...newLeague,
         },
       });
       if (res.data) {
