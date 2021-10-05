@@ -11,6 +11,7 @@ import { schema } from './graphql/schema';
 dotenv.config();
 
 const SECRET = 'KCSA_SECRET_WEB';
+const PORT = process.env.PORT || 5000;
 
 (async () => {
   // Sync sequelize.
@@ -67,7 +68,7 @@ const SECRET = 'KCSA_SECRET_WEB';
     res.send('Hello');
   });
 
-  app.listen(5000, () => console.info('Server running'));
+  app.listen(PORT, () => console.info('Server running'));
 })();
 
 // Graceful shutdown

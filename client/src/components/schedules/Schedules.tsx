@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 import ScrollContainer from 'react-indiana-drag-scroll';
 
 import { LeagueSelect } from '../league_select/LeagueSelect';
-import { LeagueAgeType } from '../../types/league';
+import { AgeEnums } from '../../types/age.enum';
 
 import { sampleScheduleDataOpen, sampleScheduleDataSenior } from './sampleData';
 import { ScheduleCard } from './components/schedule_card/ScheduleCard';
@@ -24,7 +24,7 @@ const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
   className,
 }) => {
   const ref = useRef<HTMLElement | null>(null);
-  const [league, setLeague] = useState<LeagueAgeType>(LeagueAgeType.OPEN);
+  const [league, setLeague] = useState<AgeEnums>(AgeEnums.OPEN);
 
   // Reset scroll upon league change.
   useEffect(() => {
@@ -48,14 +48,14 @@ const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
                 <Box display="flex">
                   <LeagueSelect
                     title="OPEN"
-                    selected={league === LeagueAgeType.OPEN}
-                    onClick={() => setLeague(LeagueAgeType.OPEN)}
+                    selected={league === AgeEnums.OPEN}
+                    onClick={() => setLeague(AgeEnums.OPEN)}
                   />
 
                   <LeagueSelect
                     title="SENIOR"
-                    selected={league === LeagueAgeType.SENIOR}
-                    onClick={() => setLeague(LeagueAgeType.SENIOR)}
+                    selected={league === AgeEnums.SENIOR}
+                    onClick={() => setLeague(AgeEnums.SENIOR)}
                   />
                 </Box>
               </Box>
@@ -70,7 +70,7 @@ const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
 
           {/* Scrollable schedule section */}
           <ScrollContainer className="schedules-card-container" innerRef={ref}>
-            {league === LeagueAgeType.OPEN &&
+            {league === AgeEnums.OPEN &&
               map(sampleScheduleDataOpen, (data, idx) => (
                 <Box key={`sched-${idx}`} className="scheudle-card">
                   <motion.div
@@ -92,7 +92,7 @@ const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
                 </Box>
               ))}
 
-            {league === LeagueAgeType.SENIOR &&
+            {league === AgeEnums.SENIOR &&
               map(sampleScheduleDataSenior, (data, idx) => (
                 <Box key={`sched-${idx}`} className="scheudle-card">
                   <motion.div

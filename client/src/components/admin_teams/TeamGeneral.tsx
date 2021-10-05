@@ -1,20 +1,27 @@
 import React, {
   FunctionComponent,
   useState,
-  ChangeEvent,
   useCallback,
   useEffect,
+  useMemo,
+  ChangeEvent,
 } from 'react';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import find from 'lodash/find';
+import isEqual from 'lodash/isEqual';
 
 import { Team } from '../../types/team';
-import { Input } from '../input/Input';
+import { ageOptions } from '../../types/age.enum';
 import { Button } from '../button/Button';
+import { Input } from '../input/Input';
 import { ImgDropzone } from '../dropzone/DropZone';
 import { useImgUpload } from '../../hooks/useImgUpload';
+import { Select, ColorSelect } from '../select/Select';
+import { colorSelectOptions } from '../../utils/color';
 
 interface TeamGeneralProps {
   team: Team;
@@ -34,6 +41,12 @@ const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = ({
 
   const { generateUploadUrls } = useImgUpload();
 
+  const hasNoChanges = useMemo(() => isEqual(team, origTeam) && !file, [
+    team,
+    origTeam,
+    file,
+  ]);
+
   /**
    * Orig team data can be updated from parent
    * Keep data in sync.
@@ -42,6 +55,7 @@ const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = ({
     setTeam(origTeam);
   }, [origTeam]);
 
+  // Handle logo file update.
   const handleUploadChange = async (files: File[]) => {
     // Dropzone uploader can accept multiple files.
     const tempFile = files[0];
@@ -55,6 +69,7 @@ const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = ({
       e.preventDefault();
       let teamLogoURL = team.teamLogoURL;
 
+      // If new logo was added, prepare for upload.
       if (file?.name && file?.type) {
         // Set file name: {TEAM-NAME}-{TEAM-AGETYPE}
         const fileName = `${team.name}-${team.teamAgeType}`.toLocaleLowerCase();
@@ -75,25 +90,63 @@ const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = ({
   return (
     <Box>
       <Box my={2}>
-        <Typography variant="body1">Team Age Group</Typography>
+        <Typography variant="body1">Club Name</Typography>
+
+        <Input
+          label="Club Name"
+          placeholder="Club Name"
+          required
+          value={team.name}
+          onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+            setTeam({ ...team, name: evt.target.value });
+          }}
+        />
+      </Box>
+
+      <Divider />
+
+      <Box my={2}>
+        <Typography variant="body1">Club Age Group</Typography>
 
         <Typography variant="body2" color="error">
           *OPEN/SENIOR or custome values.
         </Typography>
 
-        <Input
-          label="Age Group"
-          placeholder="Age Group"
-          required
-          value={team.teamAgeType}
-          onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-            setTeam({ ...team, teamAgeType: evt.target.value });
+        <Select
+          defaultValue={find(
+            ageOptions,
+            (ageOption) => ageOption.value === team.teamAgeType
+          )}
+          isClearable
+          options={ageOptions}
+          createable
+          handleChange={(option: any) => {
+            setTeam({ ...team, teamAgeType: option?.value });
           }}
-          inputProps={{ style: { textTransform: 'uppercase' } }}
         />
       </Box>
 
-      <Box my={2}>
+      <Divider />
+
+      <Box my={3}>
+        <Typography variant="body1">Club Color</Typography>
+
+        <ColorSelect
+          options={colorSelectOptions}
+          defaultValue={find(
+            colorSelectOptions,
+            (colorOption) => colorOption.value === team.teamColor
+          )}
+          createable
+          handleChange={(option: any) => {
+            setTeam({ ...team, teamColor: option?.value });
+          }}
+        />
+      </Box>
+
+      <Divider />
+
+      <Box my={3}>
         <Typography variant="body1">Uploaded Logo</Typography>
 
         {team.teamLogoURL ? (
@@ -106,7 +159,7 @@ const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = ({
         )}
       </Box>
 
-      <Box my={2}>
+      <Box my={3}>
         <Typography variant="body1">Upload New Logo</Typography>
 
         <ImgDropzone
@@ -115,8 +168,14 @@ const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = ({
         />
       </Box>
 
+      <Divider />
+
       <Box my={2}>
-        <Button onClick={handleUpdate} color="secondary">
+        <Button
+          disabled={hasNoChanges}
+          onClick={handleUpdate}
+          color="secondary"
+        >
           Update General Info
         </Button>
       </Box>

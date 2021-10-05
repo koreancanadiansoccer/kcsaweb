@@ -54,7 +54,7 @@ export const Tabs: FunctionComponent<TabsProps> = ({
             setValue(newValue);
           }}
         >
-          {map(panelOptions, (panelOption, idx) => (
+          {map(panelOptions, (panelOption) => (
             <Tab key={`${panelOption.label}`} label={panelOption.label} />
           ))}
         </OrigTabs>

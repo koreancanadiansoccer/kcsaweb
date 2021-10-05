@@ -29,7 +29,7 @@ export const createUser = {
     type: { type: GraphQLString },
     status: { type: GraphQLString },
   },
-  async resolve(parent: object, args: Args) {
+  async resolve(parent: object, args: Args): Promise<User | undefined> {
     try {
       // check if all required forms exist or not
       if (

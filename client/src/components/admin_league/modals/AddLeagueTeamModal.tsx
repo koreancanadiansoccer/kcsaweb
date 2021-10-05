@@ -4,22 +4,22 @@ import React, {
   useMemo,
   useEffect,
   useCallback,
-} from "react";
-import { DialogProps } from "@material-ui/core/Dialog";
-import Box from "@material-ui/core/Box";
-import DialogActions from "@material-ui/core/DialogActions";
-import Typography from "@material-ui/core/Typography";
-import map from "lodash/map";
-import find from "lodash/find";
-import filter from "lodash/filter";
+} from 'react';
+import { DialogProps } from '@material-ui/core/Dialog';
+import Box from '@material-ui/core/Box';
+import DialogActions from '@material-ui/core/DialogActions';
+import Typography from '@material-ui/core/Typography';
+import map from 'lodash/map';
+import find from 'lodash/find';
+import filter from 'lodash/filter';
 
-import { Modal } from "../../modal/Modal";
-import { Button } from "../../button/Button";
-import { Select } from "../../select/Select";
-import { Team, LeagueTeam } from "../../../types/team";
+import { Modal } from '../../modal/Modal';
+import { Button } from '../../button/Button';
+import { Select } from '../../select/Select';
+import { Team, LeagueTeam } from '../../../types/team';
 
 interface AddLeagueTeamModalProps
-  extends Pick<DialogProps, "open" | "onClose"> {
+  extends Pick<DialogProps, 'open' | 'onClose'> {
   age: string;
   updateLeague: (newTeams: Team[]) => void;
   teams: Team[];
@@ -38,7 +38,7 @@ export const AddLeagueTeamModal: FunctionComponent<AddLeagueTeamModalProps> = ({
   updateLeague,
 }) => {
   // Init state for new product.
-  const [newLeagueTeams, setNewLeagueTeams] = useState<Team[]>([]);
+  const [newTeams, setNewTeams] = useState<Team[]>([]);
 
   // Create option list for select.
   const teamsOption = useMemo(() => {
@@ -60,10 +60,10 @@ export const AddLeagueTeamModal: FunctionComponent<AddLeagueTeamModalProps> = ({
       : [];
   }, [teams, leagueTeams]);
 
-  const isValid = useMemo(() => newLeagueTeams.length !== 0, [newLeagueTeams]);
+  const isValid = useMemo(() => newTeams.length !== 0, [newTeams]);
 
   // Reset 'newLeague' when closing/opening the modal.
-  useEffect(() => setNewLeagueTeams([]), [open]);
+  useEffect(() => setNewTeams([]), [open]);
 
   // Grab original team data when user selects teams.
   const handleChange = useCallback(
@@ -77,7 +77,7 @@ export const AddLeagueTeamModal: FunctionComponent<AddLeagueTeamModalProps> = ({
         return { ...newTeam };
       });
 
-      setNewLeagueTeams(newTeams);
+      setNewTeams(newTeams);
     },
     [teams]
   );
@@ -104,7 +104,7 @@ export const AddLeagueTeamModal: FunctionComponent<AddLeagueTeamModalProps> = ({
           <Button
             disabled={!isValid}
             size="large"
-            onClick={() => void updateLeague(newLeagueTeams)}
+            onClick={() => void updateLeague(newTeams)}
           >
             Create
           </Button>

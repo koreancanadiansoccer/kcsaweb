@@ -6,20 +6,20 @@ import {
   ForeignKey,
   Default,
   AllowNull,
-} from "sequelize-typescript";
+} from 'sequelize-typescript';
 
-import { Player } from "./player.model";
-import { User } from "./user.model";
-import { LeagueTeam } from "./leagueteam.model";
+import { Player } from './player.model';
+import { User } from './user.model';
+import { LeagueTeam } from './leagueteam.model';
 
 // Master team table.
-@Table({ tableName: "team" })
+@Table({ tableName: 'team' })
 export class Team extends Model {
   @AllowNull(false)
   @Column
   name!: string;
 
-  @Column({ field: "team_logo_url" }) teamLogoURL!: string;
+  @Column({ field: 'team_logo_url' }) teamLogoURL!: string;
 
   @Default(0)
   @Column
@@ -34,24 +34,29 @@ export class Team extends Model {
   loss!: number;
 
   @Default(0)
-  @Column({ field: "goal_scored" })
+  @Column({ field: 'goal_scored' })
   goalScored!: number;
 
   @Default(0)
-  @Column({ field: "goal_conceded" })
+  @Column({ field: 'goal_conceded' })
   goalConceded!: number;
 
   @Column({
-    field: "team_age_type",
+    field: 'team_age_type',
   })
   teamAgeType!: string;
 
+  @Column({
+    field: 'team_color',
+  })
+  teamColor!: string;
+
   // TODO: Do we need this?
   @Default(false)
-  @Column({ field: "is_active" })
+  @Column({ field: 'is_active' })
   isActive!: boolean;
 
-  @ForeignKey(() => User) @Column({ field: "captain_id" }) captainId!: number;
+  @ForeignKey(() => User) @Column({ field: 'captain_id' }) captainId!: number;
 
   // Association with all players
   @HasMany(() => Player) players!: Player[];
