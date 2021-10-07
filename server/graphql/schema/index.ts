@@ -15,6 +15,7 @@ import { createTeam } from './mutations/createTeam';
 import { updateTeam } from './mutations/updateTeam';
 import { loginUser } from './mutations/loginUser';
 import { createS3SignedUrl } from './mutations/createS3SignedUrl';
+import { createPlayer } from './mutations/createPlayer';
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -38,6 +39,7 @@ const Mutation = new GraphQLObjectType({
     updateTeam,
     loginUser,
     createS3SignedUrl,
+    createPlayer,
   },
 });
 
