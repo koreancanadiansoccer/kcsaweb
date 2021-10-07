@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import Box from "@material-ui/core/Box";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
-import { Link as RouteLink } from "react-router-dom";
+import React, { useState } from 'react';
+import Box from '@material-ui/core/Box';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import { Link as RouteLink } from 'react-router-dom';
 
-import { Button } from "../../button/Button";
+import { Button } from '../../button/Button';
 
-export const AboutNav = () => {
+export const AboutNav: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -34,8 +34,8 @@ export const AboutNav = () => {
         getContentAnchorEl={null}
         keepMounted
         open={Boolean(anchorEl)}
-        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-        transformOrigin={{ vertical: "top", horizontal: "left" }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
         onClose={handleClose}
       >
         <MenuItem onClick={handleClose} component={RouteLink} to="/overview">

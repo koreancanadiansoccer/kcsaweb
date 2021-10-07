@@ -4,10 +4,11 @@ import CreatableSelect from 'react-select/creatable';
 
 import { colourNameToHex } from '../../utils/color';
 
-interface Option {
+export type Option = {
   label: string;
   value: string;
-}
+};
+
 interface SelectProps {
   options: Option[];
   handleChange: (

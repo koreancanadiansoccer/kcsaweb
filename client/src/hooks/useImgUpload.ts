@@ -9,7 +9,15 @@ import { parseError } from '../graphql/client';
  * TODO: Handle multiple file uploads.
  * Should we extend this hook to handle model mutations?
  */
-export const useImgUpload = () => {
+
+export const useImgUpload = (): {
+  error: string;
+  loading: boolean;
+  generateUploadUrls: (
+    file: File,
+    fileName: string
+  ) => Promise<string | undefined>;
+} => {
   const [error] = useState('');
   const [loading, setLoading] = useState(false);
 

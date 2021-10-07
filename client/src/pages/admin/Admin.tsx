@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 // Main Admin page container.
-export const Admin = () => {
+export const Admin: React.FC = () => {
   const classes = useStyles();
   const { path, url } = useRouteMatch();
 

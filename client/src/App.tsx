@@ -21,11 +21,12 @@ import { Login } from './pages/Login';
 import { Create } from './pages/create/Create';
 import { GET_HOME_VIEWER } from './graphql/homeViewer';
 import { ViewerConext } from './context/homeViewer';
+import { HomeViewer } from './types/home_viewer';
 
 const App: FunctionComponent = () => {
   const theme = createAppTheme();
   const { pathname } = useLocation();
-  const [viewer, setViewer] = useState<any>();
+  const [viewer, setViewer] = useState<HomeViewer>();
   const isAdminRoute = useMemo(() => includes(pathname.split('/'), 'admin'), [
     pathname,
   ]);

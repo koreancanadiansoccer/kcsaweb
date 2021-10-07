@@ -131,7 +131,7 @@ export const UnstyledLeagueDetail: FunctionComponent<LeagueDetailProps> = ({
         comp: (
           <LeagueMatch
             league={league}
-            updateLeague={(updatedLeague: League) =>
+            updateLeague={() =>
               // updateLeague(updatedLeague)
               // TODO: Temporal update to call mutation
               console.info('league general')

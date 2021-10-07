@@ -1,9 +1,9 @@
-import { createContext } from "react";
+import { createContext } from 'react';
 
-import { HomeViewer } from "../types/home_viewer";
+import { HomeViewer } from '../types/home_viewer';
 
 export interface ViewerContextType {
-  viewer: HomeViewer;
+  viewer?: HomeViewer;
   setViewer: (home: HomeViewer) => void;
 }
 

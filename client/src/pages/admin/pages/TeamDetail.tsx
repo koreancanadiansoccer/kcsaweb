@@ -16,6 +16,7 @@ import Chip from '@material-ui/core/Chip';
 import { Team } from '../../../types/team';
 import { Tabs, PanelOptions } from '../../../components/tabs/Tabs';
 import { TeamGeneral } from '../../../components/admin_teams/TeamGeneral';
+import { TeamPlayers } from '../../../components/admin_teams/TeamPlayers';
 import {
   GET_TEAM,
   TeamQueryData,
@@ -101,6 +102,17 @@ export const UnstyledTeamDetail: FunctionComponent<TeamDetailProps> = ({
         label: 'General',
         comp: (
           <TeamGeneral
+            team={team}
+            updateTeam={(updateTeamData: Team) => {
+              void updateTeam(updateTeamData);
+            }}
+          />
+        ),
+      },
+      {
+        label: 'Players',
+        comp: (
+          <TeamPlayers
             team={team}
             updateTeam={(updateTeamData: Team) => {
               void updateTeam(updateTeamData);
