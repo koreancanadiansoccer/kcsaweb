@@ -1,9 +1,7 @@
 import React, { FunctionComponent, useEffect, useState, useMemo } from 'react';
-import { withTheme } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import styled from 'styled-components';
 import { useMutation, useQuery } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
 import { map } from 'lodash';
@@ -34,8 +32,9 @@ interface LeaguesProps {
 
 const tableColumns = [
   { title: 'Name', field: 'name' },
-  { title: 'League Age', field: 'leagueAgeType' },
+  { title: 'Year', field: 'year' },
   { title: 'League Type', field: 'leagueType' },
+  { title: 'League Age', field: 'leagueAgeType' },
   { title: 'Active', field: 'isActive' },
   { title: 'Team count', field: 'teamCount' },
   { title: 'Created', field: 'createdAt' },
@@ -44,7 +43,7 @@ const tableColumns = [
 /**
  * Displays table of all leagues.
  */
-const UnstyledLeagues: FunctionComponent<LeaguesProps> = ({ className }) => {
+export const Leagues: FunctionComponent<LeaguesProps> = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   const [leagues, setLeagues] = useState<League[]>();
@@ -82,10 +81,7 @@ const UnstyledLeagues: FunctionComponent<LeaguesProps> = ({ className }) => {
     try {
       const res = await createLeagueMut({
         variables: {
-          name: newLeague.name,
-          leagueType: newLeague.leagueType,
-          leagueAgeType: newLeague.leagueAgeType,
-          maxYellowCard: newLeague.maxYellowCard,
+          ...newLeague,
         },
       });
       if (res.data) {
@@ -147,5 +143,3 @@ const UnstyledLeagues: FunctionComponent<LeaguesProps> = ({ className }) => {
     </>
   );
 };
-
-export const Leagues = withTheme(styled(UnstyledLeagues)``);

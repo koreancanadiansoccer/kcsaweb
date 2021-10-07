@@ -5,12 +5,11 @@ import { withTheme } from '@material-ui/core';
 import { useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import map from 'lodash/map';
-import mapValues from 'lodash/mapValues';
 
 import { GET_USERS } from '../../graphql/users/get_users.query';
 import { HorizontalDivider } from '../divider/HorizontalDivider';
 import { TableType } from '../../types/table_type';
-import { LeagueAgeType } from '../../types/league';
+import { AgeEnums } from '../../types/age.enum';
 
 import {
   standingOpen,
@@ -25,7 +24,7 @@ import {
 interface LeagueTableProps {
   title: string;
   tableType: TableType;
-  leagueType: LeagueAgeType;
+  leagueType: AgeEnums;
   className?: string;
 }
 
@@ -47,8 +46,8 @@ const UnstyledLeagueTable: FunctionComponent<LeagueTableProps> = ({
   // Get table row data based on props.
   const tableRowData: TableRow[] = useMemo(() => {
     if (tableType === TableType.SCORER)
-      return leagueType === LeagueAgeType.SENIOR ? scorerSenior : scorerOpen;
-    return leagueType === LeagueAgeType.SENIOR ? standingSenior : standingOpen;
+      return leagueType === AgeEnums.SENIOR ? scorerSenior : scorerOpen;
+    return leagueType === AgeEnums.SENIOR ? standingSenior : standingOpen;
   }, [tableType, leagueType]);
 
   // Get table tile data based on props.
@@ -109,7 +108,7 @@ const UnstyledLeagueTable: FunctionComponent<LeagueTableProps> = ({
                 py={0.75}
                 px={1}
               >
-                {mapValues(data, (property, key, idx) => {
+                {map(data, (property, key, idx) => {
                   const isNameField = key === 'name' || key === 'club';
                   return (
                     <Box

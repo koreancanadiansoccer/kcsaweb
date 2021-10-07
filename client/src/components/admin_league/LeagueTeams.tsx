@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useMemo, useState } from 'react';
+import React, { FunctionComponent, useMemo, useState, useEffect } from 'react';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
@@ -38,16 +38,20 @@ interface LeagueTeamsProps {
  * Show and allow update to teams associated with league.
  */
 const UnstyledLeagueTeams: FunctionComponent<LeagueTeamsProps> = ({
-  league,
+  league: origLeague,
   updateLeague,
 }) => {
-  const [leagueTeams] = useState<LeagueTeam[]>(league.leagueTeams);
+  const [leagueTeams, setLeagueTeams] = useState<LeagueTeam[]>(
+    origLeague.leagueTeams
+  );
 
   const [openModal, setOpenModal] = useState<boolean>(false);
 
+  useEffect(() => setLeagueTeams(origLeague.leagueTeams), [origLeague]);
+
   // Get all teams.
   const teamQuery = useQuery<TeamsQueryData, TeamsQueryVariable>(GET_TEAMS, {
-    variables: { leagueAgeType: league.leagueAgeType },
+    variables: { leagueAgeType: origLeague.leagueAgeType },
   });
 
   /**
@@ -64,7 +68,7 @@ const UnstyledLeagueTeams: FunctionComponent<LeagueTeamsProps> = ({
       {teamQuery.data && !teamQuery.loading && (
         <AddLeagueTeamModal
           open={openModal}
-          age={league.leagueAgeType}
+          age={origLeague.leagueAgeType}
           teams={teamQuery.data.getTeams}
           leagueTeams={leagueTeams}
           onClose={() => setOpenModal(false)}
@@ -89,7 +93,7 @@ const UnstyledLeagueTeams: FunctionComponent<LeagueTeamsProps> = ({
         </Box>
 
         <Table
-          title="Teams registered"
+          title="Clubs registered"
           columns={tableColumns}
           data={tableData}
           onRowClick={(evt, data) => {

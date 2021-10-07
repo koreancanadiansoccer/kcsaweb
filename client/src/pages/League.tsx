@@ -1,7 +1,7 @@
-import React, { FunctionComponent } from "react";
-import { withTheme } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
-import styled from "styled-components";
+import React, { FunctionComponent } from 'react';
+import { withTheme } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
+import styled from 'styled-components';
 
 interface LeagueProps {
   className?: string;
@@ -11,7 +11,7 @@ interface LeagueProps {
  * League Page.
  * NOTE: This  might be broken into submenu per season.
  */
-const UnstyledLeague: FunctionComponent<LeagueProps> = ({ className }) => {
+const UnstyledLeague: FunctionComponent<LeagueProps> = () => {
   return <Box>League page</Box>;
 };
 

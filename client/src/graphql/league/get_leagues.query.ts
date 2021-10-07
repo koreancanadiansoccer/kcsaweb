@@ -12,6 +12,7 @@ export const GET_LEAGUES = gql`
   query {
     getLeagues {
       ${LEAGUE_FRAGMENT}
+      createdAt
     }
   }
 `;

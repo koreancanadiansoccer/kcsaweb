@@ -23,7 +23,7 @@ import { useImgUpload } from '../../hooks/useImgUpload';
 import { Select, ColorSelect } from '../select/Select';
 import { colorSelectOptions } from '../../utils/color';
 
-interface TeamGeneralProps {
+interface TeamPlayersProps {
   team: Team;
   updateTeam: (updateTeam: Team) => void;
 }
@@ -31,7 +31,7 @@ interface TeamGeneralProps {
 /**
  * Show and allow update to general team info
  */
-const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = ({
+const UnstyledTeamPlayers: FunctionComponent<TeamPlayersProps> = ({
   team: origTeam,
   updateTeam,
 }) => {
@@ -183,4 +183,4 @@ const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = ({
   );
 };
 
-export const TeamGeneral = withTheme(styled(UnstyledTeamGneral)``);
+export const TeamPlayers = withTheme(styled(UnstyledTeamPlayers)``);

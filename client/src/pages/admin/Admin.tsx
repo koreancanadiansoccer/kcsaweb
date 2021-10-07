@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 // Main Admin page container.
-export const Admin = () => {
+export const Admin: React.FC = () => {
   const classes = useStyles();
   const { path, url } = useRouteMatch();
 
@@ -97,11 +97,11 @@ export const Admin = () => {
             </ListItem>
 
             {/* Direct user to /teams */}
-            <ListItem component={RouteLink} to={`${url}/teams`} button>
+            <ListItem component={RouteLink} to={`${url}/clubs`} button>
               <ListItemIcon>
                 <GroupIcon />
               </ListItemIcon>
-              <ListItemText primary="Teams" />
+              <ListItemText primary="Clubs" />
             </ListItem>
             <ListItem component={RouteLink} to={`${url}/gallery`} button>
               <ListItemIcon>
@@ -150,12 +150,12 @@ export const Admin = () => {
           </Route>
 
           {/* Render page for /teams */}
-          <Route exact path={`${url}/teams`}>
+          <Route exact path={`${url}/clubs`}>
             <Teams />
           </Route>
 
           {/* Render page for /team/{id} - a page for specific team} */}
-          <Route path={`${url}/teams/:id`}>
+          <Route path={`${url}/clubs/:id`}>
             <TeamDetail />
           </Route>
         </Switch>

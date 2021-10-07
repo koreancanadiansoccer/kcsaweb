@@ -14,7 +14,11 @@ export const loginUser = {
     email: { type: GraphQLString },
     password: { type: new GraphQLNonNull(GraphQLString) },
   },
-  async resolve(parent: object, args: Args, { req }: any) {
+  async resolve(
+    parent: object,
+    args: Args,
+    { req }: any
+  ): Promise<User | undefined> {
     try {
       // find the user from database
       const user = await User.findOne({ where: { email: args.email } });

@@ -1,10 +1,10 @@
-import React, { FunctionComponent } from "react";
-import { withTheme } from "@material-ui/core/styles";
-import styled from "styled-components";
+import React, { FunctionComponent } from 'react';
+import { withTheme } from '@material-ui/core/styles';
+import styled from 'styled-components';
 
-import { Hero } from "../components/hero/Hero";
-import { Schedules } from "../components/schedules/Schedules";
-import { HomeContent } from "../components/home_content/HomeContent";
+import { Hero } from '../components/hero/Hero';
+import { Schedules } from '../components/schedules/Schedules';
+import { HomeContent } from '../components/home_content/HomeContent';
 
 interface HomeProps {
   className?: string;
@@ -13,7 +13,7 @@ interface HomeProps {
 /**
  * Main home page.
  */
-const UnstyledHome: FunctionComponent<HomeProps> = ({ className }) => {
+const UnstyledHome: FunctionComponent<HomeProps> = () => {
   return (
     <>
       <Hero />
