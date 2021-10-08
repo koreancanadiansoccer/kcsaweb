@@ -13,6 +13,7 @@ export interface UpdateLeagueResult {
   updateLeague: League;
 }
 
+// Update single league.
 export const UPDATE_LEAGUE = gql`
   mutation UpdateLeague($league: LeagueInput, $newTeams: [TeamInput]) {
     updateLeague(newTeams: $newTeams, league: $league) {

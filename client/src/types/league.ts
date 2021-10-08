@@ -13,7 +13,7 @@ export const leagueTypeOptions = map(LeagueType, (leagueType) => {
 });
 
 export interface League {
-  id: string;
+  id: number;
   name: string;
   isActive: boolean;
   leagueAgeType: AgeEnums | string;

@@ -1,11 +1,5 @@
-import React, {
-  FunctionComponent,
-  useMemo,
-  useState,
-  useEffect,
-  useCallback,
-} from 'react';
-import { useQuery, useMutation } from '@apollo/client';
+import React, { FunctionComponent, useMemo, useState, useEffect } from 'react';
+import { useQuery } from '@apollo/client';
 import { useParams } from 'react-router';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
@@ -22,12 +16,8 @@ import {
   TeamQueryData,
   TeamQueryVariable,
 } from '../../../graphql/teams/get_team.query';
-import {
-  UPDATE_TEAM,
-  UpdateTeamInput,
-  UpdateTeamResult,
-} from '../../../graphql/teams/update_team.mutation';
 import { parseError } from '../../../graphql/client';
+import { TeamContext } from '../../../context/team';
 
 interface TeamDetailProps {
   className?: string;
@@ -40,6 +30,8 @@ interface TeamDetailProps {
 export const UnstyledTeamDetail: FunctionComponent<TeamDetailProps> = ({
   className,
 }) => {
+  const [team, setTeam] = useState<Team>();
+
   const { id } = useParams<{ id: string }>();
   const [tabSelected, setTabSelected] = React.useState(0);
 
@@ -47,12 +39,6 @@ export const UnstyledTeamDetail: FunctionComponent<TeamDetailProps> = ({
   const teamQuery = useQuery<TeamQueryData, TeamQueryVariable>(GET_TEAM, {
     variables: { id },
   });
-
-  const [updateTeamMutation] = useMutation<UpdateTeamResult, UpdateTeamInput>(
-    UPDATE_TEAM
-  );
-
-  const [team, setTeam] = useState<Team>();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -71,62 +57,28 @@ export const UnstyledTeamDetail: FunctionComponent<TeamDetailProps> = ({
     }
   }, [teamQuery, loading, error]);
 
-  /**
-   * Update team
-   * @param updateTeam
-   */
-  const updateTeam = useCallback(
-    async (newTeam: Team) => {
-      setLoading(true);
-      try {
-        const res = await updateTeamMutation({
-          variables: {
-            updateTeam: newTeam,
-          },
-        });
-
-        if (res.data) {
-          setTeam(res.data.updateTeam);
-        }
-      } catch (e) {
-        setError(parseError(e));
-      }
-    },
-    [updateTeamMutation]
-  );
-
   // Tabs Panel
   const panelOptions: PanelOptions[] = useMemo(
     () => [
       {
         label: 'General',
-        comp: (
-          <TeamGeneral
-            team={team}
-            updateTeam={(updateTeamData: Team) => {
-              void updateTeam(updateTeamData);
-            }}
-          />
-        ),
+        comp: <TeamGeneral />,
       },
       {
         label: 'Players',
-        comp: (
-          <TeamPlayers
-            team={team}
-            updateTeam={(updateTeamData: Team) => {
-              void updateTeam(updateTeamData);
-            }}
-          />
-        ),
+        comp: <TeamPlayers />,
       },
     ],
-    [team, updateTeam]
+    [team]
   );
 
+  if (!team) {
+    return <Box>Loading</Box>;
+  }
+
   return (
-    <Box className={className}>
-      {team && (
+    <TeamContext.Provider value={{ team, setTeam }}>
+      <Box className={className}>
         <>
           <Typography component={'div'} variant="h5">
             {team?.name}
@@ -142,8 +94,8 @@ export const UnstyledTeamDetail: FunctionComponent<TeamDetailProps> = ({
             />
           </Box>
         </>
-      )}
-    </Box>
+      </Box>
+    </TeamContext.Provider>
   );
 };
 

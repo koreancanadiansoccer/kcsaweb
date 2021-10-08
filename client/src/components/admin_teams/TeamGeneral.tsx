@@ -4,6 +4,7 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
+  useContext,
   ChangeEvent,
 } from 'react';
 import { withTheme } from '@material-ui/core/styles';
@@ -13,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import find from 'lodash/find';
 import isEqual from 'lodash/isEqual';
+import { useMutation } from '@apollo/client';
 
 import { Team } from '../../types/team';
 import { ageOptions } from '../../types/age.enum';
@@ -22,6 +24,13 @@ import { ImgDropzone } from '../dropzone/DropZone';
 import { useImgUpload } from '../../hooks/useImgUpload';
 import { Select, ColorSelect } from '../select/Select';
 import { colorSelectOptions } from '../../utils/color';
+import { TeamContext } from '../../context/team';
+import {
+  UPDATE_TEAM,
+  UpdateTeamInput,
+  UpdateTeamResult,
+} from '../../graphql/teams/update_team.mutation';
+import { parseError } from '../../graphql/client';
 
 interface TeamGeneralProps {
   team: Team;
@@ -31,10 +40,12 @@ interface TeamGeneralProps {
 /**
  * Show and allow update to general team info
  */
-const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = ({
-  team: origTeam,
-  updateTeam,
-}) => {
+const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = () => {
+  const { team: origTeam, setTeam: setOrigTeam } = useContext(TeamContext);
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
   const [team, setTeam] = useState<Team>(origTeam);
   const [file, setFile] = useState<File>();
   const [fileLink, setFileLink] = useState('');
@@ -47,6 +58,10 @@ const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = ({
     file,
   ]);
 
+  const [updateTeamMutation] = useMutation<UpdateTeamResult, UpdateTeamInput>(
+    UPDATE_TEAM
+  );
+
   /**
    * Orig team data can be updated from parent
    * Keep data in sync.
@@ -55,18 +70,9 @@ const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = ({
     setTeam(origTeam);
   }, [origTeam]);
 
-  // Handle logo file update.
-  const handleUploadChange = async (files: File[]) => {
-    // Dropzone uploader can accept multiple files.
-    const tempFile = files[0];
-
-    setFile(tempFile);
-    setFileLink(URL.createObjectURL(tempFile));
-  };
-
-  const handleUpdate = useCallback(
-    async (e: React.MouseEvent<HTMLElement>) => {
-      e.preventDefault();
+  const updateTeam = useCallback(async () => {
+    setLoading(true);
+    try {
       let teamLogoURL = team.teamLogoURL;
 
       // If new logo was added, prepare for upload.
@@ -76,16 +82,28 @@ const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = ({
         teamLogoURL = await generateUploadUrls(file, fileName);
       }
 
-      try {
-        await updateTeam({ ...team, teamLogoURL: teamLogoURL });
-        setFile(undefined);
-        setFileLink('');
-      } catch (e) {
-        console.info(e);
+      const res = await updateTeamMutation({
+        variables: {
+          updateTeam: { ...team, teamLogoURL: teamLogoURL },
+        },
+      });
+
+      if (res.data) {
+        setOrigTeam(res.data.updateTeam);
       }
-    },
-    [file, updateTeam, generateUploadUrls, team]
-  );
+    } catch (e) {
+      setError(parseError(e));
+    }
+  }, [updateTeamMutation, team]);
+
+  // Handle logo file update.
+  const handleUploadChange = async (files: File[]) => {
+    // Dropzone uploader can accept multiple files.
+    const tempFile = files[0];
+
+    setFile(tempFile);
+    setFileLink(URL.createObjectURL(tempFile));
+  };
 
   return (
     <Box>
@@ -171,11 +189,7 @@ const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = ({
       <Divider />
 
       <Box my={2}>
-        <Button
-          disabled={hasNoChanges}
-          onClick={handleUpdate}
-          color="secondary"
-        >
+        <Button disabled={hasNoChanges} onClick={updateTeam} color="secondary">
           Update General Info
         </Button>
       </Box>
