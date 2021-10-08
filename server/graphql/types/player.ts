@@ -31,3 +31,24 @@ export const PlayerInputType = new GraphQLInputObjectType({
     createdAt: { type: DateTime },
   }),
 });
+
+export const LeaguePlayerType = new GraphQLObjectType({
+  name: 'LeaguePlayer',
+  fields: () => ({
+    id: { type: GraphQLString },
+    name: { type: GraphQLString },
+    teamId: { type: GraphQLInt },
+    leagueTeamId: { type: GraphQLInt },
+    yellowCard: { type: GraphQLInt },
+    goalScored: { type: GraphQLInt },
+    createdAt: { type: DateTime },
+  }),
+});
+
+export const LeaguePlayerInputType = new GraphQLInputObjectType({
+  name: 'LeaguePlayerInput',
+  fields: () => ({
+    id: { type: GraphQLString },
+    name: { type: GraphQLString },
+  }),
+});

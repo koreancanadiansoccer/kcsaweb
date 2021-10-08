@@ -55,7 +55,7 @@ export const AddLeagueTeamModal: FunctionComponent<AddLeagueTeamModalProps> = ({
     return filteredAdded
       ? map(filteredAdded as Team[], (team) => ({
           label: team.name,
-          value: team.id,
+          value: team.id.toString(),
         }))
       : [];
   }, [teams, leagueTeams]);
@@ -83,17 +83,21 @@ export const AddLeagueTeamModal: FunctionComponent<AddLeagueTeamModalProps> = ({
   );
 
   return (
-    <Modal open={open} onClose={onClose} title="Add Teams">
+    <Modal open={open} onClose={onClose} title="Create a Club">
       <Box
         display="flex"
         justifyContent="space-evenly"
         alignItems="start"
         flexDirection="column"
       >
-        <Typography variant="body1">Select Teams from {age} age</Typography>
+        <Typography variant="body1">Select Clubs from {age} age</Typography>
+
+        <Typography variant="body2">
+          *Clubs that were already added to this league will not be shown.
+        </Typography>
 
         <Typography variant="body2" color="error">
-          *Teams that were already added will not be shown.
+          {`To add a new team joining for first time,\nPlease create a club under 'Clubs' menu on sidebar first`}
         </Typography>
 
         <Box width="100%" my={2}>

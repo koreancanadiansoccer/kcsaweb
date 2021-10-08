@@ -66,14 +66,7 @@ export const UnstyledTeamDetail: FunctionComponent<TeamDetailProps> = ({
       },
       {
         label: 'Players',
-        comp: (
-          <TeamPlayers
-            team={team}
-            updateTeam={(updateTeamData: Team) => {
-              // void updateTeam(updateTeamData);
-            }}
-          />
-        ),
+        comp: <TeamPlayers />,
       },
     ],
     [team]
@@ -84,27 +77,25 @@ export const UnstyledTeamDetail: FunctionComponent<TeamDetailProps> = ({
   }
 
   return (
-    <>
-      <TeamContext.Provider value={{ team, setTeam }}>
-        <Box className={className}>
-          <>
-            <Typography component={'div'} variant="h5">
-              {team?.name}
-            </Typography>
-            <Chip label={`${team?.teamAgeType} AGE`} />
-            {/* TODO: Display captains */}
+    <TeamContext.Provider value={{ team, setTeam }}>
+      <Box className={className}>
+        <>
+          <Typography component={'div'} variant="h5">
+            {team?.name}
+          </Typography>
+          <Chip label={`${team?.teamAgeType} AGE`} />
+          {/* TODO: Display captains */}
 
-            <Box mt={5}>
-              <Tabs
-                value={tabSelected}
-                setValue={(value: number) => setTabSelected(value)}
-                panelOptions={panelOptions}
-              />
-            </Box>
-          </>
-        </Box>
-      </TeamContext.Provider>
-    </>
+          <Box mt={5}>
+            <Tabs
+              value={tabSelected}
+              setValue={(value: number) => setTabSelected(value)}
+              panelOptions={panelOptions}
+            />
+          </Box>
+        </>
+      </Box>
+    </TeamContext.Provider>
   );
 };
 

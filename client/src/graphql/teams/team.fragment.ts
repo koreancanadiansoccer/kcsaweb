@@ -31,5 +31,9 @@ isActive
 captainId
 leagueId
 teamId
+leaguePlayers{
+  ${PLAYER_FRAGMENT}
+  createdAt
+}
 createdAt
 `;

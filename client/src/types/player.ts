@@ -1,5 +1,5 @@
 export interface Player {
-  id: string;
+  id: number;
   name: string;
   goalScored: number;
   yellowCard: number;
@@ -7,5 +7,15 @@ export interface Player {
 
 export interface PlayerInput {
   name: string;
-  teamId?: string;
+  teamId?: number;
+}
+
+export interface LeaguePlayerInput {
+  name: string;
+}
+export interface LeaguePlayer extends Player {
+  name: string;
+  goalScored: number;
+  yellowCard: number;
+  leagueTeamId: number;
 }

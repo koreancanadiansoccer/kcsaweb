@@ -11,7 +11,7 @@ export interface TeamContextType {
 export const TeamContext = createContext<TeamContextType>({
   // Initial value - will get overwritten from data fetch.
   team: {
-    id: '',
+    id: 0,
     name: '',
     teamAgeType: '',
     teamColor: '',

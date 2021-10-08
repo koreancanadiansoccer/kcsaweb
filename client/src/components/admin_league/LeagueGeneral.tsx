@@ -3,7 +3,10 @@ import React, {
   useState,
   useMemo,
   ChangeEvent,
+  useCallback,
+  useContext,
 } from 'react';
+import { useMutation } from '@apollo/client';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
@@ -13,32 +16,63 @@ import Divider from '@material-ui/core/Divider';
 import isEqual from 'lodash/isEqual';
 import find from 'lodash/find';
 
+import {
+  UPDATE_LEAGUE,
+  UpdateLeagueResult,
+  UpdateLeagueInput,
+} from '../../graphql/league/update_league.mutation';
+import { parseError } from '../../graphql/client';
 import { formatYear } from '../../utils/format';
 import { League, leagueTypeOptions } from '../../types/league';
 import { ageOptions } from '../../types/age.enum';
 import { Input } from '../input/Input';
 import { Button } from '../button/Button';
 import { Select } from '../select/Select';
-
-interface LeageGeneralProps {
-  league: League;
-  updateLeague: (updateLeague: League) => void;
-}
+import { LeagueContext } from '../../context/league';
 
 /**
  * Show and allow update to general league info
  */
-const UnstyledLeagueGeneral: FunctionComponent<LeageGeneralProps> = ({
-  league: origLeague,
-  updateLeague,
-}) => {
+const UnstyledLeagueGeneral: FunctionComponent = () => {
+  const { league: origLeague, setLeague: setOrigLeague } = useContext(
+    LeagueContext
+  );
+
   const [league, setLeague] = useState<League>(origLeague);
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const [updateLeagueMutation] = useMutation<
+    UpdateLeagueResult,
+    UpdateLeagueInput
+  >(UPDATE_LEAGUE);
 
   const hasNoChanges = useMemo(() => {
     return isEqual(league, origLeague);
   }, [league, origLeague]);
 
-  // useEffect(() => setLeague(origLeague), [origLeague]);
+  /**
+   * Update league
+   * @param updateLeague
+   */
+  const updateLeague = useCallback(async () => {
+    setLoading(true);
+
+    try {
+      const res = await updateLeagueMutation({
+        variables: {
+          league,
+        },
+      });
+
+      if (res.data) {
+        setOrigLeague(res.data.updateLeague);
+      }
+    } catch (e) {
+      setError(parseError(e));
+    }
+  }, [league, updateLeagueMutation]);
 
   return (
     <Box>
@@ -144,7 +178,7 @@ const UnstyledLeagueGeneral: FunctionComponent<LeageGeneralProps> = ({
       <Divider />
 
       <Box my={2}>
-        <Button disabled={hasNoChanges} onClick={() => updateLeague(league)}>
+        <Button disabled={hasNoChanges} onClick={updateLeague}>
           Update General info
         </Button>
       </Box>

@@ -14,19 +14,14 @@ import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
 
 import { League } from '../../../types/league';
-import { Team } from '../../../types/team';
 import { GET_LEAGUE } from '../../../graphql/league/get_league.query';
-import {
-  UPDATE_LEAGUE,
-  UpdateLeagueResult,
-  UpdateLeagueInput,
-} from '../../../graphql/league/update_league.mutation';
 import { parseError } from '../../../graphql/client';
 import { LeagueTeams } from '../../../components/admin_league/LeagueTeams';
 import { LeagueGeneral } from '../../../components/admin_league/LeagueGeneral';
 import { LeagueMatch } from '../../../components/admin_league/LeagueMatch';
 import { Loader } from '../../../components/loader/Loader';
 import { Tabs, PanelOptions } from '../../../components/tabs/Tabs';
+import { LeagueContext } from '../../../context/league';
 
 interface LeagueDetailProps {
   className?: string;
@@ -39,22 +34,18 @@ interface LeagueDetailProps {
 export const UnstyledLeagueDetail: FunctionComponent<LeagueDetailProps> = ({
   className,
 }) => {
+  const [league, setLeague] = useState<League>();
+
   const { id } = useParams<{ id: string }>();
   const [tabSelected, setTabSelected] = React.useState(0);
 
-  // TODO: Use context.
-  const [league, setLeague] = useState<League>();
-
   // Get League data.
-  const leagueDataQuery = useQuery(GET_LEAGUE, { variables: { id } });
+  const leagueDataQuery = useQuery(GET_LEAGUE, {
+    variables: { id: parseInt(id) },
+  });
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-
-  const [updateLeagueMutation] = useMutation<
-    UpdateLeagueResult,
-    UpdateLeagueInput
-  >(UPDATE_LEAGUE);
 
   // Pull league data.
   useEffect(() => {
@@ -70,102 +61,50 @@ export const UnstyledLeagueDetail: FunctionComponent<LeagueDetailProps> = ({
     }
   }, [leagueDataQuery, loading, error]);
 
-  /**
-   * Update league
-   * @param updateLeague
-   */
-  const updateLeague = useCallback(
-    async (league: League, newTeams?: Team[]) => {
-      setLoading(true);
-
-      try {
-        const res = await updateLeagueMutation({
-          variables: {
-            league: league,
-            newTeams: newTeams,
-          },
-        });
-
-        if (res.data) {
-          setLeague(res.data.updateLeague);
-        }
-      } catch (e) {
-        setError(parseError(e));
-      }
-    },
-    [league, updateLeagueMutation]
-  );
-
   // Tabs Panel
   const panelOptions: PanelOptions[] = useMemo(
     () => [
       {
         label: 'General',
-        comp: (
-          <LeagueGeneral
-            league={league}
-            updateLeague={(updatedLeague: League) =>
-              updateLeague(updatedLeague)
-            }
-          />
-        ),
+        comp: <LeagueGeneral />,
       },
 
       {
         label: 'Clubs',
-        comp: (
-          <LeagueTeams
-            league={league}
-            updateLeague={(newTeams: Team[]) => {
-              // This shouldn't hit but having it as safe type guard.
-              if (league) {
-                void updateLeague(league, newTeams);
-              }
-            }}
-          />
-        ),
+        comp: <LeagueTeams />,
       },
 
       {
         label: 'Match',
-        comp: (
-          <LeagueMatch
-            league={league}
-            updateLeague={() =>
-              // updateLeague(updatedLeague)
-              // TODO: Temporal update to call mutation
-              console.info('league general')
-            }
-          />
-        ),
+        comp: <LeagueMatch />,
       },
     ],
-    [league, updateLeague]
+    [league]
   );
 
+  if (!league) {
+    return <Loader open />;
+  }
+
   return (
-    <Box className={className}>
-      {!league || (leagueDataQuery.loading && <Loader open={loading} />)}
+    <LeagueContext.Provider value={{ league, setLeague }}>
+      <Box className={className}>
+        <Typography component={'div'} variant="h5">
+          {league?.name}
+        </Typography>
 
-      {league && (
-        <>
-          <Typography component={'div'} variant="h5">
-            {league?.name}
-          </Typography>
+        <Chip label={`${league.leagueAgeType} AGE`} />
+        <Chip label={league.leagueType} />
 
-          <Chip label={`${league.leagueAgeType} AGE`} />
-          <Chip label={league.leagueType} />
-
-          <Box mt={5}>
-            <Tabs
-              value={tabSelected}
-              setValue={(value: number) => setTabSelected(value)}
-              panelOptions={panelOptions}
-            />
-          </Box>
-        </>
-      )}
-    </Box>
+        <Box mt={5}>
+          <Tabs
+            value={tabSelected}
+            setValue={(value: number) => setTabSelected(value)}
+            panelOptions={panelOptions}
+          />
+        </Box>
+      </Box>
+    </LeagueContext.Provider>
   );
 };
 
