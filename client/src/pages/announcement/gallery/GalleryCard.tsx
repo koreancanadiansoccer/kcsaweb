@@ -123,7 +123,6 @@ const UnstyledGalleryCard: FunctionComponent<GalleryProps> = ({ className }) => 
         </Grid>
       ))}
     </Grid>
-    // </Box>
   );
 };
 
