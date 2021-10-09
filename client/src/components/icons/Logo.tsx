@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
 // Default KCSA Logo
-export const Logo = () => {
+export const Logo: React.FC = () => {
   return (
     <svg
       width="71"

@@ -1,39 +1,40 @@
-import React from "react";
-import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import AppBar from "@material-ui/core/AppBar";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
-import SportsSoccerIcon from "@material-ui/icons/SportsSoccer";
-import GroupIcon from "@material-ui/icons/Group";
-import AnnouncementIcon from "@material-ui/icons/Announcement";
+import React from 'react';
+import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
+import AppBar from '@material-ui/core/AppBar';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Toolbar from '@material-ui/core/Toolbar';
+import List from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import SportsSoccerIcon from '@material-ui/icons/SportsSoccer';
+import GroupIcon from '@material-ui/icons/Group';
+import AnnouncementIcon from '@material-ui/icons/Announcement';
 import {
   Switch,
   Route,
   useRouteMatch,
   Link as RouteLink,
-} from "react-router-dom";
-import { Announcements } from "./pages/Announcements";
+} from 'react-router-dom';
 
-import { Leagues } from "./pages/Leagues";
-import { LeagueDetail } from "./pages/LeagueDetail";
-import { Teams } from "./pages/Teams";
-import { TeamDetail } from "./pages/TeamDetail";
-import { CreateAnnouncements } from "../../components/admin_announcement/CreateAnnouncement";
+import { CreateAnnouncements } from '../../components/admin_announcement/CreateAnnouncement';
+
+import { Announcements } from './pages/Announcements';
+import { Leagues } from './pages/Leagues';
+import { LeagueDetail } from './pages/LeagueDetail';
+import { Teams } from './pages/Teams';
+import { TeamDetail } from './pages/TeamDetail';
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      display: "flex",
+      display: 'flex',
     },
     appBar: {
       zIndex: theme.zIndex.drawer + 1,
@@ -46,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) =>
       width: drawerWidth,
     },
     drawerContainer: {
-      overflow: "auto",
+      overflow: 'auto',
     },
     content: {
       flexGrow: 1,
@@ -56,7 +57,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 // Main Admin page container.
-export const Admin = () => {
+export const Admin: React.FC = () => {
   const classes = useStyles();
   const { path, url } = useRouteMatch();
 
@@ -98,11 +99,11 @@ export const Admin = () => {
             </ListItem>
 
             {/* Direct user to /teams */}
-            <ListItem component={RouteLink} to={`${url}/teams`} button>
+            <ListItem component={RouteLink} to={`${url}/clubs`} button>
               <ListItemIcon>
                 <GroupIcon />
               </ListItemIcon>
-              <ListItemText primary="Teams" />
+              <ListItemText primary="Clubs" />
             </ListItem>
 
             <ListItem component={RouteLink} to={`${url}/announcement`} button>
@@ -156,7 +157,7 @@ export const Admin = () => {
           </Route>
 
           {/* Render page for /teams */}
-          <Route exact path={`${url}/teams`}>
+          <Route exact path={`${url}/clubs`}>
             <Teams />
           </Route>
 
@@ -169,7 +170,7 @@ export const Admin = () => {
           </Route>
 
           {/* Render page for /team/{id} - a page for specific team} */}
-          <Route path={`${url}/teams/:id`}>
+          <Route path={`${url}/clubs/:id`}>
             <TeamDetail />
           </Route>
         </Switch>

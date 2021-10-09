@@ -1,6 +1,8 @@
-import { gql } from "@apollo/client";
-import { TEAM_FRAGMENT } from "./team.fragment";
-import { Team } from "../../types/team";
+import { gql } from '@apollo/client';
+
+import { Team } from '../../types/team';
+
+import { TEAM_FRAGMENT } from './team.fragment';
 
 export interface TeamQueryData {
   getTeam: Team;

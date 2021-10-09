@@ -4,23 +4,22 @@ import React, {
   ChangeEvent,
   useMemo,
   useEffect,
-} from "react";
-import { DialogProps } from "@material-ui/core/Dialog";
-import Box from "@material-ui/core/Box";
-import DialogActions from "@material-ui/core/DialogActions";
-import MenuItem from "@material-ui/core/MenuItem";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import Typography from "@material-ui/core/Typography";
+} from 'react';
+import { DialogProps } from '@material-ui/core/Dialog';
+import Box from '@material-ui/core/Box';
+import DialogActions from '@material-ui/core/DialogActions';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
 
-import { Modal } from "../../modal/Modal";
-import { Input } from "../../input/Input";
-import { Button } from "../../button/Button";
+import { Modal } from '../../modal/Modal';
+import { Input } from '../../input/Input';
+import { Button } from '../../button/Button';
+import { Select } from '../../select/Select';
+import { LeagueInput, leagueTypeOptions } from '../../../types/league';
+import { ageOptions } from '../../../types/age.enum';
+import { formatYear } from '../../../utils/format';
 
-import { LeagueInput, LeagueAgeType, LeagueType } from "../../../types/league";
-
-interface AddLeagueModalProp extends Pick<DialogProps, "open" | "onClose"> {
+interface AddLeagueModalProp extends Pick<DialogProps, 'open' | 'onClose'> {
   onAdd: (league: LeagueInput) => Promise<void>;
 }
 
@@ -34,9 +33,10 @@ export const AddLeagueModal: FunctionComponent<AddLeagueModalProp> = ({
 }) => {
   // Init state for new product.
   const [newLeague, setNewLeague] = useState<LeagueInput>({
-    name: "",
-    leagueAgeType: "",
-    leagueType: "",
+    name: 'KCSA',
+    leagueAgeType: '',
+    leagueType: '',
+    year: '',
     maxYellowCard: 0,
   });
 
@@ -45,6 +45,7 @@ export const AddLeagueModal: FunctionComponent<AddLeagueModalProp> = ({
       !!newLeague?.name &&
       !!newLeague?.leagueType &&
       !!newLeague?.leagueAgeType &&
+      !!newLeague?.year &&
       !!newLeague?.maxYellowCard,
     [newLeague]
   );
@@ -53,9 +54,10 @@ export const AddLeagueModal: FunctionComponent<AddLeagueModalProp> = ({
   useEffect(
     () =>
       setNewLeague({
-        name: "",
-        leagueAgeType: "",
-        leagueType: "",
+        name: '',
+        leagueAgeType: '',
+        leagueType: '',
+        year: '',
         maxYellowCard: 0,
       }),
     [open]
@@ -63,24 +65,39 @@ export const AddLeagueModal: FunctionComponent<AddLeagueModalProp> = ({
 
   return (
     <Modal open={open} onClose={onClose} title="Create New League">
-      <Box
-        display="flex"
-        justifyContent="space-evenly"
-        alignItems="start"
-        flexDirection="column"
-      >
+      <Box>
         <Typography variant="body1"> League Name</Typography>
-        <Input
-          label="Name"
-          placeholder="League name"
-          required
-          value={newLeague?.name}
-          fullWidth
-          onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-            setNewLeague({ ...newLeague, name: evt.target.value });
-          }}
-        />
 
+        <Box display="flex" justifyContent="space-around">
+          <Input
+            label="Name"
+            placeholder="League name"
+            required
+            value={newLeague?.name}
+            fullWidth
+            onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+              setNewLeague({ ...newLeague, name: evt.target.value });
+            }}
+          />
+
+          <Input
+            label="Year"
+            required
+            value={newLeague?.year}
+            fullWidth
+            onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+              setNewLeague({
+                ...newLeague,
+                year: formatYear(evt.target.value),
+              });
+            }}
+          />
+        </Box>
+      </Box>
+
+      <Divider />
+
+      <Box my={2}>
         <Typography variant="body1"> League Age Group</Typography>
         <Box
           display="flex"
@@ -88,95 +105,76 @@ export const AddLeagueModal: FunctionComponent<AddLeagueModalProp> = ({
           justifyContent="space-between"
           width="100%"
         >
-          <Input
-            label="Custom League Age"
-            placeholder="League name"
-            value={newLeague?.leagueAgeType}
-            fullWidth
-            onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-              setNewLeague({ ...newLeague, leagueAgeType: evt.target.value });
-            }}
-          />
-
-          <Box mx={1} width="50%">
-            <FormControl fullWidth variant="outlined">
-              <InputLabel id="league-select-label">League Age</InputLabel>
-              <Select
-                labelId="league-select-label"
-                id="demo-simple-select"
-                value={newLeague.leagueAgeType}
-                onChange={(evt) => {
-                  setNewLeague({
-                    ...newLeague,
-                    leagueAgeType: evt.target.value as LeagueAgeType,
-                  });
-                }}
-              >
-                <MenuItem value={LeagueAgeType.OPEN}>
-                  {LeagueAgeType.OPEN}
-                </MenuItem>
-                <MenuItem value={LeagueAgeType.SENIOR}>
-                  {LeagueAgeType.SENIOR}
-                </MenuItem>
-              </Select>
-            </FormControl>
+          <Box width="50%" my={2}>
+            <Select
+              options={ageOptions}
+              isClearable
+              createable
+              handleChange={(option: any) => {
+                setNewLeague({ ...newLeague, leagueAgeType: option?.value });
+              }}
+            />
           </Box>
         </Box>
-
-        <Box my={3}>
-          <Typography variant="body1">League Type</Typography>
-          <FormControl fullWidth variant="outlined">
-            <InputLabel id="league-select-label">Type</InputLabel>
-            <Select
-              labelId="league-select-label"
-              id="demo-simple-select"
-              value={newLeague.leagueType}
-              onChange={(evt) => {
-                setNewLeague({
-                  ...newLeague,
-                  leagueType: evt.target.value as LeagueType,
-                });
-              }}
-            >
-              <MenuItem value={LeagueType.INDOOR}>{LeagueType.INDOOR}</MenuItem>
-              <MenuItem value={LeagueType.OUTDOOR}>
-                {LeagueType.OUTDOOR}
-              </MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-
-        <Box>
-          <Typography variant="body1">
-            Accumulated Yellow card for suspension
-          </Typography>
-
-          <Input
-            label="Max YellowCard"
-            placeholder="Yellowcard"
-            required
-            value={newLeague?.maxYellowCard}
-            type="number"
-            fullWidth
-            onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-              setNewLeague({
-                ...newLeague,
-                maxYellowCard: parseInt(evt.target.value, 10),
-              });
-            }}
-          />
-        </Box>
-
-        <DialogActions>
-          <Button
-            disabled={!isValid}
-            size="large"
-            onClick={() => void onAdd(newLeague)}
-          >
-            Create
-          </Button>
-        </DialogActions>
       </Box>
+
+      <Divider />
+
+      <Box my={2}>
+        <Typography variant="body1"> League Type</Typography>
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          width="100%"
+        >
+          <Box width="50%" my={2}>
+            <Select
+              options={leagueTypeOptions}
+              isClearable
+              createable
+              handleChange={(option: any) => {
+                setNewLeague({ ...newLeague, leagueType: option?.value });
+              }}
+            />
+          </Box>
+        </Box>
+      </Box>
+
+      <Divider />
+
+      <Box my={2}>
+        <Typography variant="body1">
+          Accumulated Yellow card for suspension
+        </Typography>
+
+        <Input
+          label="Max YellowCard"
+          placeholder="Yellowcard"
+          required
+          value={newLeague?.maxYellowCard}
+          type="number"
+          fullWidth
+          onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+            setNewLeague({
+              ...newLeague,
+              maxYellowCard: parseInt(evt.target.value, 10),
+            });
+          }}
+        />
+      </Box>
+
+      <Divider />
+
+      <DialogActions>
+        <Button
+          disabled={!isValid}
+          size="large"
+          onClick={() => void onAdd(newLeague)}
+        >
+          Create
+        </Button>
+      </DialogActions>
     </Modal>
   );
 };

@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import Box from "@material-ui/core/Box";
+import React from 'react';
+import styled from 'styled-components';
+import Box from '@material-ui/core/Box';
 
 const Divider = styled.div`
   width: 4px;
@@ -17,7 +17,7 @@ const Divider = styled.div`
   float: left;
 `;
 
-export const VerticalDivider = () => {
+export const VerticalDivider: React.FC = () => {
   return (
     <Box>
       <Divider />

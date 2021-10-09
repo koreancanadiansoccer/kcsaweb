@@ -6,10 +6,11 @@
   "scripts": {
     "start": "node dist/app.js",
     "client": "cd client && npm start",
-    "server": "nodemon --delay 500ms server/app.ts",
+    "server": "ts-node-dev --tree-kill --exit-child server/app.ts",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "tsc -p .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint client/src && eslint server"
   },
   "repository": {
     "type": "git",
@@ -30,9 +31,17 @@
     "@types/node": "^16.9.1",
     "@types/redis": "^2.8.32",
     "@types/validator": "^13.6.3",
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
     "concurrently": "^6.2.1",
+    "eslint": "^7.32.0",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-react": "^7.26.1",
+    "husky": "^4.3.8",
+    "lint-staged": "^11.2.0",
     "nodemon": "^2.0.12",
     "ts-node": "^10.2.1",
+    "ts-node-dev": "^1.1.8",
     "typescript": "^4.4.2"
   },
   "dependencies": {
@@ -55,5 +64,16 @@
     "sequelize": "^6.6.5",
     "sequelize-typescript": "^2.1.0",
     "uuid": "^8.3.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.{ts,tsx}": [
+      "eslint --fix",
+      "git add"
+    ]
   }
 }

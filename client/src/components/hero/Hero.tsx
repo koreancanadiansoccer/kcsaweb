@@ -1,23 +1,18 @@
-import React, { FunctionComponent, useState, useEffect, useMemo } from "react";
-import { withTheme } from "@material-ui/core/styles";
-import styled from "styled-components";
-import Box from "@material-ui/core/Box";
-import Container from "@material-ui/core/Container";
+import React, { FunctionComponent, useState, useEffect, useMemo } from 'react';
+import { withTheme } from '@material-ui/core/styles';
+import styled from 'styled-components';
+import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
+import { useQuery } from '@apollo/client';
+import { map } from 'lodash';
 
-import { useQuery } from "@apollo/client";
-import { parseError } from "../../graphql/client";
-
-import { map } from "lodash";
-
-import HeroImage from "../../assets/hero.png";
-import HeroMainImage from "../../assets/demo_hero_main.png";
-import HeroSubImage from "../../assets/demo_hero_sub.png";
-
-import { VerticalDivider } from "../divider/VerticalDivider";
-
-import { GET_HERO_ANNOUNCEMENTS } from "../../graphql/announcement/get_announcements.query";
-
-import { Announcement } from "../../types/announcement";
+import { parseError } from '../../graphql/client';
+import HeroImage from '../../assets/hero.png';
+import HeroMainImage from '../../assets/demo_hero_main.png';
+import HeroSubImage from '../../assets/demo_hero_sub.png';
+import { VerticalDivider } from '../divider/VerticalDivider';
+import { GET_HERO_ANNOUNCEMENTS } from '../../graphql/announcement/get_announcements.query';
+import { Announcement } from '../../types/announcement';
 
 interface HomeProps {
   className?: string;
@@ -34,7 +29,7 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
   const announcementDataQuery = useQuery(GET_HERO_ANNOUNCEMENTS);
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   // Pull announcement data.
   useEffect(() => {

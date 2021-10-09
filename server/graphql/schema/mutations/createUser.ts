@@ -1,16 +1,14 @@
-import { GraphQLString, GraphQLNonNull } from "graphql";
+import { GraphQLString, GraphQLNonNull } from 'graphql';
+// password encryption
+import { hash } from 'bcryptjs';
 
-import { UserType } from "../../types/user";
+import { UserType } from '../../types/user';
 import {
   User,
   AccountType,
   AccountStatus,
-} from "../../../db/models/user.model";
-
-import { sendEmail } from "../../../utils/sendemail";
-
-// password encryption
-import { hash } from "bcryptjs";
+} from '../../../db/models/user.model';
+import { sendEmail } from '../../../utils/sendemail';
 
 // defined custom type to make temporary object
 interface Args {
@@ -31,7 +29,7 @@ export const createUser = {
     type: { type: GraphQLString },
     status: { type: GraphQLString },
   },
-  async resolve(parent: object, args: Args) {
+  async resolve(parent: object, args: Args): Promise<User | undefined> {
     try {
       // check if all required forms exist or not
       if (
@@ -40,7 +38,7 @@ export const createUser = {
         !args.email.length ||
         !args.phoneNumber.length
       ) {
-        throw "You have to enter all required fields!";
+        throw 'You have to enter all required fields!';
       } else {
         args.password = args.password.trim();
         args.email = args.email.trim();
@@ -63,10 +61,10 @@ export const createUser = {
 
         return user;
       } else {
-        throw "You have already registerd!";
+        throw 'You have already registerd!';
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   },
 };

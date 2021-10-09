@@ -1,108 +1,165 @@
-import React, { FunctionComponent, useMemo, useState } from "react";
-import { withTheme } from "@material-ui/core/styles";
-import styled from "styled-components";
-import Box from "@material-ui/core/Box";
-import AddIcon from "@material-ui/icons/Add";
-import { useQuery } from "@apollo/client";
-import map from "lodash/map";
+import React, {
+  FunctionComponent,
+  useState,
+  useEffect,
+  useCallback,
+  useContext,
+} from 'react';
+import { withTheme } from '@material-ui/core/styles';
+import styled from 'styled-components';
+import Box from '@material-ui/core/Box';
+import AddIcon from '@material-ui/icons/Add';
+import { useQuery, useMutation } from '@apollo/client';
+import { Typography } from '@material-ui/core';
 
-import { League } from "../../types/league";
-import { Team, LeagueTeam } from "../../types/team";
+import { LeagueTeam } from '../../types/team';
+import {
+  UPDATE_LEAGUE,
+  UpdateLeagueResult,
+  UpdateLeagueInput,
+} from '../../graphql/league/update_league.mutation';
 import {
   GET_TEAMS,
   TeamsQueryData,
   TeamsQueryVariable,
-} from "../../graphql/teams/get_teams.query";
-import { Table } from "../table/Table";
-import { AddLeagueTeamModal } from "./modals/AddLeagueTeamModal";
-import { Button } from "../button/Button";
+} from '../../graphql/teams/get_teams.query';
+import { parseError } from '../../graphql/client';
+import { Table } from '../table/Table';
+import { Button } from '../button/Button';
+import { LeagueContext } from '../../context/league';
+
+import { AddLeagueTeamModal } from './modals/AddLeagueTeamModal';
+import { AddLeaguePlayersModal } from './modals/AddLeaguePlayersModal';
 
 const tableColumns = [
-  { title: "Name", field: "name" },
-  { title: "Age", field: "teamAgeType" },
-  { title: "Played", field: "played" },
-  { title: "Gs", field: "goalScored" },
-  { title: "GCs ", field: "goalConceded" },
-  { title: "Win", field: "win" },
-  { title: "Loss", field: "loss" },
-  { title: "Created at", field: "createdAt" },
+  { title: 'Name', field: 'name' },
+  { title: 'Age', field: 'teamAgeType' },
+  { title: 'Played', field: 'played' },
+  { title: 'Gs', field: 'goalScored' },
+  { title: 'GCs ', field: 'goalConceded' },
+  { title: 'Win', field: 'win' },
+  { title: 'Loss', field: 'loss' },
+  { title: 'Created at', field: 'createdAt' },
 ];
 
-interface LeagueTeamsProps {
-  league: League;
-  updateLeague: (newTeams: Team[]) => Promise<void>;
+enum MODAL_TYPE {
+  CREATE_TEAM = 'CREATE_TEAM',
+  ADD_PLAYERS = 'ADD_PLAYERS',
 }
 
 /**
  * Show and allow update to teams associated with league.
  */
-const UnstyledLeagueTeams: FunctionComponent<LeagueTeamsProps> = ({
-  league,
-  updateLeague,
-}) => {
-  const [leagueTeams] = useState<LeagueTeam[]>(league.leagueTeams);
+const UnstyledLeagueTeams: FunctionComponent = () => {
+  const { league: origLeague, setLeague: setOrigLeague } = useContext(
+    LeagueContext
+  );
 
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [leagueTeams, setLeagueTeams] = useState<LeagueTeam[]>(
+    origLeague.leagueTeams
+  );
+
+  const [selectedTeam, setSelectedTeam] = useState<LeagueTeam>();
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [openModal, setOpenModal] = useState<MODAL_TYPE | null>(null);
 
   // Get all teams.
   const teamQuery = useQuery<TeamsQueryData, TeamsQueryVariable>(GET_TEAMS, {
-    variables: { leagueAgeType: league.leagueAgeType },
+    variables: { leagueAgeType: origLeague.leagueAgeType },
   });
 
+  // Update team.
+  const [updateLeagueMutation] = useMutation<
+    UpdateLeagueResult,
+    UpdateLeagueInput
+  >(UPDATE_LEAGUE);
+  useEffect(() => setLeagueTeams(origLeague.leagueTeams), [origLeague]);
+
   /**
-   * Set table data.
+   * Update league
+   * @param updateLeague
    */
-  const tableData: Team[] = useMemo(() => {
-    return map(leagueTeams, (team) => {
-      return { ...team, teamCount: leagueTeams?.length };
-    });
-  }, [leagueTeams]);
+  const updateLeague = useCallback(
+    async (newTeams) => {
+      setLoading(true);
+
+      try {
+        const res = await updateLeagueMutation({
+          variables: {
+            league: origLeague,
+            newTeams: newTeams,
+          },
+        });
+
+        if (res.data) {
+          setOrigLeague(res.data.updateLeague);
+          setOpenModal(null);
+        }
+      } catch (e) {
+        setError(parseError(e));
+      }
+    },
+    [origLeague, updateLeagueMutation]
+  );
+
+  if (!teamQuery?.data) {
+    return <Box>Loading</Box>;
+  }
 
   return (
     <>
-      {teamQuery.data && !teamQuery.loading && (
+      {/* Create new teams */}
+      {openModal === MODAL_TYPE.CREATE_TEAM && (
         <AddLeagueTeamModal
-          open={openModal}
-          age={league.leagueAgeType}
+          open={openModal === MODAL_TYPE.CREATE_TEAM}
+          age={origLeague.leagueAgeType}
           teams={teamQuery.data.getTeams}
           leagueTeams={leagueTeams}
-          onClose={() => setOpenModal(false)}
+          onClose={() => setOpenModal(null)}
           updateLeague={(newTeams) => {
             void updateLeague(newTeams);
-            setOpenModal(false);
           }}
         />
       )}
 
-      <Box>
-        <Box>Teams </Box>
+      {/* Adding players to league team */}
+      {openModal === MODAL_TYPE.ADD_PLAYERS && selectedTeam && (
+        <AddLeaguePlayersModal
+          fullScreen={true}
+          selectedTeamId={selectedTeam.id}
+          open={openModal === MODAL_TYPE.ADD_PLAYERS}
+          onClose={() => setOpenModal(null)}
+        />
+      )}
 
+      <Box>
+        <Typography>
+          Clubs - Click club to add active players for the league.
+        </Typography>
         <Box my={3}>
           <Button
             startIcon={<AddIcon />}
-            onClick={() => setOpenModal(true)}
+            onClick={() => setOpenModal(MODAL_TYPE.CREATE_TEAM)}
             color="secondary"
           >
-            Add Teams
+            Add Clubs
           </Button>
         </Box>
 
         <Table
-          title="Teams registered"
+          title="Clubs registered"
           columns={tableColumns}
-          data={tableData}
+          data={leagueTeams}
           onRowClick={(evt, data) => {
             if (data?.id) {
-              // history.push(`/admin/team/${data.id}`);
+              setSelectedTeam(data);
+              setOpenModal(MODAL_TYPE.ADD_PLAYERS);
             }
           }}
           options={{
             pageSize: 10,
-            rowStyle: (data) => {
-              return data.isActive
-                ? { background: "white" }
-                : { background: "#EEEEEE" };
-            },
           }}
         />
       </Box>

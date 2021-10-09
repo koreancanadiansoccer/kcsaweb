@@ -1,4 +1,4 @@
-import { LEAGUE_TEAM_FRAGMENT } from "../teams/team.fragment";
+import { LEAGUE_TEAM_FRAGMENT } from '../teams/team.fragment';
 
 export const LEAGUE_FRAGMENT = `
   id
@@ -6,8 +6,8 @@ export const LEAGUE_FRAGMENT = `
   isActive
   leagueAgeType
   leagueType
+  year
   maxYellowCard
-  createdAt
   leagueTeams {
     ${LEAGUE_TEAM_FRAGMENT}
   }

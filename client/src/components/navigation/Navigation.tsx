@@ -1,18 +1,19 @@
-import React, { FunctionComponent, useContext } from "react";
-import Container from "@material-ui/core/Container";
-import Box from "@material-ui/core/Box";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import { withTheme } from "@material-ui/core/styles";
-import styled from "styled-components";
-import { Link as RouteLink } from "react-router-dom";
+import React, { FunctionComponent, useContext } from 'react';
+import Container from '@material-ui/core/Container';
+import Box from '@material-ui/core/Box';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import { withTheme } from '@material-ui/core/styles';
+import styled from 'styled-components';
+import { Link as RouteLink } from 'react-router-dom';
 
-import { Button } from "../button/Button";
-import { Logo } from "../icons/Logo";
-import { AboutNav } from "./components/AboutNav";
-import { TeamsNav } from "./components/TeamsNav";
-import { ViewerConext } from "../../context/homeViewer";
-import { AnnouncementNav } from "./components/Announcement";
+import { Button } from '../button/Button';
+import { Logo } from '../icons/Logo';
+import { ViewerConext } from '../../context/homeViewer';
+
+import { AboutNav } from './components/AboutNav';
+import { TeamsNav } from './components/TeamsNav';
+import { AnnouncementNav } from './components/Announcement';
 
 interface NavigationProps {
   className?: string;
@@ -54,19 +55,19 @@ const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
 
               <Box ml="auto" display="flex">
                 {viewer?.user && viewer?.user?.isAdmin && (
-                  <Button component={RouteLink} to={"/admin"} color="secondary">
+                  <Button component={RouteLink} to={'/admin'} color="secondary">
                     Admin Panel
                   </Button>
                 )}
 
                 {viewer?.user && !viewer?.user?.isAdmin && (
-                  <Button component={RouteLink} to={"/login"} color="secondary">
+                  <Button component={RouteLink} to={'/login'} color="secondary">
                     Update Club
                   </Button>
                 )}
 
                 {!viewer?.user && (
-                  <Button component={RouteLink} to={"/login"} color="secondary">
+                  <Button component={RouteLink} to={'/login'} color="secondary">
                     Team Login
                   </Button>
                 )}
