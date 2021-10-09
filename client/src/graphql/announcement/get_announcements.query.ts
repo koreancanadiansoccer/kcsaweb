@@ -1,5 +1,6 @@
-import { gql } from "@apollo/client";
-import { Announcement } from "../../types/announcement";
+import { gql } from '@apollo/client';
+
+import { Announcement } from '../../types/announcement';
 
 export interface AnnouncementsQueryData {
   getAnnouncements: Announcement[];

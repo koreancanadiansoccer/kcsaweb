@@ -1,21 +1,18 @@
-import React, { FunctionComponent, useState, useEffect, useMemo } from "react";
-import { withTheme } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import AddIcon from "@material-ui/icons/Add";
-import styled from "styled-components";
-import { useQuery } from "@apollo/client";
-import Box from "@material-ui/core/Box";
-import { useHistory } from "react-router-dom";
-import { map } from "lodash";
+import React, { FunctionComponent, useState, useEffect, useMemo } from 'react';
+import { withTheme } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import AddIcon from '@material-ui/icons/Add';
+import styled from 'styled-components';
+import { useQuery } from '@apollo/client';
+import Box from '@material-ui/core/Box';
+import { map } from 'lodash';
+import { useHistory, useRouteMatch, Link as RouteLink } from 'react-router-dom';
 
-import { useRouteMatch, Link as RouteLink } from "react-router-dom";
-
-import { Button } from "../../../components/button/Button";
-import { Table } from "../../../components/table/Table";
-
-import { parseError } from "../../../graphql/client";
-import { Announcement } from "../../../types/announcement";
-import { GET_ANNOUNCEMENTS } from "../../../graphql/announcement/get_announcements.query";
+import { Button } from '../../../components/button/Button';
+import { Table } from '../../../components/table/Table';
+import { parseError } from '../../../graphql/client';
+import { Announcement } from '../../../types/announcement';
+import { GET_ANNOUNCEMENTS } from '../../../graphql/announcement/get_announcements.query';
 
 interface AnnouncementProps {
   className?: string;
@@ -23,11 +20,11 @@ interface AnnouncementProps {
 
 // left out the content because it was too long
 const tableColumns = [
-  { title: "Title", field: "title" },
-  { title: "Subtitle", field: "subtitle" },
-  { title: "Show On Homepage", field: "showOnHomepage" },
-  { title: "Image URL", field: "imageURL" },
-  { title: "Created", field: "createdAt" },
+  { title: 'Title', field: 'title' },
+  { title: 'Subtitle', field: 'subtitle' },
+  { title: 'Show On Homepage', field: 'showOnHomepage' },
+  { title: 'Image URL', field: 'imageURL' },
+  { title: 'Created', field: 'createdAt' },
 ];
 
 /**
@@ -44,7 +41,7 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
   const announcementDataQuery = useQuery(GET_ANNOUNCEMENTS);
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const history = useHistory();
 
   // Pull announcement data.
@@ -101,8 +98,8 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
             pageSize: 10,
             rowStyle: (data) => {
               return data.isActive
-                ? { background: "white" }
-                : { background: "#EEEEEE" };
+                ? { background: 'white' }
+                : { background: '#EEEEEE' };
             },
           }}
         />

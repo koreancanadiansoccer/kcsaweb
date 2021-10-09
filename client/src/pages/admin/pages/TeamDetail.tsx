@@ -103,7 +103,6 @@ export const TeamDetail = withTheme(styled(UnstyledTeamDetail)`
   .MuiTabs-root {
     background-color: white;
   }
-
   .MuiTabs-indicator {
     height: 0.25rem;
   }

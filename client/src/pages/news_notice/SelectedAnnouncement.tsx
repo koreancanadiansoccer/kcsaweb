@@ -1,27 +1,23 @@
-import React, { FunctionComponent, useState, useEffect } from "react";
-
-import styled from "styled-components";
-import { parseError } from "../../graphql/client";
-import { useParams } from "react-router";
-
-import { useQuery } from "@apollo/client";
-
+import React, { FunctionComponent, useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { useParams } from 'react-router';
+import { useQuery } from '@apollo/client';
 import ReactHtmlParser, {
   convertNodeToElement,
   processNodes,
-} from "react-html-parser";
+} from 'react-html-parser';
+import Typography from '@material-ui/core/Typography';
+import { withTheme } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
+import Paper from '@material-ui/core/Paper';
 
+import { Announcement } from '../../types/announcement';
 import {
   GET_ANNOUNCEMENT,
   AnnouncementQueryData,
   AnnouncementQueryVariable,
-} from "../../graphql/announcement/get_announcement.query";
-
-import { Announcement } from "../../types/announcement";
-import Typography from "@material-ui/core/Typography";
-import { withTheme } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
-import Paper from "@material-ui/core/Paper";
+} from '../../graphql/announcement/get_announcement.query';
+import { parseError } from '../../graphql/client';
 
 interface AnnouncementProps {
   className?: string;
@@ -42,7 +38,7 @@ const UnstyledSelectedAnnouncement: FunctionComponent<AnnouncementProps> = (
   const [announcement, setAnnouncement] = useState<Announcement>();
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   useEffect(() => {
     setLoading(announcementQuery.loading);

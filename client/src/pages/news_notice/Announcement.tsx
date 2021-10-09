@@ -1,25 +1,24 @@
-import React, { FunctionComponent, useState, useEffect, useMemo } from "react";
-import { withTheme } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
-import styled from "styled-components";
-import { useQuery } from "@apollo/client";
-import { useHistory } from "react-router-dom";
-import { map } from "lodash";
+import React, { FunctionComponent, useState, useEffect, useMemo } from 'react';
+import { withTheme } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
+import styled from 'styled-components';
+import { useQuery } from '@apollo/client';
+import { useHistory } from 'react-router-dom';
+import { map } from 'lodash';
+import { scroller } from 'react-scroll';
 
-import { Table } from "../../components/table/Table";
-import { Announcement } from "../../types/announcement";
-import { GET_ANNOUNCEMENTS } from "../../graphql/announcement/get_announcements.query";
-import { parseError } from "../../graphql/client";
-
-import { scroller } from "react-scroll";
+import { Table } from '../../components/table/Table';
+import { Announcement } from '../../types/announcement';
+import { GET_ANNOUNCEMENTS } from '../../graphql/announcement/get_announcements.query';
+import { parseError } from '../../graphql/client';
 
 interface AnnouncementProps {
   className?: string;
 }
 
 const tableColumns = [
-  { title: "Title", field: "title" },
-  { title: "Date Posted", field: "createdAt" },
+  { title: 'Title', field: 'title' },
+  { title: 'Date Posted', field: 'createdAt' },
 ];
 
 /**
@@ -34,7 +33,7 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
   const announcementDataQuery = useQuery(GET_ANNOUNCEMENTS);
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const history = useHistory();
 
   // Pull announcement data.
@@ -69,7 +68,7 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
           data={tableData}
           onRowClick={(evt, data) => {
             history.push(`/announcement/${data?.id}`);
-            scroller.scrollTo("test", {
+            scroller.scrollTo('test', {
               smooth: false,
               offset: -150,
               duration: 500,
@@ -79,8 +78,8 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
             pageSize: 10,
             rowStyle: (data) => {
               return data.isActive
-                ? { background: "white" }
-                : { background: "#EEEEEE" };
+                ? { background: 'white' }
+                : { background: '#EEEEEE' };
             },
           }}
         />

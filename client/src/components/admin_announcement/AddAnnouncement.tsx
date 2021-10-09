@@ -4,27 +4,24 @@ import React, {
   useState,
   useMemo,
   ChangeEvent,
-} from "react";
+} from 'react';
+import { withTheme } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
+import styled from 'styled-components';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { Editor } from 'react-draft-wysiwyg';
+import { convertToRaw, EditorState } from 'draft-js';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import draftToHtml from 'draftjs-to-html';
+import { useHistory } from 'react-router-dom';
 
-import { withTheme } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
-import styled from "styled-components";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { Editor } from "react-draft-wysiwyg";
-import { convertToRaw, EditorState } from "draft-js";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import draftToHtml from "draftjs-to-html";
-import { ImgDropzone } from "../dropzone/DropZone";
-
-import { useHistory } from "react-router-dom";
-
-import { Button } from "../button/Button";
-
-import { AnnouncementInput } from "../../types/announcement";
+import { ImgDropzone } from '../dropzone/DropZone';
+import { Button } from '../button/Button';
+import { AnnouncementInput } from '../../types/announcement';
 
 interface AddAnnouncementProps {
   className?: string;
@@ -42,13 +39,13 @@ const UnstyledAddAnnouncement: FunctionComponent<AddAnnouncementProps> = ({
     EditorState.createEmpty()
   );
   const [file, setFile] = useState<File>();
-  const [fileLink, setFileLink] = useState("");
+  const [fileLink, setFileLink] = useState('');
 
   const [newAnnouncement, setNewAnnouncement] = useState<AnnouncementInput>({
-    title: "",
-    subtitle: "",
-    content: "",
-    imageURL: "",
+    title: '',
+    subtitle: '',
+    content: '',
+    imageURL: '',
     showOnHomepage: false,
   });
 
@@ -65,10 +62,10 @@ const UnstyledAddAnnouncement: FunctionComponent<AddAnnouncementProps> = ({
   useEffect(
     () =>
       setNewAnnouncement({
-        title: "",
-        subtitle: "",
-        content: "",
-        imageURL: "",
+        title: '',
+        subtitle: '',
+        content: '',
+        imageURL: '',
         showOnHomepage: false,
       }),
     []
@@ -143,15 +140,15 @@ const UnstyledAddAnnouncement: FunctionComponent<AddAnnouncementProps> = ({
               }}
               toolbar={{
                 options: [
-                  "inline",
-                  "blockType",
-                  "fontSize",
-                  "list",
-                  "textAlign",
-                  "history",
-                  "embedded",
-                  "emoji",
-                  "image",
+                  'inline',
+                  'blockType',
+                  'fontSize',
+                  'list',
+                  'textAlign',
+                  'history',
+                  'embedded',
+                  'emoji',
+                  'image',
                 ],
                 inline: { inDropdown: true },
                 list: { inDropdown: true },

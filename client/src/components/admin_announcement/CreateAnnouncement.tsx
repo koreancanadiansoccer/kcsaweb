@@ -1,13 +1,12 @@
-import React, { FunctionComponent } from "react";
-import { withTheme } from "@material-ui/core/styles";
+import React, { FunctionComponent } from 'react';
+import { withTheme } from '@material-ui/core/styles';
+import styled from 'styled-components';
+import { useMutation } from '@apollo/client';
 
-import styled from "styled-components";
-import { useMutation } from "@apollo/client";
+import { CREATE_ANNOUNCEMENT } from '../../graphql/announcement/create_announcement.mutation';
+import { Announcement, AnnouncementInput } from '../../types/announcement';
 
-import { AddAnnouncement } from "./AddAnnouncement";
-import { CREATE_ANNOUNCEMENT } from "../../graphql/announcement/create_announcement.mutation";
-import { AnnouncementInput } from "../../types/announcement";
-import { Announcement } from "../../types/announcement";
+import { AddAnnouncement } from './AddAnnouncement';
 
 interface AnnouncementProps {
   className?: string;
