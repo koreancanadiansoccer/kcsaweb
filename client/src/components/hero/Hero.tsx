@@ -60,9 +60,6 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
     });
   }, [announcements]);
 
-  console.log(announcementsData[0]?.title);
-  console.log(announcementsData[1]?.subtitle);
-  console.log(announcementsData[2]?.subtitle);
   return (
     <Box className={className}>
       <Box className="hero" display="flex" alignItems="center">

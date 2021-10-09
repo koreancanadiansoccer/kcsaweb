@@ -85,7 +85,7 @@ const UnstyledAddAnnouncement: FunctionComponent<AddAnnouncementProps> = ({
     <Box className={className}>
       <Box display="flex">
         <Paper className="announcement-paper">
-          <Box className="announcement-title">
+          <Box mb={4}>
             <Typography variant="h5">Announcement Form</Typography>
           </Box>
 
@@ -245,10 +245,6 @@ export const AddAnnouncement = withTheme(styled(UnstyledAddAnnouncement)`
   .editorClassName {
     border: 1px solid rgba(142, 142, 147, 0.4);
     height: 25rem;
-  }
-
-  .announcement-title {
-    margin-bottom: 2rem;
   }
 
   .editorClassName figure {
