@@ -1,20 +1,19 @@
 import { gql } from "@apollo/client";
-import { AnnouncementImage } from "../../types/announcement_image";
 
 export interface AnnouncementData {
   title: string;
   subtitle: string;
   content: string;
+  imageURL?: string;
   showOnHomepage?: boolean;
-  images?: AnnouncementImage[];
 }
 
 export interface CreateAnnouncementDataInput {
   title: string;
   subtitle: string;
   content: string;
+  imageURL?: string;
   showOnHomepage?: boolean;
-  images?: AnnouncementImage[];
 }
 
 /**
@@ -25,17 +24,20 @@ export const CREATE_ANNOUNCEMENT = gql`
     $title: String!
     $subtitle: String!
     $content: String!
+    $imageURL: String!
     $showOnHomepage: Boolean
   ) {
     createAnnouncement(
       title: $title
       subtitle: $subtitle
       content: $content
+      imageURL: $imageURL
       showOnHomepage: $showOnHomepage
     ) {
       title
       subtitle
       content
+      imageURL
       showOnHomepage
       createdAt
     }

@@ -1,5 +1,4 @@
 import { gql } from "@apollo/client";
-import { AnnouncementImage } from "../../types/announcement_image";
 import { Announcement } from "../../types/announcement";
 
 export interface AnnouncementsQueryData {
@@ -14,6 +13,7 @@ export const GET_ANNOUNCEMENTS = gql`
       title
       subtitle
       content
+      imageURL
       showOnHomepage
       createdAt
     }
@@ -27,6 +27,7 @@ export const GET_HERO_ANNOUNCEMENTS = gql`
       title
       subtitle
       content
+      imageURL
       showOnHomepage
       createdAt
     }

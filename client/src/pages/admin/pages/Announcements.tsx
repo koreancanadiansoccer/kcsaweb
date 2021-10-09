@@ -26,6 +26,7 @@ const tableColumns = [
   { title: "Title", field: "title" },
   { title: "Subtitle", field: "subtitle" },
   { title: "Show On Homepage", field: "showOnHomepage" },
+  { title: "Image URL", field: "imageURL" },
   { title: "Created", field: "createdAt" },
 ];
 
@@ -67,7 +68,6 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
     return map(announcements, (announcement) => {
       return {
         ...announcement,
-        imagesCount: announcement.images?.length,
       };
     });
   }, [announcements]);

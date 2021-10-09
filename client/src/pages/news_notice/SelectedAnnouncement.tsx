@@ -18,22 +18,10 @@ import {
 } from "../../graphql/announcement/get_announcement.query";
 
 import { Announcement } from "../../types/announcement";
-import {
-  Typography,
-  withTheme,
-  Box,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Avatar,
-  Grid,
-  TablePagination,
-  TableFooter,
-} from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+import { withTheme } from "@material-ui/core/styles";
+import Box from "@material-ui/core/Box";
+import Paper from "@material-ui/core/Paper";
 
 interface AnnouncementProps {
   className?: string;
@@ -73,7 +61,13 @@ const UnstyledSelectedAnnouncement: FunctionComponent<AnnouncementProps> = (
 
   return (
     <>
-      <Box mt={5} display="flex" justifyContent="center" alignItems="center">
+      <Box
+        id="test"
+        mt={5}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
         <Paper style={{ width: 1250 }} className="announcement-paper">
           <Box my={5} mx={5}>
             <Box>

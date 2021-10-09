@@ -18,6 +18,7 @@ import { Editor } from "react-draft-wysiwyg";
 import { convertToRaw, EditorState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
+import { ImgDropzone } from "../dropzone/DropZone";
 
 import { useHistory } from "react-router-dom";
 
@@ -40,13 +41,15 @@ const UnstyledAddAnnouncement: FunctionComponent<AddAnnouncementProps> = ({
   const [editorState, setEditorState] = useState<EditorState>(
     EditorState.createEmpty()
   );
+  const [file, setFile] = useState<File>();
+  const [fileLink, setFileLink] = useState("");
 
   const [newAnnouncement, setNewAnnouncement] = useState<AnnouncementInput>({
     title: "",
     subtitle: "",
     content: "",
+    imageURL: "",
     showOnHomepage: false,
-    images: [],
   });
 
   const history = useHistory();
@@ -65,20 +68,18 @@ const UnstyledAddAnnouncement: FunctionComponent<AddAnnouncementProps> = ({
         title: "",
         subtitle: "",
         content: "",
+        imageURL: "",
         showOnHomepage: false,
       }),
     []
   );
 
-  const uploadImageCallBack = (file: File) => {
-    const imageObject = {
-      file: file,
-      localSrc: URL.createObjectURL(file),
-    };
+  const handleUploadChange = async (files: File[]) => {
+    // Dropzone uploader can accept multiple files.
+    const tempFile = files[0];
 
-    return new Promise((resolve, reject) => {
-      resolve({ data: { link: imageObject.localSrc } });
-    });
+    setFile(tempFile);
+    setFileLink(URL.createObjectURL(tempFile));
   };
 
   return (
@@ -157,17 +158,14 @@ const UnstyledAddAnnouncement: FunctionComponent<AddAnnouncementProps> = ({
                 textAlign: { inDropdown: true },
                 link: { inDropdown: true },
                 history: { inDropdown: true },
-                image: {
-                  uploadCallback: uploadImageCallBack,
-                  previewImage: true,
-                  inputAccept:
-                    "image/gif,image/jpeg,image/jpg,image/png,image/svg",
-                  defaultSize: {
-                    height: "500",
-                    width: "750",
-                  },
-                },
               }}
+            />
+          </Box>
+
+          <Box mb={3}>
+            <ImgDropzone
+              fileLink={fileLink}
+              setFile={(files: File[]) => handleUploadChange(files)}
             />
           </Box>
 

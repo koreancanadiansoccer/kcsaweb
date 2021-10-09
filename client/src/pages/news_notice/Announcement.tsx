@@ -11,6 +11,8 @@ import { Announcement } from "../../types/announcement";
 import { GET_ANNOUNCEMENTS } from "../../graphql/announcement/get_announcements.query";
 import { parseError } from "../../graphql/client";
 
+import { scroller } from "react-scroll";
+
 interface AnnouncementProps {
   className?: string;
 }
@@ -53,7 +55,6 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
     return map(announcements, (announcement) => {
       return {
         ...announcement,
-        imagesCount: announcement.images?.length,
       };
     });
   }, [announcements]);
@@ -68,6 +69,11 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
           data={tableData}
           onRowClick={(evt, data) => {
             history.push(`/announcement/${data?.id}`);
+            scroller.scrollTo("test", {
+              smooth: false,
+              offset: -150,
+              duration: 500,
+            });
           }}
           options={{
             pageSize: 10,

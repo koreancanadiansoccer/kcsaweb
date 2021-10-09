@@ -16,6 +16,7 @@ export const GET_ANNOUNCEMENT = gql`
       title
       subtitle
       content
+      imageURL
       showOnHomepage
       createdAt
     }
