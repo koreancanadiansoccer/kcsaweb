@@ -96,36 +96,34 @@ mutation {
 
 ```
 
-Stacks:
----
->TypeScript
->
->PostgreSQL
+## Stacks:
 
->**Backend:**
+> TypeScript
 >
->Express.js
+> PostgreSQL
+
+> **Backend:**
 >
->Sequelize & Sequelize-typescript
+> Express.js
 >
->Graphql
-
->**Front:**
->React
+> Sequelize & Sequelize-typescript
 >
->Material-UI for styling (Version 4).
+> Graphql
+
+> **Front:**
+> React
 >
->Apollo for graphql interaction to backend.
+> Material-UI for styling (Version 4).
+>
+> Apollo for graphql interaction to backend.
 
->**Cloud:**
->EC2 (TBD)
->S3
->SES
+> **Cloud:**
+> EC2 (TBD)
+> S3
+> SES
 
+## **Sequelize**
 
-
-**Sequelize**
----
 Generate seed file;
 `npx sequelize-cli seed:generate --name [name of seed file]`
 
@@ -141,5 +139,5 @@ Above will create migration file.
 
 **Troubleshooting**;
 If you run into issue on address in use;
-`sudo lsof -i :3000`
+`sudo lsof -i :5000`
 Grab PID -> `kill -9 {PID}`

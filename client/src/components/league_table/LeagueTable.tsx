@@ -1,14 +1,16 @@
-import React, { FunctionComponent, useEffect, useMemo } from "react";
-import Box from "@material-ui/core/Box";
-import Paper from "@material-ui/core/Paper";
-import { withTheme } from "@material-ui/core";
-import { useQuery } from "@apollo/client";
-import styled from "styled-components";
-import map from "lodash/map";
-import mapValues from "lodash/map";
+import React, { FunctionComponent, useEffect, useMemo } from 'react';
+import Box from '@material-ui/core/Box';
+import Paper from '@material-ui/core/Paper';
+import { withTheme } from '@material-ui/core';
+import { useQuery } from '@apollo/client';
+import styled from 'styled-components';
+import map from 'lodash/map';
 
-import { GET_USERS } from "../../graphql/users/get_users.query";
-import { HorizontalDivider } from "../divider/HorizontalDivider";
+import { GET_USERS } from '../../graphql/users/get_users.query';
+import { HorizontalDivider } from '../divider/HorizontalDivider';
+import { TableType } from '../../types/table_type';
+import { AgeEnums } from '../../types/age.enum';
+
 import {
   standingOpen,
   standingHeader,
@@ -17,14 +19,12 @@ import {
   standingSenior,
   scorerSenior,
   TableRow,
-} from "./sampleData";
-import { TableType } from "../../types/table_type";
-import { LeagueAgeType } from "../../types/league";
+} from './sampleData';
 
 interface LeagueTableProps {
   title: string;
   tableType: TableType;
-  leagueType: LeagueAgeType;
+  leagueType: AgeEnums;
   className?: string;
 }
 
@@ -46,18 +46,19 @@ const UnstyledLeagueTable: FunctionComponent<LeagueTableProps> = ({
   // Get table row data based on props.
   const tableRowData: TableRow[] = useMemo(() => {
     if (tableType === TableType.SCORER)
-      return leagueType === LeagueAgeType.SENIOR ? scorerSenior : scorerOpen;
-    return leagueType === LeagueAgeType.SENIOR ? standingSenior : standingOpen;
+      return leagueType === AgeEnums.SENIOR ? scorerSenior : scorerOpen;
+    return leagueType === AgeEnums.SENIOR ? standingSenior : standingOpen;
   }, [tableType, leagueType]);
 
   // Get table tile data based on props.
   const tableTitle = useMemo(() => {
-    if (tableType === TableType.SCORER) return "TOP SCORER";
-    return "TEAM TABLE";
+    if (tableType === TableType.SCORER) return 'TOP SCORER';
+    return 'TEAM TABLE';
   }, [tableType]);
 
   useEffect(() => {
     if (!loading) {
+      console.info('NOT LOADING');
     }
   }, [loading, data]);
 
@@ -84,7 +85,7 @@ const UnstyledLeagueTable: FunctionComponent<LeagueTableProps> = ({
             >
               {map(tableHeaderData, (headerText, idx) => {
                 const isLongField =
-                  headerText === "Club" || headerText === "Player";
+                  headerText === 'Club' || headerText === 'Player';
                 return (
                   <Box
                     key={`header-row-${idx}`}
@@ -107,8 +108,8 @@ const UnstyledLeagueTable: FunctionComponent<LeagueTableProps> = ({
                 py={0.75}
                 px={1}
               >
-                {mapValues(data, (property, key, idx) => {
-                  const isNameField = key === "name" || key === "club";
+                {map(data, (property, key, idx) => {
+                  const isNameField = key === 'name' || key === 'club';
                   return (
                     <Box
                       key={`table-data-${key}-${idx}`}

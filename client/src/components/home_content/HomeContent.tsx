@@ -1,16 +1,15 @@
-import React, { FunctionComponent, useState } from "react";
-import { withTheme } from "@material-ui/core/styles";
-import styled from "styled-components";
-import Box from "@material-ui/core/Box";
-import Container from "@material-ui/core/Container";
-import { motion } from "framer-motion";
+import React, { FunctionComponent, useState } from 'react';
+import { withTheme } from '@material-ui/core/styles';
+import styled from 'styled-components';
+import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
+import { motion } from 'framer-motion';
 
-import { LeagueTable } from "../league_table/LeagueTable";
-import { LeagueSelect } from "../league_select/LeagueSelect";
-import { LeagueAgeType } from "../../types/league";
-import { TableType } from "../../types/table_type";
-
-import MainContentImg from "../../assets/main_content.png";
+import { LeagueTable } from '../league_table/LeagueTable';
+import { LeagueSelect } from '../league_select/LeagueSelect';
+import { AgeEnums } from '../../types/age.enum';
+import { TableType } from '../../types/table_type';
+import MainContentImg from '../../assets/main_content.png';
 
 interface HomeContentProps {
   className?: string;
@@ -22,7 +21,7 @@ interface HomeContentProps {
 const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
   className,
 }) => {
-  const [league, setLeague] = useState<LeagueAgeType>(LeagueAgeType.OPEN);
+  const [league, setLeague] = useState<AgeEnums>(AgeEnums.OPEN);
 
   return (
     <Box my={5} className={className}>
@@ -44,19 +43,19 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
             >
               <LeagueSelect
                 title="OPEN"
-                selected={league === LeagueAgeType.OPEN}
-                onClick={() => setLeague(LeagueAgeType.OPEN)}
+                selected={league === AgeEnums.OPEN}
+                onClick={() => setLeague(AgeEnums.OPEN)}
               />
 
               <LeagueSelect
                 title="SENIOR"
-                selected={league === LeagueAgeType.SENIOR}
-                onClick={() => setLeague(LeagueAgeType.SENIOR)}
+                selected={league === AgeEnums.SENIOR}
+                onClick={() => setLeague(AgeEnums.SENIOR)}
               />
             </Box>
 
             {/* League table */}
-            {league === LeagueAgeType.OPEN && (
+            {league === AgeEnums.OPEN && (
               <motion.div
                 initial={{ opacity: 0, x: -50, y: -50 }}
                 animate={{ opacity: 1, x: 0, y: 0 }}
@@ -65,19 +64,19 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
                 {/* League table */}
                 <LeagueTable
                   tableType={TableType.STANDING}
-                  leagueType={LeagueAgeType.OPEN}
+                  leagueType={AgeEnums.OPEN}
                 />
                 {/* Score table */}
                 <Box mt={5}>
                   <LeagueTable
                     tableType={TableType.SCORER}
-                    leagueType={LeagueAgeType.OPEN}
+                    leagueType={AgeEnums.OPEN}
                   />
                 </Box>
               </motion.div>
             )}
 
-            {league === LeagueAgeType.SENIOR && (
+            {league === AgeEnums.SENIOR && (
               <motion.div
                 initial={{ opacity: 0, x: -50, y: -50 }}
                 animate={{ opacity: 1, x: 0, y: 0 }}
@@ -86,14 +85,14 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
                 {/* League table */}
                 <LeagueTable
                   tableType={TableType.STANDING}
-                  leagueType={LeagueAgeType.SENIOR}
+                  leagueType={AgeEnums.SENIOR}
                 />
 
                 {/* Score table */}
                 <Box mt={5}>
                   <LeagueTable
                     tableType={TableType.SCORER}
-                    leagueType={LeagueAgeType.SENIOR}
+                    leagueType={AgeEnums.SENIOR}
                   />
                 </Box>
               </motion.div>

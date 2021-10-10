@@ -1,20 +1,20 @@
-import React, { FunctionComponent } from "react";
-import Dropzone from "react-dropzone";
-import styled from "styled-components";
-import Typography from "@material-ui/core/Typography";
+import React, { FunctionComponent } from 'react';
+import Dropzone, { DropzoneRootProps } from 'react-dropzone';
+import styled from 'styled-components';
+import Typography from '@material-ui/core/Typography';
 
 // Setting border color based on Dropzone state.
-const getColor = (props: any) => {
+const getColor = (props: DropzoneRootProps) => {
   if (props.isDragAccept) {
-    return "#00e676";
+    return '#00e676';
   }
   if (props.isDragReject) {
-    return "#ff1744";
+    return '#ff1744';
   }
   if (props.isDragActive) {
-    return "#2196f3";
+    return '#2196f3';
   }
-  return "#eeeeee";
+  return '#eeeeee';
 };
 
 // Container wrapper for Dropzone.
@@ -80,12 +80,12 @@ export const ImgDropzone: FunctionComponent<ImgDropzoneProps> = ({
                 <em>(Only *.jpeg, *.png and *svg images will be accepted)</em>
               </>
             )}
-            {isDragActive && !isDragReject && "File allowed"}
-            {isDragReject && "File type not accepted, sorry!"}
+            {isDragActive && !isDragReject && 'File allowed'}
+            {isDragReject && 'File type not accepted, sorry!'}
 
             {/* Better styling needed; Pictures might go beyond div wrapper */}
             {fileLink && (
-              <div style={{ width: "60px" }}>
+              <div style={{ width: '60px' }}>
                 <img src={fileLink} alt="team logo preview" />
               </div>
             )}

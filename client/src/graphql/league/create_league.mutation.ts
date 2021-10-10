@@ -1,13 +1,8 @@
-import { gql } from "@apollo/client";
-import { LeagueType, League } from "../../types/league";
-import { Team } from "../../types/team";
-import { TEAM_FRAGMENT } from "../teams/team.fragment";
-export interface LeagueData {
-  name: string;
-  isActive: boolean;
-  leagueType: LeagueType;
-  teams?: Team[];
-}
+import { gql } from '@apollo/client';
+
+import { LeagueType, League } from '../../types/league';
+
+import { LEAGUE_FRAGMENT } from './league.fragment';
 
 export interface CreateLeagueDataInput {
   name: string;
@@ -29,23 +24,18 @@ export const CREATE_LEAGUE = gql`
     $name: String!
     $leagueAgeType: String!
     $leagueType: String!
+    $year: String!
     $maxYellowCard: Int!
   ) {
     createLeague(
       name: $name
       leagueType: $leagueType
       leagueAgeType: $leagueAgeType
+      year: $year
       maxYellowCard: $maxYellowCard
     ) {
-      name
-      isActive
-      leagueAgeType
-      leagueType
-      maxYellowCard
+      ${LEAGUE_FRAGMENT}
       createdAt
-      leagueTeams {
-        ${TEAM_FRAGMENT}
-      }
     }
   }
 `;

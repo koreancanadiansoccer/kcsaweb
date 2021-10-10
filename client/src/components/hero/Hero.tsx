@@ -1,14 +1,13 @@
-import React, { FunctionComponent } from "react";
-import { withTheme } from "@material-ui/core/styles";
-import styled from "styled-components";
-import Box from "@material-ui/core/Box";
-import Container from "@material-ui/core/Container";
+import React, { FunctionComponent } from 'react';
+import { withTheme } from '@material-ui/core/styles';
+import styled from 'styled-components';
+import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
 
-import HeroImage from "../../assets/hero.png";
-import HeroMainImage from "../../assets/demo_hero_main.png";
-import HeroSubImage from "../../assets/demo_hero_sub.png";
-
-import { VerticalDivider } from "../divider/VerticalDivider";
+import HeroImage from '../../assets/hero.png';
+import HeroMainImage from '../../assets/demo_hero_main.png';
+import HeroSubImage from '../../assets/demo_hero_sub.png';
+import { VerticalDivider } from '../divider/VerticalDivider';
 
 interface HomeProps {
   className?: string;
@@ -40,11 +39,7 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
               <Box className="hero-sub">
                 <Box display="flex" justifyContent="flex-start">
                   <Box>
-                    <img
-                      src={HeroSubImage}
-                      alt="hero-sub"
-                      className="hero-sub"
-                    />
+                    <img src={HeroSubImage} alt="hero-sub" className="hero-sub" />
                   </Box>
 
                   <VerticalDivider />
@@ -57,13 +52,10 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
                     flexDirection="column"
                     justifyContent="space-between"
                   >
-                    <Box className="hero-text-medium">
-                      Korean Soccer Community
-                    </Box>
+                    <Box className="hero-text-medium">Korean Soccer Community</Box>
 
                     <Box className="hero-text-small">
-                      Excepteur sint occaecat cupidatat non proident, sunt in
-                      culpa qui officia deserunt
+                      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
                     </Box>
                   </Box>
                 </Box>
@@ -73,8 +65,7 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
                 <Box className="hero-text-large">Korean Soccer Community</Box>
 
                 <Box className="hero-text-medium" mt={2}>
-                  Excepteur sint occaecat cupidatat non proident, sunt in culpa
-                  qui officia deserunt
+                  Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
                 </Box>
 
                 <Box className="hero-text-medium" mt={4}>

@@ -1,24 +1,26 @@
-import { GraphQLObjectType, GraphQLSchema } from "graphql";
+import { GraphQLObjectType, GraphQLSchema } from 'graphql';
 
 // Queries
-import { getUsers } from "./queries/getUsers";
-import { getLeagues } from "./queries/getLeagues";
-import { getLeague } from "./queries/getLeague";
-import { getTeams } from "./queries/getTeams";
-import { getTeam } from "./queries/getTeam";
-import { getHomeViewer } from "./queries/getHomeViewer";
-
+import { getUsers } from './queries/getUsers';
+import { getLeagues } from './queries/getLeagues';
+import { getLeague } from './queries/getLeague';
+import { getTeams } from './queries/getTeams';
+import { getTeam } from './queries/getTeam';
+import { getHomeViewer } from './queries/getHomeViewer';
+import { getPlayers } from './queries/getPlayers';
 // Mutations
-import { createUser } from "./mutations/createUser";
-import { createLeague } from "./mutations/createLeague";
-import { updateLeague } from "./mutations/updateLeague";
-import { createTeam } from "./mutations/createTeam";
-import { updateTeam } from "./mutations/updateTeam";
-import { loginUser } from "./mutations/loginUser";
-import { createS3SignedUrl } from "./mutations/createS3SignedUrl";
+import { createUser } from './mutations/createUser';
+import { createLeague } from './mutations/createLeague';
+import { updateLeague } from './mutations/updateLeague';
+import { createTeam } from './mutations/createTeam';
+import { updateTeam } from './mutations/updateTeam';
+import { loginUser } from './mutations/loginUser';
+import { createS3SignedUrl } from './mutations/createS3SignedUrl';
+import { createPlayer } from './mutations/createPlayer';
+import { createLeaguePlayers } from './mutations/createLeaguePlayers';
 
 const RootQuery = new GraphQLObjectType({
-  name: "RootQueryType",
+  name: 'RootQueryType',
   fields: {
     getUsers,
     getLeagues,
@@ -26,11 +28,12 @@ const RootQuery = new GraphQLObjectType({
     getTeams,
     getTeam,
     getHomeViewer,
+    getPlayers,
   },
 });
 
 const Mutation = new GraphQLObjectType({
-  name: "Mutation",
+  name: 'Mutation',
   fields: {
     createUser,
     createLeague,
@@ -39,6 +42,8 @@ const Mutation = new GraphQLObjectType({
     updateTeam,
     loginUser,
     createS3SignedUrl,
+    createPlayer,
+    createLeaguePlayers,
   },
 });
 

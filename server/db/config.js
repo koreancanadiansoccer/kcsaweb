@@ -1,4 +1,5 @@
-require("dotenv").config();
+// eslint-disable-next-line
+require('dotenv').config();
 
 module.exports = {
   development: {
@@ -6,20 +7,20 @@ module.exports = {
     password: process.env.DB_PW,
     database: process.env.DB,
     host: process.env.DB_HOST,
-    dialect: "postgres",
+    dialect: 'postgres',
   },
   test: {
-    username: "root",
+    username: 'root',
     password: null,
-    database: "database_test",
-    host: "127.0.0.1",
-    dialect: "mysql",
+    database: 'database_test',
+    host: '127.0.0.1',
+    dialect: 'mysql',
   },
   production: {
-    username: "root",
+    username: 'root',
     password: null,
-    database: "database_production",
-    host: "127.0.0.1",
-    dialect: "mysql",
+    database: 'database_production',
+    host: '127.0.0.1',
+    dialect: 'mysql',
   },
 };

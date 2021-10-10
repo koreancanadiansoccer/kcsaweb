@@ -4,30 +4,24 @@ import React, {
   useState,
   useMemo,
   useCallback,
-} from "react";
-import { useQuery, useMutation } from "@apollo/client";
-import { withTheme } from "@material-ui/core/styles";
-import styled from "styled-components";
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
-import Chip from "@material-ui/core/Chip";
+} from 'react';
+import { useQuery, useMutation } from '@apollo/client';
+import { useParams } from 'react-router';
+import { withTheme } from '@material-ui/core/styles';
+import styled from 'styled-components';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+import Chip from '@material-ui/core/Chip';
 
-import { useParams } from "react-router";
-
-import { League } from "../../../types/league";
-import { Team } from "../../../types/team";
-import { GET_LEAGUE } from "../../../graphql/league/get_league.query";
-import {
-  UPDATE_LEAGUE,
-  UpdateLeagueResult,
-  UpdateLeagueInput,
-} from "../../../graphql/league/update_league.mutation";
-import { parseError } from "../../../graphql/client";
-import { LeagueTeams } from "../../../components/admin_league/LeagueTeams";
-import { LeagueGeneral } from "../../../components/admin_league/LeagueGeneral";
-import { LeagueMatch } from "../../../components/admin_league/LeagueMatch";
-import { Loader } from "../../../components/loader/Loader";
-import { Tabs, PanelOptions } from "../../../components/tabs/Tabs";
+import { League } from '../../../types/league';
+import { GET_LEAGUE } from '../../../graphql/league/get_league.query';
+import { parseError } from '../../../graphql/client';
+import { LeagueTeams } from '../../../components/admin_league/LeagueTeams';
+import { LeagueGeneral } from '../../../components/admin_league/LeagueGeneral';
+import { LeagueMatch } from '../../../components/admin_league/LeagueMatch';
+import { Loader } from '../../../components/loader/Loader';
+import { Tabs, PanelOptions } from '../../../components/tabs/Tabs';
+import { LeagueContext } from '../../../context/league';
 
 interface LeagueDetailProps {
   className?: string;
@@ -40,22 +34,18 @@ interface LeagueDetailProps {
 export const UnstyledLeagueDetail: FunctionComponent<LeagueDetailProps> = ({
   className,
 }) => {
+  const [league, setLeague] = useState<League>();
+
   const { id } = useParams<{ id: string }>();
   const [tabSelected, setTabSelected] = React.useState(0);
 
-  // TODO: Use context.
-  const [league, setLeague] = useState<League>();
-
   // Get League data.
-  const leagueDataQuery = useQuery(GET_LEAGUE, { variables: { id } });
+  const leagueDataQuery = useQuery(GET_LEAGUE, {
+    variables: { id: parseInt(id) },
+  });
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  const [updateLeagueMutation] = useMutation<
-    UpdateLeagueResult,
-    UpdateLeagueInput
-  >(UPDATE_LEAGUE);
+  const [error, setError] = useState('');
 
   // Pull league data.
   useEffect(() => {
@@ -71,99 +61,50 @@ export const UnstyledLeagueDetail: FunctionComponent<LeagueDetailProps> = ({
     }
   }, [leagueDataQuery, loading, error]);
 
-  /**
-   * Update league
-   * @param updateLeague
-   */
-  const updateLeague = useCallback(
-    async (newTeams?: Team[]) => {
-      setLoading(true);
-      try {
-        const res = await updateLeagueMutation({
-          variables: {
-            newTeams: newTeams,
-            league: league,
-          },
-        });
-        if (res.data) {
-          // setLeagues(res.data.createLeague);
-        }
-      } catch (e) {
-        setError(parseError(e));
-      }
-    },
-    [league, updateLeagueMutation]
-  );
-
   // Tabs Panel
   const panelOptions: PanelOptions[] = useMemo(
     () => [
       {
-        label: "General",
-        comp: (
-          <LeagueGeneral
-            league={league}
-            updateLeague={(updatedLeague: League) =>
-              // updateLeague(updatedLeague)
-              // TODO: Temporal update to call mutation
-              console.log("league general")
-            }
-          />
-        ),
+        label: 'General',
+        comp: <LeagueGeneral />,
       },
 
       {
-        label: "Teams",
-        comp: (
-          <LeagueTeams
-            league={league}
-            updateLeague={(newLeagueTeams: Team[]) => {
-              void updateLeague(newLeagueTeams);
-            }}
-          />
-        ),
+        label: 'Clubs',
+        comp: <LeagueTeams />,
       },
 
       {
-        label: "Match",
-        comp: (
-          <LeagueMatch
-            league={league}
-            updateLeague={(updatedLeague: League) =>
-              // updateLeague(updatedLeague)
-              // TODO: Temporal update to call mutation
-              console.log("league general")
-            }
-          />
-        ),
+        label: 'Match',
+        comp: <LeagueMatch />,
       },
     ],
-    [league, updateLeague]
+    [league]
   );
 
+  if (!league) {
+    return <Loader open />;
+  }
+
   return (
-    <Box className={className}>
-      {!league || (leagueDataQuery.loading && <Loader open={loading} />)}
+    <LeagueContext.Provider value={{ league, setLeague }}>
+      <Box className={className}>
+        <Typography component={'div'} variant="h5">
+          {league?.name}
+        </Typography>
 
-      {league && (
-        <>
-          <Typography component={"div"} variant="h5">
-            {league?.name}
-          </Typography>
+        <Chip label={`${league.leagueAgeType} AGE`} />
+        <Chip label={league.leagueType} />
 
-          <Chip label={`${league.leagueAgeType} AGE`} />
-          <Chip label={league.leagueType} />
-
-          <Box mt={5}>
-            <Tabs
-              value={tabSelected}
-              setValue={(value: number) => setTabSelected(value)}
-              panelOptions={panelOptions}
-            />
-          </Box>
-        </>
-      )}
-    </Box>
+        <Box mt={5}>
+          <Tabs
+            value={tabSelected}
+            setValue={(value: number) => setTabSelected(value)}
+            panelOptions={panelOptions}
+          />
+        </Box>
+      </Box>
+    </LeagueContext.Provider>
   );
 };
 

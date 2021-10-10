@@ -1,33 +1,23 @@
-import React, {
-  FunctionComponent,
-  useMemo,
-  useState,
-  useEffect,
-  useCallback,
-} from "react";
-import { useQuery, useMutation } from "@apollo/client";
-import { withTheme } from "@material-ui/core/styles";
-import styled from "styled-components";
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
-import Chip from "@material-ui/core/Chip";
+import React, { FunctionComponent, useMemo, useState, useEffect } from 'react';
+import { useQuery } from '@apollo/client';
+import { useParams } from 'react-router';
+import { withTheme } from '@material-ui/core/styles';
+import styled from 'styled-components';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+import Chip from '@material-ui/core/Chip';
 
-import { useParams } from "react-router";
-
-import { Team } from "../../../types/team";
-import { Tabs, PanelOptions } from "../../../components/tabs/Tabs";
-import { TeamGeneral } from "../../../components/admin_teams/TeamGeneral";
+import { Team } from '../../../types/team';
+import { Tabs, PanelOptions } from '../../../components/tabs/Tabs';
+import { TeamGeneral } from '../../../components/admin_teams/TeamGeneral';
+import { TeamPlayers } from '../../../components/admin_teams/TeamPlayers';
 import {
   GET_TEAM,
   TeamQueryData,
   TeamQueryVariable,
-} from "../../../graphql/teams/get_team.query";
-import {
-  UPDATE_TEAM,
-  UpdateTeamInput,
-  UpdateTeamResult,
-} from "../../../graphql/teams/update_team.mutation";
-import { parseError } from "../../../graphql/client";
+} from '../../../graphql/teams/get_team.query';
+import { parseError } from '../../../graphql/client';
+import { TeamContext } from '../../../context/team';
 
 interface TeamDetailProps {
   className?: string;
@@ -40,6 +30,8 @@ interface TeamDetailProps {
 export const UnstyledTeamDetail: FunctionComponent<TeamDetailProps> = ({
   className,
 }) => {
+  const [team, setTeam] = useState<Team>();
+
   const { id } = useParams<{ id: string }>();
   const [tabSelected, setTabSelected] = React.useState(0);
 
@@ -48,14 +40,8 @@ export const UnstyledTeamDetail: FunctionComponent<TeamDetailProps> = ({
     variables: { id },
   });
 
-  const [updateTeamMutation] = useMutation<UpdateTeamResult, UpdateTeamInput>(
-    UPDATE_TEAM
-  );
-
-  const [team, setTeam] = useState<Team>();
-
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   // Pull team data.
   useEffect(() => {
@@ -71,53 +57,30 @@ export const UnstyledTeamDetail: FunctionComponent<TeamDetailProps> = ({
     }
   }, [teamQuery, loading, error]);
 
-  /**
-   * Update team
-   * @param updateTeam
-   */
-  const updateTeam = useCallback(
-    async (newTeam: Team) => {
-      setLoading(true);
-      try {
-        const res = await updateTeamMutation({
-          variables: {
-            updateTeam: newTeam,
-          },
-        });
-
-        if (res.data) {
-          setTeam(res.data.updateTeam);
-        }
-      } catch (e) {
-        setError(parseError(e));
-      }
-    },
-    [updateTeamMutation]
-  );
-
   // Tabs Panel
   const panelOptions: PanelOptions[] = useMemo(
     () => [
       {
-        label: "General",
-        comp: (
-          <TeamGeneral
-            team={team}
-            updateTeam={(updateTeamData: Team) => {
-              void updateTeam(updateTeamData);
-            }}
-          />
-        ),
+        label: 'General',
+        comp: <TeamGeneral />,
+      },
+      {
+        label: 'Players',
+        comp: <TeamPlayers />,
       },
     ],
-    [team, updateTeam]
+    [team]
   );
 
+  if (!team) {
+    return <Box>Loading</Box>;
+  }
+
   return (
-    <Box className={className}>
-      {team && (
+    <TeamContext.Provider value={{ team, setTeam }}>
+      <Box className={className}>
         <>
-          <Typography component={"div"} variant="h5">
+          <Typography component={'div'} variant="h5">
             {team?.name}
           </Typography>
           <Chip label={`${team?.teamAgeType} AGE`} />
@@ -131,8 +94,8 @@ export const UnstyledTeamDetail: FunctionComponent<TeamDetailProps> = ({
             />
           </Box>
         </>
-      )}
-    </Box>
+      </Box>
+    </TeamContext.Provider>
   );
 };
 

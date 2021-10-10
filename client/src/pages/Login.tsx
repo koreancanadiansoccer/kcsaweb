@@ -1,16 +1,16 @@
-import React, { FunctionComponent } from "react";
-import { withTheme } from "@material-ui/core/styles";
-import styled from "styled-components";
-import { useMutation } from "@apollo/client";
+import React, { FunctionComponent } from 'react';
+import { withTheme } from '@material-ui/core/styles';
+import styled from 'styled-components';
+import { useMutation } from '@apollo/client';
 
-import { LoginInput } from "../types/login";
+import { LoginInput } from '../types/login';
 import {
   LOGIN_USER,
   LoginData,
   CreateLoginDataInput,
-} from "../graphql/login/login.mutation";
-import { LoginForm } from "../components/login/LoginForm";
-import { parseError } from "../graphql/client";
+} from '../graphql/login/login.mutation';
+import { LoginForm } from '../components/login/LoginForm';
+import { parseError } from '../graphql/client';
 interface LoginProps {
   className?: string;
 }
@@ -19,7 +19,7 @@ interface LoginProps {
  * Login main page.
  */
 
-const UnstyledLogin: FunctionComponent<LoginProps> = ({ className }) => {
+const UnstyledLogin: FunctionComponent<LoginProps> = () => {
   const [loginUserMut] = useMutation<LoginData, CreateLoginDataInput>(
     LOGIN_USER
   );

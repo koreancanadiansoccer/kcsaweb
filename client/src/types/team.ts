@@ -1,38 +1,39 @@
-// TODO merge into one 'AgeType'.
-export enum TeamAgeType {
-  OPEN = "OPEN",
-  SENIOR = "SENIOR",
-}
-
+import { AgeEnums } from './age.enum';
+import { Player, LeaguePlayer } from './player';
 export interface TeamInput {
   name: string;
   teamAgeType: string;
+  teamColor?: string;
 }
+
 export interface Team {
-  id: string;
+  id: number;
   name: string;
   teamLogoURL?: string;
-  teamAgeType: string;
+  teamAgeType: AgeEnums | string;
+  teamColor?: string;
   played: number;
   win: number;
   loss: number;
   goalScored: number;
   goalConceded: number;
   isActive: boolean;
+  players?: Player[];
 }
 
 export interface LeagueTeam {
-  id: string;
+  id: number;
   name: string;
   played: number;
   win: number;
   loss: number;
   goalScored: number;
   goalConceded: number;
-  teamAgeType: string;
+  teamAgeType: AgeEnums | string;
   isActive: boolean;
   captainId: string;
-  teamId: string;
+  teamId: number;
   leagueId: number;
   createdAt: string;
+  leaguePlayers: LeaguePlayer[];
 }
