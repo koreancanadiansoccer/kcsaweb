@@ -3,6 +3,17 @@
 kcsa website
 
 At root, run npm install
+[Global access with npm]
+$ npm install -g 
+
+[exception]
+error msg
+---------
+Error : EACCES: permission denied, access '/usr/local/lib/node_modules
+
+Solution : Run with sudo
+
+$ sudo npm install -g 
 
 ```
 npm install
@@ -42,6 +53,16 @@ TEAM_LOGO_BUCKET=kcsa-team-logo
 
 Run
 `npm run server`
+if you have an error like below
+** Could not establish a connection with redis. Error: Redis connection to localhost:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+
+Please install redis
+
+cmd : 
+
+brew install redis
+brew services start redis
+
 This will start server and client and **create models into db**.
 
 **Note: It is best practice to use migration files to update table definitions.  

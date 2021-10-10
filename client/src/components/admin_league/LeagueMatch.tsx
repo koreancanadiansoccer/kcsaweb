@@ -113,3 +113,4 @@ const UnstyledLeagueMatch: FunctionComponent<LeagueMatchProps> = ({
 };
 
 export const LeagueMatch = withTheme(styled(UnstyledLeagueMatch)``);
+//style componenet - > react 
