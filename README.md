@@ -4,31 +4,36 @@ kcsa website
 
 At root, run npm install
 [Global access with npm]
-$ npm install -g 
+$ npm install -g
 
 [exception]
 error msg
----------
+
+---
+
 Error : EACCES: permission denied, access '/usr/local/lib/node_modules
 
 Solution : Run with sudo
 
-$ sudo npm install -g 
+$ sudo npm install -g
 
-```
+````
 npm install
-```
+```c
 
 Go into client folder and run npm install
 
-```
+````
+
 cd client
 npm install
+
 ```
 
 Install postgres and Create database:
 
 ```
+
 \$ psql postgres
 postgres=# CREATE USER kcsa_admin WITH SUPERUSER PASSWORD 'kcsa';
 postgres=# CREATE DATABASE kcsa OWNER kcsa_admin;
@@ -38,6 +43,7 @@ postgres=# CREATE DATABASE kcsa OWNER kcsa_admin;
 Put following under .env file on root;
 
 ```
+
 DB=kcsa
 DB_USER=kcsa_admin
 DB_PW=kcsa
@@ -58,15 +64,15 @@ if you have an error like below
 
 Please install redis
 
-cmd : 
+cmd :
 
 brew install redis
 brew services start redis
 
 This will start server and client and **create models into db**.
 
-**Note: It is best practice to use migration files to update table definitions.  
-As we are in early stage of development + tables are frequently changing,  
+**Note: It is best practice to use migration files to update table definitions.
+As we are in early stage of development + tables are frequently changing,
 we decided to sync the DB by wiping out all tables from db -> run server which triggers Sequelize's sync method to create tables and properties against model definitions.**
 
 Run seed:
@@ -80,18 +86,18 @@ Try running;
 ```
 
 query {
-  getUsers {
-    name
-  }
+getUsers {
+name
+}
 }
 
 OR
 
 mutation {
-  createUser(name:"test", password:"1233444", email:"test@test.com", type:"ADMIN") {
-    name,
-    email,
-  }
+createUser(name:"test", password:"1233444", email:"test@test.com", type:"ADMIN") {
+name,
+email,
+}
 }
 
 ```
@@ -141,3 +147,16 @@ Above will create migration file.
 If you run into issue on address in use;
 `sudo lsof -i :5000`
 Grab PID -> `kill -9 {PID}`
+```
+
+## TroubleShooting Note
+
+1. Error MSG :
+   Failed to load parser '@typescript-eslint/parser' declared in '../.eslintrc.json': Cannot find module '@typescript-eslint/parser'
+   [1] Require stack:
+   [1] - /Users/alice/Desktop/kcsaweb/.eslintrc.json
+   [1] npm run client exited with code SIGINT
+
+Situation : run 'npm run dev'
+Solution : update typescript plugin
+% npm i --save-dev typescript @typescript-eslint/parser

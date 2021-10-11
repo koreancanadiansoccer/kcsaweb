@@ -4,16 +4,16 @@ import React, {
   ChangeEvent,
   useMemo,
   useEffect,
-} from "react";
-import { withTheme } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
-import styled from "styled-components";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
+} from 'react';
+import { withTheme } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
+import styled from 'styled-components';
+import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
 
-import { Input } from "../input/Input";
-import { Button } from "../button/Button";
-import { UserInput } from "../../types/user";
+import { Input } from '../input/Input';
+import { Button } from '../button/Button';
+import { UserInput } from '../../types/user';
 
 interface CreateProps {
   className?: string;
@@ -29,10 +29,10 @@ const UnstyledCreate: FunctionComponent<CreateProps> = ({
   onAdd,
 }) => {
   const [newUser, setNewUser] = useState<UserInput>({
-    name: "",
-    password: "",
-    email: "",
-    phoneNumber: "",
+    name: '',
+    password: '',
+    email: '',
+    phoneNumber: '',
   });
 
   const isValid = useMemo(
@@ -48,10 +48,10 @@ const UnstyledCreate: FunctionComponent<CreateProps> = ({
   useEffect(
     () =>
       setNewUser({
-        name: "",
-        password: "",
-        email: "",
-        phoneNumber: "",
+        name: '',
+        password: '',
+        email: '',
+        phoneNumber: '',
       }),
     []
   );
