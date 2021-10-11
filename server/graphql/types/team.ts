@@ -8,7 +8,12 @@ import {
 } from 'graphql';
 
 import { DateTime } from './utils/dateType';
-import { PlayerType, PlayerInputType } from './player';
+import {
+  PlayerType,
+  PlayerInputType,
+  MatchPlayerType,
+  MatchPlayerInputType,
+} from './player';
 
 // Definition of types of 'Team' that will be returned from graphql operations.
 export const TeamType = new GraphQLObjectType({
@@ -89,6 +94,49 @@ export const LeagueTeamInputType = new GraphQLInputObjectType({
     captainId: { type: GraphQLInt },
     teamId: { type: GraphQLInt },
     leagueId: { type: GraphQLInt },
+    leaguePlayers: { type: new GraphQLList(PlayerInputType) },
+    createdAt: { type: DateTime },
+  }),
+});
+
+export const MatchTeamType = new GraphQLObjectType({
+  name: 'MatchTeam',
+  fields: () => ({
+    id: { type: GraphQLInt },
+    name: { type: GraphQLString },
+    played: { type: GraphQLInt },
+    win: { type: GraphQLInt },
+    loss: { type: GraphQLInt },
+    goalScored: { type: GraphQLInt },
+    goalConceded: { type: GraphQLInt },
+    isActive: { type: GraphQLBoolean },
+    teamAgeType: { type: GraphQLString },
+    teamColor: { type: GraphQLString },
+    captainId: { type: GraphQLString },
+    teamId: { type: GraphQLInt },
+    leagueId: { type: GraphQLInt },
+    matchPlayers: { type: new GraphQLList(MatchPlayerType) },
+    createdAt: { type: DateTime },
+  }),
+});
+
+export const MatchTeamInputType = new GraphQLInputObjectType({
+  name: 'MatchTeamInput',
+  fields: () => ({
+    id: { type: GraphQLInt },
+    name: { type: GraphQLString },
+    played: { type: GraphQLInt },
+    win: { type: GraphQLInt },
+    loss: { type: GraphQLInt },
+    goalScored: { type: GraphQLInt },
+    goalConceded: { type: GraphQLInt },
+    isActive: { type: GraphQLBoolean },
+    teamAgeType: { type: GraphQLString },
+    teamColor: { type: GraphQLString },
+    captainId: { type: GraphQLInt },
+    teamId: { type: GraphQLInt },
+    leagueId: { type: GraphQLInt },
+    matchPlayers: { type: new GraphQLList(MatchPlayerInputType) },
     createdAt: { type: DateTime },
   }),
 });

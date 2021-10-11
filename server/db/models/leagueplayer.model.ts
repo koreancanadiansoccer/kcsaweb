@@ -17,6 +17,10 @@ export class LeaguePlayer extends Model {
   @Column
   name!: string;
 
+  @AllowNull(false)
+  @Column
+  dob!: string;
+
   @Default(0)
   @Column({ field: 'goal_scored' })
   goalScored!: number;
