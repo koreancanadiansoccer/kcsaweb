@@ -1,6 +1,7 @@
 import map from 'lodash/map';
 
 import { LeagueTeam } from './team';
+import { Match } from './match';
 import { AgeEnums } from './age.enum';
 
 export enum LeagueType {
@@ -21,6 +22,7 @@ export interface League {
   leagueType: LeagueType | string;
   maxYellowCard: number;
   leagueTeams: LeagueTeam[];
+  matches: Match[];
 }
 
 export interface LeagueInput {

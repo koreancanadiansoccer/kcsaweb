@@ -13,6 +13,7 @@ export const PlayerType = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLString },
     name: { type: GraphQLString },
+    dob: { type: GraphQLString },
     teamId: { type: GraphQLInt },
     yellowCard: { type: GraphQLInt },
     goalScored: { type: GraphQLInt },
@@ -25,6 +26,7 @@ export const PlayerInputType = new GraphQLInputObjectType({
   fields: () => ({
     id: { type: GraphQLString },
     name: { type: GraphQLString },
+    dob: { type: GraphQLString },
     teamId: { type: GraphQLInt },
     yellowCard: { type: GraphQLInt },
     goalScored: { type: GraphQLInt },
@@ -37,6 +39,7 @@ export const LeaguePlayerType = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLString },
     name: { type: GraphQLString },
+    dob: { type: GraphQLString },
     teamId: { type: GraphQLInt },
     leagueTeamId: { type: GraphQLInt },
     yellowCard: { type: GraphQLInt },
@@ -49,6 +52,37 @@ export const LeaguePlayerInputType = new GraphQLInputObjectType({
   name: 'LeaguePlayerInput',
   fields: () => ({
     id: { type: GraphQLString },
+    dob: { type: GraphQLString },
     name: { type: GraphQLString },
+  }),
+});
+
+export const MatchPlayerType = new GraphQLObjectType({
+  name: 'MatchPlayer',
+  fields: () => ({
+    id: { type: GraphQLString },
+    name: { type: GraphQLString },
+    dob: { type: GraphQLString },
+    teamId: { type: GraphQLInt },
+    matchId: { type: GraphQLInt },
+    leagueTeamId: { type: GraphQLInt },
+    yellowCard: { type: GraphQLInt },
+    goalScored: { type: GraphQLInt },
+    createdAt: { type: DateTime },
+  }),
+});
+
+export const MatchPlayerInputType = new GraphQLInputObjectType({
+  name: 'MatchPlayerInput',
+  fields: () => ({
+    id: { type: GraphQLString },
+    name: { type: GraphQLString },
+    dob: { type: GraphQLString },
+    teamId: { type: GraphQLInt },
+    matchId: { type: GraphQLInt },
+    leagueTeamId: { type: GraphQLInt },
+    yellowCard: { type: GraphQLInt },
+    goalScored: { type: GraphQLInt },
+    createdAt: { type: DateTime },
   }),
 });

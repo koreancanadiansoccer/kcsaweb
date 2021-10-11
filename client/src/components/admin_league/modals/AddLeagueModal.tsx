@@ -54,7 +54,7 @@ export const AddLeagueModal: FunctionComponent<AddLeagueModalProp> = ({
   useEffect(
     () =>
       setNewLeague({
-        name: '',
+        name: 'KCSA',
         leagueAgeType: '',
         leagueType: '',
         year: '',

@@ -58,7 +58,6 @@ const UnstyledLeagueGeneral: FunctionComponent = () => {
    */
   const updateLeague = useCallback(async () => {
     setLoading(true);
-
     try {
       const res = await updateLeagueMutation({
         variables: {
