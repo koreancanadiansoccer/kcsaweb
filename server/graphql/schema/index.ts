@@ -8,6 +8,7 @@ import { getTeams } from './queries/getTeams';
 import { getTeam } from './queries/getTeam';
 import { getHomeViewer } from './queries/getHomeViewer';
 import { getPlayers } from './queries/getPlayers';
+import { getMatches } from './queries/getMatches';
 // Mutations
 import { createUser } from './mutations/createUser';
 import { createLeague } from './mutations/createLeague';
@@ -18,6 +19,7 @@ import { loginUser } from './mutations/loginUser';
 import { createS3SignedUrl } from './mutations/createS3SignedUrl';
 import { createPlayer } from './mutations/createPlayer';
 import { createLeaguePlayers } from './mutations/createLeaguePlayers';
+import { createMatch } from './mutations/createMatch';
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -29,6 +31,7 @@ const RootQuery = new GraphQLObjectType({
     getTeam,
     getHomeViewer,
     getPlayers,
+    getMatches,
   },
 });
 
@@ -44,6 +47,7 @@ const Mutation = new GraphQLObjectType({
     createS3SignedUrl,
     createPlayer,
     createLeaguePlayers,
+    createMatch,
   },
 });
 

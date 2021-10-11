@@ -19,7 +19,13 @@ export class MatchPlayer extends Model {
   @Column
   name!: string;
 
-  @Column scored!: number;
+  @AllowNull(false)
+  @Column
+  dob!: string;
+
+  @Default(0)
+  @Column({ field: 'goal_scored' })
+  goalScored!: number;
 
   @Default(0)
   @Column({ field: 'yello_card' })
