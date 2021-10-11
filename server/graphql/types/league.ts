@@ -9,6 +9,7 @@ import {
 } from 'graphql';
 
 import { LeagueTeamType, LeagueTeamInputType } from './team';
+import { MatchType, MatchTypeInputType } from './match';
 import { DateTime } from './utils/dateType';
 
 export const LegaueTypeEnum = new GraphQLEnumType({
@@ -36,6 +37,7 @@ export const LeagueType = new GraphQLObjectType({
     maxYellowCard: { type: GraphQLInt },
     createdAt: { type: DateTime },
     leagueTeams: { type: new GraphQLList(LeagueTeamType) },
+    matches: { type: new GraphQLList(MatchType) },
   }),
 });
 
@@ -51,5 +53,6 @@ export const LeagueInputType = new GraphQLInputObjectType({
     maxYellowCard: { type: GraphQLInt },
     createdAt: { type: DateTime },
     leagueTeams: { type: new GraphQLList(LeagueTeamInputType) },
+    matches: { type: new GraphQLList(MatchTypeInputType) },
   }),
 });
