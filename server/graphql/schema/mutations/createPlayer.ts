@@ -10,6 +10,7 @@ export const createPlayer = {
   type: PlayerType,
   args: {
     name: { type: new GraphQLNonNull(GraphQLString) },
+    dob: { type: new GraphQLNonNull(GraphQLString) },
     teamId: { type: new GraphQLNonNull(GraphQLInt) },
   },
   async resolve(parent: object, args: object): Promise<Player> {

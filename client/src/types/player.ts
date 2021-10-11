@@ -8,6 +8,7 @@ export interface Player {
 export interface PlayerInput {
   name: string;
   teamId?: number;
+  dob?: string;
 }
 
 export interface LeaguePlayerInput {

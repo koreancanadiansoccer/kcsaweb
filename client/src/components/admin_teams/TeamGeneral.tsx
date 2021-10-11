@@ -90,11 +90,13 @@ const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = () => {
 
       if (res.data) {
         setOrigTeam(res.data.updateTeam);
+        setFile(undefined);
+        setFileLink('');
       }
     } catch (e) {
       setError(parseError(e));
     }
-  }, [updateTeamMutation, team]);
+  }, [updateTeamMutation, team, file]);
 
   // Handle logo file update.
   const handleUploadChange = async (files: File[]) => {
