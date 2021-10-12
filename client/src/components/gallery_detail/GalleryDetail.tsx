@@ -1,28 +1,20 @@
 import React, {
   FunctionComponent,
   useState,
-  useEffect,
   useMemo,
 } from 'react';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
-import { useParams } from 'react-router';
+import { useLocation } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
-import { useQuery } from '@apollo/client/';
 import Slick, { Settings } from 'react-slick';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import map from 'lodash/map';
 import { scroller } from 'react-scroll';
 
-import {
-  GET_GALLERY,
-  GalleryQueryData,
-  GalleryQueryVariable,
-} from '../../graphql/gallery/get_gallery.query';
 import { Gallery, GalleryImage } from '../../types/gallery';
 import { AutoSlick } from '../slider/AutoSlick';
-import { parseError } from '../../graphql/client';
 
 interface GalleryProps {
   className?: string;
@@ -34,32 +26,11 @@ interface GalleryProps {
 const UnstyledGalleryDetail: FunctionComponent<GalleryProps> = ({
   className,
 }) => {
-  const { id } = useParams<{ id: string }>();
+  const location = useLocation();
+  const data = location.state as { gallery: Gallery };
+  const gallery: Gallery = data.gallery;
 
-  const galleryQuery = useQuery<GalleryQueryData, GalleryQueryVariable>(
-    GET_GALLERY,
-    {
-      variables: { id },
-    }
-  );
-
-  const [gallery, setGallery] = useState<Gallery>();
   const [selectedImg, SetSelectedImg] = useState<GalleryImage>();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    setLoading(galleryQuery.loading);
-
-    // If no error/loading set values.
-    if (!loading && !error && galleryQuery?.data?.getGallery) {
-      setGallery(galleryQuery.data.getGallery);
-    }
-
-    if (galleryQuery.error) {
-      setError(parseError(galleryQuery.error));
-    }
-  }, [galleryQuery, loading, error]);
 
   const NavSlderSetting = useMemo<Settings>(
     () => ({
@@ -77,6 +48,7 @@ const UnstyledGalleryDetail: FunctionComponent<GalleryProps> = ({
   if (!gallery) {
     return <div>loading...</div>;
   }
+
   return (
     <Box className={className} mt={20}>
       <Box>

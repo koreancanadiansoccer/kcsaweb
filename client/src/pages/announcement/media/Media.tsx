@@ -53,10 +53,7 @@ const UnstyledMedia: FunctionComponent<GalleryProps> = ({ className }) => {
           {map(galleries, (gallery) => (
             <GalleryCard
               className="gallery-card"
-              id={gallery.id}
-              title={gallery.title}
-              imageURL={gallery.galleryImages![0].imageURL}
-              createdAt={gallery.createdAt.slice(0, 10)}
+              gallery={gallery}
             />
           ))}
         </Box>

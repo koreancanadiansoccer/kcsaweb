@@ -9,13 +9,12 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import Box from '@material-ui/core/Box';
 import { motion } from 'framer-motion';
 
+import { Gallery } from "../../types/gallery"
+
 
 interface GalleryProps {
   className?: string;
-  id: string;
-  title: string;
-  imageURL: string;
-  createdAt: string;
+  gallery: Gallery;
 }
 
 /**
@@ -23,12 +22,13 @@ interface GalleryProps {
  */
 const UnstyledGalleryCard: FunctionComponent<GalleryProps> = ({
   className,
-  id,
-  title,
-  imageURL,
-  createdAt,
+  gallery,
 }) => {
   const history = useHistory();
+
+  if (!gallery) {
+    return <div>loading...</div>
+  }
 
   return (
     <motion.div
@@ -40,17 +40,20 @@ const UnstyledGalleryCard: FunctionComponent<GalleryProps> = ({
     >
       <CardActionArea
         onClick={() => {
-          history.push(`/gallery/${id}`);
+          history.push({
+            pathname: `/gallery/${gallery.id}`,
+            state: {gallery : gallery}
+          });
         }}
         className="click-card"
       ></CardActionArea>
-      <CardMedia className="card-image" image={imageURL} component="img" />
+      <CardMedia className="card-image" image={gallery.galleryImages![0].imageURL} component="img" />
       <CardContent>
         <Box className="desc-h5">
-          <Typography variant={'h5'}>{title}</Typography>
+          <Typography variant={'h5'}>{gallery.title}</Typography>
         </Box>
         <Box className="desc-date">
-          <Typography variant={'body2'}>{createdAt}</Typography>
+          <Typography variant={'body2'}>{gallery.createdAt.slice(0, 10)}</Typography>
         </Box>
       </CardContent>
     </motion.div>
