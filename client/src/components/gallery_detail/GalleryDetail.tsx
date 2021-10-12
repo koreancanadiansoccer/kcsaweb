@@ -13,6 +13,7 @@ import Slick, { Settings } from 'react-slick';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import map from 'lodash/map';
+import { scroller } from 'react-scroll';
 
 import {
   GET_GALLERY,
@@ -104,6 +105,12 @@ const UnstyledGalleryDetail: FunctionComponent<GalleryProps> = ({
                       alt={img.id}
                       onClick={() => {
                         SetSelectedImg(img);
+                        scroller.scrollTo('zoom-box', {
+                          smooth: true,
+                          offset: 0,
+                          duration: 500,
+                          delay: 50,
+                        });
                       }}
                     />
                   </Box>
@@ -118,6 +125,12 @@ const UnstyledGalleryDetail: FunctionComponent<GalleryProps> = ({
                       alt={img.id}
                       onClick={() => {
                         SetSelectedImg(img);
+                        scroller.scrollTo('zoom-box', {
+                          smooth: true,
+                          offset: 0,
+                          duration: 500,
+                          delay: 50,
+                        });
                       }}
                     />
                   </Box>
@@ -126,18 +139,19 @@ const UnstyledGalleryDetail: FunctionComponent<GalleryProps> = ({
             )}
           </Box>
         )}
+        <Box id="zoom-box">
+          {selectedImg && (
+            <Paper className="zoom-image">
+              <Box>
+                <Typography variant="h4">{gallery.title}</Typography>
+              </Box>
 
-        {selectedImg && (
-          <Paper className="zoom-image">
-            <Box>
-              <Typography variant="h4">{gallery.title}</Typography>
-            </Box>
-
-            <Box className="zoom-image-container">
-              <img src={selectedImg?.imageURL} alt={selectedImg?.id} />
-            </Box>
-          </Paper>
-        )}
+              <Box className="zoom-image-container">
+                <img src={selectedImg?.imageURL} alt={selectedImg?.id} />
+              </Box>
+            </Paper>
+          )}
+        </Box>
       </Box>
     </Box>
   );
@@ -263,5 +277,9 @@ export const GalleryDetail = withTheme(styled(UnstyledGalleryDetail)`
     cursor: pointer;
     left: 0;
     z-index: 2;
+  }
+
+  .zoom-image {
+    margin-bottom: 3rem;
   }
 `);
