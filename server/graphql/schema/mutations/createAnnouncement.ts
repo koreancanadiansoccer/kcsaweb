@@ -3,10 +3,10 @@ import {
   GraphQLList,
   GraphQLNonNull,
   GraphQLBoolean,
-} from "graphql";
+} from 'graphql';
 
-import { AnnouncementType } from "../../types/announcement";
-import { Announcement } from "../../../db/models/announcement.model";
+import { AnnouncementType } from '../../types/announcement';
+import { Announcement } from '../../../db/models/announcement.model';
 
 /**
  * Create new announcement.
@@ -24,7 +24,7 @@ export const createAnnouncement = {
     await Announcement.create({ ...args });
 
     const announcements = await Announcement.findAll({
-      order: [["createdAt", "DESC"]],
+      order: [['createdAt', 'DESC']],
     });
     return announcements;
   },

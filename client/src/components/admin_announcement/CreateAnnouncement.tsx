@@ -26,6 +26,7 @@ const UnstyledCreateAnnouncements: FunctionComponent<AnnouncementProps> = ({
         title: newAnnouncement.title,
         subtitle: newAnnouncement.subtitle,
         content: newAnnouncement.content,
+        imageURL: newAnnouncement.imageURL,
         showOnHomepage: newAnnouncement.showOnHomepage,
       },
     });

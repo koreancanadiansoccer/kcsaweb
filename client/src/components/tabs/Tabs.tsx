@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, ReactChild } from 'react';
 import Box from '@material-ui/core/Box';
 import Tab from '@material-ui/core/Tab';
 import AppBar from '@material-ui/core/AppBar';
@@ -8,6 +8,7 @@ import map from 'lodash/map';
 interface TabPanelProps {
   value: number;
   index: number;
+  children: ReactChild;
 }
 
 // Panel component that gets used for each tab views.

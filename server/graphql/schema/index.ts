@@ -10,7 +10,6 @@ import { getHomeViewer } from './queries/getHomeViewer';
 import { getPlayers } from './queries/getPlayers';
 import { getAnnouncement } from './queries/getAnnouncement';
 import { getAnnouncements } from './queries/getAnnouncements';
-import { getHeroAnnouncements } from './queries/getHeroAnnouncements';
 // Mutations
 import { createUser } from './mutations/createUser';
 import { createLeague } from './mutations/createLeague';
@@ -34,7 +33,6 @@ const RootQuery = new GraphQLObjectType({
     getHomeViewer,
     getAnnouncement,
     getAnnouncements,
-    getHeroAnnouncements,
     getPlayers,
   },
 });

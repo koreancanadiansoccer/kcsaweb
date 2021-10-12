@@ -5,7 +5,7 @@ import AddIcon from '@material-ui/icons/Add';
 import styled from 'styled-components';
 import { useQuery } from '@apollo/client';
 import Box from '@material-ui/core/Box';
-import { map } from 'lodash';
+import map from 'lodash/map';
 import { useHistory, useRouteMatch, Link as RouteLink } from 'react-router-dom';
 
 import { Button } from '../../../components/button/Button';
@@ -28,7 +28,7 @@ const tableColumns = [
 ];
 
 /**
- * Main home page.
+ * Announcement page.
  */
 const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
   className,

@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import Box from "@material-ui/core/Box";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
-import { Link as RouteLink } from "react-router-dom";
+import React, { useState } from 'react';
+import Box from '@material-ui/core/Box';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import { Link as RouteLink } from 'react-router-dom';
 
-import { Button } from "../../button/Button";
+import { Button } from '../../button/Button';
 
 export const AnnouncementNav = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -21,7 +21,7 @@ export const AnnouncementNav = () => {
     <>
       <Button
         color="primary"
-        aria-controls="simple-menu"
+        aria-controls="announcement-tab"
         aria-haspopup="true"
         onClick={handleClick}
       >
@@ -29,13 +29,13 @@ export const AnnouncementNav = () => {
       </Button>
 
       <Menu
-        id="simple-menu"
+        id="announcement-menu"
         anchorEl={anchorEl}
         getContentAnchorEl={null}
         keepMounted
         open={Boolean(anchorEl)}
-        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-        transformOrigin={{ vertical: "top", horizontal: "left" }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
         onClose={handleClose}
       >
         <MenuItem

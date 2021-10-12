@@ -6,10 +6,6 @@ export interface AnnouncementQueryData {
   getAnnouncement: Announcement;
 }
 
-export interface AnnouncementQueryVariable {
-  id: string;
-}
-
 export const GET_ANNOUNCEMENT = gql`
   query GetAnnouncement($id: String!) {
     getAnnouncement(id: $id) {

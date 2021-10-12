@@ -20,14 +20,14 @@ import { client } from './graphql/client';
 import { Login } from './pages/Login';
 import { Create } from './pages/create/Create';
 import { GET_HOME_VIEWER } from './graphql/homeViewer';
-import { ViewerConext } from './context/homeViewer';
+import { ViewerContext } from './context/homeViewer';
 import { HomeViewer } from './types/home_viewer';
-import { SelectedAnnouncement } from './pages/news_notice/SelectedAnnouncement';
 
 const App: FunctionComponent = () => {
   const theme = createAppTheme();
   const { pathname } = useLocation();
   const [viewer, setViewer] = useState<HomeViewer>();
+  // Viewer = undefined
   const isAdminRoute = useMemo(
     () => includes(pathname.split('/'), 'admin'),
     [pathname]
@@ -46,7 +46,7 @@ const App: FunctionComponent = () => {
   if (loading) return <Loader open={loading} />;
 
   return (
-    <ViewerConext.Provider value={{ viewer, setViewer }}>
+    <ViewerContext.Provider value={{ viewer, setViewer }}>
       <ApolloProvider client={client}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
@@ -90,11 +90,6 @@ const App: FunctionComponent = () => {
               <Announcements />
             </Route>
 
-            <Route path={`/announcement/:id`}>
-              <SelectedAnnouncement />
-              <Announcements />
-            </Route>
-
             <Route path="/login">
               <Login />
             </Route>
@@ -105,7 +100,7 @@ const App: FunctionComponent = () => {
           </Switch>
         </ThemeProvider>
       </ApolloProvider>
-    </ViewerConext.Provider>
+    </ViewerContext.Provider>
   );
 };
 

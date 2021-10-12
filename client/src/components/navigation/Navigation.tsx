@@ -9,11 +9,11 @@ import { Link as RouteLink } from 'react-router-dom';
 
 import { Button } from '../button/Button';
 import { Logo } from '../icons/Logo';
-import { ViewerConext } from '../../context/homeViewer';
+import { ViewerContext } from '../../context/homeViewer';
 
 import { AboutNav } from './components/AboutNav';
 import { TeamsNav } from './components/TeamsNav';
-import { AnnouncementNav } from './components/Announcement';
+import { AnnouncementNav } from './components/AnnouncementNav';
 
 interface NavigationProps {
   className?: string;
@@ -22,7 +22,7 @@ interface NavigationProps {
 const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
   className,
 }) => {
-  const { viewer } = useContext(ViewerConext);
+  const { viewer } = useContext(ViewerContext);
 
   return (
     <Box className={className}>

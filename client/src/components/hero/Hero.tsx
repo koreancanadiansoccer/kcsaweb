@@ -1,18 +1,14 @@
-import React, { FunctionComponent, useState, useEffect, useMemo } from 'react';
+import React, { FunctionComponent, useState, useContext } from 'react';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
-import { useQuery } from '@apollo/client';
-import { map } from 'lodash';
+import { useHistory } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
-import { parseError } from '../../graphql/client';
 import HeroImage from '../../assets/hero.png';
-import HeroMainImage from '../../assets/demo_hero_main.png';
-import HeroSubImage from '../../assets/demo_hero_sub.png';
 import { VerticalDivider } from '../divider/VerticalDivider';
-import { GET_HERO_ANNOUNCEMENTS } from '../../graphql/announcement/get_announcements.query';
-import { Announcement } from '../../types/announcement';
+import { ViewerContext } from '../../context/homeViewer';
 
 interface HomeProps {
   className?: string;
@@ -22,105 +18,148 @@ interface HomeProps {
  * Hero for main home page.
  */
 const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
-  const [announcements, setAnnouncements] = useState<Announcement[]>();
+  const { viewer } = useContext(ViewerContext);
+  // const announcementRef = useRef(0);
 
-  // Get Announcement data.
+  const [announcementMain, setAnnouncementMain] = useState(0);
+  // created this for the case when the sub box needs to show the first announcement and the main box shows last announcement within the list of announcements
+  const [announcementSub, setAnnouncementSub] = useState(1);
 
-  const announcementDataQuery = useQuery(GET_HERO_ANNOUNCEMENTS);
+  const history = useHistory();
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  let announcementLength = 0;
 
-  // Pull announcement data.
-  useEffect(() => {
-    setLoading(announcementDataQuery.loading);
+  if (viewer?.announcements) {
+    announcementLength = viewer.announcements.length - 1;
+    // console.warn(viewer?.announcements[announcementMain].id);
+  }
 
-    // If no error/loading set values.
-    if (
-      !loading &&
-      !error &&
-      announcementDataQuery?.data?.getHeroAnnouncements
-    ) {
-      setAnnouncements(announcementDataQuery.data.getHeroAnnouncements);
+  const incrementAnnouncement = () => {
+    {
+      announcementMain >= announcementLength
+        ? setAnnouncementMain(0)
+        : setAnnouncementMain(announcementMain + 1);
     }
-
-    if (announcementDataQuery.error) {
-      setError(parseError(announcementDataQuery.error));
+    {
+      announcementSub >= announcementLength
+        ? setAnnouncementSub(0)
+        : setAnnouncementSub(announcementSub + 1);
     }
-  }, [announcementDataQuery, loading, error]);
-
-  const announcementsData: Announcement[] = useMemo(() => {
-    return map(announcements, (announcement) => {
-      return { ...announcement };
-    });
-  }, [announcements]);
+  };
 
   return (
     <Box className={className}>
       <Box className="hero" display="flex" alignItems="center">
-        <Container>
-          <Box display="flex" justifyContent="center" alignItems="center">
-            {/* Main image */}
-            <Box>
-              <img src={HeroMainImage} alt="hero-main" className="hero-main" />
-            </Box>
-
-            {/* Sub section */}
-            <Box
-              display="flex"
-              flexDirection="column"
-              justifyContent="space-between"
-              alignItems="left"
-              height={385}
-              ml={2}
-            >
-              <Box className="hero-sub">
+        {viewer?.announcements && viewer.announcements.length > 0 && (
+          <Container>
+            <Box display="flex" justifyContent="center" alignItems="center">
+              {/* Main image */}
+              <motion.div
+                initial={{ opacity: 0, x: 100, y: -100 }}
+                animate={{ opacity: 1, x: 0, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
                 <Box display="flex" justifyContent="flex-start">
-                  <Box>
-                    <img
-                      src={HeroSubImage}
-                      alt="hero-sub"
-                      className="hero-sub"
-                    />
-                  </Box>
-
-                  <VerticalDivider />
-
-                  <Box
-                    className="hero-sub-content hero-text"
-                    px={1.625}
-                    py={1.625}
-                    display="flex"
-                    flexDirection="column"
-                    justifyContent="space-between"
+                  <img
+                    src={viewer.announcements[announcementMain].imageURL}
+                    alt="hero-main"
+                    className="hero-main-image"
+                  />
+                  <VerticalDivider
+                    height={380}
+                    maxHeight={380}
+                    className="first-divider"
+                  />
+                </Box>
+              </motion.div>
+              ){/* Sub section */}
+              <Box
+                display="flex"
+                flexDirection="column"
+                justifyContent="space-between"
+                alignItems="left"
+                height={385}
+                ml={2}
+              >
+                {viewer.announcements.length > 1 && (
+                  <motion.div
+                    initial={{ opacity: 0, x: 50, y: -50 }}
+                    animate={{ opacity: 1, x: 0, y: 0 }}
+                    transition={{ delay: 0.3 }}
                   >
-                    <Box className="hero-text-medium">
-                      {announcementsData[1]?.title}
+                    <Box
+                      className="hero-sub"
+                      onClick={() => incrementAnnouncement()}
+                    >
+                      <Box display="flex" justifyContent="flex-start">
+                        <Box>
+                          <img
+                            src={viewer.announcements[announcementSub].imageURL}
+                            alt="hero-sub"
+                            className="hero-sub-image"
+                          />
+                        </Box>
+
+                        <VerticalDivider height={110} maxHeight={110} />
+
+                        <Box
+                          className="hero-sub-content hero-text"
+                          px={1.625}
+                          py={1.625}
+                          display="flex"
+                          flexDirection="column"
+                          justifyContent="space-between"
+                        >
+                          <Box display="flex" className="hero-text-medium">
+                            {viewer.announcements.length > 1 &&
+                              viewer.announcements[announcementSub].title}
+                          </Box>
+
+                          <Box className="hero-text-small">
+                            {viewer.announcements.length > 1 &&
+                              viewer.announcements[announcementSub].subtitle}
+                          </Box>
+                        </Box>
+                      </Box>
+                    </Box>
+                  </motion.div>
+                )}
+                <motion.div
+                  initial={{ opacity: 0, x: 100, y: -100 }}
+                  animate={{ opacity: 1, x: 0, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <Box className="hero-text">
+                    <Box className="hero-text-large">
+                      {viewer.announcements[announcementMain].title}
                     </Box>
 
-                    <Box className="hero-text-small">
-                      {announcementsData[1]?.subtitle}
+                    <Box className="hero-text-medium" mt={2}>
+                      {viewer.announcements[announcementMain].subtitle}
+                    </Box>
+
+                    <Box
+                      className="hero-text-medium hero-more"
+                      mt={4}
+                      onClick={() => {
+                        {
+                          viewer?.announcements &&
+                            viewer?.announcements[announcementMain] &&
+                            history.push({
+                              pathname: `/announcement`,
+                              state: viewer.announcements[announcementMain].id,
+                            });
+                        }
+                      }}
+                    >
+                      More &gt;
                     </Box>
                   </Box>
-                </Box>
-              </Box>
-
-              <Box className="hero-text">
-                <Box className="hero-text-large">
-                  {announcementsData[0]?.title}
-                </Box>
-
-                <Box className="hero-text-medium" mt={2}>
-                  {announcementsData[0]?.subtitle}
-                </Box>
-
-                <Box className="hero-text-medium" mt={4}>
-                  More &gt;
-                </Box>
+                </motion.div>
               </Box>
             </Box>
-          </Box>
-        </Container>
+          </Container>
+        )}
       </Box>
     </Box>
   );
@@ -147,18 +186,39 @@ export const Hero = withTheme(styled(UnstyledHero)`
   .hero-text {
     color: white;
     font-weight: 700;
+    word-break: break-word;
+    width: 30rem;
 
     .hero-text-large {
-      font-size: 40px;
+      font-size: 1.75rem;
     }
 
     .hero-text-medium {
-      font-size: 20px;
+      font-size: 1rem;
       line-height: 1;
     }
 
     .hero-text-small {
-      font-size: 9px;
+      font-size: 0.75rem;
     }
+  }
+
+  .hero-more {
+    height: 25px;
+    cursor: pointer;
+  }
+
+  .hero-main-image {
+    width: 40rem;
+    height: 23.75rem;
+  }
+
+  .hero-sub-image {
+    width: 10rem;
+    height: 6.875rem;
+  }
+
+  .first-divider {
+    margin-top: 0;
   }
 `);

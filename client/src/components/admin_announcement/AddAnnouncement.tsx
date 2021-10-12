@@ -2,6 +2,7 @@ import React, {
   FunctionComponent,
   useEffect,
   useState,
+  useCallback,
   useMemo,
   ChangeEvent,
 } from 'react';
@@ -22,6 +23,9 @@ import { useHistory } from 'react-router-dom';
 import { ImgDropzone } from '../dropzone/DropZone';
 import { Button } from '../button/Button';
 import { AnnouncementInput } from '../../types/announcement';
+import { useImgUpload } from '../../hooks/useImgUpload';
+import { parseError } from '../../graphql/client';
+import { ResourceType } from '../../types/resource.enum';
 
 interface AddAnnouncementProps {
   className?: string;
@@ -40,6 +44,10 @@ const UnstyledAddAnnouncement: FunctionComponent<AddAnnouncementProps> = ({
   );
   const [file, setFile] = useState<File>();
   const [fileLink, setFileLink] = useState('');
+
+  const [error, setError] = useState('');
+
+  const { generateUploadUrls } = useImgUpload();
 
   const [newAnnouncement, setNewAnnouncement] = useState<AnnouncementInput>({
     title: '',
@@ -72,12 +80,35 @@ const UnstyledAddAnnouncement: FunctionComponent<AddAnnouncementProps> = ({
   );
 
   const handleUploadChange = async (files: File[]) => {
-    // Dropzone uploader can accept multiple files.
     const tempFile = files[0];
 
     setFile(tempFile);
     setFileLink(URL.createObjectURL(tempFile));
   };
+
+  const uploadImageToS3 = async () => {
+    try {
+      if (file?.name && file?.type) {
+        let announcementImageURL = newAnnouncement.imageURL;
+        const fileName = `${newAnnouncement.title.substring(
+          0,
+          10
+        )}-${Date.now()}`.toLocaleLowerCase();
+
+        announcementImageURL = (await generateUploadUrls(
+          file,
+          fileName,
+          ResourceType.ANNOUNCEMENT
+        )) as string;
+
+        newAnnouncement.imageURL = announcementImageURL;
+      }
+    } catch (e) {
+      setError(parseError(e));
+    }
+  };
+
+  console.warn(Date.now());
 
   return (
     <Box className={className}>
@@ -153,16 +184,18 @@ const UnstyledAddAnnouncement: FunctionComponent<AddAnnouncementProps> = ({
                 inline: { inDropdown: true },
                 list: { inDropdown: true },
                 textAlign: { inDropdown: true },
-                link: { inDropdown: true },
                 history: { inDropdown: true },
               }}
             />
           </Box>
 
           <Box mb={3}>
+            <Typography> Image Upload* </Typography>
             <ImgDropzone
               fileLink={fileLink}
+              fileType="announcment"
               setFile={(files: File[]) => handleUploadChange(files)}
+              maxSize={5242880}
             />
           </Box>
 
@@ -190,7 +223,8 @@ const UnstyledAddAnnouncement: FunctionComponent<AddAnnouncementProps> = ({
               color="primary"
               size="large"
               disabled={!isValid}
-              onClick={() => {
+              onClick={async () => {
+                await uploadImageToS3();
                 void onAdd(newAnnouncement);
                 history.goBack();
               }}

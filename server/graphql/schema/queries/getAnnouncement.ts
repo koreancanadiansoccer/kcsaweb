@@ -1,7 +1,7 @@
-import { GraphQLNonNull, GraphQLString } from "graphql";
+import { GraphQLNonNull, GraphQLString } from 'graphql';
 
-import { AnnouncementType } from "../../types/announcement";
-import { Announcement } from "../../../db/models/announcement.model";
+import { AnnouncementType } from '../../types/announcement';
+import { Announcement } from '../../../db/models/announcement.model';
 
 /**
  * Get announcement data.
