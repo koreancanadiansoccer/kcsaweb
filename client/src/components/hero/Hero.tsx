@@ -21,7 +21,7 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
     <Box className={className}>
       <Box className="hero" display="flex" alignItems="center">
         <Container>
-          <Box display="flex" justifyContent="center" alignItems="center">
+          <Box display="flex" justifyContent="flex-start" alignItems="center">
             {/* Main image */}
             <Box>
               <img src={HeroMainImage} alt="hero-main" className="hero-main" />

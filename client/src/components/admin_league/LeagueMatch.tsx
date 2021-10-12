@@ -45,9 +45,8 @@ interface LeagueMatchProps {
 const UnstyledLeagueMatch: FunctionComponent<LeagueMatchProps> = ({
   className,
 }) => {
-  const { league: origLeague, setLeague: setOrigLeague } = useContext(
-    LeagueContext
-  );
+  const { league: origLeague, setLeague: setOrigLeague } =
+    useContext(LeagueContext);
 
   const [openModal, setOpenModal] = useState<MODAL_TYPE | null>(null);
 
