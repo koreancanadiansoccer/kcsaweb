@@ -15,7 +15,7 @@ export const createGallery = {
   type: new GraphQLList(GalleryType),
   args: {
     title: { type: new GraphQLNonNull(GraphQLString) },
-    subTitle: { type: GraphQLString },
+    description: { type: GraphQLString },
     showOnHomepage: { type: GraphQLBoolean },
   },
   async resolve(parent: object, args: object) {

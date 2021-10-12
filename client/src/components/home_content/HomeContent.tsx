@@ -9,9 +9,8 @@ import { LeagueTable } from '../league_table/LeagueTable';
 import { LeagueSelect } from '../league_select/LeagueSelect';
 import { AgeEnums } from '../../types/age.enum';
 import { TableType } from '../../types/table_type';
-import MainContentImg from '../../assets/main_content.png';
 
-import { MediaContents } from "./MediaContents";
+import { GallerySlide } from './GallerySlide';
 interface HomeContentProps {
   className?: string;
 }
@@ -27,7 +26,13 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
     <Box my={5} className={className}>
       <Container>
         <Box display="flex" justifyContent="start" alignItems="start">
-          <Box display="flex" flexDirection="column" justifyContent="start" alignItems="center" minWidth={275}>
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="start"
+            alignItems="center"
+            minWidth={275}
+          >
             {/* League selection */}
             <Box
               display="flex"
@@ -93,10 +98,8 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
             )}
           </Box>
 
-          {/* Main image */}
-          {/* <Box> */}
-              <MediaContents className="galleryTest" />
-          {/* </Box> */}
+          {/* Galleries Slide Show */}
+          <GallerySlide className="galleryTest" />
         </Box>
       </Container>
     </Box>

@@ -4,8 +4,10 @@ import {
   Column,
   Default,
   AllowNull,
-  HasMany
+  HasMany,
+  DataType
 } from "sequelize-typescript";
+
 import { GalleryImage } from "./galleryimage.model";
 
 @Table({ tableName: 'gallery' })
@@ -14,8 +16,10 @@ export class Gallery extends Model {
   @Column
   title!: string;
 
-  @Column ({ field: 'sub_title' })
-  subTitle!: string;
+  @Column({
+    type: DataType.STRING(1000),
+  })
+  description!: string;
 
   @Default(false)
   @Column({ field: 'show_on_homepage' })

@@ -1,5 +1,4 @@
-import { GraphQLNonNull } from 'graphql';
-import { GraphQLString } from 'graphql';
+import { GraphQLNonNull, GraphQLString } from 'graphql';
 
 import { GalleryType } from '../../types/gallery';
 import { Gallery } from '../../../db/models/gallery.model';

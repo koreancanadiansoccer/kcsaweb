@@ -4,34 +4,34 @@ import { GalleryImage } from '../../types/gallery';
 
 export interface GalleryData {
   title: string;
-  subTitle: string;
+  description: string;
   showOnHomepage?: boolean;
   galleryImages?: GalleryImage[];
 }
 
 export interface AddGalleryDataInput {
   title: string;
-  subTitle: string;
+  description: string;
   showOnHomepage?: boolean;
   galleryImages?: GalleryImage[];
 }
 
 /**
- * Mutation for creating a new user account.
+ * Mutation for creating a new Gallery.
  */
 export const CREATE_GALLERY = gql`
-  mutation CreateGallery (
-    $title: String!,
-    $subTitle: String!,
+  mutation CreateGallery(
+    $title: String!
+    $description: String!
     $showOnHomepage: Boolean
-) {
-    createGallery (
-      title: $title,
-      subTitle: $subTitle,
+  ) {
+    createGallery(
+      title: $title
+      description: $description
       showOnHomepage: $showOnHomepage
     ) {
       title
-      subTitle
+      description
       showOnHomepage
       createdAt
     }

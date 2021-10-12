@@ -1,7 +1,7 @@
 export interface Gallery {
   id: string;
   title: string;
-  subTitle: string;
+  description: string;
   showOnHomepage: boolean;
   galleryImages?: GalleryImage[];
   createdAt: string;
@@ -9,7 +9,7 @@ export interface Gallery {
 
 export interface GalleryInput {
   title: string;
-  subTitle: string;
+  description: string;
   showOnHomepage?: boolean;
   galleryImages?: GalleryImage[];
 }

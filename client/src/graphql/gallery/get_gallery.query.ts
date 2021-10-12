@@ -15,10 +15,11 @@ export const GET_GALLERY = gql`
     getGallery(id: $id) {
       id
       title
-      subTitle
+      description
       showOnHomepage
       createdAt
       galleryImages {
+        id
         imageURL
       }
     }

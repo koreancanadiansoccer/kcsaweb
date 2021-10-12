@@ -2,7 +2,7 @@
  *! Gallery Page on admin side to upload images
  */
 
-import React, { FunctionComponent, useState, useEffect, useMemo } from 'react';
+import React, { FunctionComponent, useState, useEffect, useMemo, useRef } from 'react';
 import { withTheme } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import styled from "styled-components";
@@ -27,7 +27,7 @@ interface GalleryProps {
 
 const tableColumns = [
   { title: 'Title', field: 'title' },
-  { title: 'Subtitle', field: 'subTitle' },
+  { title: 'Description', field: 'description' },
   { title: 'Show On Homepage', field: 'showOnHomepage' },
   { title: 'Created', field: 'createdAt' },
 ];
@@ -38,6 +38,7 @@ const tableColumns = [
 const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [galleries, setGalleries] = useState<Gallery[]>();
+  const showOnHomePageCount = useRef(0);
 
   // Get Galleries data
   const galleriesQuery = useQuery(GET_GALLERIES);
@@ -55,6 +56,9 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
     // If no error/loading set values.
     if (!loading && !error && galleriesQuery?.data?.getGalleries) {
       setGalleries(galleriesQuery.data.getGalleries);
+      // map(galleries, (gallery) => {
+      //   gallery.showOnHomepage ? showOnHomePageCount.current += 1 : showOnHomePageCount.current;
+      // });
     }
 
     if (galleriesQuery.error) {
@@ -67,7 +71,7 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
       const res = await createGalleryMut({
         variables: {
           title: newGallery.title,
-          subTitle: newGallery.subTitle,
+          description: newGallery.description,
           showOnHomepage: newGallery.showOnHomepage as boolean,
         },
       });
@@ -85,7 +89,11 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
    * Set table data.
    */
   const tableData: Gallery[] = useMemo(() => {
+    showOnHomePageCount.current = 0;
     return map(galleries, (gallery) => {
+      gallery.showOnHomepage
+        ? (showOnHomePageCount.current += 1)
+        : showOnHomePageCount.current;
       return { ...gallery };
     });
   }, [galleries]);
@@ -98,13 +106,18 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
         onAdd={(newGallery: GalleryInput) => {
           createGallery(newGallery);
         }}
+        showOnHomePageCount={showOnHomePageCount.current}
       />
 
       <Box>
         <Typography variant="h4">Gallery</Typography>
 
         <Box my={3}>
-          <Button startIcon={<AddIcon />} onClick={() => setOpenModal(true)} color="secondary">
+          <Button
+            startIcon={<AddIcon />}
+            onClick={() => setOpenModal(true)}
+            color="secondary"
+          >
             Create New Gallery
           </Button>
         </Box>
@@ -115,13 +128,15 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
           data={tableData}
           onRowClick={(evt, data) => {
             if (data?.id) {
-              history.push(`/admin/gallery/${data.id}`);
+              history.push(`/admin]/gallery/${data.id}`); //TODO: 클릭하면 edit 가능하게
             }
           }}
           options={{
             pageSize: 10,
             rowStyle: (data) => {
-              return data.isActive ? { background: 'white' } : { background: '#EEEEEE' };
+              return data.isActive
+                ? { background: 'white' }
+                : { background: '#EEEEEE' };
             },
           }}
         />

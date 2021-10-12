@@ -2,11 +2,11 @@ import {
   Model,
   Table,
   Column,
-  Default,
   AllowNull,
   BelongsTo,
   ForeignKey,
 } from "sequelize-typescript";
+
 import { Gallery } from "./gallery.model";
 
 @Table({ tableName: 'gallery_image' })

@@ -19,11 +19,11 @@ import { createAppTheme } from './styles/theme';
 import { client } from './graphql/client';
 import { Login } from './pages/Login';
 import { Create } from './pages/create/Create';
-import { GalleryTable } from './pages/announcement/gallery/Gallery';
+import { Media } from './pages/announcement/media/Media';
 import { GET_HOME_VIEWER } from './graphql/homeViewer';
 import { ViewerConext } from './context/homeViewer';
 import { HomeViewer } from './types/home_viewer';
-import { SelectedGallery } from "./pages/announcement/gallery/SelectedGallery";
+import { GalleryDetail } from './components/gallery_detail/GalleryDetail';
 
 const App: FunctionComponent = () => {
   const theme = createAppTheme();
@@ -99,11 +99,11 @@ const App: FunctionComponent = () => {
             </Route>
 
             <Route exact path="/gallery">
-              <GalleryTable />
+              <Media />
             </Route>
 
             <Route path="/gallery/:id">
-              <SelectedGallery />
+              <GalleryDetail />
             </Route>
           </Switch>
         </ThemeProvider>

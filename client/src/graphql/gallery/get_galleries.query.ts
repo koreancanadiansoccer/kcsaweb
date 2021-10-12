@@ -12,11 +12,15 @@ export const GET_GALLERIES = gql`
     getGalleries {
       id
       title
-      subTitle
+      description
       showOnHomepage
       createdAt
+      galleryImages {
+        id
+        imageURL
       }
     }
+  }
 `;
 
 export const GET_MAIN_GALLERIES = gql`
@@ -24,10 +28,11 @@ export const GET_MAIN_GALLERIES = gql`
     getMainGalleries {
       id
       title
-      subTitle
+      description
       showOnHomepage
       createdAt
       galleryImages {
+        id
         imageURL
       }
     }

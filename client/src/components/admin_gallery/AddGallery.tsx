@@ -21,21 +21,24 @@ import { Modal } from '../modal/Modal';
 import { GalleryInput } from '../../types/gallery';
 
 interface CreateGalleryModalProp extends Pick<DialogProps, 'open' | 'onClose'> {
+  className?: string;
   onAdd: (league: GalleryInput) => Promise<void>;
+  showOnHomePageCount: number;
 }
 
 /**
  * Modal to handle gallery addition.
  */
 const UnstyledCreateGalleryModal: FunctionComponent<CreateGalleryModalProp> = ({
+  className,
   open,
   onClose,
   onAdd,
+  showOnHomePageCount,
 }) => {
-  // Init state for new product.
   const [newGallery, setNewGallery] = useState<GalleryInput>({
     title: '',
-    subTitle: '',
+    description: '',
     showOnHomepage: false,
     galleryImages: [],
   });
@@ -47,20 +50,29 @@ const UnstyledCreateGalleryModal: FunctionComponent<CreateGalleryModalProp> = ({
     () =>
       setNewGallery({
         title: '',
-        subTitle: '',
+        description: '',
         showOnHomepage: false,
         galleryImages: [],
       }),
     [open]
   );
 
-  const [inputImages, setInputImages] = useState<File[]>([]); // list of File Object || TODO: newGallery.galleryImages에 저장
-
   return (
-    <Modal open={open} onClose={onClose} title="Create New Gallery">
-      <Box display="flex" justifyContent="space-evenly" alignItems="start" flexDirection="column" width="100%">
+    <Modal
+      open={open}
+      onClose={onClose}
+      title="Create New Gallery"
+      className={className}
+    >
+      <Box
+        display="flex"
+        justifyContent="space-evenly"
+        alignItems="start"
+        flexDirection="column"
+        width="100%"
+      >
         <Typography variant="body1"> Title</Typography>
-        <Box mt={1} mb={3}>
+        <Box mt={1} mb={3} width="60%">
           <TextField
             label="Title"
             placeholder="Gallery Title"
@@ -75,41 +87,47 @@ const UnstyledCreateGalleryModal: FunctionComponent<CreateGalleryModalProp> = ({
           />
         </Box>
 
-        <Typography variant="body1"> Subtitle</Typography>
+        <Typography variant="body1"> Description</Typography>
         <Box mt={1} mb={3} width="100%">
           <TextField
-            label="Subtitle"
-            placeholder="Gallery Subtitle"
+            label="Description"
+            placeholder="Gallery Description"
             color="primary"
             variant="outlined"
-            value={newGallery?.subTitle}
+            value={newGallery?.description}
             fullWidth
+            multiline
+            rows={6}
             onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-              setNewGallery({ ...newGallery, subTitle: evt.target.value });
+              setNewGallery({ ...newGallery, description: evt.target.value });
             }}
           />
         </Box>
 
+        {/* TODO: upload to S3 */}
         <Box width="100%" my={1}>
           <DropzoneArea
             dropzoneText={'Drag and drop an image here or click'}
             filesLimit={100}
             maxFileSize={20971520} // 20MB
-            acceptedFiles={['image/gif', 'image/jpeg', 'image/jpg', 'image/png', 'image/svg']}
+            acceptedFiles={[
+              'image/gif',
+              'image/jpeg',
+              'image/jpg',
+              'image/png',
+              'image/svg',
+            ]}
             previewGridProps={{
               container: { spacing: 0 },
-            }}
-            onChange={(files) => {
-              setInputImages([...files]);
             }}
           />
         </Box>
 
-        {/* TODO: 만약 showOnHomepage 가 3개 선택이면 checkbox 불가능 */}
         <Box mb={2}>
           <FormControlLabel
             control={
               <Checkbox
+                disabled={showOnHomePageCount >= 3 ? true : false}
                 checked={newGallery?.showOnHomepage}
                 onChange={(evt: ChangeEvent<HTMLInputElement>) => {
                   setNewGallery({
@@ -121,6 +139,9 @@ const UnstyledCreateGalleryModal: FunctionComponent<CreateGalleryModalProp> = ({
             }
             label="Main Page"
           />
+          {showOnHomePageCount >= 3 && (
+            <Box className="warning-box">Already Selected 3 Galleries</Box>
+          )}
         </Box>
 
         <DialogActions>
@@ -144,5 +165,13 @@ const UnstyledCreateGalleryModal: FunctionComponent<CreateGalleryModalProp> = ({
 export const CreateGalleryModal = withTheme(styled(UnstyledCreateGalleryModal)`
   .MuiDialogActions-root {
     padding: 0px;
+  }
+
+  .warning-box {
+    margin-left: 27%;
+    margin-top: -10%;
+    font-size: 10px;
+    color: #ff1744;
+    width: 100%;
   }
 `);

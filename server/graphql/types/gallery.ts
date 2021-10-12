@@ -14,7 +14,7 @@ export const GalleryType = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLString },
     title: { type: GraphQLString },
-    subTitle: { type: GraphQLString },
+    description: { type: GraphQLString },
     showOnHomepage: { type: GraphQLBoolean },
     createdAt: { type: DateTime },
     galleryImages: { type: new GraphQLList(GalleryImageType) },
