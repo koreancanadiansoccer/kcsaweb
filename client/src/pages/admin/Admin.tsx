@@ -21,7 +21,7 @@ import {
   Link as RouteLink,
 } from 'react-router-dom';
 
-import { CreateAnnouncements } from '../../components/admin_announcement/CreateAnnouncement';
+import { CreateAnnouncement } from '../../components/admin_announcement/CreateAnnouncement';
 
 import { Announcements } from './pages/Announcements';
 import { Leagues } from './pages/Leagues';
@@ -166,10 +166,11 @@ export const Admin: React.FC = () => {
           </Route>
 
           <Route path={`${url}/announcement/createAnnouncement`}>
-            <CreateAnnouncements />
+            <CreateAnnouncement />
           </Route>
 
-          {/* Render page for /team/{id} - a page for specific team} */}
+          {/* Render page for /team/{id} - a page for
+           specific team} */}
           <Route path={`${url}/clubs/:id`}>
             <TeamDetail />
           </Route>

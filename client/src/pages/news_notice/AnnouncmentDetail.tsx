@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import ReactHtmlParser from 'react-html-parser';
 import Typography from '@material-ui/core/Typography';

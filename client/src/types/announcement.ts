@@ -4,7 +4,7 @@ export interface Announcement {
   subtitle: string;
   content: string;
   imageURL?: string;
-  showOnHomepage: boolean;
+  showOnHomepage?: boolean;
 }
 
 export interface AnnouncementInput {

@@ -3,16 +3,17 @@ import { withTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import styled from 'styled-components';
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import Box from '@material-ui/core/Box';
-import map from 'lodash/map';
 import { useHistory, useRouteMatch, Link as RouteLink } from 'react-router-dom';
 
 import { Button } from '../../../components/button/Button';
 import { Table } from '../../../components/table/Table';
 import { parseError } from '../../../graphql/client';
-import { Announcement } from '../../../types/announcement';
+import { Announcement, AnnouncementInput } from '../../../types/announcement';
+import { CREATE_ANNOUNCEMENT } from '../../../graphql/announcement/create_announcement.mutation';
 import { GET_ANNOUNCEMENTS } from '../../../graphql/announcement/get_announcements.query';
+import { CreateAnnouncement } from '../../../components/admin_announcement/CreateAnnouncement';
 
 interface AnnouncementProps {
   className?: string;
@@ -36,6 +37,7 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
   const { url } = useRouteMatch();
 
   const [announcements, setAnnouncements] = useState<Announcement[]>();
+  const [buttonClicked, setButtonClicked] = useState(false);
 
   // Get Announcement data.
   const announcementDataQuery = useQuery(GET_ANNOUNCEMENTS);
@@ -58,52 +60,76 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
     }
   }, [announcementDataQuery, loading, error]);
 
-  /**
-   * Set table data.
-   */
-  const tableData: Announcement[] = useMemo(() => {
-    return map(announcements, (announcement) => {
-      return {
-        ...announcement,
-      };
+  const [createAnnouncementMut] = useMutation<
+    { createAnnouncement: Announcement[] },
+    AnnouncementInput
+  >(CREATE_ANNOUNCEMENT);
+
+  const createAnnouncement = async (newAnnouncement: AnnouncementInput) => {
+    await createAnnouncementMut({
+      variables: {
+        title: newAnnouncement.title,
+        subtitle: newAnnouncement.subtitle,
+        content: newAnnouncement.content,
+        imageURL: newAnnouncement.imageURL,
+        showOnHomepage: newAnnouncement.showOnHomepage,
+      },
     });
-  }, [announcements]);
+  };
+
+  const handleButtonClicked = () => {
+    setButtonClicked(true);
+  };
+
+  if (!announcements) {
+    return <div>loading...</div>;
+  }
 
   return (
     <>
-      <Box>
-        <Typography variant="h4">Announcement</Typography>
-
-        <Box my={3}>
-          <Button
-            component={RouteLink}
-            to={`${url}/createAnnouncement`}
-            startIcon={<AddIcon />}
-            color="secondary"
-          >
-            Create New Announcement
-          </Button>
-        </Box>
-
-        <Table
-          title="Announcement Info"
-          columns={tableColumns}
-          data={tableData}
-          onRowClick={(evt, data) => {
-            if (data?.id) {
-              history.push(`/admin/announcement/${data.id}`);
-            }
-          }}
-          options={{
-            pageSize: 10,
-            rowStyle: (data) => {
-              return data.isActive
-                ? { background: 'white' }
-                : { background: '#EEEEEE' };
-            },
+      {buttonClicked ? (
+        <CreateAnnouncement
+          className="announcement-form"
+          onAdd={(newAnnouncement: AnnouncementInput) => {
+            createAnnouncement(newAnnouncement);
           }}
         />
-      </Box>
+      ) : (
+        <Box>
+          <Typography variant="h4">Announcement</Typography>
+
+          <Box my={3}>
+            <Button
+              component={RouteLink}
+              to={`${url}/createAnnouncement`}
+              startIcon={<AddIcon />}
+              color="secondary"
+              onClick={handleButtonClicked}
+            >
+              Create New Announcement
+            </Button>
+          </Box>
+
+          <Table
+            title="Announcement Info"
+            columns={tableColumns}
+            data={announcements}
+            onRowClick={(evt, data) => {
+              if (data?.id) {
+                history.push(`/admin/announcement/${data.id}`);
+              }
+            }}
+            options={{
+              pageSize: 10,
+              rowStyle: (data) => {
+                return data.isActive
+                  ? { background: 'white' }
+                  : { background: '#EEEEEE' };
+              },
+            }}
+          />
+        </Box>
+      )}
     </>
   );
 };

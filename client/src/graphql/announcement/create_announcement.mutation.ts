@@ -1,21 +1,5 @@
 import { gql } from '@apollo/client';
 
-export interface AnnouncementData {
-  title: string;
-  subtitle: string;
-  content: string;
-  imageURL?: string;
-  showOnHomepage?: boolean;
-}
-
-export interface CreateAnnouncementDataInput {
-  title: string;
-  subtitle: string;
-  content: string;
-  imageURL?: string;
-  showOnHomepage?: boolean;
-}
-
 /**
  * Mutation for creating a new user account.
  */

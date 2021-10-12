@@ -41,7 +41,7 @@ export const AnnouncementNav = () => {
         <MenuItem
           onClick={handleClose}
           component={RouteLink}
-          to="/announcement"
+          to={{ pathname: '/announcement', state: true }}
         >
           News and Notice
         </MenuItem>

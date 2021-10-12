@@ -80,6 +80,10 @@ const App: FunctionComponent = () => {
               <Announcements />
             </Route>
 
+            <Route exact path="/announcement/:id">
+              <Announcements />
+            </Route>
+
             <Route path="/login">
               <Login />
             </Route>
