@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Box from '@material-ui/core/Box';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { Link as RouteLink } from 'react-router-dom';
 
 import { Button } from '../../button/Button';
+
+interface AboutNavProps {
+  scroll: string;
+}
 
 export const AboutNav: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

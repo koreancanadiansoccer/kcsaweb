@@ -71,7 +71,7 @@ export const AddLeagueTeamModal: FunctionComponent<AddLeagueTeamModalProps> = ({
       const newTeams = map(selectedOption, (selected) => {
         const newTeam = find(
           teams,
-          (team) => team.id === selected.value
+          (team) => team.id === parseInt(selected.value)
         ) as Team;
 
         return { ...newTeam };

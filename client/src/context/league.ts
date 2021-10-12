@@ -19,6 +19,7 @@ export const LeagueContext = createContext<LeagueContextType>({
     leagueType: '',
     maxYellowCard: 0,
     leagueTeams: [],
+    matches: [],
   },
 
   setLeague: () => undefined,

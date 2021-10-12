@@ -13,3 +13,13 @@ yellowCard
 goalScored
 leagueTeamId
 `;
+
+export const MATCH_PLAYER_FRAGMENT = `
+id
+name
+teamId
+matchId
+leagueTeamId
+yellowCard
+goalScored
+`;

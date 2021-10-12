@@ -17,6 +17,7 @@ enum LeagueType {
 }
 
 import { LeagueTeam } from './leagueteam.model';
+import { Match } from './match.model';
 
 @Table({ tableName: 'league' })
 export class League extends Model {
@@ -43,4 +44,6 @@ export class League extends Model {
   maxYellowCard!: number;
 
   @HasMany(() => LeagueTeam) leagueTeams!: LeagueTeam[];
+
+  @HasMany(() => Match) matches!: Match[];
 }

@@ -10,6 +10,7 @@ import { getHomeViewer } from './queries/getHomeViewer';
 import { getPlayers } from './queries/getPlayers';
 import { getAnnouncement } from './queries/getAnnouncement';
 import { getAnnouncements } from './queries/getAnnouncements';
+import { getMatches } from './queries/getMatches';
 // Mutations
 import { createUser } from './mutations/createUser';
 import { createLeague } from './mutations/createLeague';
@@ -21,6 +22,7 @@ import { createS3SignedUrl } from './mutations/createS3SignedUrl';
 import { createPlayer } from './mutations/createPlayer';
 import { createLeaguePlayers } from './mutations/createLeaguePlayers';
 import { createAnnouncement } from './mutations/createAnnouncement';
+import { createMatch } from './mutations/createMatch';
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -34,6 +36,7 @@ const RootQuery = new GraphQLObjectType({
     getAnnouncement,
     getAnnouncements,
     getPlayers,
+    getMatches,
   },
 });
 
@@ -50,6 +53,7 @@ const Mutation = new GraphQLObjectType({
     createS3SignedUrl,
     createPlayer,
     createLeaguePlayers,
+    createMatch,
   },
 });
 
