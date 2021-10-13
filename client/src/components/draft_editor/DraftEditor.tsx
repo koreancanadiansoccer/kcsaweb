@@ -9,16 +9,18 @@ import { withTheme } from '@material-ui/core/styles';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 interface DraftEditorProps {
+  className: string;
   editorState: EditorState;
   onEditorStateChange?: (editorState: EditorState) => void;
 }
 
 const UnStyledDraftEditor: FunctionComponent<DraftEditorProps> = ({
+  className,
   editorState,
   onEditorStateChange,
 }) => {
   return (
-    <Box>
+    <Box className={className}>
       <Editor
         editorState={editorState}
         toolbarClassName="toolbarClassName"

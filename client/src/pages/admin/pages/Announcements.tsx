@@ -37,7 +37,6 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
   const { url } = useRouteMatch();
 
   const [announcements, setAnnouncements] = useState<Announcement[]>();
-  const [buttonClicked, setButtonClicked] = useState(false);
 
   // Get Announcement data.
   const announcementDataQuery = useQuery(GET_ANNOUNCEMENTS);
@@ -77,10 +76,6 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
     });
   };
 
-  const handleButtonClicked = () => {
-    setButtonClicked(true);
-  };
-
   if (!announcements) {
     return <div>loading...</div>;
   }
@@ -96,7 +91,6 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
             to={`${url}/createAnnouncement`}
             startIcon={<AddIcon />}
             color="secondary"
-            onClick={handleButtonClicked}
           >
             Create New Announcement
           </Button>

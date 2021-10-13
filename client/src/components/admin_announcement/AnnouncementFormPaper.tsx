@@ -13,6 +13,8 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { useHistory } from 'react-router-dom';
+import draftToHtml from 'draftjs-to-html';
+import { EditorState, convertToRaw } from 'draft-js';
 
 import { ImgDropzone } from '../dropzone/DropZone';
 import { DraftEditor } from '../draft_editor/DraftEditor';
@@ -33,6 +35,9 @@ interface AnnouncementFormPaperProps {
  */
 const UnstyledAnnouncementFormPaper: FunctionComponent<AnnouncementFormPaperProps> =
   ({ className, onAdd }) => {
+    const [editorState, setEditorState] = useState<EditorState>(
+      EditorState.createEmpty()
+    );
     const [newAnnouncement, setNewAnnouncement] = useState<AnnouncementInput>({
       title: '',
       subtitle: '',
@@ -149,19 +154,18 @@ const UnstyledAnnouncementFormPaper: FunctionComponent<AnnouncementFormPaperProp
               <Box mt={3} className="form-fields">
                 <Typography> Body Content* </Typography>
                 <Box>
-                  <Input
-                    className="subtitle-textfield"
-                    fullWidth
-                    variant="outlined"
-                    color="secondary"
-                    value={newAnnouncement?.content}
-                    onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+                  <DraftEditor
+                    editorState={editorState}
+                    onEditorStateChange={(newContent: EditorState) => {
+                      setEditorState(newContent);
                       setNewAnnouncement({
                         ...newAnnouncement,
-                        content: evt.target.value,
+                        content: draftToHtml(
+                          convertToRaw(newContent.getCurrentContent())
+                        ),
                       });
                     }}
-                  ></Input>
+                  />
                 </Box>
               </Box>
             </Box>
@@ -232,33 +236,5 @@ export const AnnouncementFormPaper = withTheme(styled(
     margin-left: 1rem;
     padding: 0;
     width: 50rem;
-  }
-
-  .toolbarClassName {
-    border: 1px solid rgba(142, 142, 147, 0.4);
-  }
-
-  .editorClassName {
-    border: 1px solid rgba(142, 142, 147, 0.4);
-    height: 25rem;
-  }
-
-  .editorClassName figure {
-    margin: 0;
-  }
-  .editorClassName .rdw-image-left {
-    display: inline;
-    float: left;
-    margin-right: 1rem;
-  }
-  .editorClassName .rdw-image-right {
-    display: inline;
-    justify-content: unset;
-    float: right;
-    margin-left: 1rem;
-  }
-
-  .public-DraftStyleDefault-block {
-    margin: 0;
   }
 `);
