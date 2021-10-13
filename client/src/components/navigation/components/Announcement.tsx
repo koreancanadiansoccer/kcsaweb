@@ -19,12 +19,17 @@ export const AnnouncementNav = () => {
 
   return (
     <>
-      <Button color="primary" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+      <Button
+        color="primary"
+        aria-controls="Announcement-menu"
+        aria-haspopup="true"
+        onClick={handleClick}
+      >
         <Box color="white">announcement</Box>
       </Button>
 
       <Menu
-        id="simple-menu"
+        id="Announcement-menu"
         anchorEl={anchorEl}
         getContentAnchorEl={null}
         keepMounted
@@ -33,7 +38,11 @@ export const AnnouncementNav = () => {
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose} component={RouteLink} to="/announcement">
+        <MenuItem
+          onClick={handleClose}
+          component={RouteLink}
+          to="/announcement"
+        >
           Announcement
         </MenuItem>
 

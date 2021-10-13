@@ -99,7 +99,7 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
           </Box>
 
           {/* Galleries Slide Show */}
-          <GallerySlide className="galleryTest" />
+          <GallerySlide />
         </Box>
       </Container>
     </Box>

@@ -56,15 +56,13 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
     // If no error/loading set values.
     if (!loading && !error && galleriesQuery?.data?.getGalleries) {
       setGalleries(galleriesQuery.data.getGalleries);
-      // map(galleries, (gallery) => {
-      //   gallery.showOnHomepage ? showOnHomePageCount.current += 1 : showOnHomePageCount.current;
-      // });
     }
 
     if (galleriesQuery.error) {
       setError(parseError(galleriesQuery.error));
     }
   }, [galleriesQuery, loading, error]);
+
 
   const createGallery = async (newGallery: GalleryInput) => {
     try {
@@ -85,22 +83,23 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
     }
   };
 
-  /**
-   * Set table data.
-   */
-  const tableData: Gallery[] = useMemo(() => {
+  // Render page and count the number of showOnHomePage when galleries is not undefined
+  if (galleries) {
     showOnHomePageCount.current = 0;
-    return map(galleries, (gallery) => {
+    map(galleries, (gallery) => {
       gallery.showOnHomepage
         ? (showOnHomePageCount.current += 1)
         : showOnHomePageCount.current;
-      return { ...gallery };
     });
-  }, [galleries]);
+  }
+  else {
+    return <div>loading...</div>
+  }
 
   return (
     <>
       <CreateGalleryModal
+        className={className}
         open={openModal}
         onClose={() => setOpenModal(false)}
         onAdd={(newGallery: GalleryInput) => {
@@ -125,7 +124,7 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
         <Table
           title="Gallery List"
           columns={tableColumns}
-          data={tableData}
+          data={galleries}
           onRowClick={(evt, data) => {
             if (data?.id) {
               history.push(`/admin]/gallery/${data.id}`); //TODO: 클릭하면 edit 가능하게
