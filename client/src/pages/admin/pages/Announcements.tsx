@@ -87,49 +87,40 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
 
   return (
     <>
-      {buttonClicked ? (
-        <CreateAnnouncement
-          className="announcement-form"
-          onAdd={(newAnnouncement: AnnouncementInput) => {
-            createAnnouncement(newAnnouncement);
+      <Box>
+        <Typography variant="h4">Announcement</Typography>
+
+        <Box my={3}>
+          <Button
+            component={RouteLink}
+            to={`${url}/createAnnouncement`}
+            startIcon={<AddIcon />}
+            color="secondary"
+            onClick={handleButtonClicked}
+          >
+            Create New Announcement
+          </Button>
+        </Box>
+
+        <Table
+          title="Announcement Info"
+          columns={tableColumns}
+          data={announcements}
+          onRowClick={(evt, data) => {
+            if (data?.id) {
+              history.push(`/admin/announcement/${data.id}`);
+            }
+          }}
+          options={{
+            pageSize: 10,
+            rowStyle: (data) => {
+              return data.isActive
+                ? { background: 'white' }
+                : { background: '#EEEEEE' };
+            },
           }}
         />
-      ) : (
-        <Box>
-          <Typography variant="h4">Announcement</Typography>
-
-          <Box my={3}>
-            <Button
-              component={RouteLink}
-              to={`${url}/createAnnouncement`}
-              startIcon={<AddIcon />}
-              color="secondary"
-              onClick={handleButtonClicked}
-            >
-              Create New Announcement
-            </Button>
-          </Box>
-
-          <Table
-            title="Announcement Info"
-            columns={tableColumns}
-            data={announcements}
-            onRowClick={(evt, data) => {
-              if (data?.id) {
-                history.push(`/admin/announcement/${data.id}`);
-              }
-            }}
-            options={{
-              pageSize: 10,
-              rowStyle: (data) => {
-                return data.isActive
-                  ? { background: 'white' }
-                  : { background: '#EEEEEE' };
-              },
-            }}
-          />
-        </Box>
-      )}
+      </Box>
     </>
   );
 };
