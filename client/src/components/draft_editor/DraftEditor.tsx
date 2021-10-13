@@ -1,8 +1,7 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 // Components
 import { EditorState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
-import draftToHtml from 'draftjs-to-html';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import { withTheme } from '@material-ui/core/styles';

@@ -13,7 +13,6 @@ import { parseError } from '../../../graphql/client';
 import { Announcement, AnnouncementInput } from '../../../types/announcement';
 import { CREATE_ANNOUNCEMENT } from '../../../graphql/announcement/create_announcement.mutation';
 import { GET_ANNOUNCEMENTS } from '../../../graphql/announcement/get_announcements.query';
-import { CreateAnnouncement } from '../../../components/admin_announcement/CreateAnnouncement';
 
 interface AnnouncementProps {
   className?: string;
@@ -58,23 +57,6 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
       setError(parseError(announcementDataQuery.error));
     }
   }, [announcementDataQuery, loading, error]);
-
-  const [createAnnouncementMut] = useMutation<
-    { createAnnouncement: Announcement[] },
-    AnnouncementInput
-  >(CREATE_ANNOUNCEMENT);
-
-  const createAnnouncement = async (newAnnouncement: AnnouncementInput) => {
-    await createAnnouncementMut({
-      variables: {
-        title: newAnnouncement.title,
-        subtitle: newAnnouncement.subtitle,
-        content: newAnnouncement.content,
-        imageURL: newAnnouncement.imageURL,
-        showOnHomepage: newAnnouncement.showOnHomepage,
-      },
-    });
-  };
 
   if (!announcements) {
     return <div>loading...</div>;
