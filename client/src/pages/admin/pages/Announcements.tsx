@@ -3,15 +3,14 @@ import { withTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import styled from 'styled-components';
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import Box from '@material-ui/core/Box';
 import { useHistory, useRouteMatch, Link as RouteLink } from 'react-router-dom';
 
 import { Button } from '../../../components/button/Button';
 import { Table } from '../../../components/table/Table';
 import { parseError } from '../../../graphql/client';
-import { Announcement, AnnouncementInput } from '../../../types/announcement';
-import { CREATE_ANNOUNCEMENT } from '../../../graphql/announcement/create_announcement.mutation';
+import { Announcement } from '../../../types/announcement';
 import { GET_ANNOUNCEMENTS } from '../../../graphql/announcement/get_announcements.query';
 
 interface AnnouncementProps {
@@ -30,19 +29,18 @@ const tableColumns = [
 /**
  * Announcement page.
  */
-const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
+export const Announcements: FunctionComponent<AnnouncementProps> = ({
   className,
 }) => {
   const { url } = useRouteMatch();
 
   const [announcements, setAnnouncements] = useState<Announcement[]>();
-
-  // Get Announcement data.
-  const announcementDataQuery = useQuery(GET_ANNOUNCEMENTS);
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const history = useHistory();
+
+  // Get Announcement data.
+  const announcementDataQuery = useQuery(GET_ANNOUNCEMENTS);
 
   // Pull announcement data.
   useEffect(() => {
@@ -100,5 +98,3 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
     </>
   );
 };
-
-export const Announcements = withTheme(styled(UnstyledAnnouncements)``);

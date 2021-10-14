@@ -165,7 +165,7 @@ export const Admin: React.FC = () => {
             <Announcements />
           </Route>
 
-          <Route path={`${url}/announcement/createAnnouncement`}>
+          <Route exact path={`${url}/announcement/createAnnouncement`}>
             <CreateAnnouncement />
           </Route>
 

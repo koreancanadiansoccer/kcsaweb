@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from 'react';
-// Components
-import { EditorState, convertToRaw } from 'draft-js';
+import { EditorState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';

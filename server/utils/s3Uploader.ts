@@ -21,13 +21,13 @@ interface S3UploadURLs {
 export const getPresignUrlPromiseFunction = async (
   s3: any,
   s3Params: any,
-  resourceName: any
+  bucketName: string
 ): Promise<S3UploadURLs> => {
   // Generate signed url for client to use to upload image.
   const s3SignedUrl = await s3.getSignedUrl('putObject', s3Params);
 
   // Generate object url to save into db.
-  const url = `https://${resourceName}.s3.${S3_REGION}.amazonaws.com/${s3Params.Key}`;
+  const url = `https://${bucketName}.s3.${S3_REGION}.amazonaws.com/${s3Params.Key}`;
 
   return { s3SignedUrl, url };
 };
@@ -67,7 +67,7 @@ export const AWSS3Uploader = async (
   const { s3SignedUrl, url } = await getPresignUrlPromiseFunction(
     s3,
     s3Params,
-    s3Params.Bucket
+    s3Params.Bucket as string
   );
 
   return { s3SignedUrl, url };

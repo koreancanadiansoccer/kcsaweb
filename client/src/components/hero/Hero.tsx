@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useState, useContext } from 'react';
+import React, {
+  FunctionComponent,
+  useState,
+  useContext,
+  useCallback,
+} from 'react';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
@@ -21,74 +26,66 @@ interface HomeProps {
  */
 const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
   const { viewer } = useContext(ViewerContext);
-  // const announcementRef = useRef(0);
 
-  const [mainAnnouncementPosition, setMainAnnouncementPosition] = useState(0);
-  // created this for the case when the sub box needs to show the first announcement and the main box shows last announcement within the list of announcements
-  const [subAnnouncementPosition, setSubAnnouncementPosition] = useState(1);
-
+  const [mainAnnouncementIdx, setMainAnnouncementIdx] = useState(0);
+  const [subAnnouncementIdx, setSubAnnouncementIdx] = useState(1);
   const history = useHistory();
 
-  let announcementLength = 0;
-
-  const incrementAnnouncement = () => {
-    {
-      mainAnnouncementPosition >= announcementLength
-        ? setMainAnnouncementPosition(0)
-        : setMainAnnouncementPosition(mainAnnouncementPosition + 1);
+  const updateIndex = useCallback(() => {
+    if (viewer?.announcements) {
+      const announcementLength = viewer.announcements.length - 1;
+      {
+        mainAnnouncementIdx - 1 < 0 &&
+          setMainAnnouncementIdx(announcementLength);
+      }
+      {
+        mainAnnouncementIdx + 1 > announcementLength &&
+          setMainAnnouncementIdx(0);
+      }
+      {
+        subAnnouncementIdx - 1 < 0 && setSubAnnouncementIdx(announcementLength);
+      }
+      {
+        subAnnouncementIdx + 1 > announcementLength && setSubAnnouncementIdx(0);
+      }
     }
-
-    {
-      subAnnouncementPosition >= announcementLength
-        ? setSubAnnouncementPosition(0)
-        : setSubAnnouncementPosition(subAnnouncementPosition + 1);
-    }
-  };
-
-  const decrementAnnouncement = () => {
-    {
-      mainAnnouncementPosition === 0
-        ? setMainAnnouncementPosition(announcementLength)
-        : setMainAnnouncementPosition(mainAnnouncementPosition - 1);
-    }
-    {
-      subAnnouncementPosition === 0
-        ? setSubAnnouncementPosition(announcementLength)
-        : setSubAnnouncementPosition(subAnnouncementPosition - 1);
-    }
-  };
+  }, [mainAnnouncementIdx, subAnnouncementIdx]);
 
   if (!viewer?.announcements) {
     return <div>loading...</div>;
-  } else {
-    announcementLength = viewer.announcements.length - 1;
   }
 
   return (
     <Box className={className}>
       <Box className="hero" display="flex" alignItems="center">
         {viewer.announcements.length > 0 && (
-          <Container>
-            <ChevronLeftIcon
-              className="chevron-left"
-              onClick={() => decrementAnnouncement()}
-            />
+          <Container className="hero-content">
             <Box display="flex" justifyContent="center" alignItems="center">
-              {/* Main image */}
+              <ChevronLeftIcon
+                className="chevron-left"
+                onClick={() => {
+                  setMainAnnouncementIdx(mainAnnouncementIdx - 1);
+                  setSubAnnouncementIdx(subAnnouncementIdx - 1);
+                  updateIndex();
+                }}
+              />
 
+              {/* Main image */}
               <motion.div
                 initial={{ opacity: 0, x: 100, y: 0 }}
                 animate={{ opacity: 1, x: 0, y: 0 }}
                 transition={{ delay: 0.5 }}
               >
-                <Box display="flex" justifyContent="flex-start">
+                <Box
+                  className="hero-main-image"
+                  display="flex"
+                  justifyContent="flex-start"
+                >
                   <img
-                    src={
-                      viewer.announcements[mainAnnouncementPosition].imageURL
-                    }
+                    src={viewer.announcements[mainAnnouncementIdx].imageURL}
                     alt="hero-main"
-                    className="hero-main-image"
                   />
+
                   <VerticalDivider
                     height={380}
                     maxHeight={380}
@@ -96,6 +93,7 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
                   />
                 </Box>
               </motion.div>
+
               {/* Sub section */}
               <Box
                 display="flex"
@@ -113,14 +111,17 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
                   >
                     <Box
                       className="hero-sub"
-                      onClick={() => incrementAnnouncement()}
+                      onClick={() => {
+                        setMainAnnouncementIdx(mainAnnouncementIdx + 1);
+                        setSubAnnouncementIdx(subAnnouncementIdx + 1);
+                        updateIndex();
+                      }}
                     >
                       <Box display="flex" justifyContent="flex-start">
                         <Box>
                           <img
                             src={
-                              viewer.announcements[subAnnouncementPosition]
-                                .imageURL
+                              viewer.announcements[subAnnouncementIdx].imageURL
                             }
                             alt="hero-sub"
                             className="hero-sub-image"
@@ -139,20 +140,19 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
                         >
                           <Box display="flex" className="hero-text-medium">
                             {viewer.announcements.length > 1 &&
-                              viewer.announcements[subAnnouncementPosition]
-                                .title}
+                              viewer.announcements[subAnnouncementIdx].title}
                           </Box>
 
                           <Box className="hero-text-small">
                             {viewer.announcements.length > 1 &&
-                              viewer.announcements[subAnnouncementPosition]
-                                .subtitle}
+                              viewer.announcements[subAnnouncementIdx].subtitle}
                           </Box>
                         </Box>
                       </Box>
                     </Box>
                   </motion.div>
                 )}
+
                 <motion.div
                   initial={{ opacity: 0, x: 100, y: 0 }}
                   animate={{ opacity: 1, x: 0, y: 0 }}
@@ -160,11 +160,11 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
                 >
                   <Box className="hero-text">
                     <Box className="hero-text-large">
-                      {viewer.announcements[mainAnnouncementPosition].title}
+                      {viewer.announcements[mainAnnouncementIdx].title}
                     </Box>
 
                     <Box className="hero-text-medium" mt={2}>
-                      {viewer.announcements[mainAnnouncementPosition].subtitle}
+                      {viewer.announcements[mainAnnouncementIdx].subtitle}
                     </Box>
 
                     <Box
@@ -173,9 +173,9 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
                       onClick={() => {
                         {
                           viewer.announcements &&
-                            viewer.announcements[mainAnnouncementPosition] &&
+                            viewer.announcements[mainAnnouncementIdx] &&
                             history.push(
-                              `/announcement/${viewer.announcements[mainAnnouncementPosition].id}`
+                              `/announcement/${viewer.announcements[mainAnnouncementIdx].id}`
                             );
                         }
                       }}
@@ -185,11 +185,15 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
                   </Box>
                 </motion.div>
               </Box>
+              <ChevronRightIcon
+                className="chevron-right"
+                onClick={() => {
+                  setMainAnnouncementIdx(mainAnnouncementIdx + 1);
+                  setSubAnnouncementIdx(subAnnouncementIdx + 1);
+                  updateIndex();
+                }}
+              />
             </Box>
-            <ChevronRightIcon
-              className="chevron-right"
-              onClick={() => incrementAnnouncement()}
-            />
           </Container>
         )}
       </Box>
@@ -205,14 +209,19 @@ export const Hero = withTheme(styled(UnstyledHero)`
     background-size: 100% 100%;
   }
 
+  .hero-content {
+    margin-left: 13.5%;
+    padding: 0;
+  }
+
   .hero-sub {
-    max-height: 110px;
+    max-height: 6.875rem;
+    cursor: pointer;
 
     .hero-sub-content {
       background-color: #2f4453;
-      max-width: 263px;
-      max-height: 110px;
-      cursor: pointer;
+      max-width: 16.438rem;
+      max-height: 6.875rem;
     }
   }
 
@@ -242,8 +251,12 @@ export const Hero = withTheme(styled(UnstyledHero)`
   }
 
   .hero-main-image {
-    width: 40rem;
-    height: 23.75rem;
+    margin-right: 2rem;
+  }
+
+  .hero-main-image img {
+    width: 42.5rem;
+    max-height: 23.75rem;
   }
 
   .hero-sub-image {
@@ -253,20 +266,17 @@ export const Hero = withTheme(styled(UnstyledHero)`
   }
 
   .chevron-left {
-    font-size: 5rem;
-    left: 13rem;
-    top: 17rem;
-    position: absolute;
+    font-size: 4rem;
     color: white;
     cursor: pointer;
+    margin-right: 5rem;
+    opacity: 0.3;
   }
 
   .chevron-right {
-    font-size: 5rem;
-    right: 15rem;
-    top: 17rem;
-    position: absolute;
+    font-size: 4rem;
     color: white;
     cursor: pointer;
+    opacity: 0.3;
   }
 `);
