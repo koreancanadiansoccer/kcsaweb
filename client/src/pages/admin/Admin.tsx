@@ -161,12 +161,8 @@ export const Admin: React.FC = () => {
             <Teams />
           </Route>
 
-          <Route exact path={`${url}/announcement`}>
+          <Route path={`${url}/announcement`}>
             <Announcements />
-          </Route>
-
-          <Route exact path={`${url}/announcement/createAnnouncement`}>
-            <CreateAnnouncement />
           </Route>
 
           {/* Render page for /team/{id} - a page for

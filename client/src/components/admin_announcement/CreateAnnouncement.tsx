@@ -15,27 +15,28 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { useHistory } from 'react-router-dom';
 import draftToHtml from 'draftjs-to-html';
 import { EditorState, convertToRaw } from 'draft-js';
-import { useMutation } from '@apollo/client';
 
 import { ImgDropzone } from '../dropzone/DropZone';
 import { DraftEditor } from '../draft_editor/DraftEditor';
 import { Input } from '../input/Input';
 import { Button } from '../button/Button';
-import { Announcement, AnnouncementInput } from '../../types/announcement';
+import { AnnouncementInput } from '../../types/announcement';
 import { useImgUpload } from '../../hooks/useImgUpload';
 import { parseError } from '../../graphql/client';
 import { ResourceType } from '../../types/resource.enum';
-import { CREATE_ANNOUNCEMENT } from '../../graphql/announcement/create_announcement.mutation';
 
 interface CreateAnnouncementProps {
   className?: string;
+  onAdd: (announcement: AnnouncementInput) => Promise<void>;
+  setButtonFalse: (buttonClicked: boolean) => Promise<void>;
+  showOnHomepageCount: number;
 }
 
 /**
  * Display form to create a new announcement
  */
 const UnstyledCreateAnnouncement: FunctionComponent<CreateAnnouncementProps> =
-  ({ className }) => {
+  ({ className, onAdd, setButtonFalse, showOnHomepageCount }) => {
     const [editorState, setEditorState] = useState<EditorState>(
       EditorState.createEmpty()
     );
@@ -72,27 +73,6 @@ const UnstyledCreateAnnouncement: FunctionComponent<CreateAnnouncementProps> =
       []
     );
 
-    const [createAnnouncementMut] = useMutation<
-      { createAnnouncement: Announcement[] },
-      AnnouncementInput
-    >(CREATE_ANNOUNCEMENT);
-
-    const createAnnouncement = async (newAnnouncement: AnnouncementInput) => {
-      try {
-        await createAnnouncementMut({
-          variables: {
-            title: newAnnouncement.title,
-            subtitle: newAnnouncement.subtitle,
-            content: newAnnouncement.content,
-            imageURL: newAnnouncement.imageURL,
-            showOnHomepage: newAnnouncement.showOnHomepage,
-          },
-        });
-      } catch (e) {
-        setError(parseError(e));
-      }
-    };
-
     const handleUploadChange = async (files: File[]) => {
       const tempFile = files[0];
       setFile(tempFile);
@@ -120,10 +100,6 @@ const UnstyledCreateAnnouncement: FunctionComponent<CreateAnnouncementProps> =
         setError(parseError(e));
         console.error(error);
       }
-    };
-
-    const onAdd = async (newAnnouncement: AnnouncementInput) => {
-      createAnnouncement(newAnnouncement);
     };
 
     return (
@@ -206,6 +182,7 @@ const UnstyledCreateAnnouncement: FunctionComponent<CreateAnnouncementProps> =
               <FormControlLabel
                 control={
                   <Checkbox
+                    disabled={showOnHomepageCount >= 5 ? true : false}
                     checked={newAnnouncement?.showOnHomepage}
                     onChange={(evt: ChangeEvent<HTMLInputElement>) => {
                       setNewAnnouncement({
@@ -228,7 +205,8 @@ const UnstyledCreateAnnouncement: FunctionComponent<CreateAnnouncementProps> =
                 disabled={!isValid}
                 onClick={async () => {
                   await uploadImageToS3();
-                  onAdd(newAnnouncement);
+                  void onAdd(newAnnouncement);
+                  void setButtonFalse(false);
                   history.goBack();
                 }}
               >
