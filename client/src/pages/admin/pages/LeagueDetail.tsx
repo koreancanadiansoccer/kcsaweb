@@ -112,7 +112,6 @@ export const LeagueDetail = withTheme(styled(UnstyledLeagueDetail)`
   .MuiTabs-root {
     background-color: white;
   }
-
   .MuiTabs-indicator {
     height: 0.25rem;
   }

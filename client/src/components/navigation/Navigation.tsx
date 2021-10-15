@@ -8,11 +8,12 @@ import styled from 'styled-components';
 import { Link as RouteLink } from 'react-router-dom';
 
 import { Button } from '../button/Button';
-import { ViewerConext } from '../../context/homeViewer';
 import { Logo } from '../icons/Logo';
+import { ViewerContext } from '../../context/homeViewer';
 
 import { AboutNav } from './components/AboutNav';
 import { TeamsNav } from './components/TeamsNav';
+import { AnnouncementNav } from './components/AnnouncementNav';
 
 interface NavigationProps {
   className?: string;
@@ -21,7 +22,7 @@ interface NavigationProps {
 const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
   className,
 }) => {
-  const { viewer } = useContext(ViewerConext);
+  const { viewer } = useContext(ViewerContext);
 
   return (
     <Box className={className}>
@@ -44,9 +45,7 @@ const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
               {/* Example of submenu - should be factored out */}
               <AboutNav />
 
-              <Button component={RouteLink} to="/announcement">
-                announcement
-              </Button>
+              <AnnouncementNav />
 
               <Button component={RouteLink} to="/league">
                 League

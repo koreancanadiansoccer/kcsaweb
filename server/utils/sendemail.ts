@@ -1,12 +1,12 @@
-import { SES } from "aws-sdk";
-import { SendEmailRequest } from "aws-sdk/clients/ses";
-import dotenv from "dotenv";
+import { SES } from 'aws-sdk';
+import { SendEmailRequest } from 'aws-sdk/clients/ses';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
 export const sendEmail = (email: string) => {
   try {
-    const charset = "UTF-8";
+    const charset = 'UTF-8';
 
     const html = `<html>
       <head>
@@ -26,13 +26,13 @@ export const sendEmail = (email: string) => {
       </html>`;
 
     const email_data: SendEmailRequest = {
-      Source: "koreancanadiansoccer@gmail.com",
+      Source: 'koreancanadiansoccer@gmail.com',
       Destination: {
         ToAddresses: [email],
       },
       Message: {
         Subject: {
-          Data: "Welcome to KCSA",
+          Data: 'Welcome to KCSA',
           Charset: charset,
         },
         Body: {

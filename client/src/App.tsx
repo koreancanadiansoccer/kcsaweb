@@ -10,7 +10,7 @@ import { Loader } from './components/loader/Loader';
 import { Home } from './pages/Home';
 import { Admin } from './pages/admin/Admin';
 import { AboutOverview } from './pages/about/AboutOverview';
-import { Announcement } from './pages/Announcement';
+import { Announcements } from './pages/news_notice/Announcement';
 import { League } from './pages/League';
 import { Team } from './pages/Team';
 import { createAppTheme } from './styles/theme';
@@ -18,7 +18,7 @@ import { client } from './graphql/client';
 import { Login } from './pages/Login';
 import { Create } from './pages/create/Create';
 import { GET_HOME_VIEWER } from './graphql/homeViewer';
-import { ViewerConext } from './context/homeViewer';
+import { ViewerContext } from './context/homeViewer';
 import { HomeViewer } from './types/home_viewer';
 //import { ScrollToTop } from './components/about/ScrollToTop';
 const App: FunctionComponent = () => {
@@ -43,7 +43,7 @@ const App: FunctionComponent = () => {
   if (loading) return <Loader open={loading} />;
 
   return (
-    <ViewerConext.Provider value={{ viewer, setViewer }}>
+    <ViewerContext.Provider value={{ viewer, setViewer }}>
       <ApolloProvider client={client}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
@@ -76,8 +76,12 @@ const App: FunctionComponent = () => {
               <Team />
             </Route>
 
-            <Route path="/announcement">
-              <Announcement />
+            <Route exact path="/announcement">
+              <Announcements />
+            </Route>
+
+            <Route path="/announcement/:id">
+              <Announcements />
             </Route>
 
             <Route path="/login">
@@ -90,7 +94,7 @@ const App: FunctionComponent = () => {
           </Switch>
         </ThemeProvider>
       </ApolloProvider>
-    </ViewerConext.Provider>
+    </ViewerContext.Provider>
   );
 };
 

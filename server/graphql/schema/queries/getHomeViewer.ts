@@ -1,9 +1,10 @@
-import { GraphQLNonNull, GraphQLString } from "graphql";
+import { GraphQLNonNull, GraphQLString } from 'graphql';
 
-import { HomeViewerType } from "../../types/homeViewer";
-import { League } from "../../../db/models/league.model";
-import { Team } from "../../../db/models/team.model";
-import { User } from "../../../db/models/user.model";
+import { HomeViewerType } from '../../types/homeViewer';
+import { League } from '../../../db/models/league.model';
+import { Team } from '../../../db/models/team.model';
+import { User } from '../../../db/models/user.model';
+import { Announcement } from '../../../db/models/announcement.model';
 
 /**
  * Get Home page data.
@@ -21,6 +22,13 @@ export const getHomeViewer = {
         where: { id: userId },
       });
     }
-    return { user };
+
+    const announcements = await Announcement.findAll({
+      where: { showOnHomepage: true },
+      order: [['createdAt', 'DESC']],
+      limit: 5,
+    });
+
+    return { user, announcements };
   },
 };

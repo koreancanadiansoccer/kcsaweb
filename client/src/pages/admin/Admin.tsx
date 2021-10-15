@@ -13,6 +13,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import SportsSoccerIcon from '@material-ui/icons/SportsSoccer';
 import GroupIcon from '@material-ui/icons/Group';
+import AnnouncementIcon from '@material-ui/icons/Announcement';
 import {
   Switch,
   Route,
@@ -20,6 +21,9 @@ import {
   Link as RouteLink,
 } from 'react-router-dom';
 
+import { CreateAnnouncement } from '../../components/admin_announcement/CreateAnnouncement';
+
+import { Announcements } from './pages/Announcements';
 import { Leagues } from './pages/Leagues';
 import { LeagueDetail } from './pages/LeagueDetail';
 import { Teams } from './pages/Teams';
@@ -101,6 +105,13 @@ export const Admin: React.FC = () => {
               </ListItemIcon>
               <ListItemText primary="Clubs" />
             </ListItem>
+
+            <ListItem component={RouteLink} to={`${url}/announcement`} button>
+              <ListItemIcon>
+                <AnnouncementIcon />
+              </ListItemIcon>
+              <ListItemText primary="Announcement" />
+            </ListItem>
           </List>
 
           <Divider />
@@ -150,7 +161,12 @@ export const Admin: React.FC = () => {
             <Teams />
           </Route>
 
-          {/* Render page for /team/{id} - a page for specific team} */}
+          <Route path={`${url}/announcement`}>
+            <Announcements />
+          </Route>
+
+          {/* Render page for /team/{id} - a page for
+           specific team} */}
           <Route path={`${url}/clubs/:id`}>
             <TeamDetail />
           </Route>
