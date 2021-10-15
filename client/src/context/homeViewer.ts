@@ -7,7 +7,7 @@ export interface ViewerContextType {
   setViewer: (home: HomeViewer) => void;
 }
 
-export const ViewerConext = createContext<ViewerContextType>({
+export const ViewerContext = createContext<ViewerContextType>({
   viewer: {},
   setViewer: () => undefined,
 });

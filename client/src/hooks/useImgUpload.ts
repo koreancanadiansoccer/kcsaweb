@@ -3,6 +3,7 @@ import { useMutation } from '@apollo/client';
 
 import { CREATE_S3_SIGNED_URL } from '../graphql/create_s3_signed_url.mutation';
 import { parseError } from '../graphql/client';
+import { ResourceType } from '../types/resource.enum';
 
 /**
  * Custom hook to handle S3 Upload and generate 'signedURL' and 'objectURL'.
@@ -15,7 +16,8 @@ export const useImgUpload = (): {
   loading: boolean;
   generateUploadUrls: (
     file: File,
-    fileName: string
+    fileName: string,
+    resourceName: string
   ) => Promise<string | undefined>;
 } => {
   const [error] = useState('');
@@ -25,7 +27,11 @@ export const useImgUpload = (): {
     createS3SignedUrl: { s3SignedUrl: string; url: string };
   }>(CREATE_S3_SIGNED_URL);
 
-  const generateUploadUrls = async (file: File, fileName: string) => {
+  const generateUploadUrls = async (
+    file: File,
+    fileName: string,
+    resourceName: string
+  ) => {
     setLoading(true);
     try {
       // Get 'signedUrl' for upload.
@@ -33,6 +39,7 @@ export const useImgUpload = (): {
         variables: {
           fileName: fileName,
           fileType: file.type,
+          resourceName: resourceName,
         },
       });
 

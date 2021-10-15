@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const GET_HOME_VIEWER = gql`
   query {
@@ -6,6 +6,13 @@ export const GET_HOME_VIEWER = gql`
       user {
         name
         isAdmin
+      }
+      announcements {
+        id
+        title
+        subtitle
+        showOnHomepage
+        imageURL
       }
     }
   }

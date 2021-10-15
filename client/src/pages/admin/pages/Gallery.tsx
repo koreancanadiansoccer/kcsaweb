@@ -55,6 +55,10 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
       setGalleries(galleriesQuery.data.getGalleries);
     }
 
+    if (galleriesQuery?.data?.getGalleries.length == 0) {
+      setOpenModal(true);
+    }
+
     if (galleriesQuery.error) {
       setError(parseError(galleriesQuery.error));
     }
@@ -92,6 +96,19 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
   else {
     return <div>loading...</div>
   }
+  // else if (!galleries) {
+  //   return (
+  //     <AddGalleryModal
+  //       className={className}
+  //       open={true}
+  //       onClose={() => setOpenModal(false)}
+  //       onAdd={(newGallery: GalleryInput) => {
+  //         createGallery(newGallery);
+  //       }}
+  //       showOnHomePageCount={showOnHomePageCount.current}
+  //     />
+  //   );
+  // }
 
   return (
     <>

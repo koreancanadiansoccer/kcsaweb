@@ -21,7 +21,7 @@ export const AnnouncementNav = () => {
     <>
       <Button
         color="primary"
-        aria-controls="Announcement-menu"
+        aria-controls="announcement-tab"
         aria-haspopup="true"
         onClick={handleClick}
       >
@@ -29,7 +29,7 @@ export const AnnouncementNav = () => {
       </Button>
 
       <Menu
-        id="Announcement-menu"
+        id="announcement-menu"
         anchorEl={anchorEl}
         getContentAnchorEl={null}
         keepMounted
@@ -43,7 +43,7 @@ export const AnnouncementNav = () => {
           component={RouteLink}
           to="/announcement"
         >
-          Announcement
+          News and Notice
         </MenuItem>
 
         <MenuItem onClick={handleClose} component={RouteLink} to="/gallery">

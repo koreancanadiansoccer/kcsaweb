@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useMemo } from 'react';
 import Dropzone, { DropzoneRootProps } from 'react-dropzone';
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
@@ -38,6 +38,7 @@ interface ImgDropzoneProps {
   setFile: (newFiles: File[]) => void;
   fileLink: string;
   maxSize?: number;
+  fileType?: 'logo' | 'announcment';
   multiple?: boolean;
 }
 
@@ -47,13 +48,22 @@ interface ImgDropzoneProps {
 export const ImgDropzone: FunctionComponent<ImgDropzoneProps> = ({
   setFile,
   fileLink,
+  fileType = 'logo',
   multiple,
   maxSize = 1048675, // Byte value, default is 1048675 (1 MB).
 }) => {
+  const preferredFormat = useMemo(() => {
+    if (fileType === 'announcment') {
+      return '*Preferred png format with max 5MB size.';
+    }
+
+    return '*Preferred svg format with transparent background.';
+  }, [fileType]);
+
   return (
     <>
       <Typography variant="body2" color="error">
-        *Preferred svg format with transparent background.
+        {preferredFormat}
       </Typography>
 
       <Dropzone

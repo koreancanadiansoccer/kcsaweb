@@ -31,6 +31,7 @@ import {
   UpdateTeamResult,
 } from '../../graphql/teams/update_team.mutation';
 import { parseError } from '../../graphql/client';
+import { ResourceType } from '../../types/resource.enum';
 
 interface TeamGeneralProps {
   team: Team;
@@ -52,11 +53,10 @@ const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = () => {
 
   const { generateUploadUrls } = useImgUpload();
 
-  const hasNoChanges = useMemo(() => isEqual(team, origTeam) && !file, [
-    team,
-    origTeam,
-    file,
-  ]);
+  const hasNoChanges = useMemo(
+    () => isEqual(team, origTeam) && !file,
+    [team, origTeam, file]
+  );
 
   const [updateTeamMutation] = useMutation<UpdateTeamResult, UpdateTeamInput>(
     UPDATE_TEAM
@@ -79,7 +79,11 @@ const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = () => {
       if (file?.name && file?.type) {
         // Set file name: {TEAM-NAME}-{TEAM-AGETYPE}
         const fileName = `${team.name}-${team.teamAgeType}`.toLocaleLowerCase();
-        teamLogoURL = await generateUploadUrls(file, fileName);
+        teamLogoURL = await generateUploadUrls(
+          file,
+          fileName,
+          ResourceType.LOGO
+        );
       }
 
       const res = await updateTeamMutation({
