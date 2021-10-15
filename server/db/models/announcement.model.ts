@@ -19,7 +19,7 @@ export class Announcement extends Model {
   // not enough to store all the info
   // TODO: reduced to 2000 but need to figure out either the number or better way to resolve this
   @Column({
-    type: DataType.STRING(2000),
+    type: DataType.STRING(9999),
   })
   content!: string;
 

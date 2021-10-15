@@ -31,25 +31,56 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
   const [subAnnouncementIdx, setSubAnnouncementIdx] = useState(1);
   const history = useHistory();
 
-  const updateIndex = useCallback(() => {
-    if (viewer?.announcements) {
-      const announcementLength = viewer.announcements.length - 1;
-      {
-        mainAnnouncementIdx - 1 < 0 &&
-          setMainAnnouncementIdx(announcementLength);
+  const mainIdxUpdate = useCallback(
+    (value: number) => {
+      // Guard against empty viewer data.
+      if (!viewer || !viewer.announcements) {
+        setMainAnnouncementIdx(0);
+        return;
       }
-      {
-        mainAnnouncementIdx + 1 > announcementLength &&
-          setMainAnnouncementIdx(0);
+
+      const newIdxValue = mainAnnouncementIdx + value;
+
+      // If value + currentIdx > announcement.length, set newIdx as 0.
+      if (newIdxValue > viewer.announcements.length - 1) {
+        setMainAnnouncementIdx(0);
+        return;
       }
-      {
-        subAnnouncementIdx - 1 < 0 && setSubAnnouncementIdx(announcementLength);
+
+      // If currentIdx - value < 0 -> set new idx as announment.length;
+      if (newIdxValue < 0) {
+        setMainAnnouncementIdx(viewer.announcements.length - 1);
+        return;
       }
-      {
-        subAnnouncementIdx + 1 > announcementLength && setSubAnnouncementIdx(0);
+
+      //otherwise, just add value to idx.
+      setMainAnnouncementIdx(newIdxValue);
+    },
+    [mainAnnouncementIdx, setMainAnnouncementIdx, viewer]
+  );
+
+  const subIdxUpdate = useCallback(
+    (value: number) => {
+      if (!viewer || !viewer.announcements) {
+        setSubAnnouncementIdx(0);
+        return;
       }
-    }
-  }, [mainAnnouncementIdx, subAnnouncementIdx]);
+      const newIdxValue = subAnnouncementIdx + value;
+
+      if (newIdxValue > viewer.announcements.length - 1) {
+        setSubAnnouncementIdx(0);
+        return;
+      }
+
+      if (newIdxValue < 0) {
+        setSubAnnouncementIdx(viewer.announcements.length - 1);
+        return;
+      }
+
+      setSubAnnouncementIdx(newIdxValue);
+    },
+    [subAnnouncementIdx, setSubAnnouncementIdx, viewer]
+  );
 
   if (!viewer?.announcements) {
     return <div>loading...</div>;
@@ -64,9 +95,9 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
               <ChevronLeftIcon
                 className="chevron-left"
                 onClick={() => {
-                  setMainAnnouncementIdx(mainAnnouncementIdx - 1);
-                  setSubAnnouncementIdx(subAnnouncementIdx - 1);
-                  updateIndex();
+                  // updateIndex();
+                  mainIdxUpdate(-1);
+                  subIdxUpdate(-1);
                 }}
               />
 
@@ -112,9 +143,8 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
                     <Box
                       className="hero-sub"
                       onClick={() => {
-                        setMainAnnouncementIdx(mainAnnouncementIdx + 1);
-                        setSubAnnouncementIdx(subAnnouncementIdx + 1);
-                        updateIndex();
+                        mainIdxUpdate(1);
+                        subIdxUpdate(1);
                       }}
                     >
                       <Box display="flex" justifyContent="flex-start">
@@ -188,9 +218,8 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
               <ChevronRightIcon
                 className="chevron-right"
                 onClick={() => {
-                  setMainAnnouncementIdx(mainAnnouncementIdx + 1);
-                  setSubAnnouncementIdx(subAnnouncementIdx + 1);
-                  updateIndex();
+                  mainIdxUpdate(1);
+                  subIdxUpdate(1);
                 }}
               />
             </Box>
