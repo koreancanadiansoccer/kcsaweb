@@ -4,7 +4,6 @@ import React, { FunctionComponent, useState, useEffect } from 'react';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import { useQuery } from '@apollo/client';
-import map from 'lodash/map';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import CheckCircleOutline from '@material-ui/icons/CheckCircleOutline';
@@ -15,7 +14,7 @@ import {
 } from '../../graphql/gallery/get_galleries.query';
 import { parseError } from '../../graphql/client';
 import { Gallery, GalleryImage } from '../../types/gallery';
-import { AutoSlick } from '../slider/AutoSlick';
+import { AutoSlick } from '../autoSlick/AutoSlick';
 interface GalleryProps {
   className?: string;
 }

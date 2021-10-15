@@ -14,7 +14,7 @@ import map from 'lodash/map';
 import { scroller } from 'react-scroll';
 
 import { Gallery, GalleryImage } from '../../types/gallery';
-import { AutoSlick } from '../slider/AutoSlick';
+import { AutoSlick } from '../autoSlick/AutoSlick';
 
 interface GalleryProps {
   className?: string;

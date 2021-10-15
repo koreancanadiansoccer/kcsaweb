@@ -20,7 +20,7 @@ import Button from '@material-ui/core/Button';
 import { Modal } from '../modal/Modal';
 import { GalleryInput } from '../../types/gallery';
 
-interface CreateGalleryModalProp extends Pick<DialogProps, 'open' | 'onClose'> {
+interface AddGalleryModalProp extends Pick<DialogProps, 'open' | 'onClose'> {
   className?: string;
   onAdd: (league: GalleryInput) => Promise<void>;
   showOnHomePageCount: number;
@@ -29,7 +29,7 @@ interface CreateGalleryModalProp extends Pick<DialogProps, 'open' | 'onClose'> {
 /**
  * Modal to handle gallery addition.
  */
-const UnstyledCreateGalleryModal: FunctionComponent<CreateGalleryModalProp> = ({
+const UnstyledAddGalleryModal: FunctionComponent<AddGalleryModalProp> = ({
   className,
   open,
   onClose,
@@ -71,56 +71,71 @@ const UnstyledCreateGalleryModal: FunctionComponent<CreateGalleryModalProp> = ({
         flexDirection="column"
         width="100%"
       >
-        <Typography variant="body1"> Title</Typography>
-        <Box mt={1} mb={3} width="60%">
-          <TextField
-            label="Title"
-            placeholder="Gallery Title"
-            color="primary"
-            variant="outlined"
-            required
-            value={newGallery?.title}
-            fullWidth
-            onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-              setNewGallery({ ...newGallery, title: evt.target.value });
-            }}
-          />
+        <Box width="60%" className="create-gallery-title">
+          <Typography variant="body1"> Title</Typography>
+          <Box mt={1} mb={3}>
+            <TextField
+              label="Title"
+              placeholder="Gallery Title"
+              color="primary"
+              variant="outlined"
+              required
+              value={newGallery.title}
+              fullWidth
+              onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+                setNewGallery({ ...newGallery, title: evt.target.value });
+              }}
+            />
+          </Box>
         </Box>
 
-        <Typography variant="body1"> Description</Typography>
-        <Box mt={1} mb={3} width="100%">
-          <TextField
-            label="Description"
-            placeholder="Gallery Description"
-            color="primary"
-            variant="outlined"
-            value={newGallery?.description}
-            fullWidth
-            multiline
-            rows={6}
-            onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-              setNewGallery({ ...newGallery, description: evt.target.value });
-            }}
-          />
+        <Box className="create-gallery-description" width="100%">
+          <Typography variant="body1"> Description</Typography>
+          <Box mt={1} mb={3}>
+            <TextField
+              label="Description"
+              placeholder="Gallery Description"
+              color="primary"
+              variant="outlined"
+              value={newGallery.description}
+              fullWidth
+              multiline
+              rows={6}
+              onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+                setNewGallery({ ...newGallery, description: evt.target.value });
+              }}
+            />
+          </Box>
         </Box>
 
-        {/* TODO: upload to S3 */}
-        <Box width="100%" my={1}>
-          <DropzoneArea
-            dropzoneText={'Drag and drop an image here or click'}
-            filesLimit={100}
-            maxFileSize={20971520} // 20MB
-            acceptedFiles={[
-              'image/gif',
-              'image/jpeg',
-              'image/jpg',
-              'image/png',
-              'image/svg',
-            ]}
-            previewGridProps={{
-              container: { spacing: 0 },
-            }}
-          />
+        <Box className="create-gallery-upload" width="100%">
+          <Typography variant="body1"> Image Upload*</Typography>
+          <Typography
+            className="upload-warning-text"
+            variant="body2"
+            color="error"
+          >
+            *Preferred png format with max 10MB size.
+          </Typography>
+
+          {/* TODO: upload to S3 */}
+          <Box width="100%" mt={1} mb={1}>
+            <DropzoneArea
+              dropzoneText={'Drag and drop an image here or click'}
+              filesLimit={30}
+              maxFileSize={10485760} // 10MB
+              acceptedFiles={[
+                'image/gif',
+                'image/jpeg',
+                'image/jpg',
+                'image/png',
+                'image/svg',
+              ]}
+              previewGridProps={{
+                container: { spacing: 0 },
+              }}
+            />
+          </Box>
         </Box>
 
         <Box mb={2}>
@@ -128,7 +143,7 @@ const UnstyledCreateGalleryModal: FunctionComponent<CreateGalleryModalProp> = ({
             control={
               <Checkbox
                 disabled={showOnHomePageCount >= 3 ? true : false}
-                checked={newGallery?.showOnHomepage}
+                checked={newGallery.showOnHomepage}
                 onChange={(evt: ChangeEvent<HTMLInputElement>) => {
                   setNewGallery({
                     ...newGallery,
@@ -140,7 +155,13 @@ const UnstyledCreateGalleryModal: FunctionComponent<CreateGalleryModalProp> = ({
             label="Main Page"
           />
           {showOnHomePageCount >= 3 && (
-            <Box className="warning-box">Already Selected 3 Galleries</Box>
+            <Typography
+              className="checkbox-warning-text"
+              variant="body2"
+              color="error"
+            >
+              Already Selected 3 Galleries
+            </Typography>
           )}
         </Box>
 
@@ -162,16 +183,19 @@ const UnstyledCreateGalleryModal: FunctionComponent<CreateGalleryModalProp> = ({
   );
 };
 
-export const CreateGalleryModal = withTheme(styled(UnstyledCreateGalleryModal)`
+export const AddGalleryModal = withTheme(styled(UnstyledAddGalleryModal)`
   .MuiDialogActions-root {
     padding: 0px;
   }
 
-  .warning-box {
-    margin-left: 27%;
-    margin-top: -10%;
-    font-size: 10px;
-    color: #ff1744;
+  .upload-warning-text {
+    font-size: 0.7rem;
+  }
+
+  .checkbox-warning-text {
+    margin-left: 2rem;
+    margin-top: -7%;
+    font-size: 0.7rem;
     width: 100%;
   }
 `);

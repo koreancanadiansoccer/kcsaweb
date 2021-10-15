@@ -1,13 +1,9 @@
-/**
- *! Gallery Page on admin side to upload images
- */
-
-import React, { FunctionComponent, useState, useEffect, useMemo, useRef } from 'react';
+import React, { FunctionComponent, useState, useEffect, useRef } from 'react';
 import { withTheme } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import styled from "styled-components";
 import Box from '@material-ui/core/Box';
-import { map } from 'lodash';
+import map from 'lodash/map';
 import { useMutation, useQuery } from '@apollo/client';
 import Typography from '@material-ui/core/Typography';
 import { useHistory } from 'react-router-dom';
@@ -15,7 +11,7 @@ import { useHistory } from 'react-router-dom';
 import { Button } from '../../../components/button/Button';
 import { Table } from '../../../components/table/Table';
 import { Gallery, GalleryInput } from '../../../types/gallery';
-import { CreateGalleryModal } from '../../../components/admin_gallery/AddGallery';
+import { AddGalleryModal } from '../../../components/admin_gallery/AddGallery';
 import {
   CREATE_GALLERY,
 } from "../../../graphql/gallery/create.gallery.mutation";
@@ -34,6 +30,7 @@ const tableColumns = [
 
 /**
  * Main Gallery page.
+ * Displays table of all Galleries
  */
 const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -98,7 +95,7 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
 
   return (
     <>
-      <CreateGalleryModal
+      <AddGalleryModal
         className={className}
         open={openModal}
         onClose={() => setOpenModal(false)}
@@ -127,13 +124,13 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
           data={galleries}
           onRowClick={(evt, data) => {
             if (data?.id) {
-              history.push(`/admin]/gallery/${data.id}`); //TODO: 클릭하면 edit 가능하게
+              history.push(`/admin]/gallery/${data.id}`);
             }
           }}
           options={{
             pageSize: 10,
             rowStyle: (data) => {
-              return data.isActive
+              return data.showOnHomepage
                 ? { background: 'white' }
                 : { background: '#EEEEEE' };
             },

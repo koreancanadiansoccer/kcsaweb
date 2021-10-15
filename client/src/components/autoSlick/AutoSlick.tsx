@@ -9,7 +9,7 @@ const SlideWrapper = styled.section`
   position: relative;
 `;
 
-interface SliderProps {
+interface AutoSlickProps {
   children: React.ReactNode;
   className?: string;
   autoplay?: boolean | number;
@@ -18,7 +18,11 @@ interface SliderProps {
   arrows: boolean;
 }
 
-const UnStyledSlick: FunctionComponent<SliderProps> = ({
+/**
+ * Base AutoSlick component.
+ * Overrides default Slider of react-slick.
+ */
+const UnStyledAutoSlick: FunctionComponent<AutoSlickProps> = ({
   children,
   className,
   autoplay = true,
@@ -46,4 +50,4 @@ const UnStyledSlick: FunctionComponent<SliderProps> = ({
   );
 };
 
-export const AutoSlick = withTheme(styled(UnStyledSlick)``);
+export const AutoSlick = withTheme(styled(UnStyledAutoSlick)``);

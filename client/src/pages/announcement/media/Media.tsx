@@ -18,7 +18,7 @@ interface GalleryProps {
 }
 
 /**
- * Admain Gallery Page.
+ *  Media Page.
  */
 const UnstyledMedia: FunctionComponent<GalleryProps> = ({ className }) => {
   const [galleries, setGalleries] = useState<Gallery[]>();

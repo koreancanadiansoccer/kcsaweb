@@ -18,7 +18,7 @@ interface GalleryProps {
 }
 
 /**
- * To make Gallery Card on Media Tap under Announcement.
+ * Display single card for an album on /media route
  */
 const UnstyledGalleryCard: FunctionComponent<GalleryProps> = ({
   className,
@@ -47,7 +47,9 @@ const UnstyledGalleryCard: FunctionComponent<GalleryProps> = ({
         }}
         className="click-card"
       ></CardActionArea>
+
       <CardMedia className="card-image" image={gallery.galleryImages![0].imageURL} component="img" />
+
       <CardContent>
         <Box className="desc-h5">
           <Typography variant={'h5'}>{gallery.title}</Typography>
