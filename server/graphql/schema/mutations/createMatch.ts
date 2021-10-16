@@ -22,6 +22,10 @@ export const createMatch = {
     awayTeamId: { type: new GraphQLNonNull(GraphQLInt) },
   },
   async resolve(parent: object, args: any): Promise<Match> {
+    if (args.homeTeamId === args.awayTeamId) {
+      throw Error("Can't create a match for between same teams!");
+    }
+
     const match = await Match.create({ ...args });
 
     // Find league players from home team id.
@@ -36,8 +40,10 @@ export const createMatch = {
           await MatchPlayer.create({
             name: homePlayer.name,
             leagueTeamId: args.homeTeamId,
+            leaguePlayerId: homePlayer.id,
             matchId: match.id,
             playerId: homePlayer.playerId,
+            dob: homePlayer.dob,
           });
         })
       );
@@ -54,9 +60,11 @@ export const createMatch = {
         map(awayPlayers, async (awayPlayer) => {
           await MatchPlayer.create({
             name: awayPlayer.name,
-            leagueTeamId: args.homeTeamId,
+            leagueTeamId: args.awayTeamId,
+            leaguePlayerId: awayPlayer.id,
             matchId: match.id,
             playerId: awayPlayer.playerId,
+            dob: awayPlayer.dob,
           });
         })
       );
@@ -64,8 +72,26 @@ export const createMatch = {
 
     const newMatch = await Match.findOne({
       include: [
-        { model: LeagueTeam, as: 'homeTeam', include: [MatchPlayer] },
-        { model: LeagueTeam, as: 'awayTeam', include: [MatchPlayer] },
+        {
+          model: LeagueTeam,
+          as: 'homeTeam',
+          include: [
+            {
+              model: MatchPlayer,
+              where: { matchId: match.id, leagueTeamId: args.homeTeamId },
+            },
+          ],
+        },
+        {
+          model: LeagueTeam,
+          as: 'awayTeam',
+          include: [
+            {
+              model: MatchPlayer,
+              where: { matchId: match.id, leagueTeamId: args.awayTeamId },
+            },
+          ],
+        },
       ],
       where: { leagueId: args.leagueId, id: match.id },
     });

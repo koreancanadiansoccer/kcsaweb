@@ -1,4 +1,5 @@
 import { GraphQLNonNull, GraphQLInt } from 'graphql';
+import map from 'lodash/map';
 
 import { LeagueType } from '../../types/league';
 import { League } from '../../../db/models/league.model';
@@ -20,8 +21,8 @@ export const getLeague = {
         {
           model: Match,
           include: [
-            { model: LeagueTeam, as: 'homeTeam', include: [MatchPlayer] },
-            { model: LeagueTeam, as: 'awayTeam', include: [MatchPlayer] },
+            { model: LeagueTeam, as: 'homeTeam' },
+            { model: LeagueTeam, as: 'awayTeam' },
           ],
         },
       ],
@@ -31,6 +32,30 @@ export const getLeague = {
     if (!league) {
       throw Error('League could not be found');
     }
+
+    // Get league match players.
+    // Looks like sequelize can't handle deeply nested query with conditions.
+    await Promise.all(
+      map(league.matches, async (match, idx) => {
+        const matchId = match.id;
+        const { id: homeTeamId } = match.homeTeam;
+        const { id: awayTeamId } = match.awayTeam;
+
+        //Find players
+        const homeMatchPlayers = await MatchPlayer.findAll({
+          raw: true,
+          where: { matchId: matchId, leagueTeamId: homeTeamId },
+        });
+
+        const awayMatchPlayers = await MatchPlayer.findAll({
+          raw: true,
+          where: { matchId: matchId, leagueTeamId: awayTeamId },
+        });
+
+        league.matches[idx].homeTeam.matchPlayers = homeMatchPlayers;
+        league.matches[idx].awayTeam.matchPlayers = awayMatchPlayers;
+      })
+    );
 
     return league;
   },

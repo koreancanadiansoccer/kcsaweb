@@ -1,17 +1,19 @@
-import { GraphQLScalarType } from "graphql";
-import { Kind } from "graphql/language";
-import dayjs from "dayjs";
+import { GraphQLScalarType } from 'graphql';
+import { Kind } from 'graphql/language';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 
+dayjs.extend(customParseFormat);
 // Custom Scalar type 'DateTime' to return date values to client.
 // Note: this is needed since GraphQL doens't have any default type related to date.
 export const DateTime: GraphQLScalarType = new GraphQLScalarType({
-  name: "Date",
-  description: "Date custom scalar type",
+  name: 'Date',
+  description: 'Date custom scalar type',
   parseValue(value) {
-    return dayjs(value); // value from the client
+    return dayjs(value, 'YYYY-MM-DD hh:mmA').toISOString(); // value from the client
   },
   serialize(value) {
-    return dayjs(value).format("YYYY-MM-DD-hhA"); // value sent to the client
+    return dayjs(value).format('YYYY-MM-DD hh:mmA'); // value sent to the client
   },
   parseLiteral(ast) {
     if (ast.kind === Kind.STRING) {

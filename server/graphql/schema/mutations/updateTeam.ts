@@ -1,5 +1,6 @@
 import { TeamType, TeamInputType } from '../../types/team';
 import { Team } from '../../../db/models/team.model';
+import { Player } from '../../../db/models/player.model';
 
 /**
  * Update team data
@@ -21,6 +22,7 @@ export const updateTeam = {
     await Team.update(args.updateTeam, { where: { id: args.updateTeam.id } });
 
     const updatedTeam = await Team.findOne({
+      include: [Player],
       where: { id: args.updateTeam.id },
     });
 

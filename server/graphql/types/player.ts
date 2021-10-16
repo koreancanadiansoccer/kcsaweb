@@ -68,6 +68,7 @@ export const MatchPlayerType = new GraphQLObjectType({
     leagueTeamId: { type: GraphQLInt },
     yellowCard: { type: GraphQLInt },
     goalScored: { type: GraphQLInt },
+    leaguePlayerId: { type: GraphQLInt },
     createdAt: { type: DateTime },
   }),
 });
@@ -83,6 +84,7 @@ export const MatchPlayerInputType = new GraphQLInputObjectType({
     leagueTeamId: { type: GraphQLInt },
     yellowCard: { type: GraphQLInt },
     goalScored: { type: GraphQLInt },
+    leaguePlayerId: { type: GraphQLInt },
     createdAt: { type: DateTime },
   }),
 });

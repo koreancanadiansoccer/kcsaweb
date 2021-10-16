@@ -10,6 +10,7 @@ teamLogoURL
 played
 win
 loss
+tie
 goalScored
 goalConceded
 teamAgeType
@@ -27,6 +28,7 @@ name
 played
 win
 loss
+tie
 goalScored
 goalConceded
 teamAgeType
@@ -47,6 +49,7 @@ name
 played
 win
 loss
+tie
 goalScored
 goalConceded
 teamAgeType

@@ -5,11 +5,18 @@ import {
   AllowNull,
   ForeignKey,
   BelongsTo,
+  DataType,
   Default,
 } from 'sequelize-typescript';
 
 import { LeagueTeam } from './leagueteam.model';
 import { League } from './league.model';
+
+export enum MatchStatus {
+  PENDING = 'PENDING', // Pending match to be played.
+  MISMATCH = 'MISMATCH', // Mismatch happened between teams submission.
+  COMPLETE = 'COMPLETE', // No mismatch happened or Admin submitted.
+}
 
 @Table({ tableName: 'match' })
 export class Match extends Model {
@@ -39,6 +46,7 @@ export class Match extends Model {
   @BelongsTo(() => LeagueTeam, { foreignKey: 'home_team_id' })
   homeTeam!: LeagueTeam;
 
+  @Default(0)
   @Column({ field: 'home_team_score' })
   homeTeamScore!: number;
 
@@ -61,12 +69,20 @@ export class Match extends Model {
   @ForeignKey(() => LeagueTeam)
   @Column({ field: 'away_team_id' })
   awayTeamId!: number;
+
   @BelongsTo(() => LeagueTeam, { foreignKey: 'away_team_id' })
   awayTeam!: LeagueTeam;
+
+  @Default(0)
   @Column({ field: 'away_team_score' })
   awayTeamScore!: number;
+
   @Column({ field: 'away_team_game_sheet_link' })
   awayTeamGameSheetLink!: string;
+
+  @Default(MatchStatus.PENDING)
+  @Column({ type: DataType.ENUM({ values: Object.keys(MatchStatus) }) })
+  status!: MatchStatus;
 
   @Default(false)
   @Column({ field: 'away_team_physical' })

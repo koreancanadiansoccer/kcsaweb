@@ -10,7 +10,8 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "tsc -p .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint client/src && eslint server"
+    "lint": "eslint client/src && eslint server",
+    "port": "sudo lsof -i :5000"
   },
   "repository": {
     "type": "git",

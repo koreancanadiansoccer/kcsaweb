@@ -15,15 +15,17 @@ import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Divider from '@material-ui/core/Divider';
-import { useQuery, useMutation } from '@apollo/client';
+import Grey from '@material-ui/core/colors/grey';
+import Chip from '@material-ui/core/Chip';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import map from 'lodash/map';
 import groupBy from 'lodash/groupBy';
+import forEach from 'lodash/forEach';
 
 import { LeagueContext } from '../../context/league';
 import { Button } from '../button/Button';
-import { Match } from '../../types/match';
+import { Match, MatchStatus } from '../../types/match';
 
 import { AddMatchModal } from './modals/AddMatchModal';
 import { EditMatchModal } from './modals/EditMatchModal';
@@ -45,14 +47,15 @@ interface LeagueMatchProps {
 const UnstyledLeagueMatch: FunctionComponent<LeagueMatchProps> = ({
   className,
 }) => {
-  const { league: origLeague, setLeague: setOrigLeague } =
-    useContext(LeagueContext);
+  const { league: origLeague, setLeague: setOrigLeague } = useContext(
+    LeagueContext
+  );
 
   const [openModal, setOpenModal] = useState<MODAL_TYPE | null>(null);
 
   const [matches, setMatches] = useState<Match[]>(origLeague.matches);
 
-  const [selectedMatch, setSelectedMatch] = useState<Match>();
+  const [selectedMatchId, setSelectedMatchId] = useState<number>();
 
   const matchesGroupDay = useMemo(() => {
     // Order by time.
@@ -74,10 +77,10 @@ const UnstyledLeagueMatch: FunctionComponent<LeagueMatchProps> = ({
       )}
 
       {/* Adding players to league team */}
-      {openModal === MODAL_TYPE.EDIT_MATCH && selectedMatch && (
+      {openModal === MODAL_TYPE.EDIT_MATCH && selectedMatchId && (
         <EditMatchModal
           fullScreen={true}
-          selectedMatch={selectedMatch}
+          selectedMatchId={selectedMatchId}
           open={openModal === MODAL_TYPE.EDIT_MATCH}
           onClose={() => setOpenModal(null)}
         />
@@ -96,6 +99,25 @@ const UnstyledLeagueMatch: FunctionComponent<LeagueMatchProps> = ({
         </Box>
         {map(matchesGroupDay, (matchByDay, key) => {
           const matchDayDate = matchByDay[0].date;
+
+          const count = useMemo(() => {
+            let i = 0;
+            forEach(matchByDay, (match) => {
+              if (
+                match.awayTeamNoGameSheet ||
+                match.awayTeamNoShow ||
+                match.awayTeamPhysical ||
+                match.homeTeamNoGameSheet ||
+                match.homeTeamNoShow ||
+                match.homeTeamPhysical
+              ) {
+                i++;
+              }
+            });
+
+            return i;
+          }, [matchByDay]);
+
           return (
             <Accordion className="accoridon-container" key={`match-day-${key}`}>
               <AccordionSummary
@@ -103,10 +125,24 @@ const UnstyledLeagueMatch: FunctionComponent<LeagueMatchProps> = ({
                 aria-controls="panel1a-content"
                 id="panel1a-header"
               >
-                <Typography className="boldText">{`Match Day ${key} - ${dayjs(
-                  matchDayDate,
-                  'YYYY-MM-DDTHH:mm'
-                ).format('YYYY-MMM-DD')}`}</Typography>
+                <Box>
+                  <Typography className="boldText">{`Match Round ${key} - ${dayjs(
+                    matchDayDate,
+                    'YYYY-MM-DDTHH:mm'
+                  ).format('YYYY-MMM-DD')}`}</Typography>
+
+                  {count > 0 && (
+                    <Box my={1}>
+                      <Chip
+                        label={`${count} match with special events`}
+                        style={{
+                          backgroundColor: 'red',
+                          color: 'white',
+                        }}
+                      />
+                    </Box>
+                  )}
+                </Box>
               </AccordionSummary>
 
               <AccordionDetails>
@@ -115,11 +151,11 @@ const UnstyledLeagueMatch: FunctionComponent<LeagueMatchProps> = ({
                   <Box width="100%" key={`match-${match.id}`}>
                     <Box
                       className="match-container"
-                      p={1}
+                      p={2}
                       my={2}
                       onClick={() => {
                         setOpenModal(MODAL_TYPE.EDIT_MATCH);
-                        setSelectedMatch(match);
+                        setSelectedMatchId(match.id);
                       }}
                     >
                       <Typography className="boldText">
@@ -127,15 +163,70 @@ const UnstyledLeagueMatch: FunctionComponent<LeagueMatchProps> = ({
                           'YYYY-MMM-DD hh:mmA'
                         )}
                       </Typography>
-
                       <Typography>Location: {match.location}</Typography>
 
-                      <Box>
-                        <Typography>{match.homeTeam.name}</Typography>
+                      <Box display="flex" my={2}>
+                        <Box mr={2} display="flex">
+                          <Typography className="boldText">
+                            {match.homeTeam.name}
+                          </Typography>
+
+                          <Box ml={1}>
+                            <Typography>{match.homeTeamScore}</Typography>
+                          </Box>
+                        </Box>
+                        vs
+                        <Box ml={2} display="flex">
+                          <Box mr={1}>
+                            <Typography>{match.awayTeamScore}</Typography>
+                          </Box>
+
+                          <Typography className="boldText">
+                            {match.awayTeam.name}
+                          </Typography>
+                        </Box>
                       </Box>
 
+                      {/* Indicator section */}
                       <Box>
-                        <Typography>{match.awayTeam.name}</Typography>
+                        {match.status === MatchStatus.COMPLETE && (
+                          <Chip
+                            label={`${match.status}`}
+                            style={{
+                              backgroundColor: 'seagreen',
+                              color: 'white',
+                            }}
+                          />
+                        )}
+
+                        {match.status === MatchStatus.PENDING && (
+                          <Chip label={`${match.status}`} disabled />
+                        )}
+
+                        {match.status === MatchStatus.MISMATCH && (
+                          <Chip
+                            label={`${match.status} On team submissions`}
+                            color="secondary"
+                            style={{
+                              color: 'white',
+                            }}
+                          />
+                        )}
+
+                        {(match.awayTeamNoGameSheet ||
+                          match.awayTeamNoShow ||
+                          match.awayTeamPhysical ||
+                          match.homeTeamNoGameSheet ||
+                          match.homeTeamNoShow ||
+                          match.homeTeamPhysical) && (
+                          <Chip
+                            label="Attention Required - Special event"
+                            style={{
+                              backgroundColor: 'red',
+                              color: 'white',
+                            }}
+                          />
+                        )}
                       </Box>
                     </Box>
                     <Divider />
@@ -152,8 +243,9 @@ const UnstyledLeagueMatch: FunctionComponent<LeagueMatchProps> = ({
 
 export const LeagueMatch = withTheme(styled(UnstyledLeagueMatch)`
   .match-container {
-    border: 1px solid black;
+    // border: 1px solid #5a738175;
     border-radius: 1rem;
     cursor: pointer;
+    box-shadow: 0 4px 12px 5px ${Grey[300]};
   }
 `);

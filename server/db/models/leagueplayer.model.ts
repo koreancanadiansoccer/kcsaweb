@@ -6,9 +6,11 @@ import {
   ForeignKey,
   AllowNull,
   Default,
+  HasMany,
 } from 'sequelize-typescript';
 
 import { LeagueTeam } from './leagueteam.model';
+import { MatchPlayer } from './matchplayer.model';
 import { Player } from './player.model';
 
 @Table({ tableName: 'league_player' })
@@ -41,5 +43,7 @@ export class LeaguePlayer extends Model {
   @ForeignKey(() => Player)
   @Column({ field: 'player_id' })
   playerId!: number;
-  @BelongsTo(() => Player) palyer!: Player;
+  @BelongsTo(() => Player) player!: Player;
+
+  @HasMany(() => MatchPlayer) matchPlayers!: MatchPlayer[];
 }
