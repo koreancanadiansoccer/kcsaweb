@@ -9,8 +9,8 @@ import { LeagueTable } from '../league_table/LeagueTable';
 import { LeagueSelect } from '../league_select/LeagueSelect';
 import { AgeEnums } from '../../types/age.enum';
 import { TableType } from '../../types/table_type';
+import { GallerySlide } from '../gallery_slide/GallerySlide';
 
-import { GallerySlide } from './GallerySlide';
 interface HomeContentProps {
   className?: string;
 }

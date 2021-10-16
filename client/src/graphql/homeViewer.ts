@@ -14,6 +14,17 @@ export const GET_HOME_VIEWER = gql`
         showOnHomepage
         imageURL
       }
+      galleries {
+        id
+        title
+        description
+        showOnHomepage
+        createdAt
+        galleryImages {
+          id
+          imageURL
+        }
+      }
     }
   }
 `;

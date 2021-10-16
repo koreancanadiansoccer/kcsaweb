@@ -1,51 +1,46 @@
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React, {
+  FunctionComponent,
+  useState,
+  useEffect,
+  useContext,
+} from 'react';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
-import { useQuery } from '@apollo/client';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import CheckCircleOutline from '@material-ui/icons/CheckCircleOutline';
+import map from 'lodash/map';
 
-import {
-  GET_MAIN_GALLERIES,
-  GalleryQueryData,
-} from '../../graphql/gallery/get_galleries.query';
-import { parseError } from '../../graphql/client';
 import { Gallery, GalleryImage } from '../../types/gallery';
 import { AutoSlick } from '../autoSlick/AutoSlick';
-interface GalleryProps {
+import { ViewerContext } from '../../context/homeViewer';
+
+interface GallerySlideProps {
   className?: string;
 }
 
-const UnstyledGallerySlide: FunctionComponent<GalleryProps> = ({
+/**
+ * Gallery Slide Show for main home page.
+ */
+const UnstyledGallerySlide: FunctionComponent<GallerySlideProps> = ({
   className,
 }) => {
-  const [galleries, setGalleries] = useState<Gallery[]>([]);
+  const { viewer } = useContext(ViewerContext);
+
   const [showGallery, setShowGallery] = useState<Gallery>();
 
-  const galleriesQuery = useQuery<GalleryQueryData>(GET_MAIN_GALLERIES);
-
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
+  // initialize the default image ONLY when showGallery is an undefine
   useEffect(() => {
-    setLoading(galleriesQuery.loading);
-
-    // If no error/loading set values.
-    if (!loading && !error && galleriesQuery?.data?.getMainGalleries) {
-      setGalleries(galleriesQuery.data.getMainGalleries);
-      setShowGallery(galleriesQuery.data.getMainGalleries[0]);
+    if (viewer?.galleries && !showGallery) {
+      setShowGallery(viewer.galleries[0]);
+      console.warn(viewer.galleries)
     }
+  })
 
-    if (galleriesQuery.error) {
-      setError(parseError(galleriesQuery.error));
-    }
-  }, [galleriesQuery, loading, error]);
-
-  if (!galleries || !showGallery) {
-    return <div>loading...</div>;
+  if (!viewer?.galleries || !showGallery) {
+    return <div>loading...</div>
   }
 
   return (
@@ -61,7 +56,7 @@ const UnstyledGallerySlide: FunctionComponent<GalleryProps> = ({
           {showGallery?.title}
         </Typography>
         <Box className="thumbnail-box">
-          {galleries?.map((gallery: Gallery) => (
+          {map(viewer.galleries, (gallery) => (
             <Box
               key={gallery.id}
               className={

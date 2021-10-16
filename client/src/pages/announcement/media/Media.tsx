@@ -4,6 +4,7 @@ import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import map from 'lodash/map';
+import Typography from '@material-ui/core/Typography';
 
 import {
   GET_GALLERIES,
@@ -12,6 +13,7 @@ import {
 import { Gallery } from '../../../types/gallery';
 import { parseError } from '../../../graphql/client';
 import { GalleryCard } from '../../../components/gallery_card/GalleryCard';
+import AboutBanner from '../../../assets/about.png';
 
 interface GalleryProps {
   className?: string;
@@ -48,13 +50,20 @@ const UnstyledMedia: FunctionComponent<GalleryProps> = ({ className }) => {
 
   return (
     <Box className={className}>
+      <Box
+        className="media-banner-container"
+        display="flex"
+        alignItems="center"
+      >
+        <Typography variant="h3" className="media-banner-text">
+          Gallery
+        </Typography>
+      </Box>
+
       <Box className="init-gallery-page">
         <Box className="gallery-page" mt={3}>
           {map(galleries, (gallery) => (
-            <GalleryCard
-              className="gallery-card"
-              gallery={gallery}
-            />
+            <GalleryCard className="gallery-card" gallery={gallery} />
           ))}
         </Box>
       </Box>
@@ -63,9 +72,23 @@ const UnstyledMedia: FunctionComponent<GalleryProps> = ({ className }) => {
 };
 
 export const Media = withTheme(styled(UnstyledMedia)`
+  .media-banner-container {
+    background-image: url(${AboutBanner});
+    min-width: 100px; /*or 70%, or what you want*/
+    height: 284px; /*or 70%, or what you want*/
+    background-size: 100% 100%;
+  }
+
+  .media-banner-text {
+    font-weight: 700;
+    color: white;
+    margin-left: 7rem;
+  }
+
   .init-gallery-page {
     display: flex;
     justify-content: center;
+    height: 86rem;
   }
 
   .gallery-page {
@@ -74,12 +97,14 @@ export const Media = withTheme(styled(UnstyledMedia)`
     flex-wrap: wrap;
     flex-direction: row;
     align-items: flex-start;
-    width: 80rem;
+    width: 88rem;
+    margin-left: 3rem;
   }
 
   .gallery-card {
-    text-align: start;
-    width: 20%;
-    padding: 18px;
+    padding: 1.5rem;
+    width: 20rem;
+    height: 400px;
+    margin: 0.6rem;
   }
 `);
