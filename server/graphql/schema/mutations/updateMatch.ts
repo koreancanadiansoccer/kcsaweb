@@ -1,13 +1,6 @@
-import {
-  GraphQLList,
-  GraphQLNonNull,
-  GraphQLInt,
-  FragmentsOnCompositeTypesRule,
-} from 'graphql';
 import map from 'lodash/map';
 import Sequelize from 'sequelize';
 
-import { LeaguePlayerInputType, LeaguePlayerType } from '../../types/player';
 import { MatchPlayer } from '../../../db/models/matchplayer.model';
 import { LeaguePlayer } from '../../../db/models/leagueplayer.model';
 import { Player } from '../../../db/models/player.model';

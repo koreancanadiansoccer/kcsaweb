@@ -9,7 +9,6 @@ import React, {
 } from 'react';
 import { DialogProps } from '@material-ui/core/Dialog';
 import Box from '@material-ui/core/Box';
-import DialogActions from '@material-ui/core/DialogActions';
 import Typography from '@material-ui/core/Typography';
 import map from 'lodash/map';
 import find from 'lodash/find';
