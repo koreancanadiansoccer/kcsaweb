@@ -12,6 +12,7 @@ import Box from '@material-ui/core/Box';
 import DialogActions from '@material-ui/core/DialogActions';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
+import Snackbar from '@material-ui/core/Snackbar';
 import map from 'lodash/map';
 import dayjs from 'dayjs';
 import { useMutation } from '@apollo/client';
@@ -20,7 +21,7 @@ import { Modal } from '../../modal/Modal';
 import { Button } from '../../button/Button';
 import { Input } from '../../input/Input';
 import { Select } from '../../select/Select';
-import { League } from '../../../types/league';
+import { Alert } from '../../alert/Alert';
 import { MatchInput } from '../../../types/match';
 import {
   CREATE_MATCH,
@@ -38,6 +39,7 @@ export const AddMatchModal: FunctionComponent<Pick<
     LeagueContext
   );
 
+  const [error, setError] = useState<string>('');
   const [newMatch, setNewMatch] = useState<MatchInput>({
     matchDay: undefined,
     date: dayjs().format('YYYY-MM-DDTHH:mm'),
@@ -83,6 +85,7 @@ export const AddMatchModal: FunctionComponent<Pick<
       });
 
       if (res.data?.createMatch) {
+        // TODO: Bug here
         const origLeagueMatches = [...origLeague.matches];
         origLeagueMatches.push(res.data.createMatch);
 
@@ -92,7 +95,7 @@ export const AddMatchModal: FunctionComponent<Pick<
         }
       }
     } catch (e) {
-      console.error(parseError(e));
+      setError(parseError(e));
     }
   }, [newMatch, origLeague]);
 
@@ -105,102 +108,125 @@ export const AddMatchModal: FunctionComponent<Pick<
   }, [origLeague]);
 
   return (
-    <Modal open={open} onClose={onClose} title="Create a Match">
-      {/* Match Day */}
-      <Box my={2}>
-        <Typography variant="body1" className="boldText">
-          Match Day #
-        </Typography>
+    <>
+      <Modal open={open} onClose={onClose} title="Create a Match">
+        {/* Match Day */}
+        <Box my={2}>
+          <Typography variant="body1" className="boldText">
+            Match Day #
+          </Typography>
 
-        <Input
-          label="Match Day #"
-          placeholder="Match Day #"
-          required
-          value={newMatch?.matchDay}
-          type="number"
-          fullWidth
-          onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-            setNewMatch({
-              ...newMatch,
-              matchDay: parseInt(evt.target.value, 10),
-            });
+          <Input
+            label="Match Day #"
+            placeholder="Match Day #"
+            required
+            value={newMatch?.matchDay}
+            type="number"
+            fullWidth
+            onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+              setNewMatch({
+                ...newMatch,
+                matchDay: parseInt(evt.target.value, 10),
+              });
+            }}
+          />
+        </Box>
+        <Divider />
+
+        {/* Match Location */}
+        <Box my={2}>
+          <Typography variant="body1">Match Location</Typography>
+
+          <Input
+            label="Match Location"
+            placeholder="Match Location"
+            required
+            value={newMatch?.location}
+            fullWidth
+            onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+              setNewMatch({ ...newMatch, location: evt.target.value });
+            }}
+          />
+        </Box>
+        <Divider />
+
+        {/* Match Time */}
+        <Box my={2}>
+          <Typography variant="body1">Match Time</Typography>
+
+          <Input
+            id="datetime-local"
+            label="Match Time"
+            value={newMatch?.date}
+            type="datetime-local"
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setNewMatch({ ...newMatch, date: e.target.value });
+            }}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            inputProps={{
+              step: '600',
+              min: '07:00',
+              max: '23:00',
+            }}
+          />
+        </Box>
+        <Divider />
+
+        {/* Set Home team id */}
+        <Box width="100%" my={2}>
+          <Typography variant="body1">HomeTeam</Typography>
+
+          <Select
+            options={leagueTeamOptions}
+            handleChange={(option: any) => {
+              setNewMatch({ ...newMatch, homeTeamId: parseInt(option.value) });
+            }}
+          />
+        </Box>
+        <Divider />
+
+        {/* Set Away team id */}
+        <Box width="100%" my={2}>
+          <Typography variant="body1">AwayTeam</Typography>
+
+          <Select
+            options={leagueTeamOptions}
+            handleChange={(option: any) => {
+              setNewMatch({ ...newMatch, awayTeamId: parseInt(option.value) });
+            }}
+          />
+        </Box>
+        <Divider />
+
+        <DialogActions>
+          <Button
+            disabled={!isValid}
+            size="large"
+            onClick={() => createMatch()}
+          >
+            Create
+          </Button>
+        </DialogActions>
+      </Modal>
+
+      <Snackbar
+        open={!!error}
+        autoHideDuration={6000}
+        onClose={() => {
+          setError('');
+        }}
+      >
+        <Alert
+          onClose={() => {
+            setError('');
           }}
-        />
-      </Box>
-      <Divider />
-
-      {/* Match Location */}
-      <Box my={2}>
-        <Typography variant="body1">Match Location</Typography>
-
-        <Input
-          label="Match Location"
-          placeholder="Match Location"
-          required
-          value={newMatch?.location}
-          fullWidth
-          onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-            setNewMatch({ ...newMatch, location: evt.target.value });
-          }}
-        />
-      </Box>
-      <Divider />
-
-      {/* Match Time */}
-      <Box my={2}>
-        <Typography variant="body1">Match Time</Typography>
-
-        <Input
-          id="datetime-local"
-          label="Match Time"
-          value={newMatch?.date}
-          type="datetime-local"
-          onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            setNewMatch({ ...newMatch, date: e.target.value });
-          }}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          inputProps={{
-            step: '600',
-            min: '07:00',
-            max: '23:00',
-          }}
-        />
-      </Box>
-      <Divider />
-
-      {/* Set Home team id */}
-      <Box width="100%" my={2}>
-        <Typography variant="body1">HomeTeam</Typography>
-
-        <Select
-          options={leagueTeamOptions}
-          handleChange={(option: any) => {
-            setNewMatch({ ...newMatch, homeTeamId: parseInt(option.value) });
-          }}
-        />
-      </Box>
-      <Divider />
-
-      {/* Set Away team id */}
-      <Box width="100%" my={2}>
-        <Typography variant="body1">AwayTeam</Typography>
-
-        <Select
-          options={leagueTeamOptions}
-          handleChange={(option: any) => {
-            setNewMatch({ ...newMatch, awayTeamId: parseInt(option.value) });
-          }}
-        />
-      </Box>
-      <Divider />
-
-      <DialogActions>
-        <Button disabled={!isValid} size="large" onClick={() => createMatch()}>
-          Create
-        </Button>
-      </DialogActions>
-    </Modal>
+          severity="error"
+        >
+          {error}
+        </Alert>
+      </Snackbar>
+    </>
   );
 };

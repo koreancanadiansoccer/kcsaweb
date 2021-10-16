@@ -12,11 +12,20 @@ export interface PlayerInput {
 }
 
 export interface LeaguePlayerInput {
-  name: string;
+  id?: number;
+  name?: string;
+  dob?: string;
 }
 export interface LeaguePlayer extends Player {
   name: string;
   goalScored: number;
   yellowCard: number;
   leagueTeamId: number;
+}
+
+export interface MatchPlayer {
+  name: string;
+  dob?: string;
+  goalScored: number;
+  yellowCard: number;
 }

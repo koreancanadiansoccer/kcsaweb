@@ -25,4 +25,5 @@ matchId
 leagueTeamId
 yellowCard
 goalScored
+leaguePlayerId
 `;

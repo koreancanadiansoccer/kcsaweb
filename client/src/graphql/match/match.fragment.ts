@@ -21,4 +21,5 @@ awayTeamScore
 awayTeamPhysical
 awayTeamNoGameSheet
 awayTeamNoShow
+status
 `;

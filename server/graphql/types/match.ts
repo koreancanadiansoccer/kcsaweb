@@ -4,10 +4,26 @@ import {
   GraphQLString,
   GraphQLBoolean,
   GraphQLInputObjectType,
+  GraphQLEnumType,
 } from 'graphql';
 
 import { MatchTeamType, MatchTeamInputType } from './team';
 import { DateTime } from './utils/dateType';
+
+const StatusEnumType = new GraphQLEnumType({
+  name: 'StatusEnumType',
+  values: {
+    PENDING: {
+      value: 'PENDING',
+    },
+    MISMATCH: {
+      value: 'MISMATCH',
+    },
+    COMPLETE: {
+      value: 'COMPLETE',
+    },
+  },
+});
 
 // Definition of types of 'league' that will be returned from graphql operations.
 export const MatchType = new GraphQLObjectType({
@@ -28,6 +44,7 @@ export const MatchType = new GraphQLObjectType({
     awayTeamPhysical: { type: GraphQLBoolean },
     awayTeamNoGameSheet: { type: GraphQLBoolean },
     awayTeamNoShow: { type: GraphQLBoolean },
+    status: { type: StatusEnumType },
     createdAt: { type: DateTime },
   }),
 });
@@ -50,6 +67,7 @@ export const MatchTypeInputType = new GraphQLInputObjectType({
     awayTeamPhysical: { type: GraphQLBoolean },
     awayTeamNoGameSheet: { type: GraphQLBoolean },
     awayTeamNoShow: { type: GraphQLBoolean },
+    status: { type: StatusEnumType },
     createdAt: { type: DateTime },
   }),
 });

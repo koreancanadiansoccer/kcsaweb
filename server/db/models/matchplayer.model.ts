@@ -10,6 +10,7 @@ import {
 
 import { LeagueTeam } from './leagueteam.model';
 import { Player } from './player.model';
+import { LeaguePlayer } from './leagueplayer.model';
 import { Match } from './match.model';
 
 // Player data for each match.
@@ -49,5 +50,11 @@ export class MatchPlayer extends Model {
   @ForeignKey(() => Player)
   @Column({ field: 'player_id' })
   playerId!: number;
-  @BelongsTo(() => Player) palyer!: Player;
+  @BelongsTo(() => Player) player!: Player;
+
+  // Associations with player.
+  @ForeignKey(() => LeaguePlayer)
+  @Column({ field: 'league_player_id' })
+  leaguePlayerId!: number;
+  @BelongsTo(() => LeaguePlayer) palyer!: LeaguePlayer;
 }

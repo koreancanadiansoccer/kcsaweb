@@ -7,17 +7,17 @@ import {
   Default,
   AllowNull,
   BelongsTo,
-} from "sequelize-typescript";
+} from 'sequelize-typescript';
 
-import { User } from "./user.model";
-import { Team } from "./team.model";
-import { League } from "./league.model";
-import { LeaguePlayer } from "./leagueplayer.model";
-import { Match } from "./match.model";
-import { MatchPlayer } from "./matchplayer.model";
+import { User } from './user.model';
+import { Team } from './team.model';
+import { League } from './league.model';
+import { LeaguePlayer } from './leagueplayer.model';
+import { Match } from './match.model';
+import { MatchPlayer } from './matchplayer.model';
 
 // Team data associated with league.
-@Table({ tableName: "league_team" })
+@Table({ tableName: 'league_team' })
 export class LeagueTeam extends Model {
   @AllowNull(false)
   @Column
@@ -36,27 +36,31 @@ export class LeagueTeam extends Model {
   loss!: number;
 
   @Default(0)
-  @Column({ field: "goal_scored" })
+  @Column
+  tie!: number;
+
+  @Default(0)
+  @Column({ field: 'goal_scored' })
   goalScored!: number;
 
   @Default(0)
-  @Column({ field: "goal_conceded" })
+  @Column({ field: 'goal_conceded' })
   goalConceded!: number;
 
   @Column({
-    field: "team_age_type",
+    field: 'team_age_type',
   })
   teamAgeType!: string;
 
   @Default(false)
-  @Column({ field: "is_active" })
+  @Column({ field: 'is_active' })
   isActive!: boolean;
 
-  @ForeignKey(() => User) @Column({ field: "captain_id" }) captainId!: number;
+  @ForeignKey(() => User) @Column({ field: 'captain_id' }) captainId!: number;
 
   // Association with league.
   @ForeignKey(() => League)
-  @Column({ field: "league_id" })
+  @Column({ field: 'league_id' })
   leagueId!: number;
 
   @BelongsTo(() => League)
@@ -64,7 +68,7 @@ export class LeagueTeam extends Model {
 
   // Association with master team data.
   @ForeignKey(() => Team)
-  @Column({ field: "team_id" })
+  @Column({ field: 'team_id' })
   teamId!: number;
 
   @BelongsTo(() => Team)

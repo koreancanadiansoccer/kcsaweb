@@ -34,6 +34,10 @@ export class Team extends Model {
   loss!: number;
 
   @Default(0)
+  @Column
+  tie!: number;
+
+  @Default(0)
   @Column({ field: 'goal_scored' })
   goalScored!: number;
 

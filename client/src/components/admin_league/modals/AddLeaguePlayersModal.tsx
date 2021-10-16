@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useContext,
   useCallback,
+  ChangeEvent,
 } from 'react';
 import { DialogProps } from '@material-ui/core/Dialog';
 import Box from '@material-ui/core/Box';
@@ -14,7 +15,9 @@ import map from 'lodash/map';
 import find from 'lodash/find';
 import pick from 'lodash/pick';
 import findIndex from 'lodash/findIndex';
+import every from 'lodash/every';
 import { useMutation, useQuery } from '@apollo/client';
+import Divider from '@material-ui/core/Divider';
 
 import {
   CREATE_LEAGUE_PLAYER,
@@ -25,6 +28,7 @@ import { GET_PLAYERS } from '../../../graphql/players/get_players.query';
 import { Modal } from '../../modal/Modal';
 import { Button } from '../../button/Button';
 import { Select } from '../../select/Select';
+import { Input } from '../../input/Input';
 import { Table } from '../../table/Table';
 import { Player, LeaguePlayer, LeaguePlayerInput } from '../../../types/player';
 import { LeagueContext } from '../../../context/league';
@@ -33,14 +37,6 @@ interface AddLeaguePlayersModalProps
   extends Pick<DialogProps, 'open' | 'onClose' | 'fullScreen'> {
   selectedTeamId: number;
 }
-
-// Table columns to show.
-const tableColumns = [
-  { title: 'Name', field: 'name' },
-  { title: 'GoalScored', field: 'goalScored' },
-  { title: 'Yellow', field: 'yellowCard' },
-  { title: 'Created', field: 'createdAt' },
-];
 
 export const AddLeaguePlayersModal: FunctionComponent<AddLeaguePlayersModalProps> = ({
   selectedTeamId,
@@ -70,9 +66,22 @@ export const AddLeaguePlayersModal: FunctionComponent<AddLeaguePlayersModalProps
     setLeaguePlayers(selectedTeam?.leaguePlayers || []);
   }, [origLeague, selectedTeam]);
 
-  const [newLeaguePlayers, setNewLeaguePlayers] = useState<
-    LeaguePlayerInput[]
-  >();
+  const [newLeaguePlayers, setNewLeaguePlayers] = useState<LeaguePlayerInput[]>(
+    []
+  );
+
+  const isValid = useMemo(() => {
+    if (!newLeaguePlayers || newLeaguePlayers.length === 0) return false;
+    if (!newLeaguePlayers || newLeaguePlayers.length > 0) {
+      const valid = every(
+        newLeaguePlayers,
+        (newLeaguePlayer) => !!newLeaguePlayer.name && !!newLeaguePlayer.dob
+      );
+      return valid;
+    }
+
+    return true;
+  }, [newLeaguePlayers]);
 
   // Get all players for the team.
   const teamPlayersQuery = useQuery<
@@ -120,7 +129,7 @@ export const AddLeaguePlayersModal: FunctionComponent<AddLeaguePlayersModalProps
         setOrigLeague({ ...origLeague, leagueTeams: origLeagueTeams });
 
         // Reset selection:
-        setNewLeaguePlayers(undefined);
+        setNewLeaguePlayers([]);
       }
     } catch (e) {
       console.error(e);
@@ -151,17 +160,36 @@ export const AddLeaguePlayersModal: FunctionComponent<AddLeaguePlayersModalProps
         );
 
         if (teamPlayer) {
-          return { ...pick(teamPlayer, ['id', 'name']) };
+          return { ...pick(teamPlayer, ['id', 'name', 'dob']) };
         }
 
         // If newly entered, just set the name.
-        return { name: selected.label };
+        return { name: selected.label as string };
       });
 
       setNewLeaguePlayers(newLeaguePlayers);
     },
     [teamPlayersQuery, setNewLeaguePlayers]
   );
+
+  // Table columns to show.
+  const tableColumns = [
+    {
+      title: 'Count',
+      render: (rowData: Player) => {
+        const idx = findIndex(
+          leaguePlayers,
+          (player) => player.id === rowData.id
+        );
+        return idx + 1;
+      },
+    },
+    { title: 'Name', field: 'name' },
+    { title: 'Date of Birth', field: 'dob' },
+    { title: 'GoalScored', field: 'goalScored' },
+    { title: 'Yellow', field: 'yellowCard' },
+    { title: 'Created', field: 'createdAt' },
+  ];
 
   return (
     <Modal
@@ -172,28 +200,88 @@ export const AddLeaguePlayersModal: FunctionComponent<AddLeaguePlayersModalProps
         selectedTeam?.name || 'Team'
       } - List of players in this league.`}
     >
-      <Typography variant="body1">Add players</Typography>
+      <Typography variant="body1">Add players from past</Typography>
 
       <Box width="100%" my={2}>
         <Typography variant="body1">
           List of originally added players in the past.
         </Typography>
 
-        <Select
-          createable
-          options={playersOption}
-          isMulti
-          handleChange={handleChange}
-        />
+        <Select options={playersOption} isMulti handleChange={handleChange} />
       </Box>
+
+      <Divider />
+      <Box my={2}>
+        {/* Adding totally new players */}
+        {newLeaguePlayers.length >= 1 &&
+          map(newLeaguePlayers, (newLeaguePlayer, idx) => {
+            return (
+              !newLeaguePlayer.id && (
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  key={`newplayer-${idx}`}
+                >
+                  <Box>
+                    <Typography variant="body1">Name</Typography>
+                    <Input
+                      label="Name"
+                      placeholder="Player name"
+                      required
+                      value={newLeaguePlayer.name}
+                      fullWidth
+                      onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+                        const copy = [...newLeaguePlayers];
+                        copy[idx] = { ...copy[idx], name: evt.target.value };
+                        setNewLeaguePlayers(copy);
+                      }}
+                    />
+                  </Box>
+
+                  <Box ml={1}>
+                    <Typography variant="body1">DOB</Typography>
+                    <Input
+                      value={newLeaguePlayer.dob}
+                      placeholder="date of birth"
+                      type="date"
+                      onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+                        const copy = [...newLeaguePlayers];
+                        copy[idx] = { ...copy[idx], dob: evt.target.value };
+                        setNewLeaguePlayers(copy);
+                      }}
+                    />
+                  </Box>
+                </Box>
+              )
+            );
+          })}
+
+        {/* Add new plyaers */}
+
+        <Button
+          size="large"
+          onClick={() => {
+            const newLeaguePlayerCopy = [
+              ...newLeaguePlayers,
+              { name: '', dob: '' },
+            ];
+
+            setNewLeaguePlayers(newLeaguePlayerCopy);
+          }}
+        >
+          Click to add new players.
+        </Button>
+      </Box>
+      <Divider />
 
       <Box my={2}>
         <Button
-          disabled={!newLeaguePlayers || newLeaguePlayers.length === 0}
+          disabled={!isValid}
+          color="secondary"
           size="large"
           onClick={() => void createLeaguePlayers()}
         >
-          Add Players
+          Add Players to League
         </Button>
       </Box>
 
