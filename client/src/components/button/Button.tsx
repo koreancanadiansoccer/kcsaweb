@@ -1,9 +1,11 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent } from 'react';
 import OrigButton, {
   ButtonProps as OrigButtonProps,
-} from "@material-ui/core/Button";
-import { withStyles } from "@material-ui/core/styles";
-import deepOrange from "@material-ui/core/colors/deepOrange";
+} from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
+import deepOrange from '@material-ui/core/colors/deepOrange';
+import red from '@material-ui/core/colors/red';
+import { Redeem } from '@material-ui/icons';
 
 interface ButtonProps extends OrigButtonProps {
   component?: React.ReactNode;
@@ -19,9 +21,9 @@ const UnstyledButton: FunctionComponent<ButtonProps> = (props) => {
     children,
     className,
     disableRipple = true,
-    size = "medium",
-    color = "primary",
-    variant = "contained",
+    size = 'medium',
+    color = 'primary',
+    variant = 'contained',
     component,
     to,
     ...otherProps
@@ -43,7 +45,7 @@ const UnstyledButton: FunctionComponent<ButtonProps> = (props) => {
 
 export const Button = withStyles(() => ({
   root: {
-    borderRadius: "8px",
+    borderRadius: '8px',
   },
 }))(UnstyledButton);
 
@@ -52,10 +54,23 @@ export const Button = withStyles(() => ({
  */
 export const MessageButton = withStyles(() => ({
   root: {
-    color: "white",
-    backgroundColor: deepOrange["A200"],
-    "&:hover": {
-      backgroundColor: deepOrange["A200"],
+    color: 'white',
+    backgroundColor: deepOrange['A200'],
+    '&:hover': {
+      backgroundColor: deepOrange['A200'],
+    },
+  },
+}))(Button);
+
+/*
+ * Simple wrapper for message button color.
+ */
+export const ErrorButton = withStyles(() => ({
+  root: {
+    color: 'white',
+    backgroundColor: 'red',
+    '&:hover': {
+      backgroundColor: red['700'],
     },
   },
 }))(Button);

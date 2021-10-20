@@ -94,7 +94,7 @@ const upsertLeagueTeam = async (
       where: { id: leagueTeamId },
     });
 
-    if (!leagueTeam) throw Error('League home team not found');
+    if (!leagueTeam) throw Error('League team not found');
 
     // Check original match value.
     const match = await Match.findOne({

@@ -41,7 +41,7 @@ export const AddMatchModal: FunctionComponent<Pick<
 
   const [error, setError] = useState<string>('');
   const [newMatch, setNewMatch] = useState<MatchInput>({
-    matchDay: undefined,
+    matchDay: 0,
     date: dayjs().format('YYYY-MM-DDTHH:mm'),
     location: '',
     homeTeamId: undefined,
@@ -62,7 +62,7 @@ export const AddMatchModal: FunctionComponent<Pick<
   useEffect(
     () =>
       setNewMatch({
-        matchDay: undefined,
+        matchDay: 0,
         date: dayjs().format('YYYY-MM-DDTHH:mm'),
         location: '',
         homeTeamId: undefined,
@@ -113,12 +113,12 @@ export const AddMatchModal: FunctionComponent<Pick<
         {/* Match Day */}
         <Box my={2}>
           <Typography variant="body1" className="boldText">
-            Match Day #
+            Match Round #
           </Typography>
 
           <Input
-            label="Match Day #"
-            placeholder="Match Day #"
+            label="Match Round #"
+            placeholder="Match Round #"
             required
             value={newMatch?.matchDay}
             type="number"

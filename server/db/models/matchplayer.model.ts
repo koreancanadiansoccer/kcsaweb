@@ -29,7 +29,7 @@ export class MatchPlayer extends Model {
   goalScored!: number;
 
   @Default(0)
-  @Column({ field: 'yello_card' })
+  @Column({ field: 'yellow_card' })
   yellowCard!: number;
 
   @Column email!: string;
@@ -56,5 +56,5 @@ export class MatchPlayer extends Model {
   @ForeignKey(() => LeaguePlayer)
   @Column({ field: 'league_player_id' })
   leaguePlayerId!: number;
-  @BelongsTo(() => LeaguePlayer) palyer!: LeaguePlayer;
+  @BelongsTo(() => LeaguePlayer) leaguePlayer!: LeaguePlayer;
 }

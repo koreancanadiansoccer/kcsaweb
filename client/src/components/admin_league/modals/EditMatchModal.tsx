@@ -17,6 +17,7 @@ import dayjs from 'dayjs';
 import forEach from 'lodash/forEach';
 import find from 'lodash/find';
 import findIndex from 'lodash/findIndex';
+import isEqual from 'lodash/isEqual';
 
 import { Modal } from '../../modal/Modal';
 import { Button } from '../../button/Button';
@@ -67,6 +68,10 @@ export const EditMatchModal: FunctionComponent<EditMatchModalProps> = ({
     return <div>please try again</div>;
   }
   const [match, setMatch] = useState<Match>(origMatch);
+
+  const hasNoChanges = useMemo(() => {
+    return isEqual(match, origMatch);
+  }, [match, origMatch]);
 
   const homeTeamScore = useMemo(() => {
     let score = 0;
@@ -356,7 +361,7 @@ export const EditMatchModal: FunctionComponent<EditMatchModalProps> = ({
 
       <Box mt={3}>
         <Button
-          // disabled={!isValid}
+          disabled={hasNoChanges}
           size="large"
           onClick={() => void updateMatch()}
         >
