@@ -37,12 +37,14 @@ import {
 
 import { AddMatchModal } from './modals/AddMatchModal';
 import { EditMatchModal } from './modals/EditMatchModal';
+import { AlertDeleteMatchModal } from './modals/AlertDeleteModal';
 
 dayjs.extend(customParseFormat);
 
 enum MODAL_TYPE {
   CREATE_MATCH = 'CREATE_MATCH',
   EDIT_MATCH = 'EDIT_MATCH',
+  DELETE_MATCH = 'DELETE_MATCH',
 }
 
 interface LeagueMatchProps {
@@ -64,6 +66,8 @@ const UnstyledLeagueMatch: FunctionComponent<LeagueMatchProps> = ({
   const [matches, setMatches] = useState<Match[]>(origLeague.matches);
 
   const [selectedMatchId, setSelectedMatchId] = useState<number>();
+
+  const [deleteMatchId, setDeletedMatchId] = useState<number>();
 
   const matchesGroupRounds = useMemo(() => {
     // Order by time.
@@ -101,6 +105,9 @@ const UnstyledLeagueMatch: FunctionComponent<LeagueMatchProps> = ({
     [matchesGroupRounds]
   );
 
+  /**
+   * Delete match
+   */
   const deleteMatch = useCallback(
     async (id: number) => {
       try {
@@ -115,6 +122,7 @@ const UnstyledLeagueMatch: FunctionComponent<LeagueMatchProps> = ({
           );
 
           setOrigLeague({ ...origLeague, matches: newLeagueMatches });
+          setOpenModal(null);
         }
       } catch (e) {
         console.error(e);
@@ -139,6 +147,16 @@ const UnstyledLeagueMatch: FunctionComponent<LeagueMatchProps> = ({
           fullScreen={true}
           selectedMatchId={selectedMatchId}
           open={openModal === MODAL_TYPE.EDIT_MATCH}
+          onClose={() => setOpenModal(null)}
+        />
+      )}
+
+      {/* Adding players to league team */}
+      {openModal === MODAL_TYPE.DELETE_MATCH && deleteMatchId && (
+        <AlertDeleteMatchModal
+          deletematchId={deleteMatchId}
+          open={openModal === MODAL_TYPE.DELETE_MATCH}
+          onDelete={(deleteMatchId: number) => deleteMatch(deleteMatchId)}
           onClose={() => setOpenModal(null)}
         />
       )}
@@ -279,14 +297,18 @@ const UnstyledLeagueMatch: FunctionComponent<LeagueMatchProps> = ({
                         </Box>
                         <Box>
                           <ErrorButton
-                            // disabled={hasNoChanges}
                             size="large"
                             onClick={(
                               event: React.MouseEvent<HTMLButtonElement>
                             ) => {
                               event.stopPropagation();
                               event.preventDefault();
-                              void deleteMatch(match.id);
+
+                              // If match status is in complete, open up confirm modal.
+                              if (match.status === MatchStatus.COMPLETE) {
+                                setDeletedMatchId(match.id);
+                                setOpenModal(MODAL_TYPE.DELETE_MATCH);
+                              } else void deleteMatch(match.id);
                             }}
                           >
                             Delete
