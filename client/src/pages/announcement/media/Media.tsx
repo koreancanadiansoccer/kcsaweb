@@ -137,5 +137,6 @@ export const Media = withTheme(styled(UnstyledMedia)`
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+    margin-bottom: 20px;
   }
 `);
