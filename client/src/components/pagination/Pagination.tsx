@@ -29,26 +29,26 @@ const UnstyledPagination: FunctionComponent<PaginationProps> = ({
   useEffect(() => {
     if (activePage > -1 && imageLength > 0) {
       SetLastPage(imageLength % rowsPerPage == 0
-                  ? Math.floor(imageLength / rowsPerPage)
-                  : Math.floor(imageLength / rowsPerPage) + 1)
+                  ? imageLength / rowsPerPage
+                  : Math.ceil(imageLength / rowsPerPage))
     }
   })
 
   const prevPageChange = () => {
-    if (activePage > 1) {
+    if (activePage > 0) {
       void onChange(activePage - 1);
     }
   }
 
   const nextPageChange = () => {
-    if (activePage < lastPage) {
+    if (activePage < lastPage - 1) {
       void onChange(activePage + 1);
     }
   }
 
   return (
     <Box className={className}>
-      <Box className="first-page" onClick={() => { void onChange(1) }}>
+      <Box className="first-page" onClick={() => { void onChange(0) }}>
         <ArrowBackIos />
         <ArrowBackIos className="first-page-button" />
       </Box>
@@ -62,14 +62,14 @@ const UnstyledPagination: FunctionComponent<PaginationProps> = ({
         variant="body2"
         className="page-number"
       >
-        {activePage}-{lastPage} of {lastPage}
+        {activePage + 1}-{lastPage} of {lastPage}
       </Typography>
 
       <Box className="next-page" onClick={nextPageChange}>
         <ArrowForwardIos />
       </Box>
 
-      <Box className="last-page" onClick={() => { void onChange(lastPage) }}>
+      <Box className="last-page" onClick={() => { void onChange(lastPage - 1) }}>
         <ArrowForwardIos className="last-page-button" />
         <ArrowForwardIos />
       </Box>

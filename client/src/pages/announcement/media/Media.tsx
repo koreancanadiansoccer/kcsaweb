@@ -48,7 +48,7 @@ const UnstyledMedia: FunctionComponent<GalleryProps> = ({ className }) => {
   }, [galleriesQuery, loading, error]);
 
   const handlePageChange = async (page: number) => {
-    setPage(page - 1);
+    setPage(page);
   };
 
   if (!galleries) {
@@ -82,7 +82,7 @@ const UnstyledMedia: FunctionComponent<GalleryProps> = ({ className }) => {
 
       <Pagination
         className="pagination"
-        activePage={page + 1}
+        activePage={page}
         rowsPerPage={rowsPerPage}
         onChange={(page: number) => {
           handlePageChange(page);

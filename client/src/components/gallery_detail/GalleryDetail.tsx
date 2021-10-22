@@ -75,6 +75,7 @@ const UnstyledGalleryDetail: FunctionComponent<GalleryDetailProps> = ({
       />
 
       <Box display="flex" justifyContent="center" height="20rem">
+        {/* Only show the arrow button when the number of images over 6 */}
         {galleryImages.length > 6 && (
           <ChevronLeftIcon className="chevron-left" />
         )}
@@ -83,9 +84,9 @@ const UnstyledGalleryDetail: FunctionComponent<GalleryDetailProps> = ({
           {...thumbnailSetting}
           className={
             /* Depending on the length of the images, decide whether to use a single slide or not. */
-            galleryImages.length < 7
-              ? 'thumbnail-container custom-thumb-container'
-              : 'thumbnail-container default-thub-container'
+            galleryImages.length > 6
+              ? 'thumbnail-container default-thub-container'
+              : 'thumbnail-container custom-thumb-container'
           }
         >
           {map(gallery.galleryImages, (img, index) => (
@@ -99,6 +100,7 @@ const UnstyledGalleryDetail: FunctionComponent<GalleryDetailProps> = ({
           ))}
         </Slick>
 
+        {/* Only show the arrow button when the number of images over 6 */}
         {galleryImages.length > 6 && (
           <ChevronRightIcon className="chevron-right" />
         )}
