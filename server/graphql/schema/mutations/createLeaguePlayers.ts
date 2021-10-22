@@ -24,6 +24,7 @@ export const createLeaguePlayers = {
         if (newLeaguePlayer.id) {
           await LeaguePlayer.create({
             name: newLeaguePlayer.name,
+            dob: newLeaguePlayer.dob,
             leagueTeamId: args.leagueTeamId,
             playerId: newLeaguePlayer.id,
           });
@@ -34,12 +35,15 @@ export const createLeaguePlayers = {
           // First create a row in master 'Player' table
           const player = await Player.create({
             name: newLeaguePlayer.name,
+            dob: newLeaguePlayer.dob,
             teamId: args.teamId,
           });
+
           // Then create a row in league player table.
           if (player) {
             await LeaguePlayer.create({
               name: newLeaguePlayer.name,
+              dob: newLeaguePlayer.dob,
               leagueTeamId: args.leagueTeamId,
               playerId: player.id,
             });

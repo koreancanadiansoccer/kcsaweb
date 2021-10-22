@@ -3,35 +3,46 @@ import React, {
   useState,
   useMemo,
   useEffect,
-  ChangeEvent,
   useContext,
   useCallback,
 } from 'react';
 import { DialogProps } from '@material-ui/core/Dialog';
 import Box from '@material-ui/core/Box';
-import DialogActions from '@material-ui/core/DialogActions';
 import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
-import map from 'lodash/map';
-import find from 'lodash/find';
-import pick from 'lodash/pick';
-import findIndex from 'lodash/findIndex';
-import { useMutation, useQuery } from '@apollo/client';
+import Divider from '@material-ui/core/Divider';
+import Chip from '@material-ui/core/Chip';
+import { useMutation } from '@apollo/client';
 import dayjs from 'dayjs';
+import forEach from 'lodash/forEach';
+import find from 'lodash/find';
+import findIndex from 'lodash/findIndex';
+import isEqual from 'lodash/isEqual';
 
 import { Modal } from '../../modal/Modal';
 import { Button } from '../../button/Button';
-import { Input } from '../../input/Input';
-import { Match } from '../../../types/match';
+import { Match, MatchStatus } from '../../../types/match';
+import { MatchPlayer } from '../../../types/player';
 import { LeagueContext } from '../../../context/league';
+import {
+  UpdateMatchResult,
+  UpdateMatchInput,
+  UPDATE_MATCH,
+} from '../../../graphql/match/updateMatch';
+import { parseError } from '../../../graphql/client';
+
+import { MatchTeam, TeamType } from './components/MatchTeam';
 
 interface EditMatchModalProps
   extends Pick<DialogProps, 'open' | 'onClose' | 'fullScreen'> {
-  selectedMatch: Match;
+  selectedMatchId: number;
 }
 
+/**
+ * Edit Match modal.
+ */
 export const EditMatchModal: FunctionComponent<EditMatchModalProps> = ({
-  selectedMatch,
+  selectedMatchId,
   open,
   onClose,
   fullScreen,
@@ -40,12 +51,107 @@ export const EditMatchModal: FunctionComponent<EditMatchModalProps> = ({
     LeagueContext
   );
 
-  const [match, setMatch] = useState<Match>(selectedMatch || []);
+  const origMatch = useMemo(() => {
+    const match = find(
+      origLeague.matches,
+      (origMatch) => origMatch.id === selectedMatchId
+    );
 
-  // // Update list
+    return match;
+  }, [selectedMatchId, origLeague]);
+
+  const [updateMatchMut] = useMutation<UpdateMatchResult, UpdateMatchInput>(
+    UPDATE_MATCH
+  );
+
+  if (!origMatch) {
+    return <div>please try again</div>;
+  }
+  const [match, setMatch] = useState<Match>(origMatch);
+
+  const hasNoChanges = useMemo(() => {
+    return isEqual(match, origMatch);
+  }, [match, origMatch]);
+
+  const homeTeamScore = useMemo(() => {
+    let score = 0;
+
+    forEach(match.homeTeam.matchPlayers, (homePlayer) => {
+      score += homePlayer.goalScored;
+    });
+
+    return score;
+  }, [match]);
+
+  const awayTeamScore = useMemo(() => {
+    let score = 0;
+
+    forEach(match.awayTeam.matchPlayers, (awayPlayer) => {
+      score += awayPlayer.goalScored;
+    });
+
+    return score;
+  }, [match]);
+
+  const attentionRequired = useMemo(() => {
+    return (
+      origMatch.awayTeamNoGameSheet ||
+      origMatch.awayTeamNoShow ||
+      origMatch.awayTeamPhysical ||
+      origMatch.homeTeamNoGameSheet ||
+      origMatch.homeTeamNoShow ||
+      origMatch.homeTeamPhysical
+    );
+  }, [origMatch]);
+
+  // Update list
   useEffect(() => {
-    setMatch(selectedMatch || []);
-  }, [selectedMatch]);
+    setMatch(origMatch);
+  }, [origMatch]);
+
+  const handlePlayerUpdate = useCallback(
+    (team: TeamType, players: MatchPlayer[]) => {
+      const teamUpdate = { ...match[team] };
+      teamUpdate.matchPlayers = players;
+
+      setMatch({ ...match, [team]: teamUpdate });
+    },
+    [match, setMatch]
+  );
+
+  const updateMatch = useCallback(async () => {
+    try {
+      const res = await updateMatchMut({
+        variables: {
+          updateMatch: {
+            ...match,
+            homeTeamScore: homeTeamScore,
+            awayTeamScore: awayTeamScore,
+          },
+        },
+      });
+
+      if (res.data?.updateMatch) {
+        const origLeagueMatches = [...origLeague.matches];
+        const updatedMatchIdx = findIndex(
+          origLeagueMatches,
+          (origMatch) => origMatch.id === res.data?.updateMatch.id
+        );
+
+        origLeagueMatches[updatedMatchIdx] = res.data?.updateMatch;
+        setOrigLeague({ ...origLeague, matches: origLeagueMatches });
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, [
+    updateMatchMut,
+    homeTeamScore,
+    awayTeamScore,
+    match,
+    origLeague,
+    setOrigLeague,
+  ]);
 
   return (
     <Modal
@@ -58,79 +164,80 @@ export const EditMatchModal: FunctionComponent<EditMatchModalProps> = ({
         'YYYY-MMM-DD hh:mmA'
       )}`}
     >
-      <Box width="100%" my={2} display="flex" justifyContent="space-betwen">
+      <Box>
+        {match.status === MatchStatus.COMPLETE && (
+          <Chip
+            label={`${match.status}`}
+            style={{
+              backgroundColor: 'seagreen',
+              color: 'white',
+            }}
+          />
+        )}
+
+        {match.status === MatchStatus.PENDING && (
+          <Chip label={`${match.status}`} disabled />
+        )}
+
+        {match.status === MatchStatus.MISMATCH && (
+          <Chip
+            label={`${match.status} On team submissions`}
+            color="secondary"
+            style={{
+              color: 'white',
+            }}
+          />
+        )}
+
+        {attentionRequired && (
+          <Chip
+            label="Attention Required - Special event"
+            style={{
+              backgroundColor: 'red',
+              color: 'white',
+            }}
+          />
+        )}
+      </Box>
+      <Box
+        width="100%"
+        my={2}
+        display="flex"
+        justifyContent="space-betwen"
+        ml={3}
+      >
         {/* Home Team */}
-        <Box>
+        <Box mr={15}>
           <Box mb={3}>
             <Typography variant="h5" className="boldText">
-              Home Team
+              Home
             </Typography>
           </Box>
 
-          <Typography variant="h6">{match.homeTeam.name}</Typography>
-
-          {/* List of Home team player section */}
-          <Box border={1} display="flex" alignItems="center" p={1}>
-            <Typography variant="body1">Stanley Moon</Typography>
-
-            <Box mx={1}>
-              <Input
-                label="Goal"
-                placeholder="Goals"
-                value={2}
-                type="number"
-                margin="dense"
-                size="small"
-                style={{ width: 50 }}
-                onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-                  // setNewLeague({
-                  //   ...newLeague,
-                  //   maxYellowCard: parseInt(evt.target.value, 10),
-                  // });
-                }}
-              />
-            </Box>
-
-            <Box mx={1}>
-              <Input
-                label="YellowCard"
-                placeholder="Yellowcard"
-                value={2}
-                type="number"
-                margin="dense"
-                size="small"
-                style={{ width: 100 }}
-                onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-                  // setNewLeague({
-                  //   ...newLeague,
-                  //   maxYellowCard: parseInt(evt.target.value, 10),
-                  // });
-                }}
-              />
-            </Box>
-            <Box mx={1}>
-              <Input
-                label="G"
-                placeholder="Yellowcard"
-                value={2}
-                type="number"
-                margin="dense"
-                size="small"
-                style={{ width: 50 }}
-                onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-                  // setNewLeague({
-                  //   ...newLeague,
-                  //   maxYellowCard: parseInt(evt.target.value, 10),
-                  // });
-                }}
-              />
-            </Box>
-          </Box>
+          <Typography variant="h6" className="boldText">
+            {match.homeTeam.name}
+          </Typography>
 
           <Box mb={3}>
             <Typography variant="body1">Home Team Score:</Typography>
-            <Typography variant="body1">{match.homeTeamScore || 0}</Typography>
+            <Typography variant="body1">{homeTeamScore}</Typography>
           </Box>
+
+          <Box mb={1}>
+            <Typography variant="body1" className="boldText">
+              Players:
+            </Typography>
+            <Typography variant="body2" color="error">
+              {'*To add new player, please use League -> CLUBS modal'}
+            </Typography>
+          </Box>
+
+          {/* List of Home team player section */}
+          <MatchTeam
+            matchPlayers={match.homeTeam.matchPlayers}
+            teamType={TeamType.HOME}
+            handlePlayerUpdate={handlePlayerUpdate}
+          />
 
           {/* Special occastion */}
           <Box display="flex" alignItems="center">
@@ -177,73 +284,34 @@ export const EditMatchModal: FunctionComponent<EditMatchModalProps> = ({
         <Box>
           <Box mb={3}>
             <Typography variant="h5" className="boldText">
-              Away Team
+              Away
             </Typography>
           </Box>
 
-          <Typography variant="h6">{match.awayTeam.name}</Typography>
-
-          <Box border={1} display="flex" alignItems="center" p={1}>
-            <Typography variant="body1">Stanley Moon</Typography>
-
-            <Box mx={1}>
-              <Input
-                label="Goal"
-                placeholder="Goals"
-                value={2}
-                type="number"
-                margin="dense"
-                size="small"
-                style={{ width: 50 }}
-                onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-                  // setNewLeague({
-                  //   ...newLeague,
-                  //   maxYellowCard: parseInt(evt.target.value, 10),
-                  // });
-                }}
-              />
-            </Box>
-
-            <Box mx={1}>
-              <Input
-                label="YellowCard"
-                placeholder="Yellowcard"
-                value={2}
-                type="number"
-                margin="dense"
-                size="small"
-                style={{ width: 100 }}
-                onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-                  // setNewLeague({
-                  //   ...newLeague,
-                  //   maxYellowCard: parseInt(evt.target.value, 10),
-                  // });
-                }}
-              />
-            </Box>
-            <Box mx={1}>
-              <Input
-                label="G"
-                placeholder="Yellowcard"
-                value={2}
-                type="number"
-                margin="dense"
-                size="small"
-                style={{ width: 50 }}
-                onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-                  // setNewLeague({
-                  //   ...newLeague,
-                  //   maxYellowCard: parseInt(evt.target.value, 10),
-                  // });
-                }}
-              />
-            </Box>
-          </Box>
+          <Typography variant="h6" className="boldText">
+            {match.awayTeam.name}
+          </Typography>
 
           <Box mb={3}>
             <Typography variant="body1">Away Team Score:</Typography>
-            <Typography variant="body1">{match.homeTeamScore || 0}</Typography>
+            <Typography variant="body1">{awayTeamScore || 0}</Typography>
           </Box>
+
+          <Box mb={1}>
+            <Typography variant="body1" className="boldText">
+              Players:
+            </Typography>
+            <Typography variant="body2" color="error">
+              {'*To add new player, please use League -> CLUBS modal'}
+            </Typography>
+          </Box>
+
+          {/* List of Away team player section */}
+          <MatchTeam
+            matchPlayers={match.awayTeam.matchPlayers}
+            teamType={TeamType.AWAY}
+            handlePlayerUpdate={handlePlayerUpdate}
+          />
 
           <Box display="flex" alignItems="center">
             <Typography variant="body1">Missed game sheet?</Typography>
@@ -287,6 +355,18 @@ export const EditMatchModal: FunctionComponent<EditMatchModalProps> = ({
             />
           </Box>
         </Box>
+      </Box>
+
+      <Divider />
+
+      <Box mt={3}>
+        <Button
+          disabled={hasNoChanges}
+          size="large"
+          onClick={() => void updateMatch()}
+        >
+          Update
+        </Button>
       </Box>
     </Modal>
   );

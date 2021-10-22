@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import { useMutation } from '@apollo/client';
 import AddIcon from '@material-ui/icons/Add';
+import findIndex from 'lodash/findIndex';
 
 import { CREATE_PLAYER } from '../../graphql/players/create_player.mutation';
 import { Team } from '../../types/team';
@@ -24,14 +25,6 @@ interface TeamPlayersProps {
   team: Team;
   updateTeam: (updateTeam: Team) => void;
 }
-
-// Table columns to show.
-const tableColumns = [
-  { title: 'Name', field: 'name' },
-  { title: 'GoalScored', field: 'goalScored' },
-  { title: 'Yellow', field: 'yellowCard' },
-  { title: 'Created', field: 'createdAt' },
-];
 
 /**
  * Show list of players.
@@ -58,7 +51,11 @@ const UnstyledTeamPlayers: FunctionComponent<TeamPlayersProps> = () => {
     async (newPlayer: PlayerInput) => {
       try {
         const res = await createPlayerMut({
-          variables: { name: newPlayer.name, teamId: origTeam.id },
+          variables: {
+            name: newPlayer.name,
+            dob: newPlayer.dob,
+            teamId: origTeam.id,
+          },
         });
 
         if (res.data) {
@@ -70,8 +67,24 @@ const UnstyledTeamPlayers: FunctionComponent<TeamPlayersProps> = () => {
         console.info(e);
       }
     },
-    [createPlayerMut]
+    [createPlayerMut, players]
   );
+
+  // Table columns to show.
+  const tableColumns = [
+    {
+      title: 'Count',
+      render: (rowData: Player) => {
+        const idx = findIndex(players, (player) => player.id === rowData.id);
+        return idx + 1;
+      },
+    },
+    { title: 'Name', field: 'name' },
+    { title: 'Date of Birth', field: 'dob' },
+    { title: 'GoalScored', field: 'goalScored' },
+    { title: 'Yellow', field: 'yellowCard' },
+    { title: 'Created', field: 'createdAt' },
+  ];
 
   return (
     <>

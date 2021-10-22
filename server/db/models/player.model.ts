@@ -27,7 +27,7 @@ export class Player extends Model {
   goalScored!: number;
 
   @Default(0)
-  @Column({ field: 'yello_card' })
+  @Column({ field: 'yellow_card' })
   yellowCard!: number;
 
   @Column email!: string;

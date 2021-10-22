@@ -1,6 +1,7 @@
 export const PLAYER_FRAGMENT = `
 id
 name
+dob
 yellowCard
 goalScored
 teamId
@@ -9,6 +10,7 @@ teamId
 export const LEAGUE_PLAYER_FRAGMENT = `
 id
 name
+dob
 yellowCard
 goalScored
 leagueTeamId
@@ -17,9 +19,11 @@ leagueTeamId
 export const MATCH_PLAYER_FRAGMENT = `
 id
 name
+dob
 teamId
 matchId
 leagueTeamId
 yellowCard
 goalScored
+leaguePlayerId
 `;

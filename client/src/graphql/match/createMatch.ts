@@ -1,7 +1,8 @@
 import { gql } from '@apollo/client';
 
 import { Match } from '../../types/match';
-import { MATCH_TEAM_FRAGMENT } from '../teams/team.fragment';
+
+import { MATCH_FRAGMENT } from './match.fragment';
 
 export interface CreateMatchInput {
   matchDay?: number;
@@ -34,25 +35,7 @@ export const CREATE_MATCH = gql`
       homeTeamId: $homeTeamId
       awayTeamId: $awayTeamId
     ) {
-      date
-      matchDay
-      location
-      leagueId
-      date
-      homeTeam{
-        ${MATCH_TEAM_FRAGMENT}
-      }
-      homeTeamScore
-      homeTeamPhysical
-      homeTeamNoGameSheet
-      homeTeamNoShow
-      awayTeam{
-        ${MATCH_TEAM_FRAGMENT}
-      }
-      awayTeamScore
-      awayTeamPhysical
-      awayTeamNoGameSheet
-      awayTeamNoShow
+      ${MATCH_FRAGMENT}
       createdAt
     }
   }

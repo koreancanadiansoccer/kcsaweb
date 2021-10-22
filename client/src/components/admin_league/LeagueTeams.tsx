@@ -39,6 +39,7 @@ const tableColumns = [
   { title: 'GCs ', field: 'goalConceded' },
   { title: 'Win', field: 'win' },
   { title: 'Loss', field: 'loss' },
+  { title: 'Tie', field: 'tie' },
   { title: 'Created at', field: 'createdAt' },
 ];
 

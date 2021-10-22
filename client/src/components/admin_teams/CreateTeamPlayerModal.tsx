@@ -10,6 +10,7 @@ import Box from '@material-ui/core/Box';
 import DialogActions from '@material-ui/core/DialogActions';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import dayjs from 'dayjs';
 
 import { Modal } from '../modal/Modal';
 import { Input } from '../input/Input';
@@ -31,6 +32,7 @@ export const CreateTeamPlayerModal: FunctionComponent<CreateTeamPlayerModal> = (
   // Init state for new product.
   const [newPlayer, setNewPlayer] = useState<PlayerInput>({
     name: '',
+    dob: dayjs().subtract(18, 'year').format('YYYY-MM-DD'),
   });
 
   const isValid = useMemo(() => !!newPlayer?.name, [newPlayer]);
@@ -40,12 +42,13 @@ export const CreateTeamPlayerModal: FunctionComponent<CreateTeamPlayerModal> = (
     () =>
       setNewPlayer({
         name: '',
+        dob: dayjs().subtract(18, 'year').format('YYYY-MM-DD'),
       }),
     [open]
   );
 
   return (
-    <Modal open={open} onClose={onClose} title="Create New Club">
+    <Modal open={open} onClose={onClose} title="Create New Player">
       <Box>
         <Box my={2}>
           <Typography variant="body1">Add Player</Typography>
@@ -57,6 +60,23 @@ export const CreateTeamPlayerModal: FunctionComponent<CreateTeamPlayerModal> = (
             fullWidth
             onChange={(evt: ChangeEvent<HTMLInputElement>) => {
               setNewPlayer({ ...newPlayer, name: evt.target.value });
+            }}
+          />
+        </Box>
+
+        <Divider />
+
+        <Box my={2}>
+          <Input
+            label="DOB"
+            value={newPlayer?.dob}
+            placeholder="date of birth"
+            type="date"
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setNewPlayer({ ...newPlayer, dob: e.target.value });
+            }}
+            InputLabelProps={{
+              shrink: true,
             }}
           />
         </Box>
