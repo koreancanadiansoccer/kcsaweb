@@ -1,10 +1,10 @@
-import React, { FunctionComponent, useEffect, useState, useMemo } from 'react';
+import React, { FunctionComponent, useState, useMemo } from 'react';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import map from 'lodash/map';
-import Box from '@material-ui/core/Box'
-import Typography from '@material-ui/core/Typography'
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
 import Slick, { Settings } from 'react-slick';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -12,6 +12,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { Gallery, GalleryImage } from '../../types/gallery';
 import AboutBanner from '../../assets/about.png';
 import { HorizontalDivider } from '../divider/HorizontalDivider';
+import { AutoSlide } from '../autoSlide/AutoSlide';
 
 interface GalleryDetailProps {
   className?: string;
@@ -23,23 +24,12 @@ interface GalleryDetailProps {
 const UnstyledGalleryDetail: FunctionComponent<GalleryDetailProps> = ({
   className,
 }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [clickedIndex, setClickedIndex] = useState(0);
 
   const location = useLocation();
   const data = location.state as { gallery: Gallery };
   const gallery: Gallery = data.gallery;
   const galleryImages: GalleryImage[] = data.gallery.galleryImages!;
-
-  useEffect(() => {
-    // Use interval to make automatic slides.
-    if (gallery && galleryImages.length > 0) {
-      const len = galleryImages.length - 1;
-      const interval = setInterval(() => {
-        setActiveIndex(activeIndex === len ? 0 : activeIndex + 1);
-      }, 4000);
-      return () => clearInterval(interval);
-    }
-  }, [activeIndex]);
 
   const thumbnailSetting = useMemo<Settings>(
     () => ({
@@ -49,7 +39,8 @@ const UnstyledGalleryDetail: FunctionComponent<GalleryDetailProps> = ({
       slidesToScroll: 6,
       autoplay: false,
       infinite: false,
-    }),[]
+    }),
+    []
   );
 
   if (!gallery) {
@@ -75,34 +66,19 @@ const UnstyledGalleryDetail: FunctionComponent<GalleryDetailProps> = ({
         <HorizontalDivider />
       </Box>
 
-      <Box className="slider-container">
-        {map(galleryImages, (image, index) => (
-          <Box
-          key={index}
-          className={
-            /* Use css to choose whether to show the image or not */
-            index === activeIndex
-                ? 'active default-slides'
-                : 'inactive default-slides'
-            }
-          >
-            <img
-              src={image.imageURL}
-              alt={`${image.imageURL}-${image.id}`}
-              className="slider-image"
-            />
-          </Box>
-        ))}
-      </Box>
-
-      <Box className="slide-pagination">
-        <Typography variant="subtitle1" component="div">
-          {activeIndex + 1} / {galleryImages.length}
-        </Typography>
-      </Box>
+      <AutoSlide
+        className="slider-container"
+        galleryImages={galleryImages}
+        intervalTime={4000}
+        activeThumbnail={true}
+        clickedIndex={clickedIndex}
+      />
 
       <Box display="flex" justifyContent="center" height="20rem">
-        <ChevronLeftIcon className="chevron-left" />
+        {galleryImages.length > 6 && (
+          <ChevronLeftIcon className="chevron-left" />
+        )}
+
         <Slick
           {...thumbnailSetting}
           className={
@@ -117,12 +93,15 @@ const UnstyledGalleryDetail: FunctionComponent<GalleryDetailProps> = ({
               <img
                 src={img.imageURL}
                 alt={img.id}
-                onClick={() => setActiveIndex(index)}
+                onClick={() => setClickedIndex(index)}
               />
             </Box>
           ))}
         </Slick>
-        <ChevronRightIcon className="chevron-right" />
+
+        {galleryImages.length > 6 && (
+          <ChevronRightIcon className="chevron-right" />
+        )}
       </Box>
     </Box>
   );
@@ -175,6 +154,11 @@ export const GalleryDetail = withTheme(styled(UnstyledGalleryDetail)`
     width: 70rem;
     height: 755px;
     justify-content: center;
+
+    .slider-image {
+      height: inherit;
+      min-width: 55rem;
+    }
   }
 
   .active {
@@ -185,9 +169,11 @@ export const GalleryDetail = withTheme(styled(UnstyledGalleryDetail)`
     display: none;
   }
 
-  .slider-image {
-    height: inherit;
-    min-width: 55rem;
+  .slide-pagination {
+    width: 68.5rem;
+    display: flex;
+    justify-content: flex-end;
+    margin-left: 44.5rem;
   }
 
   .thumbnail-container {
@@ -217,17 +203,6 @@ export const GalleryDetail = withTheme(styled(UnstyledGalleryDetail)`
     }
   }
 
-  .slide-pagination {
-    width: 70rem;
-    display: flex;
-    justify-content: flex-end;
-    margin-left: 44.5rem;
-  }
-
-  .slick-list {
-    width: 100%;
-  }
-
   .custom-thumb-container {
     .slick-slide {
       width: auto !important;
@@ -239,6 +214,10 @@ export const GalleryDetail = withTheme(styled(UnstyledGalleryDetail)`
       align-items: center;
       width: auto !important;
     }
+  }
+
+  .slick-list {
+    width: 100%;
   }
 
   .chevron-left {

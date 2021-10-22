@@ -112,6 +112,7 @@ export const GalleryCard = withTheme(styled(UnstyledGalleryCard)`
 
   .card-content {
     background: #ffffff;
+    border-radius: 0 0 10px 10px;
   }
 
   .desc-h5 {

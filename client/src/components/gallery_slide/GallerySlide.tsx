@@ -1,5 +1,5 @@
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import React, {
   FunctionComponent,
   useState,
@@ -13,9 +13,9 @@ import Typography from '@material-ui/core/Typography';
 import CheckCircleOutline from '@material-ui/icons/CheckCircleOutline';
 import map from 'lodash/map';
 
-import { Gallery, GalleryImage } from '../../types/gallery';
-import { AutoSlick } from '../autoSlick/AutoSlick';
+import { Gallery } from '../../types/gallery';
 import { ViewerContext } from '../../context/homeViewer';
+import { AutoSlide } from '../autoSlide/AutoSlide';
 
 interface GallerySlideProps {
   className?: string;
@@ -35,12 +35,11 @@ const UnstyledGallerySlide: FunctionComponent<GallerySlideProps> = ({
   useEffect(() => {
     if (viewer?.galleries && !showGallery) {
       setShowGallery(viewer.galleries[0]);
-      console.warn(viewer.galleries)
     }
-  })
+  });
 
   if (!viewer?.galleries || !showGallery) {
-    return <div>loading...</div>
+    return <div>loading...</div>;
   }
 
   return (
@@ -77,16 +76,11 @@ const UnstyledGallerySlide: FunctionComponent<GallerySlideProps> = ({
         </Box>
       </Box>
 
-      <AutoSlick arrow={false}>
-        {showGallery?.galleryImages?.map((image: GalleryImage) => (
-          <Box className="slider-item" key={image.id}>
-            <img
-              src={image.imageURL}
-              alt={`${showGallery.title}_${image.id}`}
-            />
-          </Box>
-        ))}
-      </AutoSlick>
+      <AutoSlide
+        className="slider-item"
+        galleryImages={showGallery.galleryImages}
+        intervalTime={4000}
+      />
     </Box>
   );
 };
@@ -142,14 +136,6 @@ export const GallerySlide = withTheme(styled(UnstyledGallerySlide)`
     transition-timing-function: ease-out;
   }
 
-  .slider-item {
-    width: 100%;
-    img {
-      width: 100%;
-      height: 441px;
-    }
-  }
-
   .thumbnail {
     width: 15%;
     cursor: pointer;
@@ -180,5 +166,29 @@ export const GallerySlide = withTheme(styled(UnstyledGallerySlide)`
     color: rgb(104 195 36);
     position: absolute;
     opacity: 0;
+  }
+
+  .slider-item {
+    width: 100%;
+  }
+
+  .default-slides {
+    display: falex;
+    width: 100%;
+    height: 441px;
+    justify-content: center;
+
+    .slider-image {
+      height: inherit;
+      width: inherit;
+    }
+  }
+
+  .active {
+    display: flex;
+  }
+
+  .inactive {
+    display: none;
   }
 `);

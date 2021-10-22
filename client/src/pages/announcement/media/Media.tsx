@@ -14,6 +14,7 @@ import { Gallery } from '../../../types/gallery';
 import { parseError } from '../../../graphql/client';
 import { GalleryCard } from '../../../components/gallery_card/GalleryCard';
 import AboutBanner from '../../../assets/about.png';
+import { Pagination } from '../../../components/pagination/Pagination'
 
 interface GalleryProps {
   className?: string;
@@ -26,6 +27,8 @@ const UnstyledMedia: FunctionComponent<GalleryProps> = ({ className }) => {
   const [galleries, setGalleries] = useState<Gallery[]>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(12);
 
   // Get Galleries data
   const galleriesQuery = useQuery<GalleryQueryData>(GET_GALLERIES);
@@ -44,6 +47,10 @@ const UnstyledMedia: FunctionComponent<GalleryProps> = ({ className }) => {
     }
   }, [galleriesQuery, loading, error]);
 
+  const handlePageChange = async (page: number) => {
+    setPage(page - 1);
+  };
+
   if (!galleries) {
     return <div>loading...</div>;
   }
@@ -59,14 +66,29 @@ const UnstyledMedia: FunctionComponent<GalleryProps> = ({ className }) => {
           Gallery
         </Typography>
       </Box>
-
       <Box className="init-gallery-page">
         <Box className="gallery-page" mt={3}>
-          {map(galleries, (gallery) => (
-            <GalleryCard className="gallery-card" gallery={gallery} />
-          ))}
+          {map(
+            galleries.slice(
+              page * rowsPerPage,
+              page * rowsPerPage + rowsPerPage
+            ),
+            (gallery) => (
+              <GalleryCard className="gallery-card" gallery={gallery} />
+            )
+          )}
         </Box>
       </Box>
+
+      <Pagination
+        className="pagination"
+        activePage={page + 1}
+        rowsPerPage={rowsPerPage}
+        onChange={(page: number) => {
+          handlePageChange(page);
+        }}
+        imageLength={galleries.length}
+      />
     </Box>
   );
 };
@@ -88,7 +110,7 @@ export const Media = withTheme(styled(UnstyledMedia)`
   .init-gallery-page {
     display: flex;
     justify-content: center;
-    height: 86rem;
+    height: fit-content;
   }
 
   .gallery-page {
@@ -106,5 +128,14 @@ export const Media = withTheme(styled(UnstyledMedia)`
     width: 20rem;
     height: 400px;
     margin: 0.6rem;
+  }
+
+  .pagination {
+    margin-top: 120px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
   }
 `);

@@ -96,19 +96,6 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
   else {
     return <div>loading...</div>
   }
-  // else if (!galleries) {
-  //   return (
-  //     <AddGalleryModal
-  //       className={className}
-  //       open={true}
-  //       onClose={() => setOpenModal(false)}
-  //       onAdd={(newGallery: GalleryInput) => {
-  //         createGallery(newGallery);
-  //       }}
-  //       showOnHomePageCount={showOnHomePageCount.current}
-  //     />
-  //   );
-  // }
 
   return (
     <>
@@ -141,7 +128,7 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
           data={galleries}
           onRowClick={(evt, data) => {
             if (data?.id) {
-              history.push(`/admin]/gallery/${data.id}`);
+              history.push(`/admin/gallery/${data.id}`);
             }
           }}
           options={{
