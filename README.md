@@ -4,7 +4,7 @@ kcsa website
 
 At root, run npm install
 [Global access with npm]
-$ npm install -g
+\$ npm install -g
 
 [exception]
 error msg
@@ -15,16 +15,15 @@ Error : EACCES: permission denied, access '/usr/local/lib/node_modules
 
 Solution : Run with sudo
 
-$ sudo npm install -g
+\$ sudo npm install -g
 
-````
+```
 npm install
-```c
+```
 
 Go into client folder and run npm install
 
-````
-
+```
 cd client
 npm install
 
@@ -49,7 +48,7 @@ DB_USER=kcsa_admin
 DB_PW=kcsa
 DB_HOST=localhost
 
-Ping Stanley to create AWS account for you.
+**Ping Stanley to create AWS account for you.**
 AWS_ACCESS_KEY_ID=YOUR_AWS_ACCESS_KEY_ID
 AWS_SECRET_ACCESS_KEY=YOUR_AWS_SECRET_ACCESS_KEY
 REGION=us-east-2
@@ -59,23 +58,27 @@ TEAM_LOGO_BUCKET=kcsa-team-logo
 
 Run
 `npm run server`
-if you have an error like below
-** Could not establish a connection with redis. Error: Redis connection to localhost:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+
+This will start server and **create, sync models into db**.
+
+If you have an error like below
+
+\*\* Could not establish a connection with redis. Error: Redis connection to localhost:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
 
 Please install redis
 
 cmd :
 
+```
 brew install redis
 brew services start redis
-
-This will start server and client and **create models into db**.
+```
 
 **Note: It is best practice to use migration files to update table definitions.
 As we are in early stage of development + tables are frequently changing,
 we decided to sync the DB by wiping out all tables from db -> run server which triggers Sequelize's sync method to create tables and properties against model definitions.**
 
-Run seed:
+Run data seeder:
 `npx sequelize-cli db:seed:all`
 
 At root, running `npm run dev` will start both the server and client.
@@ -86,18 +89,18 @@ Try running;
 ```
 
 query {
-getUsers {
-name
-}
+   getUsers {
+      name
+   }
 }
 
 OR
 
 mutation {
-createUser(name:"test", password:"1233444", email:"test@test.com", type:"ADMIN") {
-name,
-email,
-}
+   createUser(name:"test", password:"1233444", email:"test@test.com", type:"ADMIN") {
+      name,
+      email,
+   }
 }
 
 ```
@@ -147,6 +150,7 @@ Above will create migration file.
 If you run into issue on address in use;
 `sudo lsof -i :5000`
 Grab PID -> `kill -9 {PID}`
+
 ```
 
 ## TroubleShooting Note
@@ -160,3 +164,4 @@ Grab PID -> `kill -9 {PID}`
 Situation : run 'npm run dev'
 Solution : update typescript plugin
 % npm i --save-dev typescript @typescript-eslint/parser
+```
