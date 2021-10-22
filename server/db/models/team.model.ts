@@ -19,6 +19,8 @@ export class Team extends Model {
   @Column
   name!: string;
 
+  @Column({ field: 'founded_date' }) foundedDate!: string;
+
   @Column({ field: 'team_logo_url' }) teamLogoURL!: string;
 
   @Default(0)

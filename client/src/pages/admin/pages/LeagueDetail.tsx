@@ -1,11 +1,5 @@
-import React, {
-  FunctionComponent,
-  useEffect,
-  useState,
-  useMemo,
-  useCallback,
-} from 'react';
-import { useQuery, useMutation } from '@apollo/client';
+import React, { FunctionComponent, useEffect, useState, useMemo } from 'react';
+import { useQuery } from '@apollo/client';
 import { useParams } from 'react-router';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';

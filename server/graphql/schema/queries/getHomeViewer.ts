@@ -1,10 +1,17 @@
 import { GraphQLNonNull, GraphQLString } from 'graphql';
+import Sequelize from 'sequelize';
+import map from 'lodash/map';
+import groupBy from 'lodash/groupBy';
 
 import { HomeViewerType } from '../../types/homeViewer';
 import { League } from '../../../db/models/league.model';
 import { Team } from '../../../db/models/team.model';
 import { User } from '../../../db/models/user.model';
 import { Announcement } from '../../../db/models/announcement.model';
+import { LeagueTeam } from '../../../db/models/leagueteam.model';
+import { Match } from '../../../db/models/match.model';
+import { LeaguePlayer } from '../../../db/models/leagueplayer.model';
+import { MatchPlayer } from '../../../db/models/matchplayer.model';
 
 /**
  * Get Home page data.
@@ -29,6 +36,36 @@ export const getHomeViewer = {
       limit: 5,
     });
 
-    return { user, announcements };
+    const leagues = await League.findAll({ where: { isActive: true } });
+
+    if (!leagues) {
+      throw Error('League could not be found');
+    }
+
+    // Grab ids of active leagues.
+    const activeLeaugeIds = map(leagues, (league) => league.id);
+
+    const leagueTeams = await LeagueTeam.findAll({
+      include: [
+        LeaguePlayer,
+        {
+          model: Team,
+          as: 'team',
+          required: true,
+        },
+      ],
+      where: {
+        leagueId: activeLeaugeIds,
+      },
+    });
+
+    const activeLeaugeTeamIds = map(leagueTeams, (leagueTeam) => leagueTeam.id);
+
+    const leaguePlayers = await LeaguePlayer.findAll({
+      where: { leagueTeamId: activeLeaugeTeamIds },
+    });
+
+    // Get Matches
+    return { user, announcements, leagues, leagueTeams, leaguePlayers };
   },
 };

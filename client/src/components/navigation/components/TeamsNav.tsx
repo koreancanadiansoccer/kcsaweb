@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Box from '@material-ui/core/Box';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { Link as RouteLink } from 'react-router-dom';
+import map from 'lodash/map';
 
 import { Button } from '../../button/Button';
+import { ViewerContext } from '../../../context/homeViewer';
 
 export const TeamsNav: React.FC = () => {
+  const { viewer } = useContext(ViewerContext);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -38,20 +41,24 @@ export const TeamsNav: React.FC = () => {
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose} component={RouteLink} to="/teams/1">
-          Gunners
-        </MenuItem>
-
-        <MenuItem onClick={handleClose} component={RouteLink} to="/teams/2">
-          Outliers
-        </MenuItem>
-
-        <MenuItem onClick={handleClose} component={RouteLink} to="/teams/3">
-          TFT
-        </MenuItem>
-        <MenuItem onClick={handleClose} component={RouteLink} to="/teams/4">
-          CICC
-        </MenuItem>
+        {map(viewer?.leagueTeamGroupAge, (leagueTeams, key) => {
+          return (
+            <Box key={`team-age-${key}`}>
+              {key}
+              {map(leagueTeams, (leagueTeam) => (
+                <Box key={`team-nav-link-${leagueTeam.name}-${leagueTeam.id}`}>
+                  <MenuItem
+                    onClick={handleClose}
+                    component={RouteLink}
+                    to={`/teams/${leagueTeam.id}`}
+                  >
+                    {leagueTeam.name}
+                  </MenuItem>
+                </Box>
+              ))}
+            </Box>
+          );
+        })}
       </Menu>
     </>
   );

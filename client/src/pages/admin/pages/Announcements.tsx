@@ -20,10 +20,6 @@ import { GET_ANNOUNCEMENTS } from '../../../graphql/announcement/get_announcemen
 import { CreateAnnouncement } from '../../../components/admin_announcement/CreateAnnouncement';
 import { CREATE_ANNOUNCEMENT } from '../../../graphql/announcement/create_announcement.mutation';
 
-interface AnnouncementProps {
-  className?: string;
-}
-
 // left out the content because it was too long
 const tableColumns = [
   { title: 'Title', field: 'title' },
@@ -36,9 +32,7 @@ const tableColumns = [
 /**
  * Announcement page.
  */
-export const Announcements: FunctionComponent<AnnouncementProps> = ({
-  className,
-}) => {
+export const Announcements: FunctionComponent = () => {
   const { url } = useRouteMatch();
 
   const [announcements, setAnnouncements] = useState<Announcement[]>();

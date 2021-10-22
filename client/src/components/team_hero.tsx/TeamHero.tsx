@@ -3,6 +3,7 @@ import { withTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
+import dayjs from 'dayjs';
 
 import LogoGrey from '../../assets/logo_grey.svg';
 
@@ -12,7 +13,6 @@ interface TeamHeroProps {
   name?: string;
   captain?: string;
   foundedDate?: string;
-  mission?: string;
   teamLogo?: string;
 }
 
@@ -24,7 +24,6 @@ const UnstyledTeamHero: FunctionComponent<TeamHeroProps> = ({
   name,
   captain,
   foundedDate,
-  mission,
   teamLogo,
 }) => {
   return (
@@ -59,13 +58,10 @@ const UnstyledTeamHero: FunctionComponent<TeamHeroProps> = ({
 
           <Box mt={1}>
             <Typography variant="h6" className="boldText">
-              Founded Date:{foundedDate}
-            </Typography>
-          </Box>
-
-          <Box mt={1}>
-            <Typography variant="h6" className="boldText">
-              Team&apos;s mission & Vision: {mission}
+              Founded Date:{' '}
+              {foundedDate
+                ? dayjs(foundedDate, 'YYYY-MM').format('MMMM, YYYY')
+                : ' - '}
             </Typography>
           </Box>
         </Box>

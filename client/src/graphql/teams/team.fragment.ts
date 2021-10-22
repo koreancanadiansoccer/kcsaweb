@@ -1,11 +1,13 @@
 import {
   PLAYER_FRAGMENT,
+  LEAGUE_PLAYER_FRAGMENT,
   MATCH_PLAYER_FRAGMENT,
 } from '../players/player.fragment';
 
 export const TEAM_FRAGMENT = `
 id
 name
+foundedDate
 teamLogoURL
 played
 win
@@ -37,7 +39,7 @@ captainId
 leagueId
 teamId
 leaguePlayers{
-  ${PLAYER_FRAGMENT}
+  ${LEAGUE_PLAYER_FRAGMENT}
   createdAt
 }
 createdAt

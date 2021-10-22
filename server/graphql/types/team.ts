@@ -11,6 +11,8 @@ import { DateTime } from './utils/dateType';
 import {
   PlayerType,
   PlayerInputType,
+  LeaguePlayerType,
+  LeaguePlayerInputType,
   MatchPlayerType,
   MatchPlayerInputType,
 } from './player';
@@ -21,6 +23,7 @@ export const TeamType = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLInt },
     name: { type: GraphQLString },
+    foundedDate: { type: GraphQLString },
     teamLogoURL: { type: GraphQLString },
     played: { type: GraphQLInt },
     goalScored: { type: GraphQLInt },
@@ -42,6 +45,7 @@ export const TeamInputType = new GraphQLInputObjectType({
   fields: () => ({
     id: { type: GraphQLInt },
     name: { type: GraphQLString },
+    foundedDate: { type: GraphQLString },
     teamLogoURL: { type: GraphQLString },
     played: { type: GraphQLInt },
     goalScored: { type: GraphQLInt },
@@ -75,7 +79,7 @@ export const LeagueTeamType = new GraphQLObjectType({
     captainId: { type: GraphQLString },
     teamId: { type: GraphQLInt },
     leagueId: { type: GraphQLInt },
-    leaguePlayers: { type: new GraphQLList(PlayerType) },
+    leaguePlayers: { type: new GraphQLList(LeaguePlayerType) },
     createdAt: { type: DateTime },
   }),
 });
@@ -98,7 +102,7 @@ export const LeagueTeamInputType = new GraphQLInputObjectType({
     captainId: { type: GraphQLInt },
     teamId: { type: GraphQLInt },
     leagueId: { type: GraphQLInt },
-    leaguePlayers: { type: new GraphQLList(PlayerInputType) },
+    leaguePlayers: { type: new GraphQLList(LeaguePlayerInputType) },
     createdAt: { type: DateTime },
   }),
 });

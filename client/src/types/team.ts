@@ -4,11 +4,13 @@ export interface TeamInput {
   name: string;
   teamAgeType: string;
   teamColor?: string;
+  foundedDate?: string;
 }
 
 export interface Team {
   id: number;
   name: string;
+  foundedDate: string;
   teamLogoURL?: string;
   teamAgeType: AgeEnums | string;
   teamColor?: string;
