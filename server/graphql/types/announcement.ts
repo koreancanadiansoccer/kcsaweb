@@ -1,10 +1,4 @@
-import {
-  GraphQLInt,
-  GraphQLObjectType,
-  GraphQLString,
-  GraphQLBoolean,
-  GraphQLList,
-} from 'graphql';
+import { GraphQLObjectType, GraphQLString, GraphQLBoolean } from 'graphql';
 
 import { DateTime } from './utils/dateType';
 
