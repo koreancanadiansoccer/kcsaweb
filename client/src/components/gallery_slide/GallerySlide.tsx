@@ -170,6 +170,7 @@ export const GallerySlide = withTheme(styled(UnstyledGallerySlide)`
 
   .slider-item {
     width: 100%;
+    background-color: black;
   }
 
   .default-slides {
@@ -180,7 +181,7 @@ export const GallerySlide = withTheme(styled(UnstyledGallerySlide)`
 
     .slider-image {
       height: inherit;
-      width: inherit;
+      width: auto;
     }
   }
 
