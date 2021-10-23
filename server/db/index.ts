@@ -19,5 +19,5 @@ export const sequelize = new Sequelize({
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
   },
-  logging: true,
+  logging: false,
 });

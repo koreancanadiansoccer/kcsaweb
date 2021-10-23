@@ -1,13 +1,15 @@
 import map from 'lodash/map';
 import Sequelize from 'sequelize';
 
+import { LeagueType } from '../../types/league';
 import { MatchPlayer } from '../../../db/models/matchplayer.model';
 import { LeaguePlayer } from '../../../db/models/leagueplayer.model';
 import { Player } from '../../../db/models/player.model';
 import { LeagueTeam } from '../../../db/models/leagueteam.model';
 import { Team } from '../../../db/models/team.model';
 import { Match, MatchStatus } from '../../../db/models/match.model';
-import { MatchType, MatchTypeInputType } from '../../types/match';
+import { MatchTypeInputType } from '../../types/match';
+import { League } from '../../../db/models/league.model';
 
 /**
  * Update league player data.
@@ -231,9 +233,9 @@ const upsertTeam = async (
 };
 
 export const updateMatch = {
-  type: MatchType,
+  type: LeagueType,
   args: { updateMatch: { type: MatchTypeInputType } },
-  async resolve(parent: object, args: any): Promise<Match> {
+  async resolve(parent: object, args: any): Promise<League> {
     // Update player record.
     const homePlayers = args.updateMatch.homeTeam.matchPlayers;
     const awayPlayers = args.updateMatch.awayTeam.matchPlayers;
@@ -323,42 +325,91 @@ export const updateMatch = {
       where: { id: args.updateMatch.id },
     });
 
-    const updatedMatch = await Match.findOne({
+    const league = await League.findOne({
       include: [
         {
           model: LeagueTeam,
-          as: 'homeTeam',
+          as: 'leagueTeams',
+          required: true,
+          duplicating: false,
           include: [
+            LeaguePlayer,
             {
-              model: MatchPlayer,
-              where: {
-                matchId: args.updateMatch.id,
-                leagueTeamId: args.updateMatch.homeTeam.id,
-              },
+              model: Team,
+              as: 'team',
+              required: false,
             },
           ],
         },
         {
-          model: LeagueTeam,
-          as: 'awayTeam',
+          model: Match,
+          as: 'matches',
+          required: true,
+          duplicating: false,
           include: [
             {
-              model: MatchPlayer,
-              where: {
-                matchId: args.updateMatch.id,
-                leagueTeamId: args.updateMatch.awayTeam.id,
-              },
+              as: 'homeTeam',
+              model: LeagueTeam,
+              required: true,
+              duplicating: false,
+              subQuery: false,
+              include: [
+                MatchPlayer,
+                {
+                  model: Team,
+                  as: 'team',
+                  required: true,
+                },
+              ],
+            },
+            {
+              model: LeagueTeam,
+              as: 'awayTeam',
+              required: true,
+              duplicating: false,
+              include: [
+                MatchPlayer,
+                {
+                  model: Team,
+                  as: 'team',
+                  required: true,
+                },
+              ],
             },
           ],
         },
       ],
-      where: { id: args.updateMatch.id },
+      where: { id: args.updateMatch.leagueId },
+      subQuery: false,
     });
-
-    if (!updatedMatch) {
-      throw Error('Updated Match could not be retrieved');
+    if (!league) {
+      throw Error('League could not be found');
     }
 
-    return updatedMatch;
+    // Get league match players.
+    // Looks like sequelize can't handle deeply nested query with conditions.
+    await Promise.all(
+      map(league.matches, async (match, idx) => {
+        const matchId = match.id;
+        const { id: homeTeamId } = match.homeTeam;
+        const { id: awayTeamId } = match.awayTeam;
+
+        //Find players
+        const homeMatchPlayers = await MatchPlayer.findAll({
+          raw: true,
+          where: { matchId: matchId, leagueTeamId: homeTeamId },
+        });
+
+        const awayMatchPlayers = await MatchPlayer.findAll({
+          raw: true,
+          where: { matchId: matchId, leagueTeamId: awayTeamId },
+        });
+
+        league.matches[idx].homeTeam.matchPlayers = homeMatchPlayers;
+        league.matches[idx].awayTeam.matchPlayers = awayMatchPlayers;
+      })
+    );
+
+    return league;
   },
 };

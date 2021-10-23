@@ -54,6 +54,10 @@ export const LeaguePlayerInputType = new GraphQLInputObjectType({
     id: { type: GraphQLString },
     dob: { type: GraphQLString },
     name: { type: GraphQLString },
+    yellowCard: { type: GraphQLInt },
+    goalScored: { type: GraphQLInt },
+    createdAt: { type: DateTime },
+    leagueTeamId: { type: GraphQLInt },
   }),
 });
 

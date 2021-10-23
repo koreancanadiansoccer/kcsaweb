@@ -5,7 +5,6 @@ import {
   HasMany,
   ForeignKey,
   Default,
-  AllowNull,
   BelongsTo,
 } from 'sequelize-typescript';
 
@@ -19,10 +18,6 @@ import { MatchPlayer } from './matchplayer.model';
 // Team data associated with league.
 @Table({ tableName: 'league_team' })
 export class LeagueTeam extends Model {
-  @AllowNull(false)
-  @Column
-  name!: string;
-
   @Default(0)
   @Column
   played!: number;
@@ -46,11 +41,6 @@ export class LeagueTeam extends Model {
   @Default(0)
   @Column({ field: 'goal_conceded' })
   goalConceded!: number;
-
-  @Column({
-    field: 'team_age_type',
-  })
-  teamAgeType!: string;
 
   @Default(false)
   @Column({ field: 'is_active' })

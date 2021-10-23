@@ -7,6 +7,7 @@ import { LeagueTeam } from '../../../db/models/leagueteam.model';
 import { LeaguePlayer } from '../../../db/models/leagueplayer.model';
 import { MatchPlayer } from '../../../db/models/matchplayer.model';
 import { Match } from '../../../db/models/match.model';
+import { Team } from '../../../db/models/team.model';
 
 /**
  * Get league data.
@@ -17,16 +18,60 @@ export const getLeague = {
   async resolve(parent: object, args: any): Promise<League> {
     const league = await League.findOne({
       include: [
-        { model: LeagueTeam, as: 'leagueTeams', include: [LeaguePlayer] },
+        {
+          model: LeagueTeam,
+          as: 'leagueTeams',
+          required: true,
+          duplicating: false,
+          include: [
+            LeaguePlayer,
+            {
+              model: Team,
+              as: 'team',
+              required: false,
+            },
+          ],
+        },
         {
           model: Match,
+          as: 'matches',
+          required: true,
+          duplicating: false,
           include: [
-            { model: LeagueTeam, as: 'homeTeam' },
-            { model: LeagueTeam, as: 'awayTeam' },
+            {
+              as: 'homeTeam',
+              model: LeagueTeam,
+              required: true,
+              duplicating: false,
+              subQuery: false,
+              include: [
+                MatchPlayer,
+                {
+                  model: Team,
+                  as: 'team',
+                  required: true,
+                },
+              ],
+            },
+            {
+              model: LeagueTeam,
+              as: 'awayTeam',
+              required: true,
+              duplicating: false,
+              include: [
+                MatchPlayer,
+                {
+                  model: Team,
+                  as: 'team',
+                  required: true,
+                },
+              ],
+            },
           ],
         },
       ],
       where: { id: args.id },
+      subQuery: false,
     });
 
     if (!league) {
