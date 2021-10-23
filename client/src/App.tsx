@@ -12,15 +12,15 @@ import { Switch, Route, useLocation } from 'react-router-dom';
 import { Navigation } from './components/navigation/Navigation';
 import { Loader } from './components/loader/Loader';
 import { Home } from './pages/Home';
-import { Admin } from './pages/admin/Admin';
-import { AboutOverview } from './pages/about/AboutOverview';
+import { Admin } from './admin/Admin';
+import { About } from './pages/About';
 import { Announcements } from './pages/announcement/news_notice/Announcement';
 import { League } from './pages/League';
 import { Team } from './pages/Team';
 import { createAppTheme } from './styles/theme';
 import { client } from './graphql/client';
 import { Login } from './pages/Login';
-import { Create } from './pages/create/Create';
+import { Create } from './pages/Create';
 import { Media } from './pages/announcement/media/Media';
 import { GET_HOME_VIEWER } from './graphql/homeViewer';
 import { ViewerContext } from './context/homeViewer';
@@ -107,7 +107,7 @@ const App: FunctionComponent = () => {
             {/* About section */}
             <Route
               path={['/overview', '/president', '/contact']}
-              component={AboutOverview}
+              component={About}
             />
 
             {/* This might be broken into per season */}
