@@ -14,6 +14,7 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import SportsSoccerIcon from '@material-ui/icons/SportsSoccer';
 import GroupIcon from '@material-ui/icons/Group';
 import AnnouncementIcon from '@material-ui/icons/Announcement';
+import CollectionsIcon from '@material-ui/icons/Collections';
 import {
   Switch,
   Route,
@@ -28,6 +29,7 @@ import { Leagues } from './pages/Leagues';
 import { LeagueDetail } from './pages/LeagueDetail';
 import { Teams } from './pages/Teams';
 import { TeamDetail } from './pages/TeamDetail';
+import { Galleries } from "./pages/Gallery";
 
 const drawerWidth = 240;
 
@@ -106,6 +108,14 @@ export const Admin: React.FC = () => {
               <ListItemText primary="Clubs" />
             </ListItem>
 
+            {/* Direct user to /gallery */}
+            <ListItem component={RouteLink} to={`${url}/gallery`} button>
+              <ListItemIcon>
+                <CollectionsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Gallery" />
+            </ListItem>
+
             <ListItem component={RouteLink} to={`${url}/announcement`} button>
               <ListItemIcon>
                 <AnnouncementIcon />
@@ -154,6 +164,10 @@ export const Admin: React.FC = () => {
           {/* Render page for /league/{id} - a page for specific league} */}
           <Route path={`${url}/league/:id`}>
             <LeagueDetail />
+          </Route>
+
+          <Route path={`${url}/gallery`}>
+            <Galleries />
           </Route>
 
           {/* Render page for /teams */}

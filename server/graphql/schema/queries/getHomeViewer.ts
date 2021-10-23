@@ -8,6 +8,8 @@ import { League } from '../../../db/models/league.model';
 import { Team } from '../../../db/models/team.model';
 import { User } from '../../../db/models/user.model';
 import { Announcement } from '../../../db/models/announcement.model';
+import { Gallery } from '../../../db/models/gallery.model';
+import { GalleryImage } from '../../../db/models/galleryimage.model';
 import { LeagueTeam } from '../../../db/models/leagueteam.model';
 import { Match } from '../../../db/models/match.model';
 import { LeaguePlayer } from '../../../db/models/leagueplayer.model';
@@ -34,6 +36,12 @@ export const getHomeViewer = {
       where: { showOnHomepage: true },
       order: [['createdAt', 'DESC']],
       limit: 5,
+    });
+
+    const galleries = await Gallery.findAll({
+      include: [GalleryImage],
+      where: { showOnHomepage: true },
+      order: [['createdAt', 'DESC']],
     });
 
     const leagues = await League.findAll({ where: { isActive: true } });
@@ -66,6 +74,13 @@ export const getHomeViewer = {
     });
 
     // Get Matches
-    return { user, announcements, leagues, leagueTeams, leaguePlayers };
+    return {
+      user,
+      announcements,
+      galleries,
+      leagues,
+      leagueTeams,
+      leaguePlayers,
+    };
   },
 };

@@ -11,7 +11,7 @@ import LogoGrey from '../../assets/logo_grey.svg';
 import { LeagueTable } from '../league_table/LeagueTable';
 import { LeagueSelect } from '../league_select/LeagueSelect';
 import { TableType } from '../../types/table_type';
-import MainContentImg from '../../assets/main_content.png';
+import { GallerySlide } from '../gallery_slide/GallerySlide';
 import { ViewerContext } from '../../context/homeViewer';
 import {
   LeagueTeamHomeViewer,
@@ -21,7 +21,6 @@ import {
 interface HomeContentProps {
   className?: string;
 }
-
 /**
  * Generate standings data.
  */
@@ -156,10 +155,8 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
             ))}
           </Box>
 
-          {/* Main image */}
-          <Box>
-            <img src={MainContentImg} alt="hero-main" className="hero-main" />
-          </Box>
+          {/* Galleries Slide Show */}
+          <GallerySlide />
         </Box>
       </Container>
     </Box>

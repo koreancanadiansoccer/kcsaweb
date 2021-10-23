@@ -14,15 +14,17 @@ import { Loader } from './components/loader/Loader';
 import { Home } from './pages/Home';
 import { Admin } from './pages/admin/Admin';
 import { AboutOverview } from './pages/about/AboutOverview';
-import { Announcements } from './pages/news_notice/Announcement';
+import { Announcements } from './pages/announcement/news_notice/Announcement';
 import { League } from './pages/League';
 import { Team } from './pages/Team';
 import { createAppTheme } from './styles/theme';
 import { client } from './graphql/client';
 import { Login } from './pages/Login';
 import { Create } from './pages/create/Create';
+import { Media } from './pages/announcement/media/Media';
 import { GET_HOME_VIEWER } from './graphql/homeViewer';
 import { ViewerContext } from './context/homeViewer';
+import { GalleryDetail } from './components/gallery_detail/GalleryDetail';
 import {
   HomeViewer,
   LeagueTeamHomeViewer,
@@ -132,6 +134,14 @@ const App: FunctionComponent = () => {
 
             <Route path="/create">
               <Create />
+            </Route>
+
+            <Route exact path="/gallery">
+              <Media />
+            </Route>
+
+            <Route path="/gallery/:id">
+              <GalleryDetail />
             </Route>
           </Switch>
         </ThemeProvider>

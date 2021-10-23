@@ -5,10 +5,10 @@ import { useParams, useHistory } from 'react-router';
 import find from 'lodash/find';
 import { scroller } from 'react-scroll';
 
-import { Table } from '../../components/table/Table';
-import { Announcement } from '../../types/announcement';
-import { GET_ANNOUNCEMENTS } from '../../graphql/announcement/get_announcements.query';
-import { parseError } from '../../graphql/client';
+import { Table } from '../../../components/table/Table';
+import { Announcement } from '../../../types/announcement';
+import { GET_ANNOUNCEMENTS } from '../../../graphql/announcement/get_announcements.query';
+import { parseError } from '../../../graphql/client';
 
 import { AnnouncmentDetail } from './AnnouncmentDetail';
 

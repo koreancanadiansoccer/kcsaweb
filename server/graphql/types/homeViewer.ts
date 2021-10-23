@@ -8,6 +8,7 @@ import {
 
 import { AnnouncementType } from './announcement';
 import { UserType } from './user';
+import { GalleryType } from './gallery';
 import { LeagueType } from './league';
 import { TeamType } from './team';
 import { LeaguePlayerType } from './player';
@@ -46,6 +47,7 @@ export const HomeViewerType = new GraphQLObjectType({
   fields: () => ({
     user: { type: UserType },
     announcements: { type: new GraphQLList(AnnouncementType) },
+    galleries: { type: new GraphQLList(GalleryType) },
     leagues: { type: new GraphQLList(LeagueType) },
     leagueTeams: { type: new GraphQLList(LeagueTeamType) },
     leaguePlayers: { type: new GraphQLList(LeaguePlayerType) },

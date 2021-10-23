@@ -1,5 +1,6 @@
 import { User } from './user';
 import { Announcement } from './announcement';
+import { Gallery } from './gallery';
 import { Team, LeagueTeam } from './team';
 import { LeaguePlayer } from './player';
 
@@ -16,6 +17,7 @@ export interface LeaeguePlayerHomeViewer extends LeaguePlayer {
 export interface HomeViewer {
   user?: User;
   announcements?: Announcement[];
+  galleries?: Gallery[];
   leagueAgeKeys?: string[];
   leagueTeamGroupAge?: { [key: string]: LeagueTeamHomeViewer[] };
   leagueTeams?: LeagueTeamHomeViewer[];
