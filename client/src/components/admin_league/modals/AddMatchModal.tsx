@@ -180,6 +180,7 @@ export const AddMatchModal: FunctionComponent<Pick<
 
           <Select
             options={leagueTeamOptions}
+            // eslint-disable-next-line
             handleChange={(option: any) => {
               setNewMatch({ ...newMatch, homeTeamId: parseInt(option.value) });
             }}
@@ -193,6 +194,7 @@ export const AddMatchModal: FunctionComponent<Pick<
 
           <Select
             options={leagueTeamOptions}
+            // eslint-disable-next-line
             handleChange={(option: any) => {
               setNewMatch({ ...newMatch, awayTeamId: parseInt(option.value) });
             }}

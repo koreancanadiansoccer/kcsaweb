@@ -10,6 +10,7 @@ import Box from '@material-ui/core/Box';
 import DialogActions from '@material-ui/core/DialogActions';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import dayjs from 'dayjs';
 
 import { Modal } from '../modal/Modal';
 import { Input } from '../input/Input';
@@ -36,10 +37,15 @@ export const CreateTeamModal: FunctionComponent<CreateTeamModalProp> = ({
     name: '',
     teamAgeType: '',
     teamColor: '',
+    foundedDate: dayjs().format('YYYY-MM'),
   });
 
   const isValid = useMemo(
-    () => !!newTeam?.name && !!newTeam?.teamAgeType && !!newTeam?.teamColor,
+    () =>
+      !!newTeam?.name &&
+      !!newTeam?.teamAgeType &&
+      !!newTeam?.teamColor &&
+      !!newTeam?.foundedDate,
     [newTeam]
   );
 
@@ -50,6 +56,7 @@ export const CreateTeamModal: FunctionComponent<CreateTeamModalProp> = ({
         name: '',
         teamAgeType: '',
         teamColor: '',
+        foundedDate: dayjs().format('YYYY-MM'),
       }),
     [open]
   );
@@ -67,6 +74,25 @@ export const CreateTeamModal: FunctionComponent<CreateTeamModalProp> = ({
             fullWidth
             onChange={(evt: ChangeEvent<HTMLInputElement>) => {
               setNewTeam({ ...newTeam, name: evt.target.value });
+            }}
+          />
+        </Box>
+
+        <Divider />
+
+        {/* Founded Date */}
+        <Box my={2}>
+          <Typography variant="body1"> Club Founded Date</Typography>
+          <Input
+            id="datetime-local"
+            label="Match Time"
+            value={newTeam?.foundedDate}
+            type="month"
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setNewTeam({ ...newTeam, foundedDate: e.target.value });
+            }}
+            InputLabelProps={{
+              shrink: true,
             }}
           />
         </Box>

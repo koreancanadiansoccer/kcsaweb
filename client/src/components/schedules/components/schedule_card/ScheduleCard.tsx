@@ -1,11 +1,11 @@
-import React, { FunctionComponent } from "react";
-import Box from "@material-ui/core/Box";
-import Paper from "@material-ui/core/Paper";
-import { withTheme } from "@material-ui/core/styles";
-import styled from "styled-components";
-import { motion } from "framer-motion";
+import React, { FunctionComponent } from 'react';
+import Box from '@material-ui/core/Box';
+import Paper from '@material-ui/core/Paper';
+import { withTheme } from '@material-ui/core/styles';
+import styled from 'styled-components';
+import { motion } from 'framer-motion';
 
-import LogoGrey from "../../../../assets/logo_grey.svg";
+import LogoGrey from '../../../../assets/logo_grey.svg';
 
 interface ScheduleCardProps {
   time: string;
@@ -47,11 +47,7 @@ const UnstyledScheduledCard: FunctionComponent<ScheduleCardProps> = ({
               {/* Home team emblem and name */}
               <Box display="flex" flexDirection="column" alignItems="center">
                 <Box minWidth={80} minHeight={40}>
-                  <img
-                    src={homeTeamLogo || LogoGrey}
-                    alt="hero-main"
-                    className="hero-main"
-                  />
+                  <img src={homeTeamLogo || LogoGrey} alt="home team logo" />
                 </Box>
                 <Box>{homeTeam}</Box>
               </Box>
@@ -66,11 +62,7 @@ const UnstyledScheduledCard: FunctionComponent<ScheduleCardProps> = ({
                 ml="auto"
               >
                 <Box minWidth={80} minHeight={40}>
-                  <img
-                    src={awayTeamLogo || LogoGrey}
-                    alt="hero-main"
-                    className="hero-main"
-                  />
+                  <img src={awayTeamLogo || LogoGrey} alt="away team logo" />
                 </Box>
                 <Box>{awayTeam}</Box>
               </Box>

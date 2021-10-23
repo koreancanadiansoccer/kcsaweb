@@ -53,10 +53,11 @@ const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = () => {
 
   const { generateUploadUrls } = useImgUpload();
 
-  const hasNoChanges = useMemo(
-    () => isEqual(team, origTeam) && !file,
-    [team, origTeam, file]
-  );
+  const hasNoChanges = useMemo(() => isEqual(team, origTeam) && !file, [
+    team,
+    origTeam,
+    file,
+  ]);
 
   const [updateTeamMutation] = useMutation<UpdateTeamResult, UpdateTeamInput>(
     UPDATE_TEAM
@@ -129,6 +130,25 @@ const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = () => {
 
       <Divider />
 
+      {/* Founded Date */}
+      <Box my={2}>
+        <Typography variant="body1"> Club Founded Date</Typography>
+        <Input
+          id="datetime-local"
+          label="Match Time"
+          value={team?.foundedDate}
+          type="month"
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            setTeam({ ...team, foundedDate: e.target.value });
+          }}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+      </Box>
+
+      <Divider />
+
       <Box my={2}>
         <Typography variant="body1">Club Age Group</Typography>
 
@@ -144,6 +164,7 @@ const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = () => {
           isClearable
           options={ageOptions}
           createable
+          // eslint-disable-next-line
           handleChange={(option: any) => {
             setTeam({ ...team, teamAgeType: option?.value });
           }}
@@ -162,6 +183,7 @@ const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = () => {
             (colorOption) => colorOption.value === team.teamColor
           )}
           createable
+          // eslint-disable-next-line
           handleChange={(option: any) => {
             setTeam({ ...team, teamColor: option?.value });
           }}

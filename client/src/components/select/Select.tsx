@@ -8,7 +8,6 @@ export type Option = {
   label: string;
   value: string;
 };
-
 interface SelectProps {
   options: Option[];
   handleChange: (

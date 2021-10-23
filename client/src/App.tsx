@@ -1,7 +1,11 @@
-import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
-import includes from "lodash/includes";
-import { ThemeProvider } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import React, { FunctionComponent, useEffect, useMemo, useState } from 'react';
+import includes from 'lodash/includes';
+import groupBy from 'lodash/groupBy';
+import keys from 'lodash/keys';
+import map from 'lodash/map';
+import flatten from 'lodash/flatten';
+import { ThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import { ApolloProvider, useQuery } from '@apollo/client';
 import { Switch, Route, useLocation } from 'react-router-dom';
 
@@ -20,30 +24,67 @@ import { Create } from './pages/create/Create';
 import { Media } from './pages/announcement/media/Media';
 import { GET_HOME_VIEWER } from './graphql/homeViewer';
 import { ViewerContext } from './context/homeViewer';
-import { HomeViewer } from './types/home_viewer';
 import { GalleryDetail } from './components/gallery_detail/GalleryDetail';
+import {
+  HomeViewer,
+  LeagueTeamHomeViewer,
+  LeaeguePlayerHomeViewer,
+} from './types/home_viewer';
 
-//import { ScrollToTop } from './components/about/ScrollToTop';
 const App: FunctionComponent = () => {
   const theme = createAppTheme();
   const { pathname } = useLocation();
   const [viewer, setViewer] = useState<HomeViewer>();
-  const isAdminRoute = useMemo(
-    () => includes(pathname.split('/'), 'admin'),
-    [pathname]
-  );
+  const isAdminRoute = useMemo(() => includes(pathname.split('/'), 'admin'), [
+    pathname,
+  ]);
 
   /**BELOW QUERY IS EXMAPLE TO SHOW CONNETION BETWEEN GQL AND FRONTEND - TODO: REMOVE */
   const { loading, data } = useQuery(GET_HOME_VIEWER, { client: client });
 
   useEffect(() => {
     if (!loading && data) {
-      setViewer(data.getHomeViewer);
+      const homeViewerData = data.getHomeViewer;
+
+      const leagueGroupAge = groupBy(
+        homeViewerData.leagues,
+        (league) => league.leagueAgeType
+      );
+
+      const leagueAgeKeys = keys(leagueGroupAge);
+
+      const leagueTeamGroupAge = (groupBy(
+        homeViewerData.leagueTeams,
+        (leagueTeam) => leagueTeam.teamAgeType
+      ) as unknown) as { [key: string]: LeagueTeamHomeViewer[] };
+
+      const leaguePlayersGroupAge = (groupBy(
+        flatten(
+          map(homeViewerData.leagueTeams, (leagueTeam) =>
+            map(leagueTeam.leaguePlayers, (leaguePlayer) => ({
+              ...leaguePlayer,
+              teamName: leagueTeam.name,
+              teamLogoURL: leagueTeam.team.teamLogoURL,
+              teamAgeType: leagueTeam.teamAgeType,
+            }))
+          )
+        ),
+        (leagueTeamPlayer) => leagueTeamPlayer.teamAgeType
+      ) as unknown) as { [key: string]: LeaeguePlayerHomeViewer[] };
+
+      setViewer({
+        user: homeViewerData.user,
+        announcements: homeViewerData.announcements,
+        leagueAgeKeys: leagueAgeKeys,
+        leagueTeamGroupAge: leagueTeamGroupAge,
+        leagueTeams: homeViewerData.leagueTeams,
+        leaguePlayersGroupAge: leaguePlayersGroupAge,
+      });
     }
   }, [loading, data]);
 
   // TODO: Update to better loader
-  if (loading) return <Loader open={loading} />;
+  if (loading || !viewer) return <Loader open={loading} />;
 
   return (
     <ViewerContext.Provider value={{ viewer, setViewer }}>

@@ -8,7 +8,6 @@ import { Player } from '../../../db/models/player.model';
 import { LeagueTeam } from '../../../db/models/leagueteam.model';
 import { Team } from '../../../db/models/team.model';
 import { Match, MatchStatus } from '../../../db/models/match.model';
-import { MatchType, MatchTypeInputType } from '../../types/match';
 
 const upsertPlayers = async (deletePlayers: MatchPlayer[]) => {
   await Promise.all(

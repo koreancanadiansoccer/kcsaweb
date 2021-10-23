@@ -110,8 +110,12 @@ export const AddLeagueModal: FunctionComponent<AddLeagueModalProp> = ({
               options={ageOptions}
               isClearable
               createable
+              // eslint-disable-next-line
               handleChange={(option: any) => {
-                setNewLeague({ ...newLeague, leagueAgeType: option?.value });
+                setNewLeague({
+                  ...newLeague,
+                  leagueAgeType: option?.value,
+                });
               }}
             />
           </Box>
@@ -133,6 +137,7 @@ export const AddLeagueModal: FunctionComponent<AddLeagueModalProp> = ({
               options={leagueTypeOptions}
               isClearable
               createable
+              //eslint-disable-next-line
               handleChange={(option: any) => {
                 setNewLeague({ ...newLeague, leagueType: option?.value });
               }}

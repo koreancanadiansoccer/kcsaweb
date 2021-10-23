@@ -1,41 +1,37 @@
-import React, { FunctionComponent, useEffect, useMemo } from 'react';
+import React, { FunctionComponent, useMemo, useContext } from 'react';
 import Box from '@material-ui/core/Box';
+import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
 import { withTheme } from '@material-ui/core';
-import { useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import map from 'lodash/map';
 
-import { GET_USERS } from '../../graphql/users/get_users.query';
 import { HorizontalDivider } from '../divider/HorizontalDivider';
 import { TableType } from '../../types/table_type';
-import { AgeEnums } from '../../types/age.enum';
+import { ViewerContext } from '../../context/homeViewer';
 
-import {
-  standingOpen,
-  standingHeader,
-  scorerHeader,
-  scorerOpen,
-  standingSenior,
-  scorerSenior,
-  TableRow,
-} from './sampleData';
+import { standingHeader, scorerHeader, TableRow } from './sampleData';
 
 interface LeagueTableProps {
   title: string;
   tableType: TableType;
-  leagueType: AgeEnums;
+  tableRowData: TableRow[] | null;
+  tableAgeType: string;
   className?: string;
 }
 
 // Simple summary table on home page.
 const UnstyledLeagueTable: FunctionComponent<LeagueTableProps> = ({
   tableType,
-  leagueType,
+  tableRowData,
+  tableAgeType,
   className,
 }) => {
-  /**BELOW QUERY IS EXMAPLE TO SHOW CONNETION BETWEEN GQL AND FRONTEND - TODO: REMOVE */
-  const { loading, data } = useQuery(GET_USERS);
+  const { viewer } = useContext(ViewerContext);
+
+  if (!viewer?.leagueTeamGroupAge) {
+    return <Box>...Loading</Box>;
+  }
 
   // Get table header data based on props.
   const tableHeaderData = useMemo(() => {
@@ -43,24 +39,11 @@ const UnstyledLeagueTable: FunctionComponent<LeagueTableProps> = ({
     return standingHeader;
   }, [tableType]);
 
-  // Get table row data based on props.
-  const tableRowData: TableRow[] = useMemo(() => {
-    if (tableType === TableType.SCORER)
-      return leagueType === AgeEnums.SENIOR ? scorerSenior : scorerOpen;
-    return leagueType === AgeEnums.SENIOR ? standingSenior : standingOpen;
-  }, [tableType, leagueType]);
-
   // Get table tile data based on props.
   const tableTitle = useMemo(() => {
     if (tableType === TableType.SCORER) return 'TOP SCORER';
     return 'TEAM TABLE';
   }, [tableType]);
-
-  useEffect(() => {
-    if (!loading) {
-      console.info('NOT LOADING');
-    }
-  }, [loading, data]);
 
   return (
     <Box className={className}>
@@ -100,35 +83,40 @@ const UnstyledLeagueTable: FunctionComponent<LeagueTableProps> = ({
             </Box>
 
             {/* Row data */}
-            {map(tableRowData, (data, idx) => (
-              <Box
-                display="flex"
-                justifyContent="space-around"
-                key={`table-${idx}`}
-                py={0.75}
-                px={1}
-              >
-                {map(data, (property, key, idx) => {
-                  const isNameField = key === 'name' || key === 'club';
-                  return (
-                    <Box
-                      key={`table-data-${key}-${idx}`}
-                      flex={isNameField ? 4 : 1}
-                      display="flex"
-                      justifyContent="center"
-                      borderColor="grey.200"
-                      border={2}
-                      borderTop={0}
-                      borderLeft={0}
-                      borderRight={0}
-                      py={2}
-                    >
-                      {property}
-                    </Box>
-                  );
-                })}
+            {!tableRowData || tableRowData.length === 0 ? (
+              <Box my={2} textAlign="center">
+                No data
               </Box>
-            ))}
+            ) : (
+              map(tableRowData, (data, dataRowIdx) => (
+                <Box key={`table-${dataRowIdx}`}>
+                  <Box
+                    display="flex"
+                    justifyContent="space-around"
+                    alignItems="center"
+                    py={0.75}
+                    px={1}
+                  >
+                    {map(data, (property, key, idx) => {
+                      const isNameField = key === 'name' || key === 'club';
+
+                      return (
+                        <Box
+                          key={`table-data-${key}-${idx}`}
+                          flex={isNameField ? 4 : 1}
+                          display="flex"
+                          justifyContent="center"
+                          py={2}
+                        >
+                          {property}
+                        </Box>
+                      );
+                    })}
+                  </Box>
+                  <Divider />
+                </Box>
+              ))
+            )}
           </Box>
         </Paper>
       </Box>
@@ -149,5 +137,17 @@ export const LeagueTable = withTheme(styled(UnstyledLeagueTable)`
   }
   .row-content {
     font-size: 0.9167rem;
+  }
+
+  .team-logo {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-evenly;
+
+    img {
+      width: 25px;
+      height: 25px;
+    }
   }
 `);

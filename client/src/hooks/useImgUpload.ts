@@ -17,7 +17,7 @@ export const useImgUpload = (): {
   generateUploadUrls: (
     file: File,
     fileName: string,
-    resourceName: string
+    resourceName: ResourceType
   ) => Promise<string | undefined>;
 } => {
   const [error] = useState('');

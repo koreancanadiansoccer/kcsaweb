@@ -147,7 +147,9 @@ export const AddLeaguePlayersModal: FunctionComponent<AddLeaguePlayersModalProps
   /**
    * Handle option selection change.
    */
+
   const handleChange = useCallback(
+    // eslint-disable-next-line
     async (selectedOption: any) => {
       const origTeamPlayers = teamPlayersQuery.data?.getPlayers;
 

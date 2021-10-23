@@ -175,5 +175,5 @@ const darkenHex = (color: string, amount: number) => {
  * To be used for team hero component.
  * Darken main team color to be used for back gradient.
  */
-export const darkenColor = (color: string): string =>
-  darkenHex(colourNameToHex(color), -90);
+export const darkenColor = (color?: string): string =>
+  darkenHex(colourNameToHex(color || 'black'), -90);

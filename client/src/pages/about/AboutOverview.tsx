@@ -1,4 +1,4 @@
-import React, { FunctionComponent, FormEvent, useRef, useEffect } from 'react';
+import React, { FunctionComponent, useRef, useEffect } from 'react';
 import { withTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -51,6 +51,7 @@ const UnstyledAboutOverview: FunctionComponent<AboutOverviewProps> = ({
     }
   }, [pathname]);
 
+  // eslint-disable-next-line
   const onSubmit = (event: any) => {
     event.preventDefault();
     const data = new FormData(event.target);

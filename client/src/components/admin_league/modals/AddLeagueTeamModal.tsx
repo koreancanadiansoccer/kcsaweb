@@ -66,7 +66,9 @@ export const AddLeagueTeamModal: FunctionComponent<AddLeagueTeamModalProps> = ({
   useEffect(() => setNewTeams([]), [open]);
 
   // Grab original team data when user selects teams.
+
   const handleChange = useCallback(
+    // eslint-disable-next-line
     async (selectedOption: any) => {
       const newTeams = map(selectedOption, (selected) => {
         const newTeam = find(
