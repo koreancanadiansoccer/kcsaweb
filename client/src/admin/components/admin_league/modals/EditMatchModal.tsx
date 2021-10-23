@@ -16,7 +16,7 @@ import { useMutation } from '@apollo/client';
 import dayjs from 'dayjs';
 import forEach from 'lodash/forEach';
 import find from 'lodash/find';
-import findIndex from 'lodash/findIndex';
+import omit from 'lodash/omit';
 import isEqual from 'lodash/isEqual';
 
 import { Modal } from '../../../../components/modal/Modal';
@@ -132,14 +132,15 @@ export const EditMatchModal: FunctionComponent<EditMatchModalProps> = ({
       });
 
       if (res.data?.updateMatch) {
-        const origLeagueMatches = [...origLeague.matches];
-        const updatedMatchIdx = findIndex(
-          origLeagueMatches,
-          (origMatch) => origMatch.id === res.data?.updateMatch.id
-        );
+        setOrigLeague(res.data?.updateMatch);
+        // const origLeagueMatches = [...origLeague.matches];
+        // const updatedMatchIdx = findIndex(
+        //   origLeagueMatches,
+        //   (origMatch) => origMatch.id === res.data?.updateMatch.id
+        // );
 
-        origLeagueMatches[updatedMatchIdx] = res.data?.updateMatch;
-        setOrigLeague({ ...origLeague, matches: origLeagueMatches });
+        // origLeagueMatches[updatedMatchIdx] = res.data?.updateMatch;
+        // setOrigLeague({ ...origLeague, matches: origLeagueMatches });
       }
     } catch (e) {
       console.error(e);
@@ -215,7 +216,7 @@ export const EditMatchModal: FunctionComponent<EditMatchModalProps> = ({
           </Box>
 
           <Typography variant="h6" className="boldText">
-            {match.homeTeam.name}
+            {match.homeTeam.team.name}
           </Typography>
 
           <Box mb={3}>
@@ -289,7 +290,7 @@ export const EditMatchModal: FunctionComponent<EditMatchModalProps> = ({
           </Box>
 
           <Typography variant="h6" className="boldText">
-            {match.awayTeam.name}
+            {match.awayTeam.team.name}
           </Typography>
 
           <Box mb={3}>

@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useCallback,
   useContext,
+  useMemo,
 } from 'react';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
@@ -11,6 +12,7 @@ import Box from '@material-ui/core/Box';
 import AddIcon from '@material-ui/icons/Add';
 import { useQuery, useMutation } from '@apollo/client';
 import { Typography } from '@material-ui/core';
+import map from 'lodash/map';
 
 import { LeagueTeam } from '../../../types/team';
 import {
@@ -60,6 +62,14 @@ const UnstyledLeagueTeams: FunctionComponent = () => {
     origLeague.leagueTeams
   );
 
+  const tableData = useMemo(() => {
+    return map(origLeague.leagueTeams, (leagueTeam) => ({
+      ...leagueTeam,
+      name: leagueTeam.team.name,
+      teamAgeType: leagueTeam.team.teamAgeType,
+    }));
+  }, [origLeague.leagueTeams]);
+
   const [selectedTeam, setSelectedTeam] = useState<LeagueTeam>();
 
   const [loading, setLoading] = useState(false);
@@ -76,6 +86,7 @@ const UnstyledLeagueTeams: FunctionComponent = () => {
     UpdateLeagueResult,
     UpdateLeagueInput
   >(UPDATE_LEAGUE);
+
   useEffect(() => setLeagueTeams(origLeague.leagueTeams), [origLeague]);
 
   /**
@@ -152,7 +163,7 @@ const UnstyledLeagueTeams: FunctionComponent = () => {
         <Table
           title="Clubs registered"
           columns={tableColumns}
-          data={leagueTeams}
+          data={tableData}
           onRowClick={(evt, data) => {
             if (data?.id) {
               setSelectedTeam(data);

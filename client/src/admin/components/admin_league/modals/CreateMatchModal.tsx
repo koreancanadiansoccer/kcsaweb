@@ -102,7 +102,7 @@ export const CreateMatchModal: FunctionComponent<Pick<
   // Generate option list for league Teams.
   const leagueTeamOptions = useMemo(() => {
     return map(origLeague.leagueTeams, (leagueTeam) => ({
-      label: leagueTeam.name,
+      label: leagueTeam.team.name,
       value: leagueTeam.id.toString(),
     }));
   }, [origLeague]);

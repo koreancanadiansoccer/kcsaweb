@@ -46,13 +46,15 @@ export const TeamsNav: React.FC = () => {
             <Box key={`team-age-${key}`}>
               {key}
               {map(leagueTeams, (leagueTeam) => (
-                <Box key={`team-nav-link-${leagueTeam.name}-${leagueTeam.id}`}>
+                <Box
+                  key={`team-nav-link-${leagueTeam.team.name}-${leagueTeam.id}`}
+                >
                   <MenuItem
                     onClick={handleClose}
                     component={RouteLink}
                     to={`/teams/${leagueTeam.id}`}
                   >
-                    {leagueTeam.name}
+                    {leagueTeam.team.name}
                   </MenuItem>
                 </Box>
               ))}

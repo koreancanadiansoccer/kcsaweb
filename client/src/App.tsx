@@ -55,7 +55,7 @@ const App: FunctionComponent = () => {
 
       const leagueTeamGroupAge = (groupBy(
         homeViewerData.leagueTeams,
-        (leagueTeam) => leagueTeam.teamAgeType
+        (leagueTeam) => leagueTeam.team.teamAgeType
       ) as unknown) as { [key: string]: LeagueTeamHomeViewer[] };
 
       const leaguePlayersGroupAge = (groupBy(
@@ -65,7 +65,7 @@ const App: FunctionComponent = () => {
               ...leaguePlayer,
               teamName: leagueTeam.name,
               teamLogoURL: leagueTeam.team.teamLogoURL,
-              teamAgeType: leagueTeam.teamAgeType,
+              teamAgeType: leagueTeam.team.teamAgeType,
             }))
           )
         ),

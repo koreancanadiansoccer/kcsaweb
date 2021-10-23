@@ -26,18 +26,22 @@ players{
 
 export const LEAGUE_TEAM_FRAGMENT = `
 id
-name
 played
 win
 loss
 tie
 goalScored
 goalConceded
-teamAgeType
 isActive
-captainId
 leagueId
 teamId
+team{
+  teamLogoURL
+  name
+  teamColor
+  foundedDate
+  teamAgeType
+}
 leaguePlayers{
   ${LEAGUE_PLAYER_FRAGMENT}
   createdAt
@@ -47,18 +51,22 @@ createdAt
 
 export const MATCH_TEAM_FRAGMENT = `
 id
-name
 played
 win
 loss
 tie
 goalScored
 goalConceded
-teamAgeType
 isActive
 captainId
 leagueId
 teamId
+team {
+  name
+  foundedDate
+  teamAgeType
+  captainId
+}
 matchPlayers{
   ${MATCH_PLAYER_FRAGMENT}
   createdAt

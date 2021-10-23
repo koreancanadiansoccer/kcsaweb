@@ -34,12 +34,6 @@ export const GET_HOME_VIEWER = gql`
       }
       leagueTeams {
         ${LEAGUE_TEAM_FRAGMENT}
-        team{
-          teamLogoURL
-          name
-          teamColor
-          foundedDate
-        }
       }
       leaguePlayers {
         ${LEAGUE_PLAYER_FRAGMENT}

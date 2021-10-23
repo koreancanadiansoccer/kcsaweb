@@ -202,7 +202,7 @@ export const CreateLeaguePlayersModal: FunctionComponent<CreateLeaguePlayersModa
       onClose={onClose}
       fullScreen={fullScreen}
       title={`${
-        selectedTeam?.name || 'Team'
+        selectedTeam?.team.name || 'Team'
       } - List of players in this league.`}
     >
       <Typography variant="body1">Add players from past</Typography>

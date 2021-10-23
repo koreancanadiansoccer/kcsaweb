@@ -34,7 +34,7 @@ const generateStandingData = (leagueTeams: LeagueTeamHomeViewer[]) => {
               src={leagueTeam.team.teamLogoURL || LogoGrey}
               alt="hero-main"
             />
-            <div>{leagueTeam.name}</div>
+            <div>{leagueTeam.team.name}</div>
           </div>
         ),
         played: leagueTeam.played,

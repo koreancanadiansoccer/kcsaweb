@@ -5,6 +5,7 @@ import React, {
   ChangeEvent,
   useCallback,
   useContext,
+  useEffect,
 } from 'react';
 import { useMutation } from '@apollo/client';
 import { withTheme } from '@material-ui/core/styles';
@@ -39,6 +40,10 @@ const UnstyledLeagueGeneral: FunctionComponent = () => {
   );
 
   const [league, setLeague] = useState<League>(origLeague);
+
+  useEffect(() => {
+    setLeague(league);
+  }, [origLeague]);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');

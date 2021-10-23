@@ -26,16 +26,15 @@ export interface Team {
 
 export interface LeagueTeam {
   id: number;
-  name: string;
   played: number;
   win: number;
   loss: number;
   tie: number;
   goalScored: number;
   goalConceded: number;
-  teamAgeType: AgeEnums | string;
   isActive: boolean;
   captainId: string;
+  team: Team;
   teamId: number;
   leagueId: number;
   createdAt: string;
@@ -55,6 +54,7 @@ export interface MatchTeam {
   isActive: boolean;
   captainId: string;
   teamId: number;
+  team: Team;
   leagueId: number;
   createdAt: string;
   matchPlayers: MatchPlayer[];

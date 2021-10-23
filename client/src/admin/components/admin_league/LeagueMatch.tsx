@@ -234,7 +234,7 @@ const UnstyledLeagueMatch: FunctionComponent<LeagueMatchProps> = ({
                           <Box display="flex" my={2}>
                             <Box mr={2} display="flex">
                               <Typography className="boldText">
-                                {match.homeTeam.name}
+                                {match.homeTeam.team.name}
                               </Typography>
 
                               <Box ml={1}>
@@ -248,7 +248,7 @@ const UnstyledLeagueMatch: FunctionComponent<LeagueMatchProps> = ({
                               </Box>
 
                               <Typography className="boldText">
-                                {match.awayTeam.name}
+                                {match.awayTeam.team.name}
                               </Typography>
                             </Box>
                           </Box>
