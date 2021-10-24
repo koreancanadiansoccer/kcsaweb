@@ -66,6 +66,7 @@ team {
   foundedDate
   teamAgeType
   captainId
+  teamLogoURL
 }
 matchPlayers{
   ${MATCH_PLAYER_FRAGMENT}

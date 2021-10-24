@@ -13,10 +13,8 @@ import { LeagueSelect } from '../league_select/LeagueSelect';
 import { TableType } from '../../types/table_type';
 import { GallerySlide } from '../gallery_slide/GallerySlide';
 import { ViewerContext } from '../../context/homeViewer';
-import {
-  LeagueTeamHomeViewer,
-  LeaeguePlayerHomeViewer,
-} from '../../types/home_viewer';
+import { LeaeguePlayerHomeViewer } from '../../types/home_viewer';
+import { LeagueTeam } from '../../types/team';
 
 interface HomeContentProps {
   className?: string;
@@ -24,7 +22,7 @@ interface HomeContentProps {
 /**
  * Generate standings data.
  */
-const generateStandingData = (leagueTeams: LeagueTeamHomeViewer[]) => {
+const generateStandingData = (leagueTeams: LeagueTeam[]) => {
   const orderedData = orderBy(
     map(leagueTeams, (leagueTeam) => {
       return {

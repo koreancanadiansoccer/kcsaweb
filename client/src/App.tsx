@@ -1,9 +1,5 @@
 import React, { FunctionComponent, useEffect, useMemo, useState } from 'react';
 import includes from 'lodash/includes';
-import groupBy from 'lodash/groupBy';
-import keys from 'lodash/keys';
-import map from 'lodash/map';
-import flatten from 'lodash/flatten';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ApolloProvider, useQuery } from '@apollo/client';
@@ -25,11 +21,7 @@ import { Media } from './pages/announcement/media/Media';
 import { GET_HOME_VIEWER } from './graphql/homeViewer';
 import { ViewerContext } from './context/homeViewer';
 import { GalleryDetail } from './components/gallery_detail/GalleryDetail';
-import {
-  HomeViewer,
-  LeagueTeamHomeViewer,
-  LeaeguePlayerHomeViewer,
-} from './types/home_viewer';
+import { HomeViewer, generateLeagueDataByAge } from './types/home_viewer';
 
 const App: FunctionComponent = () => {
   const theme = createAppTheme();
@@ -45,40 +37,22 @@ const App: FunctionComponent = () => {
   useEffect(() => {
     if (!loading && data) {
       const homeViewerData = data.getHomeViewer;
-
-      const leagueGroupAge = groupBy(
-        homeViewerData.leagues,
-        (league) => league.leagueAgeType
-      );
-
-      const leagueAgeKeys = keys(leagueGroupAge);
-
-      const leagueTeamGroupAge = (groupBy(
-        homeViewerData.leagueTeams,
-        (leagueTeam) => leagueTeam.team.teamAgeType
-      ) as unknown) as { [key: string]: LeagueTeamHomeViewer[] };
-
-      const leaguePlayersGroupAge = (groupBy(
-        flatten(
-          map(homeViewerData.leagueTeams, (leagueTeam) =>
-            map(leagueTeam.leaguePlayers, (leaguePlayer) => ({
-              ...leaguePlayer,
-              teamName: leagueTeam.name,
-              teamLogoURL: leagueTeam.team.teamLogoURL,
-              teamAgeType: leagueTeam.team.teamAgeType,
-            }))
-          )
-        ),
-        (leagueTeamPlayer) => leagueTeamPlayer.teamAgeType
-      ) as unknown) as { [key: string]: LeaeguePlayerHomeViewer[] };
+      const {
+        leagueAgeKeys,
+        leagueTeamGroupAge,
+        leaguePlayersGroupAge,
+        matchesByAge,
+        leagueTeams,
+      } = generateLeagueDataByAge(homeViewerData.leagues);
 
       setViewer({
         user: homeViewerData.user,
         announcements: homeViewerData.announcements,
-        leagueAgeKeys: leagueAgeKeys,
-        leagueTeamGroupAge: leagueTeamGroupAge,
-        leagueTeams: homeViewerData.leagueTeams,
-        leaguePlayersGroupAge: leaguePlayersGroupAge,
+        leagueAgeKeys,
+        leagueTeamGroupAge,
+        leaguePlayersGroupAge,
+        matchesByAge,
+        leagueTeams,
       });
     }
   }, [loading, data]);

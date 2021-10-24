@@ -139,7 +139,7 @@ const UnstyledAbout: FunctionComponent<AboutProps> = ({ className }) => {
                   alt="president-pic"
                   className="president-pic"
                 />
-                제 21 - 22대 협회장 . 허 경
+                <Box textAlign="center">제 21 - 22대 협회장. 허 경</Box>
               </Box>
 
               <Box className="president-content" mb={3}>
@@ -314,6 +314,7 @@ export const About = withTheme(styled(UnstyledAbout)`
     height: 396px;
     left: 363px;
     top: 1261px;
+    border-radius: 3rem;
   }
 
   .president-div {

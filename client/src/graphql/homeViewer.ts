@@ -1,8 +1,6 @@
 import { gql } from '@apollo/client';
 
 import { LEAGUE_FRAGMENT } from './league/league.fragment';
-import { LEAGUE_TEAM_FRAGMENT } from './teams/team.fragment';
-import { LEAGUE_PLAYER_FRAGMENT } from './players/player.fragment';
 
 export const GET_HOME_VIEWER = gql`
   query {
@@ -32,13 +30,6 @@ export const GET_HOME_VIEWER = gql`
       leagues {
         ${LEAGUE_FRAGMENT}
       }
-      leagueTeams {
-        ${LEAGUE_TEAM_FRAGMENT}
-      }
-      leaguePlayers {
-        ${LEAGUE_PLAYER_FRAGMENT}
-      }
-
     }
   }
 `;

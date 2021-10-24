@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 import { Match } from '../../types/match';
-import { League, LeagueInput } from '../../types/league';
+import { League } from '../../types/league';
 import { LEAGUE_FRAGMENT } from '../league/league.fragment';
 
 export interface UpdateMatchInput {

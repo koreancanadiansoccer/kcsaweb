@@ -85,11 +85,7 @@ export const CreateMatchModal: FunctionComponent<Pick<
       });
 
       if (res.data?.createMatch) {
-        // TODO: Bug here
-        const origLeagueMatches = [...origLeague.matches];
-        origLeagueMatches.push(res.data.createMatch);
-
-        setOrigLeague({ ...origLeague, matches: origLeagueMatches });
+        setOrigLeague(res.data?.createMatch);
         if (onClose) {
           onClose({}, 'backdropClick');
         }

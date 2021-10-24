@@ -1,4 +1,11 @@
-import React, { FunctionComponent, useState, useRef, useEffect } from 'react';
+import React, {
+  FunctionComponent,
+  useState,
+  useRef,
+  useEffect,
+  useContext,
+  useMemo,
+} from 'react';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
@@ -7,6 +14,7 @@ import map from 'lodash/map';
 import { motion } from 'framer-motion';
 import ScrollContainer from 'react-indiana-drag-scroll';
 
+import { ViewerContext } from '../../context/homeViewer';
 import { LeagueSelect } from '../league_select/LeagueSelect';
 import { AgeEnums } from '../../types/age.enum';
 
@@ -23,15 +31,28 @@ interface SchedulesProps {
 const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
   className,
 }) => {
+  const { viewer } = useContext(ViewerContext);
+  const matches = viewer.matchesByAge;
   const ref = useRef<HTMLElement | null>(null);
-  const [league, setLeague] = useState<AgeEnums>(AgeEnums.OPEN);
+
+  const [leagueAgeType, setLeagueAgeType] = useState(
+    viewer.leagueAgeKeys ? viewer.leagueAgeKeys[0] : 'OPEN'
+  );
+
+  if (!matches) {
+    return <Box>No matches scheduled yet</Box>;
+  }
+
+  const seletedAgeMatches = useMemo(() => matches[leagueAgeType], [
+    leagueAgeType,
+  ]);
 
   // Reset scroll upon league change.
   useEffect(() => {
     if (ref.current) {
       ref.current.scrollLeft = 0;
     }
-  }, [league]);
+  }, [leagueAgeType]);
 
   return (
     <>
@@ -46,17 +67,15 @@ const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
               {/* League selection */}
               <Box>
                 <Box display="flex">
-                  <LeagueSelect
-                    title="OPEN"
-                    selected={league === AgeEnums.OPEN}
-                    onClick={() => setLeague(AgeEnums.OPEN)}
-                  />
-
-                  <LeagueSelect
-                    title="SENIOR"
-                    selected={league === AgeEnums.SENIOR}
-                    onClick={() => setLeague(AgeEnums.SENIOR)}
-                  />
+                  {map(viewer.leagueAgeKeys, (leagueAge) => (
+                    <Box key={`home-league-matches-selection-${leagueAge}`}>
+                      <LeagueSelect
+                        title={leagueAge}
+                        selected={leagueAgeType === leagueAge}
+                        onClick={() => setLeagueAgeType(leagueAge)}
+                      />
+                    </Box>
+                  ))}
                 </Box>
               </Box>
 
@@ -70,8 +89,8 @@ const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
 
           {/* Scrollable schedule section */}
           <ScrollContainer className="schedules-card-container" innerRef={ref}>
-            {league === AgeEnums.OPEN &&
-              map(sampleScheduleDataOpen, (data, idx) => (
+            {map(seletedAgeMatches, (selectedMatch, idx) => (
+              <Box key={`league-match-schedules-${selectedMatch.id}`}>
                 <Box key={`sched-${idx}`} className="scheudle-card">
                   <motion.div
                     initial={{ opacity: 0, x: -50, y: -50 }}
@@ -81,37 +100,15 @@ const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
                     }}
                   >
                     <ScheduleCard
-                      time={data.time}
-                      location={data.location}
-                      homeTeam={data.homeTeam}
-                      homeTeamLogo={data.homeTeamLogo}
-                      awayTeam={data.awayTeam}
-                      awayTeamLogo={data.awayTeamLogo}
+                      date={selectedMatch.date}
+                      location={selectedMatch.location}
+                      homeTeam={selectedMatch.homeTeam}
+                      awayTeam={selectedMatch.awayTeam}
                     />
                   </motion.div>
                 </Box>
-              ))}
-
-            {league === AgeEnums.SENIOR &&
-              map(sampleScheduleDataSenior, (data, idx) => (
-                <Box key={`sched-${idx}`} className="scheudle-card">
-                  <motion.div
-                    initial={{ opacity: 0, x: -50, y: -50 }}
-                    animate={{ opacity: 1, x: 0, y: 0 }}
-                    transition={{
-                      delay: idx * 0.2,
-                    }}
-                  >
-                    <ScheduleCard
-                      time={data.time}
-                      location={data.location}
-                      homeTeamLogo={data.homeTeamLogo}
-                      awayTeam={data.awayTeam}
-                      awayTeamLogo={data.awayTeamLogo}
-                    />
-                  </motion.div>
-                </Box>
-              ))}
+              </Box>
+            ))}
           </ScrollContainer>
         </Box>
       </Box>
