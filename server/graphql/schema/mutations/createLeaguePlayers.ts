@@ -52,6 +52,7 @@ export const createLeaguePlayers = {
       })
     );
 
+    //TODO update match players
     const leaguePlayers = await LeaguePlayer.findAll({
       order: [['createdAt', 'DESC']],
       where: { leagueTeamId: args.leagueTeamId },

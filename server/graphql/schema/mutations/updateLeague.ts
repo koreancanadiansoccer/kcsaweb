@@ -39,7 +39,7 @@ export const updateLeague = {
       await Promise.all(
         map(args.newTeams, async (newTeam) => {
           await LeagueTeam.create({
-            name: newTeam.name,
+            name: 'test',
             teamId: newTeam.id,
             teamAgeType: newTeam.teamAgeType,
             leagueId: args.league.id,
@@ -53,27 +53,23 @@ export const updateLeague = {
         {
           model: LeagueTeam,
           as: 'leagueTeams',
-          required: true,
           duplicating: false,
           include: [
             LeaguePlayer,
             {
               model: Team,
               as: 'team',
-              required: false,
             },
           ],
         },
         {
           model: Match,
           as: 'matches',
-          required: true,
           duplicating: false,
           include: [
             {
               as: 'homeTeam',
               model: LeagueTeam,
-              required: true,
               duplicating: false,
               subQuery: false,
               include: [
@@ -81,21 +77,18 @@ export const updateLeague = {
                 {
                   model: Team,
                   as: 'team',
-                  required: true,
                 },
               ],
             },
             {
               model: LeagueTeam,
               as: 'awayTeam',
-              required: true,
               duplicating: false,
               include: [
                 MatchPlayer,
                 {
                   model: Team,
                   as: 'team',
-                  required: true,
                 },
               ],
             },

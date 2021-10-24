@@ -21,27 +21,23 @@ export const getLeague = {
         {
           model: LeagueTeam,
           as: 'leagueTeams',
-          required: true,
           duplicating: false,
           include: [
             LeaguePlayer,
             {
               model: Team,
               as: 'team',
-              required: false,
             },
           ],
         },
         {
           model: Match,
           as: 'matches',
-          required: true,
           duplicating: false,
           include: [
             {
               as: 'homeTeam',
               model: LeagueTeam,
-              required: true,
               duplicating: false,
               subQuery: false,
               include: [
@@ -49,21 +45,18 @@ export const getLeague = {
                 {
                   model: Team,
                   as: 'team',
-                  required: true,
                 },
               ],
             },
             {
               model: LeagueTeam,
               as: 'awayTeam',
-              required: true,
               duplicating: false,
               include: [
                 MatchPlayer,
                 {
                   model: Team,
                   as: 'team',
-                  required: true,
                 },
               ],
             },
