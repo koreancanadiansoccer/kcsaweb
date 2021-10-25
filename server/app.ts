@@ -15,7 +15,10 @@ const PORT = process.env.PORT || 5000;
 
 (async () => {
   // Sync sequelize.
-  await sequelize.sync();
+  if (process.env.NODE_ENV !== 'production') {
+    console.info('Syncing database');
+    await sequelize.sync();
+  }
 
   const app: Application = express();
 
@@ -30,6 +33,7 @@ const PORT = process.env.PORT || 5000;
   redisClient.on('error', function (err) {
     console.info('Could not establish a connection with redis. ' + err);
   });
+
   redisClient.on('connect', function (err) {
     console.info('Connected to redis successfully');
   });
