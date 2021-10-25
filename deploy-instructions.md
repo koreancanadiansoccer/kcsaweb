@@ -20,6 +20,7 @@
    Current Location of .env file : /home/ubuntu/kcsa-demo/.env
 6. Configure DB info and AWS KEY in .env file
    [format]
+   `
    DB=
    DB_USER=
    DB_PW=
@@ -27,7 +28,7 @@
    
    AWS_ACCESS_KEY_ID=
    AWS_SECRET_ACCESS_KEY=
-   REGION=
+   REGION=`
    
 8. Connect to it and create your app's schema
 
@@ -43,7 +44,7 @@
 1. Install nginx; `sudo apt install nginx`
 2. Update EC2 security group - Inbound rules to allow HTTP connection from anywhere.
 3. Create folder for nginx `sudo mkdir /var/www/kcsa-demo`, `sudo chown -R $USER:$USER /var/www/kcsa-demo`
-4. Copy files from client's build folder `cp -r build/* /var/www/kcsa-demo`
+4. Copy files from client's build folder `cp -r /home/ubuntu/kcsa-demo/client/build/* /var/www/kcsa-demo`
 5. Update nginx config to server files from `kcsa-demo` folder:
 6. `cd /etc/nginx/sites-available` -> `sudo vim default`
 7. find `root /var/www/html;`, change to `root /var/www/kcsa-demo`
