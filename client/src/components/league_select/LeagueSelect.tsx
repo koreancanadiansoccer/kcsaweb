@@ -1,7 +1,7 @@
-import React, { FunctionComponent } from "react";
-import { withTheme } from "@material-ui/core/styles";
-import styled from "styled-components";
-import Box from "@material-ui/core/Box";
+import React, { FunctionComponent } from 'react';
+import { withTheme } from '@material-ui/core/styles';
+import styled from 'styled-components';
+import Box from '@material-ui/core/Box';
 
 interface LeagueSelectProps {
   className?: string;
@@ -37,6 +37,8 @@ export const LeagueSelect = withTheme(styled(UnstyledLeagueSelect)`
   font-weight: 700;
   cursor: pointer;
 
+  color: ${({ theme, selected }) =>
+    selected ? theme.palette.primary.main : 'rgba(39, 69, 85, 0.3)'};
   .hl {
     height: 4px;
     position: absolute;
