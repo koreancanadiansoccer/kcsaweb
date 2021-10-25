@@ -15,6 +15,12 @@
 3. Set up inbound rules - Type = PostgreSQL, Source=Anywhere
 4. Connect to it and create your app's schema
 
+## Running server;
+
+1. We don't need to 'watch' the files changing on prod.
+2. run: `npm install -g ts-node typescript '@types/node'`
+3. run: `ts-node server/app.ts`
+
 ## Set up nginx
 
 1. Install nginx

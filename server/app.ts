@@ -14,6 +14,7 @@ const SECRET = 'KCSA_SECRET_WEB';
 const PORT = process.env.PORT || 5000;
 
 (async () => {
+  console.info('Init server');
   // Sync sequelize.
   if (process.env.NODE_ENV !== 'production') {
     console.info('Syncing database');
