@@ -18,6 +18,8 @@ const PORT = process.env.PORT || 5000;
   if (process.env.NODE_ENV !== 'production') {
     console.info('Syncing database');
     await sequelize.sync();
+  } else {
+    console.info('Prod - Not Syncing database');
   }
 
   const app: Application = express();
