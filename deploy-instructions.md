@@ -12,7 +12,8 @@
 
 1. Launch an RDS instance https://stackoverflow.com/questions/51014647/aws-postgres-db-does-not-exist-when-connecting-with-pg must setup initial db name otherwise it will default to 'postres'
 2. Set up a user and password for the server to access it
-![image](https://user-images.githubusercontent.com/89957153/138700005-81871201-4167-484f-b7c1-1a31bd2962ac.png)
+3. ![image](https://user-images.githubusercontent.com/89957153/138700005-81871201-4167-484f-b7c1-1a31bd2962ac.png)
+
 
 4. Set up inbound rules - Type = PostgreSQL, Source=Anywhere
 5. Create .env file in root folder - EC2 instance  
