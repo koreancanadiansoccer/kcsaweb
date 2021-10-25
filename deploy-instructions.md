@@ -20,15 +20,14 @@
    Current Location of .env file : /home/ubuntu/kcsa-demo/.env
 6. Configure DB info and AWS KEY in .env file
    [format]
-   `
-   DB=
-   DB_USER=
-   DB_PW=
-   DB_HOST=
+   `DB=""`
+   `DB_USER= `
+   `DB_PW=`
+   `DB_HOST=`
    
-   AWS_ACCESS_KEY_ID=
-   AWS_SECRET_ACCESS_KEY=
-   REGION=`
+   `AWS_ACCESS_KEY_ID=`
+   `AWS_SECRET_ACCESS_KEY=`
+   `REGION=`
    
 8. Connect to it and create your app's schema
 
