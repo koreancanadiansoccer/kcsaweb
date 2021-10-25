@@ -63,5 +63,6 @@ location /graphql {
 1. disabling sequelize.sync() on prod to minimize init -> Is it necessary?
 1. We should run sequelize migration script in CD process.
 1. ts-node seems to hang?
+2. Is there any reasons to separate security group?
 
 ## Done
