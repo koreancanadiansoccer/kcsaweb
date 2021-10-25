@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import Divider from '@material-ui/core/Divider';
 import Box from '@material-ui/core/Box';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
@@ -44,7 +45,14 @@ export const TeamsNav: React.FC = () => {
         {map(viewer?.leagueTeamGroupAge, (leagueTeams, key) => {
           return (
             <Box key={`team-age-${key}`}>
-              {key}
+              <Divider />
+
+              <Box textAlign="center" className="boldText">
+                {key}
+              </Box>
+
+              <Divider />
+
               {map(leagueTeams, (leagueTeam) => (
                 <Box
                   key={`team-nav-link-${leagueTeam.team.name}-${leagueTeam.id}`}
@@ -54,7 +62,7 @@ export const TeamsNav: React.FC = () => {
                     component={RouteLink}
                     to={`/teams/${leagueTeam.id}`}
                   >
-                    {leagueTeam.team.name}
+                    <Box textAlign="center"> {leagueTeam.team.name}</Box>
                   </MenuItem>
                 </Box>
               ))}
