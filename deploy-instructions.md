@@ -12,8 +12,23 @@
 
 1. Launch an RDS instance https://stackoverflow.com/questions/51014647/aws-postgres-db-does-not-exist-when-connecting-with-pg must setup initial db name otherwise it will default to 'postres'
 2. Set up a user and password for the server to access it
-3. Set up inbound rules - Type = PostgreSQL, Source=Anywhere
-4. Connect to it and create your app's schema
+![image](https://user-images.githubusercontent.com/89957153/138700005-81871201-4167-484f-b7c1-1a31bd2962ac.png)
+
+4. Set up inbound rules - Type = PostgreSQL, Source=Anywhere
+5. Create .env file in root folder - EC2 instance  
+   Current Location of .env file : /home/ubuntu/kcsa-demo/.env
+6. Configure DB info and AWS KEY in .env file
+   [format]
+   DB=
+   DB_USER=
+   DB_PW=
+   DB_HOST=
+   
+   AWS_ACCESS_KEY_ID=
+   AWS_SECRET_ACCESS_KEY=
+   REGION=
+   
+8. Connect to it and create your app's schema
 
 ## Running server;
 
