@@ -42,22 +42,22 @@ location /graphql {
 
 10. Restart nginx by; `sudo systemctl restart nginx`
 
-# Run serer;
+# Run server(without pm2);
 
-1. TODO: We need to minimie memory usage on ts-node: https://dev.to/aspecto/how-to-reduce-ram-consumption-by-6x-when-using-ts-node-4d8p, https://pm2.keymetrics.io/docs/tutorials/using-transpilers-with-pm2
+
 2. Run `ts-node server/app.ts`
 
-## TODO: Set up pm2
+## Set up pm2
 
 1. Install pm2 `sudo npm install -g pm2`
 1. Install typescript; `sudo pm2 install typescript`
-1. Install type config: `sudo pm2 install @types/node`
 1. run `pm2 start server/app.ts --name 'server'`
 1. To stop; `pm2 stop server`
 1. To delete: `pm2 delete server`
 
 ## TODO:
 
+1. We need to minimize memory usage on ts-node and pm2 inits: https://dev.to/aspecto/how-to-reduce-ram-consumption-by-6x-when-using-ts-node-4d8p, https://pm2.keymetrics.io/docs/tutorials/using-transpilers-with-pm2
 1. Why are all commands taking freakishly slow?????
 1. Build frontend build files on server `cd client` -> run `npm run build` -> currently it takes crazy long - is there way to minimize this?
 1. disabling sequelize.sync() on prod to minimize init -> Is it necessary?
