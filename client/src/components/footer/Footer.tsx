@@ -27,6 +27,7 @@ const UnstyledNavigation: FunctionComponent<FooterProps> = ({ className }) => {
                 className="color-logo-pic"
               />
             </Box>
+            <Box borderLeft={1} borderColor="#ffffff" ml={11} mt={12}></Box>
             <Box>
               <Box className="contact-title" mt={12} ml={10}>
                 Contact
@@ -63,6 +64,11 @@ export const Footer = withTheme(styled(UnstyledNavigation)`
     height: 130px;
   }
 
+  .separate-line {
+    background-color: #ffffff;
+    width: 14.75rem;
+    height: 0rem;
+  }
   .contact-title {
     font-weight: bold;
     font-size: 0.938rem;
