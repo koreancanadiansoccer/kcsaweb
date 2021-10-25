@@ -17,15 +17,31 @@
 
 ## Running server;
 
+1. Install redis `sudo apt-get install redis-server`
 1. We don't need to 'watch' the files changing on prod.
-2. run: `npm install -g ts-node typescript '@types/node'`
-3. run: `ts-node server/app.ts`
+1. run: `sudo npm install -g ts-node typescript '@types/node'`
+1. run: `ts-node server/app.ts`
 
 ## Set up nginx
 
-1. Install nginx
-2. Update server blocks and map / to client and /graphql to server
-3. Build client files and copy them to where nginx is serving from
+1. Install nginx; `sudo apt install nginx`
+2. Update EC2 security group - Inbound rules to allow HTTP connection from anywhere.
+3. Create folder for nginx `sudo mkdir /var/www/kcsa-demo`, `sudo chown -R $USER:$USER /var/www/kcsa-demo`
+4. Copy files from client's build folder `cp -r build/* /var/www/kcsa-demo`
+5. Update nginx config to server files from `kcsa-demo` folder:
+6. `cd /etc/nginx/sites-available` -> `vim default`
+7. find `root /var/www/html;`, change to `root /var/www/kcsa-demo`
+8. under `location /{}` -> change `try_files $uri $uri/ = 404` to `try_files $uri /index.html;`
+9. Setup backend proxy: Add following
+
+```
+location /graphql {
+ proxy_pass http://localhost:5000/;
+}
+```
+
+10. Restart nginx by; `sudo systemctl restart`
+11. Build client: 'cd' into client folder and run `npm run build` -> creates `build` folder
 
 ## Set up pm2
 
