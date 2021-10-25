@@ -6,6 +6,7 @@ import { ApolloProvider, useQuery } from '@apollo/client';
 import { Switch, Route, useLocation } from 'react-router-dom';
 
 import { Navigation } from './components/navigation/Navigation';
+import { Footer } from './components/footer/Footer';
 import { Loader } from './components/loader/Loader';
 import { Home } from './pages/Home';
 import { Admin } from './admin/Admin';
@@ -27,9 +28,10 @@ const App: FunctionComponent = () => {
   const theme = createAppTheme();
   const { pathname } = useLocation();
   const [viewer, setViewer] = useState<HomeViewer>();
-  const isAdminRoute = useMemo(() => includes(pathname.split('/'), 'admin'), [
-    pathname,
-  ]);
+  const isAdminRoute = useMemo(
+    () => includes(pathname.split('/'), 'admin'),
+    [pathname]
+  );
 
   /**BELOW QUERY IS EXMAPLE TO SHOW CONNETION BETWEEN GQL AND FRONTEND - TODO: REMOVE */
   const { loading, data } = useQuery(GET_HOME_VIEWER, { client: client });
@@ -120,6 +122,8 @@ const App: FunctionComponent = () => {
               <GalleryDetail />
             </Route>
           </Switch>
+
+          {!isAdminRoute && <Footer />}
         </ThemeProvider>
       </ApolloProvider>
     </ViewerContext.Provider>
