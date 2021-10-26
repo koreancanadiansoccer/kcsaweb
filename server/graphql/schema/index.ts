@@ -29,6 +29,9 @@ import { createAnnouncement } from './mutations/createAnnouncement';
 import { createMatch } from './mutations/createMatch';
 import { updateMatch } from './mutations/updateMatch';
 import { deleteMatch } from './mutations/deleteMatch';
+import { updateGallery } from './mutations/updateGallery';
+import { updateAnnouncement } from './mutations/updateAnnouncement';
+
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -66,6 +69,8 @@ const Mutation = new GraphQLObjectType({
     createMatch,
     updateMatch,
     deleteMatch,
+    updateGallery,
+    updateAnnouncement
   },
 });
 
