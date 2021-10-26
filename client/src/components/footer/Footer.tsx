@@ -54,9 +54,9 @@ const UnstyledNavigation: FunctionComponent<FooterProps> = ({ className }) => {
 };
 
 export const Footer = withTheme(styled(UnstyledNavigation)`
+  color: white;
   .footer-container {
     background-color: #1c1c1c;
-    background-size: 100% 100%;
     height: 24.375rem;
   }
   .color-logo-pic {
@@ -73,7 +73,6 @@ export const Footer = withTheme(styled(UnstyledNavigation)`
     font-weight: bold;
     font-size: 0.938rem;
     line-height: 1.099rem;
-    color: #ffffff;
   }
 
   .title-line {
@@ -86,6 +85,5 @@ export const Footer = withTheme(styled(UnstyledNavigation)`
     font-weight: normal;
     font-size: 0.813rem;
     line-height: 0.952rem;
-    color: #ffffff;
   }
 `);
