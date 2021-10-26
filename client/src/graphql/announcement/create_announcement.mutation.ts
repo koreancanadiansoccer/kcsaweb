@@ -18,6 +18,7 @@ export const CREATE_ANNOUNCEMENT = gql`
       imageURL: $imageURL
       showOnHomepage: $showOnHomepage
     ) {
+      id
       title
       subtitle
       content

@@ -1,4 +1,10 @@
-import React, { FunctionComponent, useState, useEffect, useRef } from 'react';
+import React, {
+  FunctionComponent,
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+} from 'react';
 import { withTheme } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import styled from 'styled-components';
@@ -6,25 +12,23 @@ import Box from '@material-ui/core/Box';
 import map from 'lodash/map';
 import { useMutation, useQuery } from '@apollo/client';
 import Typography from '@material-ui/core/Typography';
-import { useHistory } from 'react-router-dom';
+import _ from 'lodash'
 
 import { Button } from '../../components/button/Button';
-import { Table } from '../../components/table/Table';
 import { Gallery, GalleryInput } from '../../types/gallery';
 import { CreateGalleryModal } from '../components/admin_gallery/CreateGallery';
 import { CREATE_GALLERY } from '../../graphql/gallery/create.gallery.mutation';
 import { parseError } from '../../graphql/client';
 import { GET_GALLERIES } from '../../graphql/gallery/get_galleries.query';
+import {
+  UPDATE_GALLERY,
+  UpdateShowGalleryInput,
+  UpdateShowGalleryResult,
+} from '../../graphql/gallery/update_gallery.mutation';
+import { GalleryTable } from '../components/admin_gallery/GalleryTable';
 interface GalleryProps {
   className?: string;
 }
-
-const tableColumns = [
-  { title: 'Title', field: 'title' },
-  { title: 'Description', field: 'description' },
-  { title: 'Show On Homepage', field: 'showOnHomepage' },
-  { title: 'Created', field: 'createdAt' },
-];
 
 /**
  * Main Gallery page.
@@ -33,19 +37,24 @@ const tableColumns = [
 const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [galleries, setGalleries] = useState<Gallery[]>();
-  const showOnHomePageCount = useRef(0);
+  const showOnHomepageCount = useRef(0);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   // Get Galleries data
   const galleriesQuery = useQuery(GET_GALLERIES);
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const history = useHistory();
-
+  // Create Gallery data
   const [createGalleryMut] = useMutation<
     { createGallery: Gallery[] },
     GalleryInput
   >(CREATE_GALLERY);
+
+  // Update Gallery data
+  const [updateGalleryMut] = useMutation<
+    UpdateShowGalleryResult,
+    UpdateShowGalleryInput
+  >(UPDATE_GALLERY);
 
   // Pull gallery data.
   useEffect(() => {
@@ -84,28 +93,47 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
     }
   };
 
+  const updateGallery = useCallback(
+    async (changedGallery: UpdateShowGalleryInput, checked: boolean) => {
+      try {
+        const res = await updateGalleryMut({
+          variables: {
+            id: changedGallery.id,
+            showOnHomepage: checked as boolean,
+          },
+        });
+
+        if (res.data) {
+          setGalleries(res.data.updateGallery);
+        }
+      } catch (e) {
+        setError(parseError(e));
+      }
+    },
+    [updateGalleryMut]
+  );
+
   // Render page and count the number of showOnHomePage when galleries is not undefined
   if (galleries) {
-    showOnHomePageCount.current = 0;
+    showOnHomepageCount.current = 0;
     map(galleries, (gallery) => {
       gallery.showOnHomepage
-        ? (showOnHomePageCount.current += 1)
-        : showOnHomePageCount.current;
+        ? (showOnHomepageCount.current += 1)
+        : showOnHomepageCount.current;
     });
   } else {
     return <div>loading...</div>;
   }
 
   return (
-    <>
+    <div className={className}>
       <CreateGalleryModal
-        className={className}
         open={openModal}
         onClose={() => setOpenModal(false)}
         onAdd={(newGallery: GalleryInput) => {
           createGallery(newGallery);
         }}
-        showOnHomePageCount={showOnHomePageCount.current}
+        showOnHomepageCount={showOnHomepageCount.current}
       />
 
       <Box>
@@ -121,27 +149,27 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
           </Button>
         </Box>
 
-        <Table
-          title="Gallery List"
-          columns={tableColumns}
-          data={galleries}
-          onRowClick={(evt, data) => {
-            if (data?.id) {
-              history.push(`/admin/gallery/${data.id}`);
-            }
-          }}
-          options={{
-            pageSize: 10,
-            rowStyle: (data) => {
-              return data.showOnHomepage
-                ? { background: 'white' }
-                : { background: '#EEEEEE' };
-            },
+        <GalleryTable
+          galleryData={ _.orderBy(galleries, ['showOnHomepage'], ['desc']) }
+          showOnHomepageCount={showOnHomepageCount.current}
+          onChange={(
+            chnagedGallery: UpdateShowGalleryInput,
+            checked: boolean
+          ) => {
+            updateGallery(chnagedGallery, checked);
           }}
         />
       </Box>
-    </>
+    </div>
   );
 };
 
-export const Galleries = withTheme(styled(UnstyledGallery)``);
+export const Galleries = withTheme(styled(UnstyledGallery)`
+  .table-form {
+    margin-left: 2.5rem;
+
+    .MuiIconButton-colorPrimary:hover {
+      color: #f17f42;
+    }
+  }
+`);

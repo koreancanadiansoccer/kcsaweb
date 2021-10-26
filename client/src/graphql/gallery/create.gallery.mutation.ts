@@ -30,6 +30,7 @@ export const CREATE_GALLERY = gql`
       description: $description
       showOnHomepage: $showOnHomepage
     ) {
+      id
       title
       description
       showOnHomepage
