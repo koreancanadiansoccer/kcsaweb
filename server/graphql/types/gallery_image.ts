@@ -15,13 +15,3 @@ export const GalleryImageType = new GraphQLObjectType({
     createdAt: { type: DateTime },
   }),
 });
-
-// Definition of types of 'Gallery' that will be used as input to graphql operation
-export const GalleryImageInputType = new GraphQLInputObjectType({
-  name: 'GalleryImageInput',
-  fields: () => ({
-    id: { type: GraphQLString },
-    imageURL: { type: GraphQLString },
-    createdAt: { type: DateTime },
-  }),
-});

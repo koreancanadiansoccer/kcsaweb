@@ -21,12 +21,3 @@ export const GalleryType = new GraphQLObjectType({
     galleryImages: { type: new GraphQLList(GalleryImageType) },
   }),
 });
-
-// Definition of types of 'Gallery' that will be used as input to graphql operation
-export const ShowGalleryInputType = new GraphQLInputObjectType({
-  name: 'ShowGalleryInput',
-  fields: () => ({
-    id: { type: GraphQLString },
-    showOnHomepage: { type: GraphQLBoolean },
-  }),
-});

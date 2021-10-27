@@ -2,8 +2,8 @@ import React, {
   FunctionComponent,
   useState,
   useEffect,
-  useRef,
   useCallback,
+  useMemo,
 } from 'react';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
@@ -11,7 +11,7 @@ import { useQuery, useMutation } from '@apollo/client';
 import Box from '@material-ui/core/Box';
 import { useRouteMatch, Link as RouteLink } from 'react-router-dom';
 import map from 'lodash/map';
-import _ from 'lodash';
+import orderBy from 'lodash/orderBy';
 
 import { Button } from '../../components/button/Button';
 import { parseError } from '../../graphql/client';
@@ -36,7 +36,6 @@ export const Announcements: FunctionComponent = () => {
   const [buttonClicked, setButtonClicked] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const showOnHomepageCount = useRef(0);
 
   // Get Announcement data.
   const announcementDataQuery = useQuery(GET_ANNOUNCEMENTS);
@@ -114,15 +113,17 @@ export const Announcements: FunctionComponent = () => {
     setButtonClicked(true);
   }, [buttonClicked]);
 
+  // Count the number of showOnHomePage when announcements is changed
+  const showOnHomepageCount = useMemo(() => {
+    let count = 0;
+    map(announcements, (announcement) => {
+      announcement.showOnHomepage ? (count += 1) : count;
+    });
+    return count;
+  }, [announcements]);
+
   if (!announcements) {
     return <div>loading...</div>;
-  } else {
-    showOnHomepageCount.current = 0;
-    map(announcements, (announcement) => {
-      announcement.showOnHomepage
-        ? (showOnHomepageCount.current += 1)
-        : showOnHomepageCount.current;
-    });
   }
 
   return (
@@ -135,7 +136,7 @@ export const Announcements: FunctionComponent = () => {
           setButtonFalse={(buttonClickedStatus: boolean) => {
             setButtonClicked(buttonClickedStatus);
           }}
-          showOnHomepageCount={showOnHomepageCount.current}
+          showOnHomepageCount={showOnHomepageCount}
         />
       ) : (
         <Box>
@@ -154,12 +155,12 @@ export const Announcements: FunctionComponent = () => {
           </Box>
 
           <AnnouncementTable
-            announcementData={_.orderBy(
+            announcementData={orderBy(
               announcements,
               ['showOnHomepage'],
               ['desc']
             )}
-            showOnHomePageCount={showOnHomepageCount.current}
+            showOnHomePageCount={showOnHomepageCount}
             onChange={(
               chnagedAnnouncement: UpdateShowAnnouncementInput,
               checked: boolean

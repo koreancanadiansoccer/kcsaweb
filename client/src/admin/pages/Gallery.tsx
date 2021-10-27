@@ -2,8 +2,8 @@ import React, {
   FunctionComponent,
   useState,
   useEffect,
-  useRef,
   useCallback,
+  useMemo
 } from 'react';
 import { withTheme } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
@@ -12,7 +12,7 @@ import Box from '@material-ui/core/Box';
 import map from 'lodash/map';
 import { useMutation, useQuery } from '@apollo/client';
 import Typography from '@material-ui/core/Typography';
-import _ from 'lodash'
+import orderBy from 'lodash/orderBy';
 
 import { Button } from '../../components/button/Button';
 import { Gallery, GalleryInput } from '../../types/gallery';
@@ -37,7 +37,7 @@ interface GalleryProps {
 const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [galleries, setGalleries] = useState<Gallery[]>();
-  const showOnHomepageCount = useRef(0);
+  // const showOnHomepageCount = useRef(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -113,15 +113,16 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
     [updateGalleryMut]
   );
 
-  // Render page and count the number of showOnHomePage when galleries is not undefined
-  if (galleries) {
-    showOnHomepageCount.current = 0;
+  // Count the number of showOnHomePage when galleries is changed
+  const showOnHomepageCount = useMemo(() => {
+    let count = 0;
     map(galleries, (gallery) => {
-      gallery.showOnHomepage
-        ? (showOnHomepageCount.current += 1)
-        : showOnHomepageCount.current;
+      gallery.showOnHomepage ? (count += 1) : count;
     });
-  } else {
+    return count;
+  }, [galleries]);
+
+  if (!galleries) {
     return <div>loading...</div>;
   }
 
@@ -133,7 +134,7 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
         onAdd={(newGallery: GalleryInput) => {
           createGallery(newGallery);
         }}
-        showOnHomepageCount={showOnHomepageCount.current}
+        showOnHomepageCount={showOnHomepageCount}
       />
 
       <Box>
@@ -150,8 +151,8 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
         </Box>
 
         <GalleryTable
-          galleryData={ _.orderBy(galleries, ['showOnHomepage'], ['desc']) }
-          showOnHomepageCount={showOnHomepageCount.current}
+          galleryData={orderBy(galleries, ['showOnHomepage'], ['desc'])}
+          showOnHomepageCount={showOnHomepageCount}
           onChange={(
             chnagedGallery: UpdateShowGalleryInput,
             checked: boolean
