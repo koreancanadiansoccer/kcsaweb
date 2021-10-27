@@ -12,8 +12,23 @@
 
 1. Launch an RDS instance https://stackoverflow.com/questions/51014647/aws-postgres-db-does-not-exist-when-connecting-with-pg must setup initial db name otherwise it will default to 'postres'
 2. Set up a user and password for the server to access it
-3. Set up inbound rules - Type = PostgreSQL, Source=Anywhere
-4. Connect to it and create your app's schema
+3. ![image](https://user-images.githubusercontent.com/89957153/138700005-81871201-4167-484f-b7c1-1a31bd2962ac.png)
+
+4. Set up inbound rules - Type = PostgreSQL, Source=Anywhere
+5. Create .env file in root folder - EC2 instance  
+   Current Location of .env file : /home/ubuntu/kcsa-demo/.env
+6. Configure DB info and AWS KEY in .env file
+   [format]
+   `DB=""`
+   `DB_USER= `
+   `DB_PW=`
+   `DB_HOST=`
+
+   `AWS_ACCESS_KEY_ID=`
+   `AWS_SECRET_ACCESS_KEY=`
+   `REGION=`
+
+7. Connect to it and create your app's schema
 
 ## Running server;
 
@@ -27,7 +42,7 @@
 1. Install nginx; `sudo apt install nginx`
 2. Update EC2 security group - Inbound rules to allow HTTP connection from anywhere.
 3. Create folder for nginx `sudo mkdir /var/www/kcsa-demo`, `sudo chown -R $USER:$USER /var/www/kcsa-demo`
-4. Copy files from client's build folder `cp -r build/* /var/www/kcsa-demo`
+4. Copy files from client's build folder `cp -r /home/ubuntu/kcsa-demo/client/build/* /var/www/kcsa-demo`
 5. Update nginx config to server files from `kcsa-demo` folder:
 6. `cd /etc/nginx/sites-available` -> `sudo vim default`
 7. find `root /var/www/html;`, change to `root /var/www/kcsa-demo`
@@ -42,12 +57,11 @@ location /graphql {
 
 10. Restart nginx by; `sudo systemctl restart nginx`
 
-# Run serer;
+# Run server(without pm2);
 
-1. TODO: We need to minimie memory usage on ts-node: https://dev.to/aspecto/how-to-reduce-ram-consumption-by-6x-when-using-ts-node-4d8p, https://pm2.keymetrics.io/docs/tutorials/using-transpilers-with-pm2
 2. Run `ts-node server/app.ts`
 
-## TODO: Set up pm2
+## Set up pm2
 
 1. Install pm2 `sudo npm install -g pm2`
 1. Install typescript; `sudo pm2 install typescript`
@@ -58,10 +72,12 @@ location /graphql {
 
 ## TODO:
 
+1. We need to minimize memory usage on ts-node and pm2 inits: https://dev.to/aspecto/how-to-reduce-ram-consumption-by-6x-when-using-ts-node-4d8p, https://pm2.keymetrics.io/docs/tutorials/using-transpilers-with-pm2
 1. Why are all commands taking freakishly slow?????
 1. Build frontend build files on server `cd client` -> run `npm run build` -> currently it takes crazy long - is there way to minimize this?
 1. disabling sequelize.sync() on prod to minimize init -> Is it necessary?
 1. We should run sequelize migration script in CD process.
 1. ts-node seems to hang?
+1. Is there any reasons to separate security groups (launch-wizard-1,default)?
 
 ## Done
