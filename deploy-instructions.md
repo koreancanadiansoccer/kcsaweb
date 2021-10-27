@@ -57,18 +57,14 @@ location /graphql {
 
 10. Restart nginx by; `sudo systemctl restart nginx`
 
-# Run server(without pm2);
-
-2. Run `ts-node server/app.ts`
-
 ## Set up pm2
 
 1. Install pm2 `sudo npm install -g pm2`
 1. Install typescript; `sudo pm2 install typescript`
 1. Install type config: `sudo pm2 install @types/node`
 1. `NODE_OPTIONS=--max_old_space_size=1500 pm2 start ts-node -- -P tsconfig.json ./server/app.ts`
-1. To stop; `pm2 stop server`
-1. To delete: `pm2 delete server`
+1. To stop; `pm2 stop ts-node`
+1. To delete: `pm2 delete ts-node`
 
 ## TODO:
 
