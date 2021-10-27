@@ -1,13 +1,11 @@
 import React, {
   FunctionComponent,
-  useState,
-  useEffect,
+  useMemo,
   ChangeEvent,
 } from 'react';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
-import map from 'lodash/map';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
@@ -32,17 +30,44 @@ const UnstyledAnnouncementTable: FunctionComponent<AnnouncementTableProps> = ({
   showOnHomePageCount,
   onChange,
 }) => {
-  const [announcements, setAnnouncements] = useState<Announcement[]>();
+  const tableColums = [
+    { title: 'Title', field: 'title' },
+    { title: 'Subtitle', field: 'subtitle' },
+    { title: 'Image URL', field: 'imageURL' },
+    { title: 'Created', field: 'createdAt' },
+    {
+      title: 'Show On Homepage (Up to 5)',
+      field: 'showOnHomepage',
+      render: (data: Announcement) => (
+        <FormControlLabel
+          className={
+            data.showOnHomepage
+              ? 'table-form show-main'
+              : 'table-form hide-main'
+          }
+          control={
+            <Checkbox
+              checked={data.showOnHomepage}
+              color="primary"
+              disabled={
+                showOnHomePageCount == 5 && data.showOnHomepage == false
+                  ? true
+                  : false
+              }
+              onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+                void onChange(data, evt.target.checked);
+              }}
+            />
+          }
+          label="Already Selected 5 Announcement"
+        />
+      ),
+    },
+  ];
 
   // Pull announcement data and when announcementData is changed reset announcements state values
-  useEffect(() => {
-    if (announcementData) {
-      setAnnouncements(
-        map(announcementData, (announcement) => {
-          return { ...announcement };
-        })
-      );
-    }
+  const announcements = useMemo(() => {
+    return announcementData;
   }, [announcementData]);
 
   if (!announcements) {
@@ -54,40 +79,7 @@ const UnstyledAnnouncementTable: FunctionComponent<AnnouncementTableProps> = ({
       <Box>
         <Table
           title="Annoucement Info"
-          columns={[
-            { title: 'Title', field: 'title' },
-            { title: 'Subtitle', field: 'subtitle' },
-            { title: 'Image URL', field: 'imageURL' },
-            { title: 'Created', field: 'createdAt' },
-            {
-              title: 'Show On Homepage (Up to 5)',
-              field: 'showOnHomepage',
-              render: (data: Announcement) => (
-                <FormControlLabel
-                  className={
-                    data.showOnHomepage
-                      ? 'table-form show-main'
-                      : 'table-form hide-main'
-                  }
-                  control={
-                    <Checkbox
-                      checked={data.showOnHomepage}
-                      color="primary"
-                      disabled={
-                        showOnHomePageCount == 5 && data.showOnHomepage == false
-                          ? true
-                          : false
-                      }
-                      onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-                        void onChange(data, evt.target.checked);
-                      }}
-                    />
-                  }
-                  label="Already Selected 5 Announcement"
-                />
-              ),
-            },
-          ]}
+          columns={tableColums}
           data={announcements}
           options={{
             pageSize: 10,
