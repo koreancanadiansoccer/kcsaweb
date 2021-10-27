@@ -15,7 +15,7 @@ import { ViewerContext } from '../../context/homeViewer';
 import { AboutNav } from './components/AboutNav';
 import { TeamsNav } from './components/TeamsNav';
 import { AnnouncementNav } from './components/AnnouncementNav';
-
+import { LeagueNav } from './components/LeagueNav'
 interface NavigationProps {
   className?: string;
 }
@@ -48,9 +48,7 @@ const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
 
               <AnnouncementNav />
 
-              <Button component={RouteLink} to="/league">
-                League
-              </Button>
+              <LeagueNav />
 
               <TeamsNav />
 

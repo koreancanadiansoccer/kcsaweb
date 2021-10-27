@@ -43,6 +43,7 @@ const App: FunctionComponent = () => {
         leaguePlayersGroupAge,
         matchesByAge,
         leagueTeams,
+        leagueActive,
       } = generateLeagueDataByAge(homeViewerData.leagues);
 
       setViewer({
@@ -53,6 +54,7 @@ const App: FunctionComponent = () => {
         leaguePlayersGroupAge,
         matchesByAge,
         leagueTeams,
+        leagueActive,
       });
     }
   }, [loading, data]);
@@ -85,7 +87,7 @@ const App: FunctionComponent = () => {
             />
 
             {/* This might be broken into per season */}
-            <Route path="/league">
+            <Route path="/league/:id">
               <League />
             </Route>
 

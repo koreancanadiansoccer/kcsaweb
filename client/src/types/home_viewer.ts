@@ -5,7 +5,7 @@ import forEach from 'lodash/forEach';
 import { User } from './user';
 import { Announcement } from './announcement';
 import { Gallery } from './gallery';
-import { League } from './league';
+import { League, LeagueActive } from './league';
 import { LeagueTeam } from './team';
 import { LeaguePlayer } from './player';
 import { Match } from './match';
@@ -25,6 +25,7 @@ export interface HomeViewer {
   leagueTeams?: LeagueTeam[];
   leaguePlayersGroupAge?: { [key: string]: LeaeguePlayerHomeViewer[] };
   matchesByAge?: { [key: string]: Match[] };
+  leagueActive?: { [key: string]: LeagueActive };
 }
 
 /**
@@ -39,8 +40,14 @@ export const generateLeagueDataByAge = (
   | 'leaguePlayersGroupAge'
   | 'matchesByAge'
   | 'leagueTeams'
+  | 'leagueActive'
 > => {
   const leagueAgeKeys = map(leagues, (league) => league.leagueAgeType);
+
+  const leagueActive: { [key: string]: LeagueActive } = {};
+  forEach(leagues, (league) => {
+    leagueActive[league.leagueAgeType] = {id: league.id, name: league.name}
+  });
 
   /**
    * Get leagueTeams by age
@@ -52,6 +59,7 @@ export const generateLeagueDataByAge = (
   /** leagueTeams by age done. */
 
   const leagueTeams = flatten(map(leagues, (league) => league.leagueTeams));
+
 
   /**
    *  Get leaguePlayers by age
@@ -93,5 +101,6 @@ export const generateLeagueDataByAge = (
     leaguePlayersGroupAge,
     matchesByAge,
     leagueTeams,
+    leagueActive,
   };
 };
