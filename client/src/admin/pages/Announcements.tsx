@@ -10,7 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { useQuery, useMutation } from '@apollo/client';
 import Box from '@material-ui/core/Box';
 import { useRouteMatch, Link as RouteLink } from 'react-router-dom';
-import map from 'lodash/map';
+import forEach from 'lodash/forEach';
 import orderBy from 'lodash/orderBy';
 
 import { Button } from '../../components/button/Button';
@@ -116,9 +116,9 @@ export const Announcements: FunctionComponent = () => {
   // Count the number of showOnHomePage when announcements is changed
   const showOnHomepageCount = useMemo(() => {
     let count = 0;
-    map(announcements, (announcement) => {
-      announcement.showOnHomepage ? (count += 1) : count;
-    });
+    forEach(announcements, (announcement) => {
+      if (announcement.showOnHomepage) count += 1;
+    })
     return count;
   }, [announcements]);
 

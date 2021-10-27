@@ -9,9 +9,9 @@ import { withTheme } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
-import map from 'lodash/map';
 import { useMutation, useQuery } from '@apollo/client';
 import Typography from '@material-ui/core/Typography';
+import forEach from 'lodash/forEach';
 import orderBy from 'lodash/orderBy';
 
 import { Button } from '../../components/button/Button';
@@ -26,6 +26,7 @@ import {
   UpdateShowGalleryResult,
 } from '../../graphql/gallery/update_gallery.mutation';
 import { GalleryTable } from '../components/admin_gallery/GalleryTable';
+
 interface GalleryProps {
   className?: string;
 }
@@ -37,7 +38,6 @@ interface GalleryProps {
 const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [galleries, setGalleries] = useState<Gallery[]>();
-  // const showOnHomepageCount = useRef(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -116,8 +116,8 @@ const UnstyledGallery: FunctionComponent<GalleryProps> = ({ className }) => {
   // Count the number of showOnHomePage when galleries is changed
   const showOnHomepageCount = useMemo(() => {
     let count = 0;
-    map(galleries, (gallery) => {
-      gallery.showOnHomepage ? (count += 1) : count;
+    forEach(galleries, (gallery) => {
+      if (gallery.showOnHomepage) count += 1;
     });
     return count;
   }, [galleries]);

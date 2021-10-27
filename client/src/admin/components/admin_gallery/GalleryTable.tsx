@@ -1,7 +1,6 @@
 import React, {
   FunctionComponent,
   ChangeEvent,
-  useMemo,
 } from 'react';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
@@ -65,12 +64,7 @@ const UnstyledGalleryTable: FunctionComponent<GalleryTableProps> = ({
     },
   ];
 
-  // Pull gallery data and when galleryData is changed reset galleries state values
-  const galleries = useMemo(() => {
-    return galleryData
-  }, [galleryData]);
-
-  if (!galleries) {
+  if (!galleryData) {
     return <div>loading...</div>;
   }
 
@@ -80,7 +74,7 @@ const UnstyledGalleryTable: FunctionComponent<GalleryTableProps> = ({
         <Table
           title="Gallery List"
           columns={tableColumns}
-          data={galleries}
+          data={galleryData}
           options={{
             pageSize: 10,
             rowStyle: (data: Gallery) => {

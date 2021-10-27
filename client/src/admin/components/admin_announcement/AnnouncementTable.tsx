@@ -1,6 +1,5 @@
 import React, {
   FunctionComponent,
-  useMemo,
   ChangeEvent,
 } from 'react';
 import { withTheme } from '@material-ui/core/styles';
@@ -65,12 +64,7 @@ const UnstyledAnnouncementTable: FunctionComponent<AnnouncementTableProps> = ({
     },
   ];
 
-  // Pull announcement data and when announcementData is changed reset announcements state values
-  const announcements = useMemo(() => {
-    return announcementData;
-  }, [announcementData]);
-
-  if (!announcements) {
+  if (!announcementData) {
     return <div>loading...</div>;
   }
 
@@ -80,7 +74,7 @@ const UnstyledAnnouncementTable: FunctionComponent<AnnouncementTableProps> = ({
         <Table
           title="Annoucement Info"
           columns={tableColums}
-          data={announcements}
+          data={announcementData}
           options={{
             pageSize: 10,
             rowStyle: (data: Announcement) => {
