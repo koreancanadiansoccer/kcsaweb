@@ -1,13 +1,11 @@
 import React, {
   FunctionComponent,
-  useState,
-  useEffect,
   ChangeEvent,
+  useMemo,
 } from 'react';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
-import map from 'lodash/map';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
@@ -22,6 +20,7 @@ interface GalleryTableProps {
   onChange: (Gallery: UpdateShowGalleryInput, checked: boolean) => Promise<void>;
 }
 
+
 /**
  * admin Gallery Table.
  * Displays table of all Galleries
@@ -32,17 +31,43 @@ const UnstyledGalleryTable: FunctionComponent<GalleryTableProps> = ({
   showOnHomepageCount,
   onChange,
 }) => {
-  const [galleries, setGalleries] = useState<Gallery[]>();
+  const tableColumns = [
+    { title: 'Title', field: 'title' },
+    { title: 'Description', field: 'description' },
+    { title: 'Created', field: 'createdAt' },
+    {
+      title: 'Show On Homepage (Up to 3)',
+      field: 'showOnHomepage',
+      render: (data: Gallery) => (
+        <FormControlLabel
+          className={
+            data.showOnHomepage
+              ? 'table-form show-main'
+              : 'table-form hide-main'
+          }
+          control={
+            <Checkbox
+              checked={data.showOnHomepage}
+              color="primary"
+              disabled={
+                showOnHomepageCount == 3 && data.showOnHomepage == false
+                  ? true
+                  : false
+              }
+              onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+                void onChange(data, evt.target.checked);
+              }}
+            />
+          }
+          label="Already Selected 3 Galleries"
+        />
+      ),
+    },
+  ];
 
   // Pull gallery data and when galleryData is changed reset galleries state values
-  useEffect(() => {
-    if (galleryData) {
-      setGalleries(
-        map(galleryData, (gallery) => {
-          return { ...gallery };
-        })
-      );
-    }
+  const galleries = useMemo(() => {
+    return galleryData
   }, [galleryData]);
 
   if (!galleries) {
@@ -54,39 +79,7 @@ const UnstyledGalleryTable: FunctionComponent<GalleryTableProps> = ({
       <Box>
         <Table
           title="Gallery List"
-          columns={[
-            { title: 'Title', field: 'title' },
-            { title: 'Description', field: 'description' },
-            { title: 'Created', field: 'createdAt' },
-            {
-              title: 'Show On Homepage (Up to 3)',
-              field: 'showOnHomepage',
-              render: (data: Gallery) => (
-                <FormControlLabel
-                  className={
-                    data.showOnHomepage
-                      ? 'table-form show-main'
-                      : 'table-form hide-main'
-                  }
-                  control={
-                    <Checkbox
-                      checked={data.showOnHomepage}
-                      color="primary"
-                      disabled={
-                        showOnHomepageCount == 3 && data.showOnHomepage == false
-                          ? true
-                          : false
-                      }
-                      onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-                        void onChange(data, evt.target.checked);
-                      }}
-                    />
-                  }
-                  label="Already Selected 3 Galleries"
-                />
-              ),
-            },
-          ]}
+          columns={tableColumns}
           data={galleries}
           options={{
             pageSize: 10,
