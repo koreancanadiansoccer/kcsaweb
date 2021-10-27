@@ -1,6 +1,6 @@
 import { SES } from 'aws-sdk';
 import { SendEmailRequest } from 'aws-sdk/clients/ses';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 
 dotenv.config();
 

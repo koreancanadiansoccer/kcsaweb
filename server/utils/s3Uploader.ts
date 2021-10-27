@@ -1,5 +1,5 @@
 import S3 from 'aws-sdk/clients/s3';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 
 dotenv.config();
 

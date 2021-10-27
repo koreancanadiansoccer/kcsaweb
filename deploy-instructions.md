@@ -52,7 +52,7 @@ location /graphql {
 1. Install pm2 `sudo npm install -g pm2`
 1. Install typescript; `sudo pm2 install typescript`
 1. Install type config: `sudo pm2 install @types/node`
-1. run `pm2 start server/app.ts --name 'server'`
+1. run `NODE_OPTIONS=--max_old_space_size=1500 pm2 start server/app.ts --name 'server'`
 1. To stop; `pm2 stop server`
 1. To delete: `pm2 delete server`
 
