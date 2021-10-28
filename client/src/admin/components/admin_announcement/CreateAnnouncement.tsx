@@ -198,6 +198,15 @@ const UnstyledCreateAnnouncement: FunctionComponent<CreateAnnouncementProps> = (
               }
               label="Main Page"
             />
+            {showOnHomepageCount >= 5 && (
+              <Typography
+                className="checkbox-warning-text"
+                variant="body2"
+                color="error"
+              >
+                Already Selected 5 Announcements
+              </Typography>
+            )}
           </Box>
 
           <Box>
@@ -238,5 +247,11 @@ export const CreateAnnouncement = withTheme(styled(UnstyledCreateAnnouncement)`
     margin-left: 1rem;
     padding: 0;
     width: 50rem;
+  }
+
+  .checkbox-warning-text {
+    margin-left: 2rem;
+    font-size: 0.7rem;
+    width: 100%;
   }
 `);

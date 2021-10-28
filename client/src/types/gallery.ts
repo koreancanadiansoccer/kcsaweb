@@ -6,7 +6,7 @@ export interface Gallery {
   galleryImages?: GalleryImage[];
   createdAt: string;
 }
-
+// TODO: when the image file upload to S3 successfully, galleryImages should be NonNull
 export interface GalleryInput {
   title: string;
   description: string;
