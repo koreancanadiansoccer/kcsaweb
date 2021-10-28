@@ -16,9 +16,7 @@ import ScrollContainer from 'react-indiana-drag-scroll';
 
 import { ViewerContext } from '../../context/homeViewer';
 import { LeagueSelect } from '../league_select/LeagueSelect';
-import { AgeEnums } from '../../types/age.enum';
 
-import { sampleScheduleDataOpen, sampleScheduleDataSenior } from './sampleData';
 import { ScheduleCard } from './components/schedule_card/ScheduleCard';
 
 interface SchedulesProps {

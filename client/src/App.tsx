@@ -28,10 +28,9 @@ const App: FunctionComponent = () => {
   const theme = createAppTheme();
   const { pathname } = useLocation();
   const [viewer, setViewer] = useState<HomeViewer>();
-  const isAdminRoute = useMemo(
-    () => includes(pathname.split('/'), 'admin'),
-    [pathname]
-  );
+  const isAdminRoute = useMemo(() => includes(pathname.split('/'), 'admin'), [
+    pathname,
+  ]);
 
   /**BELOW QUERY IS EXMAPLE TO SHOW CONNETION BETWEEN GQL AND FRONTEND - TODO: REMOVE */
   const { loading, data } = useQuery(GET_HOME_VIEWER, { client: client });
@@ -39,12 +38,14 @@ const App: FunctionComponent = () => {
   useEffect(() => {
     if (!loading && data) {
       const homeViewerData = data.getHomeViewer;
+
       const {
         leagueAgeKeys,
         leagueTeamGroupAge,
         leaguePlayersGroupAge,
         matchesByAge,
         leagueTeams,
+        matches,
       } = generateLeagueDataByAge(homeViewerData.leagues);
 
       setViewer({
@@ -54,6 +55,7 @@ const App: FunctionComponent = () => {
         leagueTeamGroupAge,
         leaguePlayersGroupAge,
         matchesByAge,
+        matches,
         leagueTeams,
       });
     }

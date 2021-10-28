@@ -9,6 +9,7 @@ import map from 'lodash/map';
 import { HorizontalDivider } from '../divider/HorizontalDivider';
 import { TableType } from '../../types/table_type';
 import { ViewerContext } from '../../context/homeViewer';
+import { shortenName } from '../../utils/format';
 
 import { standingHeader, scorerHeader, TableRow } from './sampleData';
 
@@ -16,7 +17,6 @@ interface LeagueTableProps {
   title: string;
   tableType: TableType;
   tableRowData: TableRow[] | null;
-  tableAgeType: string;
   className?: string;
 }
 
@@ -24,7 +24,6 @@ interface LeagueTableProps {
 const UnstyledLeagueTable: FunctionComponent<LeagueTableProps> = ({
   tableType,
   tableRowData,
-  tableAgeType,
   className,
 }) => {
   const { viewer } = useContext(ViewerContext);
@@ -99,6 +98,11 @@ const UnstyledLeagueTable: FunctionComponent<LeagueTableProps> = ({
                   >
                     {map(data, (property, key, idx) => {
                       const isNameField = key === 'name' || key === 'club';
+                      let value = property;
+
+                      if (key === 'name' && tableType === TableType.SCORER) {
+                        value = shortenName(property as string);
+                      }
 
                       return (
                         <Box
@@ -108,7 +112,7 @@ const UnstyledLeagueTable: FunctionComponent<LeagueTableProps> = ({
                           justifyContent="center"
                           py={2}
                         >
-                          {property}
+                          {value}
                         </Box>
                       );
                     })}

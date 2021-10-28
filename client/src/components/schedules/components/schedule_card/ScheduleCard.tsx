@@ -8,12 +8,14 @@ import dayjs from 'dayjs';
 
 import LogoGrey from '../../../../assets/logo_grey.svg';
 import { MatchTeam } from '../../../../types/team';
+
 interface ScheduleCardProps {
   date: string;
   location: string;
   homeTeam: MatchTeam;
   awayTeam: MatchTeam;
   className?: string;
+  noHover?: boolean;
 }
 
 /**
@@ -25,9 +27,10 @@ const UnstyledScheduledCard: FunctionComponent<ScheduleCardProps> = ({
   homeTeam,
   awayTeam,
   className,
+  noHover,
 }) => {
   return (
-    <motion.div whileHover={{ scale: 1.08 }}>
+    <motion.div whileHover={{ scale: noHover ? 1 : 1.08 }}>
       <Box mr={6} borderRadius={8} className={className}>
         <Paper elevation={3}>
           <Box px={4} py={2} className="text-sub">

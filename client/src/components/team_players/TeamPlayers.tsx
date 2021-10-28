@@ -1,6 +1,4 @@
 import React, { FunctionComponent } from 'react';
-import { withTheme } from '@material-ui/core/styles';
-import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
 import map from 'lodash/map';
@@ -8,13 +6,13 @@ import map from 'lodash/map';
 import { LeaguePlayer } from '../../types/player';
 import { YellowCard } from '../icons/YellowCard';
 import { RedCard } from '../icons/RedCard';
-import { displayName } from '../../utils/format';
+import { displayFullName } from '../../utils/format';
 
 interface TeamPlayersProp {
   players: LeaguePlayer[];
   className?: string;
 }
-const UnstyledTeamPlyers: FunctionComponent<TeamPlayersProp> = ({
+export const TeamPlayers: FunctionComponent<TeamPlayersProp> = ({
   players,
   className,
 }) => {
@@ -54,8 +52,8 @@ const UnstyledTeamPlyers: FunctionComponent<TeamPlayersProp> = ({
             alignItems="center"
             py={3}
           >
-            <Box width={'20%'} className="boldText" fontSize={'1.875rem'}>
-              {displayName(player.name)}
+            <Box width={'20%'} className="boldText" fontSize={'1.3rem'}>
+              {displayFullName(player.name)}
             </Box>
 
             <Box textAlign="center" flex={1} fontSize={'1rem'}>
@@ -79,20 +77,3 @@ const UnstyledTeamPlyers: FunctionComponent<TeamPlayersProp> = ({
     </Box>
   );
 };
-
-export const TeamPlayers = withTheme(styled(UnstyledTeamPlyers)`
-  .table {
-    display: table;
-  }
-
-  .table__row {
-    display: table-row;
-  }
-
-  .table__cell {
-    display: table-cell;
-  }
-  .test {
-    flex: 1;
-  }
-`);
