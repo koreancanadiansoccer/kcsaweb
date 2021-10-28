@@ -38,12 +38,12 @@ jobs:
 
       # Step 3 : build client 
       - name: npm run build in Client DIR and Create Pull Requset
-      run :   |
-              npm run build
-              git config --global user.name 'koreancanadiansoccer'
-              git config --global user.email 'koreancanadiansoccer@gmail.com'
-              git commit -am "Add client npm build dir"
-              git push origin test-alice
+        run : |
+          npm run build
+          git config --global user.name 'koreancanadiansoccer'
+          git config --global user.email 'koreancanadiansoccer@gmail.com'
+          git commit -am "Add client npm build dir"
+          git push origin test-alice
 
       # Step 4
       - name: Configure AWS credentials
