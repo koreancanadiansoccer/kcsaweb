@@ -54,26 +54,26 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
   # Deploy
-  # deploy:
-  #   needs: build
-  #   runs-on: ubuntu-latest
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
 
-  #   if: github.ref == 'refs/heads/master'
-  #   steps:
-  #     # Step 1
-  #     - name: Configure AWS credentials
-  #       uses: aws-actions/configure-aws-credentials@v1
-  #       with:
-  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  #         aws-region: ${{ secrets.AWS_REGION }}
-  #     # Step 2
-  #     - name: Create CodeDeploy Deployment
-  #       id: deploy
-  #       run: |
-  #         aws deploy create-deployment \
-  #           --application-name kcsa-webserver \
-  #           --deployment-group-name deploy-kcsaweb-ec2 \
-  #           --deployment-config-name CodeDeployDefault.OneAtATime \
-  #           --ec2-tag-filters Key=name,Type=KEY_AND_VALUE,Value=webserver \
-  #           --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
+    if: github.ref == 'refs/heads/test-alice'
+    steps:
+      # Step 1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      # Step 2
+      - name: Create CodeDeploy Deployment
+        id: deploy
+        run: |
+          aws deploy create-deployment \
+            --application-name kcsa-webserver \
+            --deployment-group-name deploy-kcsaweb-ec2 \
+            --deployment-config-name CodeDeployDefault.OneAtATime \
+            --ec2-tag-filters Key=name,Type=KEY_AND_VALUE,Value=webserver \
+            --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
