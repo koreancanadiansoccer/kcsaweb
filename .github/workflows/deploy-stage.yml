@@ -75,5 +75,4 @@ jobs:
             --application-name kcsa-webserver \
             --deployment-group-name deploy-kcsaweb-ec2 \
             --deployment-config-name CodeDeployDefault.OneAtATime \
-            --ec2-tag-filters Key=name,Type=KEY_AND_VALUE,Value=webserver \
             --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
