@@ -36,6 +36,11 @@ const UnstyledLeague: FunctionComponent<LeagueProps> = ({ className }) => {
         (league) => league.id === parseInt(id, 10)
       ), [id]
   );
+  // console.log(viewer.leagueTeams) //TODO: 리그 id 랑 맞는 팀 list component 로 넘기기
+
+  // const teamActive = useMemo(
+  //   () =>
+  // )
 
   if (!leagueActive) return <div>Loading...</div>
 
