@@ -72,7 +72,7 @@ jobs:
         id: deploy
         run: |
           aws deploy create-deployment \
-            --application-name kcsa-webserver \
-            --deployment-group-name deploy-kcsaweb-ec2 \
+            --application-name "kcsa-webserver" \
+            --deployment-group-name "deploy-kcsaweb-ec2" \
             --deployment-config-name CodeDeployDefault.OneAtATime \
             --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
