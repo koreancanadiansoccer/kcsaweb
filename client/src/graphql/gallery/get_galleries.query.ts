@@ -22,19 +22,3 @@ export const GET_GALLERIES = gql`
     }
   }
 `;
-
-export const GET_MAIN_GALLERIES = gql`
-  query GetMainGalleries {
-    getMainGalleries {
-      id
-      title
-      description
-      showOnHomepage
-      createdAt
-      galleryImages {
-        id
-        imageURL
-      }
-    }
-  }
-`;
