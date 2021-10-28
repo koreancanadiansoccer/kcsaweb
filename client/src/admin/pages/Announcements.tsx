@@ -2,32 +2,29 @@ import React, {
   FunctionComponent,
   useState,
   useEffect,
-  useRef,
   useCallback,
+  useMemo,
 } from 'react';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import { useQuery, useMutation } from '@apollo/client';
 import Box from '@material-ui/core/Box';
-import { useHistory, useRouteMatch, Link as RouteLink } from 'react-router-dom';
-import { map } from 'lodash';
+import { useRouteMatch, Link as RouteLink } from 'react-router-dom';
+import forEach from 'lodash/forEach';
+import orderBy from 'lodash/orderBy';
 
 import { Button } from '../../components/button/Button';
-import { Table } from '../../components/table/Table';
 import { parseError } from '../../graphql/client';
 import { Announcement, AnnouncementInput } from '../../types/announcement';
 import { GET_ANNOUNCEMENTS } from '../../graphql/announcement/get_announcements.query';
 import { CreateAnnouncement } from '../components/admin_announcement/CreateAnnouncement';
 import { CREATE_ANNOUNCEMENT } from '../../graphql/announcement/create_announcement.mutation';
-
-// left out the content because it was too long
-const tableColumns = [
-  { title: 'Title', field: 'title' },
-  { title: 'Subtitle', field: 'subtitle' },
-  { title: 'Show On Homepage', field: 'showOnHomepage' },
-  { title: 'Image URL', field: 'imageURL' },
-  { title: 'Created', field: 'createdAt' },
-];
+import { AnnouncementTable } from '../components/admin_announcement/AnnouncementTable';
+import {
+  UPDATE_ANNOUNCEMENT,
+  UpdateShowAnnouncementInput,
+  UpdateShowAnnouncementResult
+} from '../../graphql/announcement/update_announcement.mutation'
 
 /**
  * Announcement page.
@@ -39,12 +36,21 @@ export const Announcements: FunctionComponent = () => {
   const [buttonClicked, setButtonClicked] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const showOnHomepageCount = useRef(0);
-
-  const history = useHistory();
 
   // Get Announcement data.
   const announcementDataQuery = useQuery(GET_ANNOUNCEMENTS);
+
+  // Create Announcement data.
+  const [createAnnouncementMut] = useMutation<
+    { createAnnouncement: Announcement[] },
+    AnnouncementInput
+  >(CREATE_ANNOUNCEMENT);
+
+  // Update Announcement data.
+  const [updateAnnouncementMut] = useMutation<
+    UpdateShowAnnouncementResult,
+    UpdateShowAnnouncementInput
+  >(UPDATE_ANNOUNCEMENT);
 
   // Pull announcement data.
   useEffect(() => {
@@ -59,11 +65,6 @@ export const Announcements: FunctionComponent = () => {
       setError(parseError(announcementDataQuery.error));
     }
   }, [announcementDataQuery, loading, error]);
-
-  const [createAnnouncementMut] = useMutation<
-    { createAnnouncement: Announcement[] },
-    AnnouncementInput
-  >(CREATE_ANNOUNCEMENT);
 
   const createAnnouncement = async (newAnnouncement: AnnouncementInput) => {
     try {
@@ -85,19 +86,44 @@ export const Announcements: FunctionComponent = () => {
     }
   };
 
+  const updateAnnouncement = useCallback(
+    async (
+      changedAnnouncement: UpdateShowAnnouncementInput,
+      checked: boolean
+    ) => {
+      try {
+        const res = await updateAnnouncementMut({
+          variables: {
+            id: changedAnnouncement.id,
+            showOnHomepage: checked as boolean,
+          },
+        });
+
+        if (res.data) {
+          setAnnouncements(res.data.updateAnnouncement);
+        }
+      } catch (e) {
+        setError(parseError(e));
+      }
+    },
+    [updateAnnouncementMut]
+  );
+
   const updateButtonStatus = useCallback(() => {
     setButtonClicked(true);
   }, [buttonClicked]);
 
+  // Count the number of showOnHomePage when announcements is changed
+  const showOnHomepageCount = useMemo(() => {
+    let count = 0;
+    forEach(announcements, (announcement) => {
+      if (announcement.showOnHomepage) count += 1;
+    })
+    return count;
+  }, [announcements]);
+
   if (!announcements) {
     return <div>loading...</div>;
-  } else {
-    showOnHomepageCount.current = 0;
-    map(announcements, (announcement) => {
-      announcement.showOnHomepage
-        ? (showOnHomepageCount.current += 1)
-        : showOnHomepageCount.current;
-    });
   }
 
   return (
@@ -110,7 +136,7 @@ export const Announcements: FunctionComponent = () => {
           setButtonFalse={(buttonClickedStatus: boolean) => {
             setButtonClicked(buttonClickedStatus);
           }}
-          showOnHomepageCount={showOnHomepageCount.current}
+          showOnHomepageCount={showOnHomepageCount}
         />
       ) : (
         <Box>
@@ -128,22 +154,18 @@ export const Announcements: FunctionComponent = () => {
             </Button>
           </Box>
 
-          <Table
-            title="Announcement Info"
-            columns={tableColumns}
-            data={announcements}
-            onRowClick={(evt, data) => {
-              if (data?.id) {
-                history.push(`/admin/announcement/${data.id}`);
-              }
-            }}
-            options={{
-              pageSize: 10,
-              rowStyle: (data) => {
-                return data.isActive
-                  ? { background: 'white' }
-                  : { background: '#EEEEEE' };
-              },
+          <AnnouncementTable
+            announcementData={orderBy(
+              announcements,
+              ['showOnHomepage'],
+              ['desc']
+            )}
+            showOnHomePageCount={showOnHomepageCount}
+            onChange={(
+              chnagedAnnouncement: UpdateShowAnnouncementInput,
+              checked: boolean
+            ) => {
+              updateAnnouncement(chnagedAnnouncement, checked);
             }}
           />
         </Box>

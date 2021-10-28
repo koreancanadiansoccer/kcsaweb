@@ -23,7 +23,7 @@ import { GalleryInput } from '../../../types/gallery';
 interface CreateGalleryModalProp extends Pick<DialogProps, 'open' | 'onClose'> {
   className?: string;
   onAdd: (league: GalleryInput) => Promise<void>;
-  showOnHomePageCount: number;
+  showOnHomepageCount: number;
 }
 
 /**
@@ -34,7 +34,7 @@ const UnstyledCreateGalleryModal: FunctionComponent<CreateGalleryModalProp> = ({
   open,
   onClose,
   onAdd,
-  showOnHomePageCount,
+  showOnHomepageCount,
 }) => {
   const [newGallery, setNewGallery] = useState<GalleryInput>({
     title: '',
@@ -142,7 +142,7 @@ const UnstyledCreateGalleryModal: FunctionComponent<CreateGalleryModalProp> = ({
           <FormControlLabel
             control={
               <Checkbox
-                disabled={showOnHomePageCount >= 3 ? true : false}
+                disabled={showOnHomepageCount >= 3 ? true : false}
                 checked={newGallery.showOnHomepage}
                 onChange={(evt: ChangeEvent<HTMLInputElement>) => {
                   setNewGallery({
@@ -154,7 +154,7 @@ const UnstyledCreateGalleryModal: FunctionComponent<CreateGalleryModalProp> = ({
             }
             label="Main Page"
           />
-          {showOnHomePageCount >= 3 && (
+          {showOnHomepageCount >= 3 && (
             <Typography
               className="checkbox-warning-text"
               variant="body2"

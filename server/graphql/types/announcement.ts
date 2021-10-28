@@ -1,4 +1,9 @@
-import { GraphQLObjectType, GraphQLString, GraphQLBoolean } from 'graphql';
+import {
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLBoolean,
+  GraphQLInputObjectType,
+} from 'graphql';
 
 import { DateTime } from './utils/dateType';
 
@@ -13,5 +18,14 @@ export const AnnouncementType = new GraphQLObjectType({
     imageURL: { type: GraphQLString },
     showOnHomepage: { type: GraphQLBoolean },
     createdAt: { type: DateTime },
+  }),
+});
+
+// Definition of types of 'announcement' that will be used as input to graphql operation
+export const ShowAnnouncementInputType = new GraphQLInputObjectType({
+  name: 'ShowAnnouncementInput',
+  fields: () => ({
+    id: { type: GraphQLString },
+    showOnHomepage: { type: GraphQLBoolean },
   }),
 });
