@@ -8,7 +8,7 @@
 # fi
 
 #step 2 : delete existing kcsaweb
-if [ -d /home/ubuntu/kcsaweb ]; then
+if [[ -d /home/ubuntu/kcsaweb ]]; then
     sudo rm -rf /home/ubuntu/kcsaweb
     echo 'Here is the current Root DIR List : '
     ls -ltr /home/ubuntu
