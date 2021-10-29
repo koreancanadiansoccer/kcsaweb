@@ -14,6 +14,7 @@ import { About } from './pages/About';
 import { Announcements } from './pages/announcement/news_notice/Announcement';
 import { League } from './pages/League';
 import { Team } from './pages/Team';
+import { TeamEdit } from './pages/TeamEdit';
 import { createAppTheme } from './styles/theme';
 import { client } from './graphql/client';
 import { Login } from './pages/Login';
@@ -96,6 +97,10 @@ const App: FunctionComponent = () => {
             {/* This might be broken into per season */}
             <Route path="/teams/:id">
               <Team />
+            </Route>
+
+            <Route path="/teamedit/:id">
+              <TeamEdit />
             </Route>
 
             <Route exact path="/announcement">

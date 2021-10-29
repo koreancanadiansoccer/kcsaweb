@@ -65,52 +65,52 @@ const UnstyledTeam: FunctionComponent<TeamProps> = ({ className }) => {
         captain={'test'}
         foundedDate={leagueTeam?.team.foundedDate}
         teamLogo={leagueTeam?.team.teamLogoURL}
-      />
+      >
+        <Box borderRadius={32} mt={10} bgcolor="white" color={'black'} py={5}>
+          <Container>
+            <Box display="flex" justifyContent="start">
+              <Box mr={5}>
+                <LeagueSelect
+                  title="SQUAD"
+                  selected={teamTabType === TabType.SQUAD}
+                  onClick={() => setTeamTabType(TabType.SQUAD)}
+                />
+              </Box>
 
-      <Box borderRadius={64} mt={-8} bgcolor="white" py={5}>
-        <Container>
-          <Box display="flex" justifyContent="start">
-            <Box mr={5}>
+              <Box mr={5}>
+                <LeagueSelect
+                  title="SCHEDULE"
+                  selected={teamTabType === TabType.SCHEDULE}
+                  onClick={() => setTeamTabType(TabType.SCHEDULE)}
+                />
+              </Box>
               <LeagueSelect
-                title="SQUAD"
-                selected={teamTabType === TabType.SQUAD}
-                onClick={() => setTeamTabType(TabType.SQUAD)}
+                title="HISTORY/STATS"
+                selected={teamTabType === TabType.HISTORY}
+                onClick={() => setTeamTabType(TabType.HISTORY)}
               />
             </Box>
 
-            <Box mr={5}>
-              <LeagueSelect
-                title="SCHEDULE"
-                selected={teamTabType === TabType.SCHEDULE}
-                onClick={() => setTeamTabType(TabType.SCHEDULE)}
-              />
-            </Box>
-            <LeagueSelect
-              title="HISTORY/STATS"
-              selected={teamTabType === TabType.HISTORY}
-              onClick={() => setTeamTabType(TabType.HISTORY)}
-            />
-          </Box>
+            {teamTabType === TabType.SQUAD && (
+              <Box mt={5}>
+                <TeamPlayers players={leagueTeam.leaguePlayers} />
+              </Box>
+            )}
 
-          {teamTabType === TabType.SQUAD && (
-            <Box mt={5}>
-              <TeamPlayers players={leagueTeam.leaguePlayers} />
-            </Box>
-          )}
+            {teamTabType === TabType.SCHEDULE && (
+              <Box mt={5}>
+                <TeamSchedule teamMatches={teamMatches} id={id} />
+              </Box>
+            )}
 
-          {teamTabType === TabType.SCHEDULE && (
-            <Box mt={5}>
-              <TeamSchedule teamMatches={teamMatches} id={id} />
-            </Box>
-          )}
-
-          {teamTabType === TabType.HISTORY && (
-            <Box mt={5}>
-              <TeamHistory leagueTeam={leagueTeam} />
-            </Box>
-          )}
-        </Container>
-      </Box>
+            {teamTabType === TabType.HISTORY && (
+              <Box mt={5}>
+                <TeamHistory leagueTeam={leagueTeam} />
+              </Box>
+            )}
+          </Container>
+        </Box>
+      </TeamHero>
     </Box>
   );
 };
