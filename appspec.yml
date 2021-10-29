@@ -5,6 +5,7 @@
 # For help completing this file, see the "AppSpec File Reference" in the
 #   "CodeDeploy User Guide" at
 #   https://docs.aws.amazon.com/codedeploy/latest/userguide/app-spec-ref.html
+#   https://docs.aws.amazon.com/ko_kr/codedeploy/latest/userguide/reference-appspec-file-structure-hooks.html#appspec-hooks-server
 version: 0.0
 # Specify "os: linux" if this revision targets Amazon Linux,
 #   Red Hat Enterprise Linux (RHEL), or Ubuntu Server
@@ -23,7 +24,7 @@ os: Ubuntu
 #   "files" section altogether. A blank or incomplete "files" section
 #   may cause associated deployments to fail.
 files:
-  - source: /home/ubuntu/config/.env
+  - source: /
     destination: /home/ubuntu/kcsaweb
 # For deployments to Amazon Linux, Ubuntu Server, or RHEL instances,
 #   you can specify a "permissions"
@@ -78,25 +79,25 @@ hooks:
   #   in the script specified in "location" starting from the root of the
   #   revision's file bundle.
   ApplicationStop:
-    - location: scripts/applicationStop.bash
+    - location: scripts/applicationStop.sh
       runas: root
   # During the BeforeInstall deployment lifecycle event, run the commands
   #   in the script specified in "location".
   BeforeInstall:
-    - location: scripts/beforeInstall.bash
+    - location: scripts/beforeInstall.sh
       runas: root
   # During the AfterInstall deployment lifecycle event, run the commands
   #   in the script specified in "location".
   AfterInstall:
-    - location: scripts/afterInstall.bash
+    - location: scripts/afterInstall.sh
       runas: root
   # During the ApplicationStart deployment lifecycle event, run the commands
   #   in the script specified in "location".
   ApplicationStart:
-    - location: scripts/applicationStart.bash
+    - location: scripts/applicationStart.sh
       runas: root
   # During the ValidateService deployment lifecycle event, run the commands
   #   in the script specified in "location".
   ValidateService:
-    - location: scripts/validateService.bash
+    - location: scripts/validateService.sh
       runas: root

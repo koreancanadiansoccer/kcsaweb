@@ -6,7 +6,7 @@ sleep 1;
 
 
 status_nginx=`sudo systemctl status nginx | grep "inactive"`
-if [ $status_nginx=" "]; then
+if [[ $status_nginx=" " ]]; then
     echo "nginx already active"
 else
     sudo systemctl restart nginx;
