@@ -12,6 +12,7 @@ import {
   homeScorerHeader,
   TableRow,
 } from '../standing_table/standingData';
+import { shortenName } from '../../utils/format';
 
 interface LeagueTableProps {
   title: string;
@@ -56,6 +57,7 @@ const UnstyledLeagueTable: FunctionComponent<LeagueTableProps> = ({
         tableHeaderData={tableHeaderData}
         headerLongField={['Club', 'Player']}
         rowLongField={['name', 'club']}
+        tableType={tableType}
       />
     </Box>
   );

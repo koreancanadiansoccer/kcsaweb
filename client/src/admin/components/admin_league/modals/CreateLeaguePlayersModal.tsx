@@ -15,6 +15,7 @@ import find from 'lodash/find';
 import pick from 'lodash/pick';
 import findIndex from 'lodash/findIndex';
 import every from 'lodash/every';
+import filter from 'lodash/filter';
 import { useMutation, useQuery } from '@apollo/client';
 import Divider from '@material-ui/core/Divider';
 
@@ -111,25 +112,12 @@ export const CreateLeaguePlayersModal: FunctionComponent<CreateLeaguePlayersModa
           newLeaguePlayers: newLeaguePlayers,
           leagueTeamId: selectedTeam?.id,
           teamId: selectedTeam?.teamId,
+          leagueId: origLeague.id,
         },
       });
 
       if (res?.data?.createLeaguePlayers) {
-        const newTeamPlayers = res.data.createLeaguePlayers;
-
-        const origLeagueTeams = [...origLeague.leagueTeams];
-
-        const leagueTeamIdx = findIndex(
-          origLeagueTeams,
-          (leagueTeam) => leagueTeam.id === selectedTeamId
-        );
-
-        origLeagueTeams[leagueTeamIdx] = {
-          ...origLeagueTeams[leagueTeamIdx],
-          leaguePlayers: newTeamPlayers,
-        };
-
-        setOrigLeague({ ...origLeague, leagueTeams: origLeagueTeams });
+        setOrigLeague(res.data?.createLeaguePlayers);
 
         // Reset selection:
         setNewLeaguePlayers([]);
@@ -137,12 +125,23 @@ export const CreateLeaguePlayersModal: FunctionComponent<CreateLeaguePlayersModa
     } catch (e) {
       console.error(e);
     }
-  }, [newLeaguePlayers, selectedTeam]);
+  }, [newLeaguePlayers, selectedTeam, origLeague]);
 
   // Create option list for select.
   const playersOption = useMemo(() => {
     // Filter out already added players.
-    return map(teamPlayersQuery.data?.getPlayers, (player) => ({
+    const filteredChosen = filter(
+      teamPlayersQuery.data?.getPlayers,
+      (player) => {
+        return !find(
+          selectedTeam?.leaguePlayers,
+          (leaguePlayer) => leaguePlayer.playerId !== player.id
+        );
+      }
+    );
+
+    // Filter out already added players.
+    return map(filteredChosen, (player) => ({
       label: player.name,
       value: player.id.toString(),
     }));
@@ -151,7 +150,6 @@ export const CreateLeaguePlayersModal: FunctionComponent<CreateLeaguePlayersModa
   /**
    * Handle option selection change.
    */
-
   const handleChange = useCallback(
     // eslint-disable-next-line
     async (selectedOption: any) => {
@@ -210,6 +208,9 @@ export const CreateLeaguePlayersModal: FunctionComponent<CreateLeaguePlayersModa
       <Box width="100%" my={2}>
         <Typography variant="body1">
           List of originally added players in the past.
+        </Typography>
+        <Typography variant="body2" color="error">
+          *Already added players will not be shown under the option list.
         </Typography>
 
         <Select options={playersOption} isMulti handleChange={handleChange} />

@@ -82,8 +82,41 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
     [subAnnouncementIdx, setSubAnnouncementIdx, viewer]
   );
 
-  if (!viewer?.announcements) {
-    return <div>loading...</div>;
+  if (!viewer?.announcements || viewer.announcements.length === 0) {
+    return (
+      <Box className={className}>
+        <Box className="hero" display="flex" alignItems="center">
+          <Container className="hero-content">
+            <Box display="flex" alignItems="center">
+              <VerticalDivider height={100} maxHeight={80} />
+
+              <Box color={'white'} ml={3}>
+                <Box fontSize="2.5rem" fontWeight={700}>
+                  {"Welcome to KCSA's Official Website"}
+                </Box>
+
+                <Box fontSize="1.5rem" fontWeight={700}>
+                  No Media Contents Available: New Season Coming Soon
+                </Box>
+              </Box>
+            </Box>
+
+            <Box
+              mt={20}
+              ml={5}
+              color="white"
+              fontSize="1rem"
+              onClick={() => {
+                history.push(`/overview`);
+              }}
+              className="hero-more"
+            >
+              About KCSA More Information &gt;
+            </Box>
+          </Container>
+        </Box>
+      </Box>
+    );
   }
 
   return (
@@ -117,11 +150,7 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
                     alt="hero-main"
                   />
 
-                  <VerticalDivider
-                    height={380}
-                    maxHeight={380}
-                    className="first-divider"
-                  />
+                  <VerticalDivider height={380} maxHeight={380} />
                 </Box>
               </motion.div>
 
@@ -238,10 +267,10 @@ export const Hero = withTheme(styled(UnstyledHero)`
     background-size: 100% 100%;
   }
 
-  .hero-content {
-    margin-left: 13.5%;
-    padding: 0;
-  }
+  // .hero-content {
+  //   margin-left: 13.5%;
+  //   padding: 0;
+  // }
 
   .hero-sub {
     max-height: 6.875rem;

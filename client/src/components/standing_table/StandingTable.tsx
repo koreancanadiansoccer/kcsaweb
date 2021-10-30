@@ -7,6 +7,9 @@ import Paper from '@material-ui/core/Paper';
 import map from 'lodash/map';
 import find from 'lodash/find';
 
+import { shortenName } from '../../utils/format';
+import { TableType } from '../../types/table_type';
+
 import { TableRow } from './standingData';
 
 interface StandingTable {
@@ -19,6 +22,7 @@ interface StandingTable {
   cusElevation?: number;
   hideHeader?: string;
   flexWidth?: number;
+  tableType?: TableType;
 }
 
 /**
@@ -34,6 +38,7 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
   cusElevation,
   hideHeader,
   flexWidth,
+  tableType,
 }) => {
   return (
     <Box className={className}>
@@ -61,7 +66,7 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
               return (
                 <Box
                   key={`header-row-${idx}`}
-                  flex={isLongField ? 4  : flexWidth ? flexWidth : 1}
+                  flex={isLongField ? 4 : flexWidth ? flexWidth : 1}
                   display="flex"
                   justifyContent="center"
                 >
@@ -90,18 +95,22 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
                     const isNameField = find(rowLongField, (field) => {
                       if (key == field) return true;
                     });
+                    let value: string | number | JSX.Element = property;
 
-                    return (
-                      <Box
-                        key={`table-data-${key}-${idx}`}
-                        flex={isNameField ? 4 : flexWidth ? flexWidth : 1}
-                        display="flex"
-                        justifyContent="center"
-                        py={2}
-                      >
-                        {property}
-                      </Box>
-                    );
+                    if (key === 'name' && tableType === TableType.SCORER) {
+                      value = shortenName(property as string);
+                    }
+                      return (
+                        <Box
+                          key={`table-data-${key}-${idx}`}
+                          flex={isNameField ? 4 : flexWidth ? flexWidth : 1}
+                          display="flex"
+                          justifyContent="center"
+                          py={2}
+                        >
+                          {value}
+                        </Box>
+                      );
                   })}
                 </Box>
                 <Divider className="standing-table-divider" />

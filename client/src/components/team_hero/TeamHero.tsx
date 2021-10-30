@@ -25,6 +25,7 @@ const UnstyledTeamHero: FunctionComponent<TeamHeroProps> = ({
   captain,
   foundedDate,
   teamLogo,
+  children,
 }) => {
   return (
     <Box className={className}>
@@ -34,6 +35,7 @@ const UnstyledTeamHero: FunctionComponent<TeamHeroProps> = ({
         display="flex"
         alignItems="center"
         justifyContent="center"
+        pt={10}
       >
         {/* Logo */}
         <Box minWidth={326} minHeight={341}>
@@ -66,12 +68,14 @@ const UnstyledTeamHero: FunctionComponent<TeamHeroProps> = ({
           </Box>
         </Box>
       </Box>
+
+      <Box pb={20}>{children}</Box>
     </Box>
   );
 };
 
 export const TeamHero = withTheme(styled(UnstyledTeamHero)`
-  height: 600px; /*or 70%, or what you want*/
+  height: 100%; /*or 70%, or what you want*/
   background: ${({ teamColor }) =>
     `linear-gradient(90deg, ${teamColor} 0%, rgba(6, 6, 6, 1) 60%, black 81%);`};
   color: white;

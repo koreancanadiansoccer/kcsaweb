@@ -38,7 +38,7 @@ const UnstyledNavigation: FunctionComponent<FooterProps> = ({ className }) => {
                   647-542-7942
                   <br />
                   <br />
-                  kcsacanada@hotmail.com
+                  koreancanadiansoccer@gmail.com
                   <br />
                   <br />
                   리그 참가 및 재 캐나다 대한축구협회에 대한 질문은 위의 E-mail

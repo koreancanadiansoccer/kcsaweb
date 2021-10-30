@@ -33,6 +33,7 @@ export interface HomeViewer {
   leaguePlayersGroupAge?: { [key: string]: LeaeguePlayerHomeViewer[] };
   matchesByAge?: { [key: string]: Match[] };
   leagueActive?: { [key: string]: LeagueActiveHomeViewer };
+  matches?: Match[];
 }
 
 /**
@@ -48,6 +49,7 @@ export const generateLeagueDataByAge = (
   | 'matchesByAge'
   | 'leagueTeams'
   | 'leagueActive'
+  | 'matches'
 > => {
   const leagueAgeKeys = map(leagues, (league) => league.leagueAgeType);
 
@@ -94,8 +96,10 @@ export const generateLeagueDataByAge = (
 
     leaguePlayersGroupAge[league.leagueAgeType] = playerForLeagueTeam;
   });
+
   /** leaguePlayers by age done. */
 
+  const matches = flatten(map(leagues, (league) => league.matches));
   /**
    *  Get matches by age
    */
@@ -114,5 +118,6 @@ export const generateLeagueDataByAge = (
     matchesByAge,
     leagueTeams,
     leagueActive,
+    matches,
   };
 };

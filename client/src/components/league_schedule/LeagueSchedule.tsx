@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useMemo } from 'react';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Accordion from '@material-ui/core/Accordion';
@@ -26,10 +27,14 @@ interface LeagueScheduleProps {
  * Generate League Schedule data
  */
 const generateScheduleData = (match: Match) => {
+  const history = useHistory();
   return [
     {
       HOME: (
-        <div className="home-team-logo">
+        <div
+          className="home-team-logo"
+          onClick={() => history.push(`/teams/${match.homeTeam.id}`)}
+        >
           <div>{match.homeTeam.team.name}</div>
           <img
             src={match.homeTeam.team.teamLogoURL || LogoGrey}
@@ -37,9 +42,15 @@ const generateScheduleData = (match: Match) => {
           />
         </div>
       ),
-      VS: match.status === 'COMPLETE' ? match.homeTeamScore + " : " + match.awayTeamScore : 'VS',
+      VS:
+        match.status === 'COMPLETE'
+          ? match.homeTeamScore + ' : ' + match.awayTeamScore
+          : 'VS',
       AWAY: (
-        <div className="away-team-logo">
+        <div
+          className="away-team-logo"
+          onClick={() => history.push(`/teams/${match.awayTeam.id}`)}
+        >
           <img
             src={match.awayTeam.team.teamLogoURL || LogoGrey}
             alt={match.awayTeam.team.name}
@@ -154,6 +165,11 @@ export const LeagueSchedule = withTheme(styled(UnstyledLeagueSchedule)`
     width: 100%;
     justify-content: center;
 
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
     img {
       width: 25px;
       height: 25px;
@@ -166,6 +182,11 @@ export const LeagueSchedule = withTheme(styled(UnstyledLeagueSchedule)`
     align-items: center;
     width: 100%;
     justify-content: center;
+
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
 
     img {
       width: 25px;

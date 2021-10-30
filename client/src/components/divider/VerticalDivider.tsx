@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import Box from '@material-ui/core/Box';
 
 interface DividerProps {
   height: number;
@@ -25,17 +24,11 @@ const Divider = styled.div<DividerProps>`
   );
   height: ${(p) => p.height}px;
   max-height: ${(p) => p.maxHeight}px;
-  float: left;
 `;
 
 export const VerticalDivider: React.FC<VerticalDividerProps> = ({
-  className,
   height,
   maxHeight,
 }) => {
-  return (
-    <Box className={className}>
-      <Divider height={height} maxHeight={maxHeight} />
-    </Box>
-  );
+  return <Divider height={height} maxHeight={maxHeight} />;
 };
