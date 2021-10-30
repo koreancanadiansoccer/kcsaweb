@@ -35,8 +35,3 @@ export interface LeagueInput {
   leagueTeams?: LeagueTeam[];
   matches?: Match[];
 }
-
-export interface LeagueActive {
-  id: number;
-  name: string;
-}

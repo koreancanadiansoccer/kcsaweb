@@ -10,6 +10,8 @@ import find from 'lodash/find';
 import AboutBanner from '../assets/about.png';
 import { ViewerContext } from '../context/homeViewer';
 import { LeagueSelect } from '../components/league_select/LeagueSelect';
+import { LeagueStanding } from '../components/league_standing/LeagueStanding';
+import { LeagueSchedule } from '../components/league_schedule/LeagueSchedule';
 
 interface LeagueProps {
   className?: string;
@@ -36,13 +38,8 @@ const UnstyledLeague: FunctionComponent<LeagueProps> = ({ className }) => {
         (league) => league.id === parseInt(id, 10)
       ), [id]
   );
-  // console.log(viewer.leagueTeams) //TODO: 리그 id 랑 맞는 팀 list component 로 넘기기
 
-  // const teamActive = useMemo(
-  //   () =>
-  // )
-
-  if (!leagueActive) return <div>Loading...</div>
+  if (!leagueActive || !viewer.leagueTeamGroupAge || !viewer.matchesByAge) return <div>Loading...</div>
 
   return (
     <Box className={className}>
@@ -52,7 +49,7 @@ const UnstyledLeague: FunctionComponent<LeagueProps> = ({ className }) => {
         alignItems="center"
       >
         <Typography variant="h3" className="media-banner-text">
-          {leagueActive?.name}
+          {leagueActive?.name} {leagueActive.year}
         </Typography>
       </Box>
 
@@ -77,6 +74,20 @@ const UnstyledLeague: FunctionComponent<LeagueProps> = ({ className }) => {
             onClick={() => setTeamTabType(TabType.SCHEDULE_SCORE)}
           />
         </Box>
+
+        {teamTabType === TabType.STANDING && (
+          <LeagueStanding
+            className="standing-table"
+            teams={viewer.leagueTeamGroupAge[leagueActive.ageType]}
+          />
+        )}
+
+        {teamTabType === TabType.SCHEDULE_SCORE && (
+          <LeagueSchedule
+            className="schedule-table"
+            matches={viewer.matchesByAge[leagueActive.ageType]}
+          />
+        )}
       </Container>
     </Box>
   );
@@ -96,13 +107,13 @@ export const League = withTheme(styled(UnstyledLeague)`
     }
   }
 
-  // .leagueSelect-box {
-  //   display: flex;
-  //   justify-content: start;
-  //   margin-top: 3rem;
+  .standing-table {
+    min-width: 1193px;
+    font-size: 1.04rem;
+    margin-bottom: 5rem;
+  }
 
-  //   .div {
-  //     margin-left: 2rem;
-  //   }
-  // }
+  .schedule-table {
+    margin-bottom: 5rem;
+  }
 `);
