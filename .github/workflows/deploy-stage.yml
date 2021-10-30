@@ -28,13 +28,13 @@ jobs:
       - name: npm install for Server
         run: |
           pwd
-          npm install
+          npm ci
 
       - name: npm install in client DIR and build
         run: |
           cd client
           pwd
-          npm install
+          npm ci
           npm run build
 
       # Step 3 : build client
