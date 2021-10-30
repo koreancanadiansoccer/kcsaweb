@@ -20,6 +20,12 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      # Step 2 : verification npm install
+      - name: npm install for Server
+        run: |
+          pwd
+          npm install
+
       # Step 1
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
@@ -28,19 +34,13 @@ jobs:
           cd client
           pwd
           npm install
-
-      # Step 2 : verification npm install
-      - name: npm install for Server
-        run: |
-          pwd
-          cd ..
-          npm install
-
-      # Step 3 : build client
-      - name: npm run build in Client DIR and Create Pull Requset
-        run: |
-          cd client
           npm run build
+
+      # # Step 3 : build client
+      # - name: npm run build in Client DIR and Create Pull Requset
+      #   run: |
+      #     cd client
+      #     npm run build
 
       # Step 3 : build client
       # - name: npm run build in Client DIR and Create Pull Requset
