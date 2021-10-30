@@ -21,6 +21,7 @@ export interface LeaguePlayer extends Player {
   goalScored: number;
   yellowCard: number;
   leagueTeamId: number;
+  playerId: number;
 }
 
 export interface MatchPlayer {

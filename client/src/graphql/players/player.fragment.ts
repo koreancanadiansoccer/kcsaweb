@@ -14,6 +14,7 @@ dob
 yellowCard
 goalScored
 leagueTeamId
+playerId
 `;
 
 export const MATCH_PLAYER_FRAGMENT = `
