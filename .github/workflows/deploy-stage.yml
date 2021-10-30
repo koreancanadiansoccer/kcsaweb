@@ -28,7 +28,6 @@ jobs:
           cd client
           pwd
           npm install
-          npm run build
 
       # Step 2 : verification npm install
       - name: npm install for Server
@@ -37,9 +36,11 @@ jobs:
           cd ..
           npm install
 
-      # Step 3 : build client
-      # - name: npm run build in Client DIR and Create Pull Requset
-      # run : npm run build
+      Step 3 : build client
+      - name: npm run build in Client DIR and Create Pull Requset
+      run : |
+          cd client
+          npm run build
 
       # Step 3 : build client
       # - name: npm run build in Client DIR and Create Pull Requset
