@@ -54,29 +54,22 @@ jobs:
       #     git commit -am "Add client npm build dir"
       #     git push origin test-alice
 
-      # Step 4
+      # # Step 4
+      # - name: Configure AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: us-east-1
+
+      # Code deploy Step 1
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-
-  # Deploy
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    if: github.ref == 'refs/heads/master'
-    steps:
-      # Step 1
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-      # Step 2
+      # Cod deploy Step 2
       - name: Create CodeDeploy Deployment
         id: deploy
         run: |
@@ -85,3 +78,27 @@ jobs:
             --deployment-group-name "deploy-kcsaweb-ec2" \
             --deployment-config-name CodeDeployDefault.OneAtATime \
             --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
+
+  # Deploy
+  # deploy:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+
+  #   if: github.ref == 'refs/heads/master'
+  #   steps:
+  #     # Step 1
+  #     - name: Configure AWS credentials
+  #       uses: aws-actions/configure-aws-credentials@v1
+  #       with:
+  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         aws-region: us-east-1
+  #     # Step 2
+  #     - name: Create CodeDeploy Deployment
+  #       id: deploy
+  #       run: |
+  #         aws deploy create-deployment \
+  #           --application-name "kcsa-webserver" \
+  #           --deployment-group-name "deploy-kcsaweb-ec2" \
+  #           --deployment-config-name CodeDeployDefault.OneAtATime \
+  #           --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
