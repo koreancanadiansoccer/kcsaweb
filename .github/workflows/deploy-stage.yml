@@ -38,9 +38,9 @@ jobs:
 
       Step 3 : build client
       - name: npm run build in Client DIR and Create Pull Requset
-      run : |
-          cd client
-          npm run build
+        run : |
+            cd client
+            npm run build
 
       # Step 3 : build client
       # - name: npm run build in Client DIR and Create Pull Requset
