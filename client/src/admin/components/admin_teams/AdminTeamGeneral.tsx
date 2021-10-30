@@ -33,15 +33,10 @@ import {
 import { parseError } from '../../../graphql/client';
 import { ResourceType } from '../../../types/resource.enum';
 
-interface TeamGeneralProps {
-  team: Team;
-  updateTeam: (updateTeam: Team) => void;
-}
-
 /**
  * Show and allow update to general team info
  */
-const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = () => {
+export const AdminTeamGeneral: FunctionComponent = () => {
   const { team: origTeam, setTeam: setOrigTeam } = useContext(TeamContext);
 
   const [loading, setLoading] = useState(false);
@@ -224,5 +219,3 @@ const UnstyledTeamGneral: FunctionComponent<TeamGeneralProps> = () => {
     </Box>
   );
 };
-
-export const TeamGeneral = withTheme(styled(UnstyledTeamGneral)``);

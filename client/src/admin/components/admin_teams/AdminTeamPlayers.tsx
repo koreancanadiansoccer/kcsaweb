@@ -21,15 +21,10 @@ import { Button } from '../../../components/button/Button';
 
 import { CreateTeamPlayerModal } from './modals/CreateTeamPlayerModal';
 
-interface TeamPlayersProps {
-  team: Team;
-  updateTeam: (updateTeam: Team) => void;
-}
-
 /**
  * Show list of players.
  */
-const UnstyledTeamPlayers: FunctionComponent<TeamPlayersProps> = () => {
+export const AdminTeamPlayers: FunctionComponent = () => {
   const { team: origTeam, setTeam: setOrigTeam } = useContext(TeamContext);
 
   const [players, setPlayers] = useState<Player[]>(origTeam.players || []);
@@ -115,5 +110,3 @@ const UnstyledTeamPlayers: FunctionComponent<TeamPlayersProps> = () => {
     </>
   );
 };
-
-export const TeamPlayers = withTheme(styled(UnstyledTeamPlayers)``);

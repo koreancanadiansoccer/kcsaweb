@@ -115,8 +115,4 @@ const UnstyledTeam: FunctionComponent<TeamProps> = ({ className }) => {
   );
 };
 
-export const Team = withTheme(styled(UnstyledTeam)`
-  .MuiTabs-root {
-    background-color: white;
-  }
-`);
+export const Team = withTheme(styled(UnstyledTeam)``);

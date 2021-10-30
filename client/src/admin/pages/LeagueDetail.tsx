@@ -25,13 +25,13 @@ interface LeagueDetailProps {
  * Display all info about a league.
  * Uses tab views.
  */
-export const UnstyledLeagueDetail: FunctionComponent<LeagueDetailProps> = ({
+export const LeagueDetail: FunctionComponent<LeagueDetailProps> = ({
   className,
 }) => {
   const [league, setLeague] = useState<League>();
 
   const { id } = useParams<{ id: string }>();
-  const [tabSelected, setTabSelected] = React.useState(0);
+  const [tabSelected, setTabSelected] = useState(0);
 
   // Get League data.
   const leagueDataQuery = useQuery(GET_LEAGUE, {
@@ -101,12 +101,3 @@ export const UnstyledLeagueDetail: FunctionComponent<LeagueDetailProps> = ({
     </LeagueContext.Provider>
   );
 };
-
-export const LeagueDetail = withTheme(styled(UnstyledLeagueDetail)`
-  .MuiTabs-root {
-    background-color: white;
-  }
-  .MuiTabs-indicator {
-    height: 0.25rem;
-  }
-`);

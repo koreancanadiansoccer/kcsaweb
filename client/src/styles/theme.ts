@@ -32,7 +32,14 @@ const theme = {
         },
       },
     },
-
+    MuiTabs: {
+      root: {
+        backgroundColor: 'white',
+      },
+      indicator: {
+        height: '0.25rem',
+      },
+    },
     MuiPaper: {
       elevation3: {
         borderRadius: '8px',
