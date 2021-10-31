@@ -14,6 +14,7 @@ if [[ -d /home/ubuntu/kcsaweb ]]; then
     ls -ltr /home/ubuntu
 fi
 
+mkdir /home/ubuntu/kcsaweb
 cp -r /home/ubuntu/kcsa_tmp/* /home/ubuntu/kcsaweb/
 
 
