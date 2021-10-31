@@ -6,14 +6,18 @@ sudo pm2 start ts-node -- -P /home/ubuntu/kcsaweb/tsconfig.json /home/ubuntu/kcs
 echo 'start kcsa by pm2... in local';
 sleep 1;
 
+sudo systemctl restart nginx;
+echo 'Restart nginx server...';
 
-# status_nginx=`sudo systemctl status nginx | grep "inactive"`
-# if [[ $status_nginx=" " ]]; then
-#     echo "nginx already active"
-# else
+status_nginx=`sudo systemctl status nginx | grep "inactive"`
+if [[ -n status_nginx ]]; then
+    echo "nginx still not active and will Restart nginx server"
     sudo systemctl restart nginx;
     echo 'Restart nginx server...';
+
+else
+    echo 'nginx is now active';
     echo 'All done';
-# fi
+fi
 
 
