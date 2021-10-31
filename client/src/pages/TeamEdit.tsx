@@ -17,7 +17,7 @@ const UnstyledTeamEdit: FunctionComponent = () => {
   const { id } = useParams<{ id: string }>();
 
   const [tabSelected, setTabSelected] = useState(0);
-
+  // team to edit;
   const leagueTeam = useMemo(
     () =>
       find(
