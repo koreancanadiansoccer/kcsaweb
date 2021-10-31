@@ -23,9 +23,6 @@ jobs:
       # Step 1
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.PAT }}
-          repository: owner/kcsaweb
 
       # Step 2 : verification npm install
       - name: npm install for Server
@@ -63,6 +60,7 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v3
         with:
+          token: ${{ secrets.PAT }}
           commit-message: Build
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           base: deploy
@@ -74,7 +72,7 @@ jobs:
         if: steps.cpr.outputs.pull-request-operation == 'created'
         uses: peter-evans/enable-pull-request-automerge@v1
         with:
-          # token: ${{ secrets.PAT }}
+          token: ${{ secrets.PAT }}
           pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
           merge-method: squash
 
