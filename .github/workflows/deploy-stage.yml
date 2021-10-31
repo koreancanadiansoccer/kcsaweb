@@ -24,7 +24,8 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
         with:
-          ssh-key: ${{ secrets.DEPLOY_PR_OPEN_SECRET }}
+          token: ${{ secrets.PAT }}
+          repository: owner/kcsaweb
 
       # Step 2 : verification npm install
       - name: npm install for Server
