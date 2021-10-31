@@ -15,7 +15,9 @@ if [[ -d /home/ubuntu/kcsaweb ]]; then
 fi
 
 mkdir /home/ubuntu/kcsaweb
-cp -r /home/ubuntu/kcsa_tmp/* /home/ubuntu/kcsaweb/
+echo 'Here is the current Root DIR List (/home/ubuntu) : '
+ls -ltr /home/ubuntu
+sudo cp -r /home/ubuntu/kcsa_tmp/* /home/ubuntu/kcsaweb/
 
 
 
