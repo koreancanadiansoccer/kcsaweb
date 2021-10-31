@@ -47,14 +47,19 @@ jobs:
       #     cd client
       #     npm run build
 
-      # Step 3 : build client
-      # - name: npm run build in Client DIR and Create Pull Requset
-      #   run : |
-      #     npm run build
-      #     git config --global user.name 'koreancanadiansoccer'
-      #     git config --global user.email 'koreancanadiansoccer@gmail.com'
-      #     git commit -am "Add client npm build dir"
-      #     git push origin test-alice
+      Step 3 : build client
+      - name: npm run build in Client DIR and Create Pull Requset
+        run : |
+          git config --global user.name 'koreancanadiansoccer'
+          git config --global user.email 'koreancanadiansoccer@gmail.com'
+          git commit -am "Add client npm build dir"
+      - name: Declare some variables
+          id: vars
+          shell: bash
+          run: |
+            echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+            echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
 
       # # Step 4
       # - name: Configure AWS credentials
@@ -66,6 +71,10 @@ jobs:
 
       # Code deploy Step 1
       - name: Configure AWS credentials
+        echo 'Original sha'
+        echo "${{ github.sha }}"
+        echo 'new sha'
+        echo "${{ steps.vars.outputs.sha_short }}"
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
