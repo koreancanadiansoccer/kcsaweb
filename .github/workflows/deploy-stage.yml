@@ -47,12 +47,13 @@ jobs:
       #     cd client
       #     npm run build
 
-      # Step 3 : build client
+      # Step 3 : Commit to branch.
       - name: npm run build in Client DIR and Create Pull Requset
         run: |
           git config --global user.name 'koreancanadiansoccer'
           git config --global user.email 'koreancanadiansoccer@gmail.com'
-          git commit -am "Add client npm build dir"
+          git add .
+          git commit -m "Build client for deploying"
       - name: Declare some variables
         id: vars
         shell: bash
