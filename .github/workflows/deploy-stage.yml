@@ -40,21 +40,22 @@ jobs:
           echo 'Current location in CI : '
           pwd
           npm ci
+          npm run build
           echo 'CLIENT DONE'
           ls -ltr
 
         env:
           CI: false
 
-      # - name: copy build file via ssh key
-      #   uses: appleboy/scp-action@master
-      #   with:
-      #     host: ${{ secrets.HOST }}
-      #     username: ${{ secrets.USERNAME }}
-      #     port: ${{ secrets.PORT }}
-      #     key: ${{ secrets.KEY }}
-      #     source: "tests/a.txt,tests/b.txt"
-      #     target: "/var/www/kcsa-demo/"
+      - name: copy build file via ssh key
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          # port: ${{ secrets.PORT }}
+          key: ${{ secrets.KEY }}
+          source: '/home/runner/work/kcsaweb/kcsaweb/client/build/*'
+          target: '/var/www/kcsa-demo/'
 
       # Step 3 : Commit to branch.
       # - name: Create commit
