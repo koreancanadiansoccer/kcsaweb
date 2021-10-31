@@ -41,41 +41,36 @@ jobs:
         env:
           CI: false
 
-      # Step 3 : build client
-      # - name: npm run build in Client DIR and Create Pull Requset
-      #   run: |
-      #     cd client
-      #     npm run build
+          # Step 3 : Commit to branch.
+          # - name: Create commit
+          #   run: |
+          #     git config --global user.name 'koreancanadiansoccer'
+          #     git config --global user.email 'koreancanadiansoccer@gmail.com'
+          #     git add .
+          #     git commit -m "Build client for deploying"
 
-      # Step 3 : Commit to branch.
-      - name: npm run build in Client DIR and Create Pull Requset
-        run: |
-          git config --global user.name 'koreancanadiansoccer'
-          git config --global user.email 'koreancanadiansoccer@gmail.com'
-          git add .
-          git commit -m "Build client for deploying"
+          # Create Pull request.
+          # - name: Create Pull request
+          #   id: cpr
+          #   uses: peter-evans/create-pull-request@v3
+          #   with:
+          #     token: ${{ secrets.PAT }}
+          #     commit-message: Build
+          #     author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          #     base: deploy
+          #     title: 'Prepare deployment build'
+          #     branch: 'Deploy-${{github.sha}}'
+          # delete-branch: true
 
-      # Create Pull request.
-      - name: Create Pull request
-        id: cpr
-        uses: peter-evans/create-pull-request@v3
-        with:
-          token: ${{ secrets.PAT }}
-          commit-message: Build
-          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
-          base: deploy
-          title: 'Prepare deployment build'
-          branch: 'Deploy-${{github.sha}}'
-          delete-branch: true
+      # - name: Pull Request Automerge
+      #   if: steps.cpr.outputs.pull-request-operation == 'created'
+      #   uses: peter-evans/enable-pull-request-automerge@v1
+      #   with:
+      #     token: ${{ secrets.PAT }}
+      #     pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+      #     merge-method: squash
 
-      - name: Pull Request Automerge
-        if: steps.cpr.outputs.pull-request-operation == 'created'
-        uses: peter-evans/enable-pull-request-automerge@v1
-        with:
-          token: ${{ secrets.PAT }}
-          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
-          merge-method: squash
-
+      # - name: Set latest commit id as var
       #   id: vars
       #   shell: bash
       #   run: |
@@ -97,43 +92,26 @@ jobs:
       #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       #     aws-region: us-east-1
 
-      # # Code deploy Step 1
-      # - name: Configure AWS credentials
-      #   uses: aws-actions/configure-aws-credentials@v1
-      #   with:
-      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     aws-region: us-east-1
-      # # Cod deploy Step 2
-      # - name: Create CodeDeploy Deployment
-      #   id: deploy
-      #   run: |
-      #     aws deploy create-deployment \
-      #       --application-name "kcsa-webserver" \
-      #       --deployment-group-name "deploy-kcsaweb-ec2" \
-      #       --deployment-config-name CodeDeployDefault.OneAtATime \
-      #       --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
-
   # Deploy
-  # deploy:
-  #   needs: build
-  #   runs-on: ubuntu-latest
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
 
-  #   if: github.ref == 'refs/heads/master'
-  #   steps:
-  #     # Step 1
-  #     - name: Configure AWS credentials
-  #       uses: aws-actions/configure-aws-credentials@v1
-  #       with:
-  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  #         aws-region: us-east-1
-  #     # Step 2
-  #     - name: Create CodeDeploy Deployment
-  #       id: deploy
-  #       run: |
-  #         aws deploy create-deployment \
-  #           --application-name "kcsa-webserver" \
-  #           --deployment-group-name "deploy-kcsaweb-ec2" \
-  #           --deployment-config-name CodeDeployDefault.OneAtATime \
-  #           --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
+    if: github.ref == 'refs/heads/master'
+    steps:
+      # Step 1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      # Step 2
+      - name: Create CodeDeploy Deployment
+        id: deploy
+        run: |
+          aws deploy create-deployment \
+            --application-name "kcsa-webserver" \
+            --deployment-group-name "deploy-kcsaweb-ec2" \
+            --deployment-config-name CodeDeployDefault.OneAtATime \
+            --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
