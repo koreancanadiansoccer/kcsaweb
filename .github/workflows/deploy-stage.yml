@@ -64,7 +64,7 @@ jobs:
           SOURCE: '*'
           REMOTE_HOST: ec2-54-166-72-47.compute-1.amazonaws.com
           REMOTE_USER: ubuntu
-          TARGET: '/home/ubuntu/'
+          TARGET: '/home/ubuntu/kcsa_tmp/'
 
       # Step 3 : Commit to branch.
       # - name: Create commit

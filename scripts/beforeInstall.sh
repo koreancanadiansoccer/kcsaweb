@@ -14,5 +14,7 @@ if [[ -d /home/ubuntu/kcsaweb ]]; then
     ls -ltr /home/ubuntu
 fi
 
+cp -r /home/ubuntu/kcsa_tmp/* /home/ubuntu/kcsaweb/
+
 
 
