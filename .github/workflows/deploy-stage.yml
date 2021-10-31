@@ -54,11 +54,11 @@ jobs:
           git config --global user.email 'koreancanadiansoccer@gmail.com'
           git commit -am "Add client npm build dir"
       - name: Declare some variables
-          id: vars
-          shell: bash
-          run: |
-            echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-            echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+        id: vars
+        shell: bash
+        run: |
+          echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
 
       # # Step 4
