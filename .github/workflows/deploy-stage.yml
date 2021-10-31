@@ -64,10 +64,10 @@ jobs:
 
       - name: confirm variables;
         run: |
-        echo 'Original sha'
-        echo "${{ github.sha }}"
-        echo 'new sha'
-        echo "${{ steps.vars.outputs.sha_short }}"
+          echo 'Original sha'
+          echo "${{ github.sha }}"
+          echo 'new sha'
+          echo "${{ steps.vars.outputs.sha_short }}"
       # # Step 4
       # - name: Configure AWS credentials
       #   uses: aws-actions/configure-aws-credentials@v1
