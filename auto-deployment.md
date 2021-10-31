@@ -34,3 +34,9 @@
                 2. restart nginx
         step 7) Validate Service
                 1. run pm2 list to check the application running in background
+
+## 3. AWS Code Deploy log
+
+        Code Deploy Script Log file location:  /opt/codedeploy-agent/deployment-root/868c9aa0-d5c3-44da-aa28-447340d8ea5c/{deployment_id}/logs/
+
+        the Script Log only appear when Code Deploy Fail
