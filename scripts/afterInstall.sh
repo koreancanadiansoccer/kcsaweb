@@ -7,6 +7,11 @@
 # cd /home/ubuntu/kcsaweb
 # sudo npm install
 
+mkdir /home/ubuntu/kcsaweb
+echo 'Here is the current Root DIR List (/home/ubuntu) : '
+ls -ltr /home/ubuntu
+sudo cp -r /home/ubuntu/kcsa_tmp/* /home/ubuntu/kcsaweb/
+
 #copy .env file from /home/ubuntu/config to Root DIR for kcsaweb
 sudo cp /home/ubuntu/config/.env /home/ubuntu/kcsaweb/.
 #migrate sequelize
