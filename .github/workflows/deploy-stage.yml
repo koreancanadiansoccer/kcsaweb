@@ -47,15 +47,24 @@ jobs:
         env:
           CI: false
 
-      - name: copy build file via ssh key
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          # port: ${{ secrets.PORT }}
-          key: ${{ secrets.KEY }}
-          source: '/home/runner/work/kcsaweb/kcsaweb/client/build/*'
-          target: '/var/www/kcsa-demo/'
+      # - name: copy build file via ssh key
+      #   uses: appleboy/scp-action@master
+      #   with:
+      #     host: ${{ secrets.HOST }}
+      #     username: ${{ secrets.USERNAME }}
+      #     # port: ${{ secrets.PORT }}
+      #     key: ${{ secrets.KEY }}
+      #     source: "/home/runner/work/kcsaweb/kcsaweb/client/build/*"
+      #     target: "/var/www/kcsa-demo/"
+
+      - name: Deploy to my EC2 instance
+        uses: easingthemes/ssh-deploy@v2.1.5
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          SOURCE: '/home/runner/work/kcsaweb/kcsaweb/client/build/*'
+          REMOTE_HOST: ${{ secrets.HOST }}
+          REMOTE_USER: ${{ secrets.USERNAME }}
+          TARGET: '/var/www/kcsa-demo/'
 
       # Step 3 : Commit to branch.
       # - name: Create commit
