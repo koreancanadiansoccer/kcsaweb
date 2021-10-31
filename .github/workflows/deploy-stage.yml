@@ -61,7 +61,7 @@ jobs:
         uses: easingthemes/ssh-deploy@v2.2.11
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          SOURCE: '/home/runner/work/kcsaweb/kcsaweb/*'
+          SOURCE: '*'
           REMOTE_HOST: ec2-54-166-72-47.compute-1.amazonaws.com
           REMOTE_USER: ubuntu
           TARGET: '/home/ubuntu/'
