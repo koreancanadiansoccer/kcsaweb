@@ -35,9 +35,9 @@ jobs:
           cd client
           pwd
           npm ci
-          npm run build
           echo 'CLIENT DONE'
           ls
+          scp
         env:
           CI: false
 
@@ -91,16 +91,7 @@ jobs:
       #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       #     aws-region: us-east-1
-
-  # Deploy
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    if: github.ref == 'refs/heads/master'
-    steps:
-      # Step 1
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials for deploy
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -114,4 +105,26 @@ jobs:
             --application-name "kcsa-webserver" \
             --deployment-group-name "deploy-kcsaweb-ec2" \
             --deployment-config-name CodeDeployDefault.OneAtATime \
-            --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
+
+  # Deploy
+  # deploy:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+
+  #   if: github.ref == 'refs/heads/master'
+  #   steps:
+  #     # Step 1
+  #     - name: Configure AWS credentials
+  #       uses: aws-actions/configure-aws-credentials@v1
+  #       with:
+  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         aws-region: us-east-1
+  #     # Step 2
+  #     - name: Create CodeDeploy Deployment
+  #       id: deploy
+  #       run: |
+  #         aws deploy create-deployment \
+  #           --application-name "kcsa-webserver" \
+  #           --deployment-group-name "deploy-kcsaweb-ec2" \
+  #           --deployment-config-name CodeDeployDefault.OneAtATime \
