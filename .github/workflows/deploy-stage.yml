@@ -58,13 +58,13 @@ jobs:
       #     target: "/var/www/kcsa-demo/"
 
       - name: Deploy to my EC2 instance
-        uses: easingthemes/ssh-deploy@v2.1.5
+        uses: easingthemes/ssh-deploy@v2.2.11
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          SOURCE: '/home/runner/work/kcsaweb/kcsaweb/client/build/*'
+          SOURCE: '/home/runner/work/kcsaweb/kcsaweb/*'
           REMOTE_HOST: ${{ secrets.HOST }}
           REMOTE_USER: ${{ secrets.USERNAME }}
-          TARGET: '/var/www/kcsa-demo/'
+          TARGET: '/home/ubuntu/'
 
       # Step 3 : Commit to branch.
       # - name: Create commit
