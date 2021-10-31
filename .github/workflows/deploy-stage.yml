@@ -62,8 +62,8 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
           SOURCE: '/home/runner/work/kcsaweb/kcsaweb/*'
-          REMOTE_HOST: ${{ secrets.HOST }}
-          REMOTE_USER: ${{ secrets.USERNAME }}
+          REMOTE_HOST: ec2-54-166-72-47.compute-1.amazonaws.com
+          REMOTE_USER: ubuntu
           TARGET: '/home/ubuntu/'
 
       # Step 3 : Commit to branch.
