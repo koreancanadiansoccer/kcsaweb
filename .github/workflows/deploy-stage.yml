@@ -23,6 +23,8 @@ jobs:
       # Step 1
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+        with:
+          ssh-key: ${{ secrets.DEPLOY_PR_OPEN_SECRET }}
 
       # Step 2 : verification npm install
       - name: npm install for Server
@@ -54,20 +56,37 @@ jobs:
           git config --global user.email 'koreancanadiansoccer@gmail.com'
           git add .
           git commit -m "Build client for deploying"
-      - name: Declare some variables
-        id: vars
-        shell: bash
-        run: |
-          echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-          echo "::set-output name=sha_short::$(git rev-parse HEAD)"
-          echo "${{ steps.vars.outputs.sha_short }}"
 
-      - name: confirm variables;
-        run: |
-          echo 'Original sha'
-          echo "${{ github.sha }}"
-          echo 'new sha'
-          echo "${{ steps.vars.outputs.sha_short }}"
+      - name: Create Pull request
+        id: cpr
+        uses: peter-evans/create-pull-request@v3
+
+        commit-message: Build
+        author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+        base: deploy
+
+      - name: Enable Pull Request Automerge
+        if: steps.cpr.outputs.pull-request-operation == 'created'
+        uses: peter-evans/enable-pull-request-automerge@v1
+        with:
+          # token: ${{ secrets.PAT }}
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash
+          delete-branch: true
+
+      #   id: vars
+      #   shell: bash
+      #   run: |
+      #     echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      #     echo "::set-output name=sha_short::$(git rev-parse HEAD)"
+      #     echo "${{ steps.vars.outputs.sha_short }}"
+
+      # - name: confirm variables;
+      #   run: |
+      #     echo 'Original sha'
+      #     echo "${{ github.sha }}"
+      #     echo 'new sha'
+      #     echo "${{ steps.vars.outputs.sha_short }}"
       # # Step 4
       # - name: Configure AWS credentials
       #   uses: aws-actions/configure-aws-credentials@v1
