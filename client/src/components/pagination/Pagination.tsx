@@ -48,12 +48,12 @@ const UnstyledPagination: FunctionComponent<PaginationProps> = ({
 
   return (
     <Box className={className}>
-      <Box className="first-page" onClick={() => { void onChange(0) }}>
+      <Box className={activePage != 0 ? "first-page" : "non-cursor"} onClick={() => { void onChange(0) }}>
         <ArrowBackIos />
         <ArrowBackIos className="first-page-button" />
       </Box>
 
-      <Box className="prev-page" onClick={prevPageChange}>
+      <Box className={activePage != 0 ? "prev-page" : "non-cursor"} onClick={prevPageChange} ml={3}>
         <ArrowBackIos />
       </Box>
 
@@ -65,11 +65,11 @@ const UnstyledPagination: FunctionComponent<PaginationProps> = ({
         {activePage + 1}-{lastPage} of {lastPage}
       </Typography>
 
-      <Box className="next-page" onClick={nextPageChange}>
+      <Box className={activePage + 1 != lastPage? "next-page" : "non-cursor"} onClick={nextPageChange} mr={3}>
         <ArrowForwardIos />
       </Box>
 
-      <Box className="last-page" onClick={() => { void onChange(lastPage - 1) }}>
+      <Box className={activePage + 1 != lastPage ? "last-page" : "non-cursor"} onClick={() => { void onChange(lastPage - 1) }}>
         <ArrowForwardIos className="last-page-button" />
         <ArrowForwardIos />
       </Box>
@@ -78,18 +78,30 @@ const UnstyledPagination: FunctionComponent<PaginationProps> = ({
 };
 
 export const Pagination = withTheme(styled(UnstyledPagination)`
+  .non-cursor {
+    cursor: default;
+    opacity: 0.3;
+  }
+
   .first-page {
     cursor: pointer;
     opacity: 0.7;
 
-    .first-page-button {
-      margin-left: -20px;
+    &:hover {
+      color: #f17f42;
     }
   }
 
+  .first-page-button {
+    margin-left: -20px;
+  }
+
   .prev-page {
-    margin-left: 1rem;
     cursor: pointer;
+
+    &:hover {
+      color: #f17f42;
+    }
   }
 
   .page-number {
@@ -98,17 +110,24 @@ export const Pagination = withTheme(styled(UnstyledPagination)`
   }
 
   .next-page {
-    margin-right: 1rem;
     cursor: pointer;
+
+    &:hover {
+      color: #f17f42;
+    }
   }
 
   .last-page {
     cursor: pointer;
     opacity: 0.7;
 
-    .last-page-button {
-      margin-right: -20px;
+    &:hover {
+      color: #f17f42;
     }
+  }
+
+  .last-page-button {
+    margin-right: -20px;
   }
 
   .MuiSvgIcon-root {

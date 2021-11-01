@@ -7,6 +7,7 @@ interface LeagueSelectProps {
   className?: string;
   title: string;
   selected: boolean;
+  mt: number;
   onClick: () => void;
 }
 
@@ -17,11 +18,12 @@ const UnstyledLeagueSelect: FunctionComponent<LeagueSelectProps> = ({
   className,
   title,
   selected,
+  mt,
   onClick,
 }) => {
   return (
     <Box
-      mr={3}
+      mr={mt ? mt : 3}
       className={className}
       position="relative"
       onClick={() => onClick()}
