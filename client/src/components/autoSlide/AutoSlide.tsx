@@ -5,7 +5,7 @@ import map from 'lodash/map';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 
-import { Gallery, GalleryImage } from '../../types/gallery';
+import { GalleryImage } from '../../types/gallery';
 
 interface AutoSlideProps {
   className?: string;

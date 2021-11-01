@@ -7,8 +7,6 @@ import React, {
   useContext,
   ChangeEvent,
 } from 'react';
-import { withTheme } from '@material-ui/core/styles';
-import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
@@ -39,9 +37,6 @@ import { ResourceType } from '../../../types/resource.enum';
 export const AdminTeamGeneral: FunctionComponent = () => {
   const { team: origTeam, setTeam: setOrigTeam } = useContext(TeamContext);
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
   const [team, setTeam] = useState<Team>(origTeam);
   const [file, setFile] = useState<File>();
   const [fileLink, setFileLink] = useState('');
@@ -67,7 +62,6 @@ export const AdminTeamGeneral: FunctionComponent = () => {
   }, [origTeam]);
 
   const updateTeam = useCallback(async () => {
-    setLoading(true);
     try {
       let teamLogoURL = team.teamLogoURL;
 
@@ -94,7 +88,7 @@ export const AdminTeamGeneral: FunctionComponent = () => {
         setFileLink('');
       }
     } catch (e) {
-      setError(parseError(e));
+      console.info(parseError(e));
     }
   }, [updateTeamMutation, team, file]);
 

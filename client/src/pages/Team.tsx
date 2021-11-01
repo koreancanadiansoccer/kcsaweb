@@ -99,7 +99,7 @@ const UnstyledTeam: FunctionComponent<TeamProps> = ({ className }) => {
 
             {teamTabType === TabType.SCHEDULE && (
               <Box mt={5}>
-                <TeamSchedule teamMatches={teamMatches} id={id} />
+                <TeamSchedule teamMatches={teamMatches} />
               </Box>
             )}
 

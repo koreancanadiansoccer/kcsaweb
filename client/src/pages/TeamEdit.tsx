@@ -26,7 +26,7 @@ const UnstyledTeamEdit: FunctionComponent = () => {
       ),
     [id]
   );
-
+  console.info(leagueTeam);
   // Tabs Panel
   const panelOptions: PanelOptions[] = useMemo(
     () => [

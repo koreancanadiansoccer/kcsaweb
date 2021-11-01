@@ -39,9 +39,6 @@ import { parseError } from '../../graphql/client';
 const UnstyledTeamGneral: FunctionComponent = () => {
   const { team: origTeam, setTeam: setOrigTeam } = useContext(TeamContext);
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
   const [team, setTeam] = useState<Team>(origTeam);
   const [file, setFile] = useState<File>();
   const [fileLink, setFileLink] = useState('');
@@ -67,7 +64,6 @@ const UnstyledTeamGneral: FunctionComponent = () => {
   }, [origTeam]);
 
   const updateTeam = useCallback(async () => {
-    setLoading(true);
     try {
       let teamLogoURL = team.teamLogoURL;
 
@@ -94,7 +90,7 @@ const UnstyledTeamGneral: FunctionComponent = () => {
         setFileLink('');
       }
     } catch (e) {
-      setError(parseError(e));
+      console.info(parseError(e));
     }
   }, [updateTeamMutation, team, file]);
 

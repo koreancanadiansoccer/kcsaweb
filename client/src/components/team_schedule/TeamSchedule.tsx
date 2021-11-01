@@ -19,7 +19,6 @@ interface TeamScheduleProps {
 const UnstyledTeamSchedule: FunctionComponent<TeamScheduleProps> = ({
   teamMatches,
   className,
-  id,
 }) => {
   return (
     <Box className={className}>
@@ -29,11 +28,6 @@ const UnstyledTeamSchedule: FunctionComponent<TeamScheduleProps> = ({
       </Box>
 
       {map(teamMatches, (match) => {
-        const opponent =
-          match.homeTeam.id === parseInt(id, 10)
-            ? match.awayTeam
-            : match.homeTeam;
-
         return (
           <Box key={`team-${match.id}-schedule-${match.matchDay}`}>
             <Box className="boldText" fontSize={'1.5rem'} mb={2}>
