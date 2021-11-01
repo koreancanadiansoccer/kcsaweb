@@ -1,5 +1,5 @@
 /* Home page Data */
-export const homeStandingHeader = ['Pos', 'Club', 'Pl', 'GD', 'Pts'];
+export const HomeStandingHeader = ['Pos', 'Club', 'Pl', 'GD', 'Pts'];
 
 export interface HomeStanding {
   name: JSX.Element;
@@ -8,7 +8,7 @@ export interface HomeStanding {
   points: number;
 }
 
-export const homeScorerHeader = ['Pos', 'Player', 'Club', 'Goals'];
+export const HomeScorerHeader = ['Pos', 'Player', 'Club', 'Goals'];
 
 export interface HomeScorer {
   pos: number;
@@ -18,7 +18,7 @@ export interface HomeScorer {
 }
 
 /* League page Data */
-export const leaguePageStandHeader = [
+export const LeaguePageStandingHeader = [
   'Position',
   'Club',
   'Played',
@@ -38,7 +38,7 @@ export interface LeaguePageStanding {
   Point: number;
 }
 
-export const leaguePageScheduleHeader = [
+export const LeaguePageScheduleHeader = [
   'HOME',
   'VS',
   'AWAY',

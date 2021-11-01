@@ -19,10 +19,14 @@ interface StandingTable {
   tableHeaderData: string[];
   headerLongField: string[];
   rowLongField: string[];
-  cusElevation?: number;
+  paperShadow?: number;
   hideHeader?: string;
   flexWidth?: number;
   tableType?: TableType;
+  standingTableClassName?: string;
+  headerClassName?: string;
+  rowContentClassName?: string;
+  dividerClassName?: string;
 }
 
 /**
@@ -35,17 +39,21 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
   tableHeaderData,
   headerLongField,
   rowLongField,
-  cusElevation,
+  paperShadow,
   hideHeader,
   flexWidth,
   tableType,
+  standingTableClassName,
+  headerClassName,
+  rowContentClassName,
+  dividerClassName,
 }) => {
   return (
     <Box className={className}>
-      <Paper elevation={!cusElevation ? cusElevation : 3}>
-        <Box px={2} py={5.625} className="standing-table-box">
+      <Paper elevation={typeof paperShadow === 'number' ? paperShadow : 3}>
+        <Box px={2} py={5.625} className={standingTableClassName ? standingTableClassName : "default-standing-table-box"}>
           {title && (
-            <Box textAlign="center" mb={2} className="table-title">
+            <Box textAlign="center" mb={2} className="default-table-title">
               {title}
             </Box>
           )}
@@ -54,7 +62,7 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
           <Box
             display="flex"
             justifyContent="space-around"
-            className="table-header"
+            className={headerClassName ? headerClassName : "default-table-header"}
             py={0.75}
             px={1}
           >
@@ -83,7 +91,7 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
             </Box>
           ) : (
             map(tableRowData, (data, dataRowIdx) => (
-              <Box key={`table-${dataRowIdx}`} className="row-content">
+              <Box key={`table-${dataRowIdx}`} className={rowContentClassName ? rowContentClassName : "default-row-content"}>
                 <Box
                   display="flex"
                   justifyContent="space-around"
@@ -100,20 +108,20 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
                     if (key === 'name' && tableType === TableType.SCORER) {
                       value = shortenName(property as string);
                     }
-                      return (
-                        <Box
-                          key={`table-data-${key}-${idx}`}
-                          flex={isNameField ? 4 : flexWidth ? flexWidth : 1}
-                          display="flex"
-                          justifyContent="center"
-                          py={2}
-                        >
-                          {value}
-                        </Box>
-                      );
+                    return (
+                      <Box
+                        key={`table-data-${key}-${idx}`}
+                        flex={isNameField ? 4 : flexWidth ? flexWidth : 1}
+                        display="flex"
+                        justifyContent="center"
+                        py={2}
+                      >
+                        {value}
+                      </Box>
+                    );
                   })}
                 </Box>
-                <Divider className="standing-table-divider" />
+                <Divider className={dividerClassName ? dividerClassName : "default-standing-table-divider"} />
               </Box>
             ))
           )}
@@ -124,12 +132,12 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
 };
 
 export const StandingTable = withTheme(styled(UnstyledStandingTable)`
-  .table-title {
+  .default-table-title {
     font-size: 1.25rem;
     font-weight: 700;
   }
 
-  .table-header {
+  .default-table-header {
     font-size: 0.75rem;
     background-color: ${({ theme }) => theme.palette.grey[200]};
   }

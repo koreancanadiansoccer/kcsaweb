@@ -55,6 +55,7 @@ const App: FunctionComponent = () => {
         user: homeViewerData.user,
         announcements: homeViewerData.announcements,
         galleries: homeViewerData.galleries,
+        leagues: homeViewerData.leagues,
         leagueAgeKeys,
         leagueTeamGroupAge,
         leaguePlayersGroupAge,

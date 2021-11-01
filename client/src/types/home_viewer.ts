@@ -27,6 +27,7 @@ export interface HomeViewer {
   user?: User;
   announcements?: Announcement[];
   galleries?: Gallery[];
+  leagues?: League[];
   leagueAgeKeys?: string[];
   leagueTeamGroupAge?: { [key: string]: LeagueTeam[] };
   leagueTeams?: LeagueTeam[];

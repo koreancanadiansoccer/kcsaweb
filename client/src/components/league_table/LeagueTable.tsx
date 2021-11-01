@@ -8,11 +8,10 @@ import { TableType } from '../../types/table_type';
 import { ViewerContext } from '../../context/homeViewer';
 import { StandingTable } from '../standing_table/StandingTable'
 import {
-  homeStandingHeader,
-  homeScorerHeader,
+  HomeStandingHeader,
+  HomeScorerHeader,
   TableRow,
 } from '../standing_table/standingData';
-import { shortenName } from '../../utils/format';
 
 interface LeagueTableProps {
   title: string;
@@ -35,8 +34,8 @@ const UnstyledLeagueTable: FunctionComponent<LeagueTableProps> = ({
 
   // Get table header data based on props.
   const tableHeaderData = useMemo(() => {
-    if (tableType === TableType.SCORER) return homeScorerHeader;
-    return homeStandingHeader;
+    if (tableType === TableType.SCORER) return HomeScorerHeader;
+    return HomeStandingHeader;
   }, [tableType]);
 
   // Get table tile data based on props.

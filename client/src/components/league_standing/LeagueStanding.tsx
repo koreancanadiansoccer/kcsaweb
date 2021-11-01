@@ -10,7 +10,7 @@ import orderBy from 'lodash/orderBy';
 import LogoGrey from '../../assets/logo_grey.svg';
 import { LeagueTeam } from '../../types/team';
 import { StandingTable } from '../standing_table/StandingTable';
-import { leaguePageStandHeader } from '../standing_table/standingData';
+import { LeaguePageStandingHeader } from '../standing_table/standingData';
 
 
 
@@ -29,7 +29,7 @@ const generateStandingData = (leagueTeams: LeagueTeam[]) => {
       return {
         club: (
           <div
-            className="team-logo"
+            className="league-standing-team-logo"
             onClick={() => history.push(`/teams/${leagueTeam.id}`)}
           >
             <img
@@ -46,8 +46,8 @@ const generateStandingData = (leagueTeams: LeagueTeam[]) => {
         Point: leagueTeam.win * 3 + leagueTeam.tie,
       };
     }),
-    ['Won', 'Drawn'],
-    ['desc', 'desc']
+    ['Point', 'Won', 'Drawn'],
+    ['desc', 'desc', 'desc']
   );
 
   return map(orderData, (data, idx) => ({ Position: idx + 1, ...data }));
@@ -75,9 +75,10 @@ const UnstyledLeagueStanding: FunctionComponent<LeagueStandingProps> = ({
 
       <StandingTable
         tableRowData={leagueStandingData}
-        tableHeaderData={leaguePageStandHeader}
+        tableHeaderData={LeaguePageStandingHeader}
         headerLongField={['Club']}
         rowLongField={['name', 'club']}
+        standingTableClassName={'league-standing-header'}
       />
     </Box>
   );
@@ -89,11 +90,12 @@ export const LeagueStanding = withTheme(styled(UnstyledLeagueStanding)`
     color: black;
   }
 
-  .team-logo {
+  .league-standing-team-logo {
     display: flex;
     align-items: center;
     width: 100%;
-    justify-content: center;
+    justify-content: flex-start;
+    padding-left: 12rem;
 
     &:hover {
       cursor: pointer;
@@ -107,7 +109,7 @@ export const LeagueStanding = withTheme(styled(UnstyledLeagueStanding)`
     }
   }
 
-  .table-header {
+  .league-standing-header {
     font-size: 1.1rem;
     font-weight: 400;
   }

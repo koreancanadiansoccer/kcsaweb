@@ -31,25 +31,26 @@ const UnstyledLeague: FunctionComponent<LeagueProps> = ({ className }) => {
   const [teamTabType, setTeamTabType] = useState<TabType>(TabType.STANDING);
   const { id } = useParams<{ id: string }>();
 
-  const leagueActive = useMemo(
+  const league = useMemo(
     () =>
       find(
-        viewer.leagueActive,
+        viewer.leagues,
         (league) => league.id === parseInt(id, 10)
       ), [id]
   );
 
-  if (!leagueActive || !viewer.leagueTeamGroupAge || !viewer.matchesByAge) return <div>Loading...</div>
+  if (!league || !viewer.leagueTeamGroupAge || !viewer.matchesByAge)
+    return <div>Loading...</div>;
 
   return (
     <Box className={className}>
       <Box
-        className="media-banner-container"
+        className="league-banner-container"
         display="flex"
         alignItems="center"
       >
-        <Typography variant="h3" className="media-banner-text">
-          {leagueActive?.name} {leagueActive.year}
+        <Typography variant="h3" className="league-banner-text">
+          {league?.name} {league.year}
         </Typography>
       </Box>
 
@@ -78,14 +79,14 @@ const UnstyledLeague: FunctionComponent<LeagueProps> = ({ className }) => {
         {teamTabType === TabType.STANDING && (
           <LeagueStanding
             className="standing-table"
-            teams={viewer.leagueTeamGroupAge[leagueActive.ageType]}
+            teams={viewer.leagueTeamGroupAge[league.leagueAgeType]}
           />
         )}
 
         {teamTabType === TabType.SCHEDULE_SCORE && (
           <LeagueSchedule
             className="schedule-table"
-            matches={viewer.matchesByAge[leagueActive.ageType]}
+            matches={viewer.matchesByAge[league.leagueAgeType]}
           />
         )}
       </Container>
@@ -94,13 +95,13 @@ const UnstyledLeague: FunctionComponent<LeagueProps> = ({ className }) => {
 };
 
 export const League = withTheme(styled(UnstyledLeague)`
-  .media-banner-container {
+  .league-banner-container {
     background-image: url(${AboutBanner});
     min-width: 100px; /*or 70%, or what you want*/
     height: 284px; /*or 70%, or what you want*/
     background-size: 100% 100%;
 
-    .media-banner-text {
+    .league-banner-text {
       font-weight: 700;
       color: white;
       margin-left: 7rem;
@@ -108,7 +109,6 @@ export const League = withTheme(styled(UnstyledLeague)`
   }
 
   .standing-table {
-    min-width: 1193px;
     font-size: 1.04rem;
     margin-bottom: 5rem;
   }

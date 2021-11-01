@@ -16,7 +16,7 @@ import dayjs from 'dayjs';
 import LogoGrey from '../../assets/logo_grey.svg';
 import { Match } from '../../types/match';
 import { StandingTable } from '../standing_table/StandingTable';
-import { leaguePageScheduleHeader } from '../standing_table/standingData';
+import { LeaguePageScheduleHeader } from '../standing_table/standingData';
 
 interface LeagueScheduleProps {
   className?: string;
@@ -107,13 +107,17 @@ const UnstyledLeagueSchedule: FunctionComponent<LeagueScheduleProps> = ({
                 return (
                   <Box my={2}>
                     <StandingTable
-                      tableHeaderData={leaguePageScheduleHeader}
+                      tableHeaderData={LeaguePageScheduleHeader}
                       tableRowData={generateScheduleData(match)}
                       headerLongField={['LOCATION', 'TIME']}
                       rowLongField={['LOCATION', 'TIME']}
-                      cusElevation={0}
+                      paperShadow={0}
                       hideHeader={'VS'}
                       flexWidth={2}
+                      standingTableClassName={'league-schedule-table-box'}
+                      headerClassName={'league-schedule-table-header'}
+                      rowContentClassName={'league-schedule-row-content'}
+                      dividerClassName={'league-schedule-divider'}
                     />
                   </Box>
                 );})}
@@ -148,11 +152,11 @@ export const LeagueSchedule = withTheme(styled(UnstyledLeagueSchedule)`
     font-weight: bold;
   }
 
-  .standing-table-box {
+  .league-schedule-table-box {
     padding: 0 0;
   }
 
-  .table-header {
+  .league-schedule-table-header {
     font-style: italic;
     color: #f17f42;
     font-size: 0.6rem;
@@ -195,7 +199,7 @@ export const LeagueSchedule = withTheme(styled(UnstyledLeagueSchedule)`
     }
   }
 
-  .row-content {
+  .league-schedule-row-content {
     font-size: 1.2rem;
     font-weight: bold;
 
@@ -204,7 +208,7 @@ export const LeagueSchedule = withTheme(styled(UnstyledLeagueSchedule)`
     }
   }
 
-  .standing-table-divider {
+  .league-schedule-divider {
     margin-top: 2rem;
   }
 `);

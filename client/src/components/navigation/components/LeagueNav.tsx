@@ -43,26 +43,24 @@ export const LeagueNav: React.FC = () => {
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
         onClose={handleClose}
       >
-        {map(viewer?.leagueActive, (leagueActives, key) => {
+        {map(viewer?.leagues, (league) => {
           return (
-            <Box key={`league-age-${key}`}>
+            <Box key={`league-age-${league.leagueAgeType}`}>
               <Divider />
 
               <Box textAlign="center" className="boldText">
-                {key}
+                {league.leagueAgeType}
               </Box>
 
               <Divider />
 
-              <Box
-                key={`league-nav-link-${leagueActives.name}-${leagueActives.id}`}
-              >
+              <Box key={`league-nav-link-${league.name}-${league.id}`}>
                 <MenuItem
                   onClick={handleClose}
                   component={RouteLink}
-                  to={`/league/${leagueActives.id}`}
+                  to={`/league/${league.id}`}
                 >
-                  <Box textAlign="center"> {leagueActives.name}</Box>
+                  <Box textAlign="center"> {league.name}</Box>
                 </MenuItem>
               </Box>
             </Box>
