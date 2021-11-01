@@ -16,7 +16,6 @@ import { useMutation } from '@apollo/client';
 import dayjs from 'dayjs';
 import forEach from 'lodash/forEach';
 import find from 'lodash/find';
-import omit from 'lodash/omit';
 import isEqual from 'lodash/isEqual';
 
 import { Modal } from '../../../../components/modal/Modal';
@@ -29,7 +28,6 @@ import {
   UpdateMatchInput,
   UPDATE_MATCH,
 } from '../../../../graphql/match/updateMatch';
-import { parseError } from '../../../../graphql/client';
 
 import { MatchTeam, TeamType } from './components/MatchTeam';
 
@@ -133,14 +131,6 @@ export const EditMatchModal: FunctionComponent<EditMatchModalProps> = ({
 
       if (res.data?.updateMatch) {
         setOrigLeague(res.data?.updateMatch);
-        // const origLeagueMatches = [...origLeague.matches];
-        // const updatedMatchIdx = findIndex(
-        //   origLeagueMatches,
-        //   (origMatch) => origMatch.id === res.data?.updateMatch.id
-        // );
-
-        // origLeagueMatches[updatedMatchIdx] = res.data?.updateMatch;
-        // setOrigLeague({ ...origLeague, matches: origLeagueMatches });
       }
     } catch (e) {
       console.error(e);

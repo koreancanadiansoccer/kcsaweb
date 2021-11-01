@@ -4,7 +4,6 @@ import {
   Column,
   BelongsTo,
   ForeignKey,
-  AllowNull,
   Default,
   HasMany,
 } from 'sequelize-typescript';
@@ -15,14 +14,6 @@ import { Player } from './player.model';
 
 @Table({ tableName: 'league_player' })
 export class LeaguePlayer extends Model {
-  @AllowNull(false)
-  @Column
-  name!: string;
-
-  @AllowNull(false)
-  @Column
-  dob!: string;
-
   @Default(0)
   @Column({ field: 'goal_scored' })
   goalScored!: number;
@@ -32,6 +23,10 @@ export class LeaguePlayer extends Model {
   yellowCard!: number;
 
   @Column email!: string;
+
+  @Default(false)
+  @Column({ field: 'signed_waiver' })
+  signedWaiver!: boolean;
 
   // Associations with league team.
   @ForeignKey(() => LeagueTeam)

@@ -31,17 +31,22 @@ export const CreateTeamPlayerModal: FunctionComponent<CreateTeamPlayerModal> = (
 }) => {
   // Init state for new product.
   const [newPlayer, setNewPlayer] = useState<PlayerInput>({
-    name: '',
+    firstName: '',
+    lastName: '',
     dob: dayjs().subtract(18, 'year').format('YYYY-MM-DD'),
   });
 
-  const isValid = useMemo(() => !!newPlayer?.name, [newPlayer]);
+  const isValid = useMemo(
+    () => !!newPlayer?.firstName && !!newPlayer?.lastName && !!newPlayer.dob,
+    [newPlayer]
+  );
 
   // Reset 'newPlayer' when closing/opening the modal.
   useEffect(
     () =>
       setNewPlayer({
-        name: '',
+        firstName: '',
+        lastName: '',
         dob: dayjs().subtract(18, 'year').format('YYYY-MM-DD'),
       }),
     [open]
@@ -53,13 +58,26 @@ export const CreateTeamPlayerModal: FunctionComponent<CreateTeamPlayerModal> = (
         <Box my={2}>
           <Typography variant="body1">Add Player</Typography>
           <Input
-            label="Name"
+            label="First Name"
             placeholder="Player name"
             required
-            value={newPlayer.name}
+            value={newPlayer.firstName}
             fullWidth
             onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-              setNewPlayer({ ...newPlayer, name: evt.target.value });
+              setNewPlayer({ ...newPlayer, firstName: evt.target.value });
+            }}
+          />
+        </Box>
+
+        <Box my={2}>
+          <Input
+            label="Last Name"
+            placeholder="Player name"
+            required
+            value={newPlayer.lastName}
+            fullWidth
+            onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+              setNewPlayer({ ...newPlayer, lastName: evt.target.value });
             }}
           />
         </Box>

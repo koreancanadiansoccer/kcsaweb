@@ -9,7 +9,8 @@ import { Player } from '../../../db/models/player.model';
 export const createPlayer = {
   type: PlayerType,
   args: {
-    name: { type: new GraphQLNonNull(GraphQLString) },
+    firstName: { type: new GraphQLNonNull(GraphQLString) },
+    lastName: { type: new GraphQLNonNull(GraphQLString) },
     dob: { type: new GraphQLNonNull(GraphQLString) },
     teamId: { type: new GraphQLNonNull(GraphQLInt) },
   },

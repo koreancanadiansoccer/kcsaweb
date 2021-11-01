@@ -11,12 +11,17 @@ import {
 
 import { Team } from './team.model';
 import { LeaguePlayer } from './leagueplayer.model';
+import { MatchPlayer } from './matchplayer.model';
 
 @Table({ tableName: 'player' })
 export class Player extends Model {
   @AllowNull(false)
   @Column
-  name!: string;
+  firstName!: string;
+
+  @AllowNull(false)
+  @Column
+  lastName!: string;
 
   @AllowNull(false)
   @Column
@@ -38,4 +43,6 @@ export class Player extends Model {
   @BelongsTo(() => Team) team!: Team;
 
   @HasMany(() => LeaguePlayer) leaguePlayers!: LeaguePlayer[];
+
+  @HasMany(() => MatchPlayer) matchPlayers!: MatchPlayer[];
 }

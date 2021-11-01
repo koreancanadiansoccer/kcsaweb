@@ -45,16 +45,15 @@ const UnstyledLeagueGeneral: FunctionComponent = () => {
     setLeague(league);
   }, [origLeague]);
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
   const [updateLeagueMutation] = useMutation<
     UpdateLeagueResult,
     UpdateLeagueInput
   >(UPDATE_LEAGUE);
 
   const hasNoChanges = useMemo(() => {
-    return isEqual(league, origLeague);
+    return (
+      isEqual(league, origLeague) && league.isActive === origLeague.isActive
+    );
   }, [league, origLeague]);
 
   /**
@@ -62,7 +61,6 @@ const UnstyledLeagueGeneral: FunctionComponent = () => {
    * @param updateLeague
    */
   const updateLeague = useCallback(async () => {
-    setLoading(true);
     try {
       const res = await updateLeagueMutation({
         variables: {
@@ -74,7 +72,7 @@ const UnstyledLeagueGeneral: FunctionComponent = () => {
         setOrigLeague(res.data.updateLeague);
       }
     } catch (e) {
-      setError(parseError(e));
+      console.info(parseError(e));
     }
   }, [league, updateLeagueMutation]);
 

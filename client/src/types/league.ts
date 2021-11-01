@@ -1,6 +1,6 @@
 import map from 'lodash/map';
 
-import { LeagueTeam, Team } from './team';
+import { LeagueTeam } from './team';
 import { Match } from './match';
 import { AgeEnums } from './age.enum';
 

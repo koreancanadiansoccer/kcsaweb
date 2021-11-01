@@ -72,8 +72,6 @@ const UnstyledLeagueTeams: FunctionComponent = () => {
 
   const [selectedTeam, setSelectedTeam] = useState<LeagueTeam>();
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
   const [openModal, setOpenModal] = useState<MODAL_TYPE | null>(null);
 
   // Get all teams.
@@ -95,8 +93,6 @@ const UnstyledLeagueTeams: FunctionComponent = () => {
    */
   const updateLeague = useCallback(
     async (newTeams) => {
-      setLoading(true);
-
       try {
         const res = await updateLeagueMutation({
           variables: {
@@ -110,7 +106,7 @@ const UnstyledLeagueTeams: FunctionComponent = () => {
           setOpenModal(null);
         }
       } catch (e) {
-        setError(parseError(e));
+        console.info(parseError(e));
       }
     },
     [origLeague, updateLeagueMutation]
