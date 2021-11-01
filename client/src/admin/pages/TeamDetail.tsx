@@ -1,16 +1,14 @@
 import React, { FunctionComponent, useMemo, useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { useParams } from 'react-router';
-import { withTheme } from '@material-ui/core/styles';
-import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
 
 import { Team } from '../../types/team';
 import { Tabs, PanelOptions } from '../../components/tabs/Tabs';
-import { TeamGeneral } from '../components/admin_teams/TeamGeneral';
-import { TeamPlayers } from '../components/admin_teams/TeamPlayers';
+import { AdminTeamGeneral } from '../components/admin_teams/AdminTeamGeneral';
+import { AdminTeamPlayers } from '../components/admin_teams/AdminTeamPlayers';
 import {
   GET_TEAM,
   TeamQueryData,
@@ -27,7 +25,7 @@ interface TeamDetailProps {
  * Display all info about a team.
  * Uses tab views.
  */
-export const UnstyledTeamDetail: FunctionComponent<TeamDetailProps> = ({
+export const TeamDetail: FunctionComponent<TeamDetailProps> = ({
   className,
 }) => {
   const [team, setTeam] = useState<Team>();
@@ -62,11 +60,11 @@ export const UnstyledTeamDetail: FunctionComponent<TeamDetailProps> = ({
     () => [
       {
         label: 'General',
-        comp: <TeamGeneral />,
+        comp: <AdminTeamGeneral />,
       },
       {
         label: 'Players',
-        comp: <TeamPlayers />,
+        comp: <AdminTeamPlayers />,
       },
     ],
     [team]
@@ -98,12 +96,3 @@ export const UnstyledTeamDetail: FunctionComponent<TeamDetailProps> = ({
     </TeamContext.Provider>
   );
 };
-
-export const TeamDetail = withTheme(styled(UnstyledTeamDetail)`
-  .MuiTabs-root {
-    background-color: white;
-  }
-  .MuiTabs-indicator {
-    height: 0.25rem;
-  }
-`);

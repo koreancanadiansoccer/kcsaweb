@@ -5,7 +5,6 @@ import OrigButton, {
 import { withStyles } from '@material-ui/core/styles';
 import deepOrange from '@material-ui/core/colors/deepOrange';
 import red from '@material-ui/core/colors/red';
-import { Redeem } from '@material-ui/icons';
 
 interface ButtonProps extends OrigButtonProps {
   component?: React.ReactNode;

@@ -4,7 +4,6 @@ import {
   Column,
   BelongsTo,
   ForeignKey,
-  AllowNull,
   Default,
 } from 'sequelize-typescript';
 
@@ -16,14 +15,6 @@ import { Match } from './match.model';
 // Player data for each match.
 @Table({ tableName: 'match_player' })
 export class MatchPlayer extends Model {
-  @AllowNull(false)
-  @Column
-  name!: string;
-
-  @AllowNull(false)
-  @Column
-  dob!: string;
-
   @Default(0)
   @Column({ field: 'goal_scored' })
   goalScored!: number;

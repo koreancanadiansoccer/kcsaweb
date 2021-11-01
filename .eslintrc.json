@@ -58,6 +58,8 @@
         "pathGroupsExcludedImportTypes": ["builtin"]
       }
     ],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["error"],
     "import/no-duplicates": "error",
     "@typescript-eslint/ban-types": [
       "error",

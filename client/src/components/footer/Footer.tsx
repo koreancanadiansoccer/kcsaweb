@@ -1,11 +1,10 @@
-import React, { FunctionComponent, useContext } from 'react';
+import React, { FunctionComponent } from 'react';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 
-import { ViewerContext } from '../../context/homeViewer';
 import ColorLogo from '../../assets/logo_footer.png';
 
 interface FooterProps {
@@ -13,8 +12,6 @@ interface FooterProps {
 }
 
 const UnstyledNavigation: FunctionComponent<FooterProps> = ({ className }) => {
-  const { viewer } = useContext(ViewerContext);
-
   return (
     <Box className={className}>
       <Box className="footer-container">

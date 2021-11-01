@@ -1,9 +1,7 @@
 import React, { FunctionComponent, useEffect, useState, useMemo } from 'react';
-import { withTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import AddIcon from '@material-ui/icons/Add';
 import Typography from '@material-ui/core/Typography';
-import styled from 'styled-components';
 import { useQuery, useMutation } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
 import { map } from 'lodash';
@@ -20,10 +18,6 @@ import { Button } from '../../components/button/Button';
 import { CreateTeamModal } from '../components/admin_teams/modals/CreateTeamModal';
 import { Team, TeamInput } from '../../types/team';
 
-interface TeamsProps {
-  className?: string;
-}
-
 // Table columns to show.
 const tableColumns = [
   { title: 'Name', field: 'name' },
@@ -35,7 +29,7 @@ const tableColumns = [
 /**
  * Displays table of all leagues.
  */
-const UnstyledTeams: FunctionComponent<TeamsProps> = ({ className }) => {
+export const Teams: FunctionComponent = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [teams, setTeams] = useState<Team[]>();
 
@@ -137,5 +131,3 @@ const UnstyledTeams: FunctionComponent<TeamsProps> = ({ className }) => {
     </>
   );
 };
-
-export const Teams = withTheme(styled(UnstyledTeams)``);

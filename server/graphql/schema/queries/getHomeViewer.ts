@@ -8,6 +8,7 @@ import { GalleryImage } from '../../../db/models/galleryimage.model';
 import { LeagueTeam } from '../../../db/models/leagueteam.model';
 import { Match } from '../../../db/models/match.model';
 import { LeaguePlayer } from '../../../db/models/leagueplayer.model';
+import { Player } from '../../../db/models/player.model';
 
 /**
  * Get Home page data.
@@ -44,9 +45,7 @@ export const getHomeViewer = {
         {
           model: LeagueTeam,
           include: [
-            {
-              model: LeaguePlayer,
-            },
+            { model: LeaguePlayer, duplicating: false, include: [Player] },
             {
               model: Team,
               as: 'team',

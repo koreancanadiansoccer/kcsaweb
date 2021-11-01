@@ -23,37 +23,115 @@ jobs:
       # Step 1
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      - name: npm install in client DIR
-        run: |
-          cd client
-          pwd
-          npm install
 
       # Step 2 : verification npm install
+      # npm ci : This command is similar to npm install, except it's meant to be used in automated environments such as test platforms,
+      #          continuous integration, and deployment -- or any situation where you want to make sure you're doing a clean install of your dependencies.
       - name: npm install for Server
         run: |
+          echo 'Current location in CI : '
           pwd
-          cd ..
-          npm install
+          npm ci
+          ls -ltr
 
-      # Step 3 : build client
-      # - name: npm run build in Client DIR and Create Pull Requset
-      #   run : |
-      #     npm run build
+      - name: npm install in client DIR and build
+        run: |
+          cd client
+          echo 'Current location in CI : '
+          pwd
+          npm ci
+          npm run build
+          echo 'CLIENT DONE'
+          ls -ltr
+
+        env:
+          CI: false
+
+      # - name: copy build file via ssh key
+      #   uses: appleboy/scp-action@master
+      #   with:
+      #     host: ${{ secrets.HOST }}
+      #     username: ${{ secrets.USERNAME }}
+      #     # port: ${{ secrets.PORT }}
+      #     key: ${{ secrets.KEY }}
+      #     source: "/home/runner/work/kcsaweb/kcsaweb/client/build/*"
+      #     target: "/var/www/kcsa-demo/"
+
+      - name: Deploy to my EC2 instance
+        uses: easingthemes/ssh-deploy@v2.2.11
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          SOURCE: '*'
+          REMOTE_HOST: ${{ secrets.HOST }}
+          REMOTE_USER: ${{ secrets.USERNAME }}
+          TARGET: '/home/ubuntu/kcsa_tmp/'
+
+      # Step 3 : Commit to branch.
+      # - name: Create commit
+      #   run: |
       #     git config --global user.name 'koreancanadiansoccer'
       #     git config --global user.email 'koreancanadiansoccer@gmail.com'
-      #     git commit -am "Add client npm build dir"
-      #     git push origin test-alice
+      #     git add .
+      #     git commit -m "Build client for deploying"
 
-      # Step 4
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+      # Create Pull request.
+      # - name: Create Pull request
+      #   id: cpr
+      #   uses: peter-evans/create-pull-request@v3
+      #   with:
+      #     token: ${{ secrets.PAT }}
+      #     commit-message: Build
+      #     author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+      #     base: deploy
+      #     title: 'Prepare deployment build'
+      #     branch: 'Deploy-${{github.sha}}'
+      # delete-branch: true
 
-  # Deploy
+      # - name: Pull Request Automerge
+      #   if: steps.cpr.outputs.pull-request-operation == 'created'
+      #   uses: peter-evans/enable-pull-request-automerge@v1
+      #   with:
+      #     token: ${{ secrets.PAT }}
+      #     pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+      #     merge-method: squash
+
+      # - name: Set latest commit id as var
+      #   id: vars
+      #   shell: bash
+      #   run: |
+      #     echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      #     echo "::set-output name=sha_short::$(git rev-parse HEAD)"
+      #     echo "${{ steps.vars.outputs.sha_short }}"
+
+      # - name: confirm variables;
+      #   run: |
+      #     echo 'Original sha'
+      #     echo "${{ github.sha }}"
+      #     echo 'new sha'
+      #     echo "${{ steps.vars.outputs.sha_short }}"
+      # # Step 4
+      # - name: Configure AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: us-east-1
+      # - name: Configure AWS credentials for deploy
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: us-east-1
+      # # Step 2
+      # - name: Create CodeDeploy Deployment
+      #   id: deploy
+      #   run: |
+      #     aws deploy create-deployment \
+      #       --application-name "kcsa-webserver" \
+      #       --deployment-group-name "deploy-kcsaweb-ec2" \
+      #       --deployment-config-name CodeDeployDefault.OneAtATime \
+
+  #Deploy
   deploy:
     needs: build
     runs-on: ubuntu-latest

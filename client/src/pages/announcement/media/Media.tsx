@@ -14,7 +14,7 @@ import { Gallery } from '../../../types/gallery';
 import { parseError } from '../../../graphql/client';
 import { GalleryCard } from '../../../components/gallery_card/GalleryCard';
 import AboutBanner from '../../../assets/about.png';
-import { Pagination } from '../../../components/pagination/Pagination'
+import { Pagination } from '../../../components/pagination/Pagination';
 
 interface GalleryProps {
   className?: string;
@@ -28,7 +28,7 @@ const UnstyledMedia: FunctionComponent<GalleryProps> = ({ className }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(12);
+  const [rowsPerPage] = React.useState(12);
 
   // Get Galleries data
   const galleriesQuery = useQuery<GalleryQueryData>(GET_GALLERIES);

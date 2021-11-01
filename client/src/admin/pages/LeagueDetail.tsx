@@ -1,8 +1,6 @@
 import React, { FunctionComponent, useEffect, useState, useMemo } from 'react';
 import { useQuery } from '@apollo/client';
 import { useParams } from 'react-router';
-import { withTheme } from '@material-ui/core/styles';
-import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
@@ -25,17 +23,17 @@ interface LeagueDetailProps {
  * Display all info about a league.
  * Uses tab views.
  */
-export const UnstyledLeagueDetail: FunctionComponent<LeagueDetailProps> = ({
+export const LeagueDetail: FunctionComponent<LeagueDetailProps> = ({
   className,
 }) => {
   const [league, setLeague] = useState<League>();
 
   const { id } = useParams<{ id: string }>();
-  const [tabSelected, setTabSelected] = React.useState(0);
+  const [tabSelected, setTabSelected] = useState(0);
 
   // Get League data.
   const leagueDataQuery = useQuery(GET_LEAGUE, {
-    variables: { id: parseInt(id) },
+    variables: { id: parseInt(id, 10) },
   });
 
   const [loading, setLoading] = useState(false);
@@ -101,12 +99,3 @@ export const UnstyledLeagueDetail: FunctionComponent<LeagueDetailProps> = ({
     </LeagueContext.Provider>
   );
 };
-
-export const LeagueDetail = withTheme(styled(UnstyledLeagueDetail)`
-  .MuiTabs-root {
-    background-color: white;
-  }
-  .MuiTabs-indicator {
-    height: 0.25rem;
-  }
-`);

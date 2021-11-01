@@ -8,11 +8,16 @@ export const formatYear = (year: string): string =>
  * Format name.
  * Capitalize first letter of each name parts (first name, last name, etc)
  */
-export const displayFullName = (name: string): string =>
-  map(
-    name.split(' '),
-    (name) => name.charAt(0).toUpperCase() + name.slice(1)
-  ).join(' ');
+export const displayFullName = (
+  firstName: string,
+  lastName: string
+): string => {
+  return `${firstName} ${lastName}`;
+};
+// map(
+//   name.split(' '),
+//   (name) => name.charAt(0).toUpperCase() + name.slice(1)
+// ).join(' ');
 
 /**
  * Format name -> Stanley Dong Moon -> S.D.Moon

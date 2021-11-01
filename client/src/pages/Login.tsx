@@ -32,8 +32,9 @@ const UnstyledLogin: FunctionComponent<LoginProps> = () => {
           password: newLogin.password,
         },
       });
+      console.info(res);
     } catch (e) {
-      const error = parseError(e);
+      console.info(parseError(e));
     }
   };
 

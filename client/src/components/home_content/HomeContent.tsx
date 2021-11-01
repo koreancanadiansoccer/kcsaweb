@@ -53,7 +53,7 @@ const generateScorerData = (leaguePlayers: LeaeguePlayerHomeViewer[]) => {
   const orderedData = orderBy(
     map(leaguePlayers, (leaguePlayer) => {
       return {
-        name: leaguePlayer.name,
+        name: `${leaguePlayer.player.firstName} ${leaguePlayer.player.lastName}`,
         club: (
           <div className="team-logo">
             <img src={leaguePlayer.teamLogoURL || LogoGrey} alt="hero-main" />

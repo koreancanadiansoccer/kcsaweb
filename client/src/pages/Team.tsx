@@ -99,7 +99,7 @@ const UnstyledTeam: FunctionComponent<TeamProps> = ({ className }) => {
 
             {teamTabType === TabType.SCHEDULE && (
               <Box mt={5}>
-                <TeamSchedule teamMatches={teamMatches} id={id} />
+                <TeamSchedule teamMatches={teamMatches} />
               </Box>
             )}
 
@@ -115,8 +115,4 @@ const UnstyledTeam: FunctionComponent<TeamProps> = ({ className }) => {
   );
 };
 
-export const Team = withTheme(styled(UnstyledTeam)`
-  .MuiTabs-root {
-    background-color: white;
-  }
-`);
+export const Team = withTheme(styled(UnstyledTeam)``);

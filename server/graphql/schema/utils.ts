@@ -6,6 +6,7 @@ import { LeagueTeam } from '../../db/models/leagueteam.model';
 import { Team } from '../../db/models/team.model';
 import { Match } from '../../db/models/match.model';
 import { League } from '../../db/models/league.model';
+import { Player } from '../../db/models/player.model';
 
 // Return league data to be used on admin - league details page.
 export const AdminGetLeauge = async (leagueId: number): Promise<League> => {
@@ -14,31 +15,26 @@ export const AdminGetLeauge = async (leagueId: number): Promise<League> => {
       {
         model: LeagueTeam,
         as: 'leagueTeams',
-        required: true,
         duplicating: false,
         include: [
-          LeaguePlayer,
+          { model: LeaguePlayer, duplicating: false, include: [Player] },
           {
             model: Team,
             as: 'team',
-            required: false,
           },
         ],
       },
       {
         model: Match,
         as: 'matches',
-        required: true,
         duplicating: false,
         include: [
           {
             as: 'homeTeam',
             model: LeagueTeam,
-            required: true,
             duplicating: false,
             subQuery: false,
             include: [
-              MatchPlayer,
               {
                 model: Team,
                 as: 'team',
@@ -49,14 +45,11 @@ export const AdminGetLeauge = async (leagueId: number): Promise<League> => {
           {
             model: LeagueTeam,
             as: 'awayTeam',
-            required: true,
             duplicating: false,
             include: [
-              MatchPlayer,
               {
                 model: Team,
                 as: 'team',
-                required: true,
               },
             ],
           },
@@ -81,12 +74,12 @@ export const AdminGetLeauge = async (leagueId: number): Promise<League> => {
 
       //Find players
       const homeMatchPlayers = await MatchPlayer.findAll({
-        raw: true,
+        include: [Player],
         where: { matchId: matchId, leagueTeamId: homeTeamId },
       });
 
       const awayMatchPlayers = await MatchPlayer.findAll({
-        raw: true,
+        include: [Player],
         where: { matchId: matchId, leagueTeamId: awayTeamId },
       });
 
