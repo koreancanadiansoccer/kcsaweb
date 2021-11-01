@@ -1,8 +1,6 @@
 import React, { FunctionComponent, useEffect, useState, useMemo } from 'react';
 import { useQuery } from '@apollo/client';
 import { useParams } from 'react-router';
-import { withTheme } from '@material-ui/core/styles';
-import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
@@ -35,7 +33,7 @@ export const LeagueDetail: FunctionComponent<LeagueDetailProps> = ({
 
   // Get League data.
   const leagueDataQuery = useQuery(GET_LEAGUE, {
-    variables: { id: parseInt(id) },
+    variables: { id: parseInt(id, 10) },
   });
 
   const [loading, setLoading] = useState(false);

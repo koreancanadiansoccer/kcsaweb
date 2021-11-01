@@ -1,6 +1,7 @@
 export const PLAYER_FRAGMENT = `
 id
-name
+firstName
+lastName
 dob
 yellowCard
 goalScored
@@ -9,18 +10,21 @@ teamId
 
 export const LEAGUE_PLAYER_FRAGMENT = `
 id
-name
-dob
 yellowCard
 goalScored
 leagueTeamId
+signedWaiver
+player {
+  ${PLAYER_FRAGMENT}
+}
 playerId
 `;
 
 export const MATCH_PLAYER_FRAGMENT = `
 id
-name
-dob
+player {
+  ${PLAYER_FRAGMENT}
+}
 teamId
 matchId
 leagueTeamId

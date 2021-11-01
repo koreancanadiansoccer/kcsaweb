@@ -43,8 +43,6 @@ export const createLeaguePlayers = {
         // Player was originally added in 'Players' table.
         if (newLeaguePlayer.id) {
           leaguePlayer = await LeaguePlayer.create({
-            name: newLeaguePlayer.name,
-            dob: newLeaguePlayer.dob,
             leagueTeamId: args.leagueTeamId,
             playerId: newLeaguePlayer.id,
           });
@@ -54,7 +52,8 @@ export const createLeaguePlayers = {
         if (!newLeaguePlayer.id) {
           // First create a row in master 'Player' table
           const player = await Player.create({
-            name: newLeaguePlayer.name,
+            firstName: newLeaguePlayer.firstName,
+            lastName: newLeaguePlayer.lastName,
             dob: newLeaguePlayer.dob,
             teamId: args.teamId,
           });
@@ -62,8 +61,6 @@ export const createLeaguePlayers = {
           // Then create a row in league player table.
           if (player) {
             leaguePlayer = await LeaguePlayer.create({
-              name: newLeaguePlayer.name,
-              dob: newLeaguePlayer.dob,
               leagueTeamId: args.leagueTeamId,
               playerId: player.id,
             });
@@ -74,12 +71,10 @@ export const createLeaguePlayers = {
           await Promise.all(
             map(matches, async (match) => {
               await MatchPlayer.create({
-                name: leaguePlayer.name,
                 leagueTeamId: args.leagueTeamId,
                 leaguePlayerId: leaguePlayer.id,
                 matchId: match.id,
                 playerId: leaguePlayer.playerId,
-                dob: leaguePlayer.dob,
               });
             })
           );

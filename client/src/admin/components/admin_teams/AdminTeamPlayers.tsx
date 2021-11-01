@@ -5,15 +5,12 @@ import React, {
   useEffect,
   useContext,
 } from 'react';
-import { withTheme } from '@material-ui/core/styles';
-import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import { useMutation } from '@apollo/client';
 import AddIcon from '@material-ui/icons/Add';
 import findIndex from 'lodash/findIndex';
 
 import { CREATE_PLAYER } from '../../../graphql/players/create_player.mutation';
-import { Team } from '../../../types/team';
 import { TeamContext } from '../../../context/team';
 import { Table } from '../../../components/table/Table';
 import { Player, PlayerInput } from '../../../types/player';
@@ -47,7 +44,8 @@ export const AdminTeamPlayers: FunctionComponent = () => {
       try {
         const res = await createPlayerMut({
           variables: {
-            name: newPlayer.name,
+            firstName: newPlayer.firstName,
+            lastName: newPlayer.lastName,
             dob: newPlayer.dob,
             teamId: origTeam.id,
           },
@@ -74,7 +72,12 @@ export const AdminTeamPlayers: FunctionComponent = () => {
         return idx + 1;
       },
     },
-    { title: 'Name', field: 'name' },
+    {
+      title: 'Name',
+      render: (rowData: Player) => {
+        return `${rowData.firstName} ${rowData.lastName}`;
+      },
+    },
     { title: 'Date of Birth', field: 'dob' },
     { title: 'GoalScored', field: 'goalScored' },
     { title: 'Yellow', field: 'yellowCard' },

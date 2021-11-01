@@ -40,12 +40,10 @@ export const createMatch = {
       await Promise.all(
         map(homePlayers, async (homePlayer) => {
           await MatchPlayer.create({
-            name: homePlayer.name,
             leagueTeamId: args.homeTeamId,
             leaguePlayerId: homePlayer.id,
             matchId: match.id,
             playerId: homePlayer.playerId,
-            dob: homePlayer.dob,
           });
         })
       );
@@ -61,12 +59,10 @@ export const createMatch = {
       await Promise.all(
         map(awayPlayers, async (awayPlayer) => {
           await MatchPlayer.create({
-            name: awayPlayer.name,
             leagueTeamId: args.awayTeamId,
             leaguePlayerId: awayPlayer.id,
             matchId: match.id,
             playerId: awayPlayer.playerId,
-            dob: awayPlayer.dob,
           });
         })
       );

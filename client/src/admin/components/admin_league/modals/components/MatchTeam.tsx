@@ -25,17 +25,19 @@ export const MatchTeam: FunctionComponent<MatchTeamProps> = ({
 }) => {
   return (
     <>
-      {map(matchPlayers, (player, idx) => (
+      {map(matchPlayers, (matchPlayer, idx) => (
         <Box
           border={1}
           display="flex"
           justifyContent="space-between"
           alignItems="center"
           px={1.5}
-          key={`${player.name}-${idx}`}
+          key={`${matchPlayer.player.firstName}-${matchPlayer.player.lastName}${idx}`}
         >
           <Box>
-            <Typography variant="body1">{player.name}</Typography>
+            <Typography variant="body1">
+              {`${matchPlayer.player.firstName} ${matchPlayer.player.lastName}`}
+            </Typography>
           </Box>
 
           <Box display="flex">
@@ -43,7 +45,7 @@ export const MatchTeam: FunctionComponent<MatchTeamProps> = ({
               <Input
                 label="Goal"
                 placeholder="Goals"
-                value={player.goalScored}
+                value={matchPlayer.goalScored}
                 type="number"
                 margin="dense"
                 size="small"
@@ -66,7 +68,7 @@ export const MatchTeam: FunctionComponent<MatchTeamProps> = ({
               <Input
                 label="YellowCard"
                 placeholder="Yellowcard"
-                value={player.yellowCard}
+                value={matchPlayer.yellowCard}
                 type="number"
                 margin="dense"
                 size="small"

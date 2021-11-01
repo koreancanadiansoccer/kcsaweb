@@ -79,7 +79,10 @@ export const CreateLeaguePlayersModal: FunctionComponent<CreateLeaguePlayersModa
     if (!newLeaguePlayers || newLeaguePlayers.length > 0) {
       const valid = every(
         newLeaguePlayers,
-        (newLeaguePlayer) => !!newLeaguePlayer.name && !!newLeaguePlayer.dob
+        (newLeaguePlayer) =>
+          !!newLeaguePlayer.firstName &&
+          !!newLeaguePlayer.lastName &&
+          !!newLeaguePlayer.dob
       );
       return valid;
     }
@@ -126,26 +129,28 @@ export const CreateLeaguePlayersModal: FunctionComponent<CreateLeaguePlayersModa
       console.error(e);
     }
   }, [newLeaguePlayers, selectedTeam, origLeague]);
-
+  // console.log('league players');
+  // console.log(leaguePlayers);
+  // console.log('player ');
+  // console.log(teamPlayersQuery.data?.getPlayers);
   // Create option list for select.
   const playersOption = useMemo(() => {
     // Filter out already added players.
     const filteredChosen = filter(
       teamPlayersQuery.data?.getPlayers,
-      (player) => {
-        return !find(
+      (player) =>
+        !find(
           selectedTeam?.leaguePlayers,
-          (leaguePlayer) => leaguePlayer.playerId !== player.id
-        );
-      }
+          (leaguePlayer) => leaguePlayer.playerId === player.id
+        )
     );
 
     // Filter out already added players.
     return map(filteredChosen, (player) => ({
-      label: player.name,
+      label: `${player.firstName} ${player.lastName}`,
       value: player.id.toString(),
     }));
-  }, [teamPlayersQuery]);
+  }, [teamPlayersQuery, leaguePlayers]);
 
   /**
    * Handle option selection change.
@@ -159,15 +164,17 @@ export const CreateLeaguePlayersModal: FunctionComponent<CreateLeaguePlayersModa
         // Check if players from original team are selected
         const teamPlayer = find(
           origTeamPlayers,
-          (teamPlayer) => teamPlayer.id === selected.value
+          (teamPlayer) => teamPlayer.id.toString() === selected.value
         );
 
         if (teamPlayer) {
-          return { ...pick(teamPlayer, ['id', 'name', 'dob']) };
+          return {
+            ...pick(teamPlayer, ['id', 'firstName', 'lastName', 'dob']),
+          };
         }
 
         // If newly entered, just set the name.
-        return { name: selected.label as string };
+        return { firstName: selected.firstName, lastName: selected.lastName };
       });
 
       setNewLeaguePlayers(newLeaguePlayers);
@@ -179,16 +186,32 @@ export const CreateLeaguePlayersModal: FunctionComponent<CreateLeaguePlayersModa
   const tableColumns = [
     {
       title: 'Count',
-      render: (rowData: Player) => {
+      render: (rowData: LeaguePlayer) => {
         const idx = findIndex(
           leaguePlayers,
-          (player) => player.id === rowData.id
+          (leaguePlayer) => leaguePlayer.id === rowData.id
         );
         return idx + 1;
       },
     },
-    { title: 'Name', field: 'name' },
-    { title: 'Date of Birth', field: 'dob' },
+    {
+      title: 'Name',
+      render: (rowData: LeaguePlayer) => {
+        return `${rowData.player.firstName} ${rowData.player.lastName}`;
+      },
+    },
+    {
+      title: 'Date of Birth',
+      render: (rowData: LeaguePlayer) => {
+        return rowData.player.dob;
+      },
+    },
+    {
+      title: 'Waiver',
+      render: (rowData: LeaguePlayer) => {
+        return rowData.signedWaiver ? 'Yes' : 'No';
+      },
+    },
     { title: 'GoalScored', field: 'goalScored' },
     { title: 'Yellow', field: 'yellowCard' },
     { title: 'Created', field: 'createdAt' },
@@ -231,14 +254,33 @@ export const CreateLeaguePlayersModal: FunctionComponent<CreateLeaguePlayersModa
                   <Box>
                     <Typography variant="body1">Name</Typography>
                     <Input
-                      label="Name"
+                      label="First Name"
                       placeholder="Player name"
                       required
-                      value={newLeaguePlayer.name}
+                      value={newLeaguePlayer.firstName}
                       fullWidth
                       onChange={(evt: ChangeEvent<HTMLInputElement>) => {
                         const copy = [...newLeaguePlayers];
-                        copy[idx] = { ...copy[idx], name: evt.target.value };
+                        copy[idx] = {
+                          ...copy[idx],
+                          firstName: evt.target.value,
+                        };
+                        setNewLeaguePlayers(copy);
+                      }}
+                    />
+
+                    <Input
+                      label="Last Name"
+                      placeholder="Player name"
+                      required
+                      value={newLeaguePlayer.lastName}
+                      fullWidth
+                      onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+                        const copy = [...newLeaguePlayers];
+                        copy[idx] = {
+                          ...copy[idx],
+                          lastName: evt.target.value,
+                        };
                         setNewLeaguePlayers(copy);
                       }}
                     />
@@ -269,7 +311,7 @@ export const CreateLeaguePlayersModal: FunctionComponent<CreateLeaguePlayersModa
           onClick={() => {
             const newLeaguePlayerCopy = [
               ...newLeaguePlayers,
-              { name: '', dob: '' },
+              { firstName: '', lastName: '', dob: '' },
             ];
 
             setNewLeaguePlayers(newLeaguePlayerCopy);

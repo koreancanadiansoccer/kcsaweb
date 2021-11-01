@@ -53,7 +53,7 @@ export const TeamPlayers: FunctionComponent<TeamPlayersProp> = ({
             py={3}
           >
             <Box width={'20%'} className="boldText" fontSize={'1.3rem'}>
-              {displayFullName(player.name)}
+              {displayFullName(player.player.firstName, player.player.lastName)}
             </Box>
 
             <Box textAlign="center" flex={1} fontSize={'1rem'}>

@@ -3,6 +3,7 @@ import {
   GraphQLString,
   GraphQLInputObjectType,
   GraphQLInt,
+  GraphQLBoolean,
 } from 'graphql';
 
 import { DateTime } from './utils/dateType';
@@ -12,7 +13,8 @@ export const PlayerType = new GraphQLObjectType({
   name: 'Player',
   fields: () => ({
     id: { type: GraphQLInt },
-    name: { type: GraphQLString },
+    firstName: { type: GraphQLString },
+    lastName: { type: GraphQLString },
     dob: { type: GraphQLString },
     teamId: { type: GraphQLInt },
     yellowCard: { type: GraphQLInt },
@@ -25,7 +27,8 @@ export const PlayerInputType = new GraphQLInputObjectType({
   name: 'PlayerInput',
   fields: () => ({
     id: { type: GraphQLInt },
-    name: { type: GraphQLString },
+    firstName: { type: GraphQLString },
+    lastName: { type: GraphQLString },
     dob: { type: GraphQLString },
     teamId: { type: GraphQLInt },
     yellowCard: { type: GraphQLInt },
@@ -38,27 +41,33 @@ export const LeaguePlayerType = new GraphQLObjectType({
   name: 'LeaguePlayer',
   fields: () => ({
     id: { type: GraphQLInt },
-    name: { type: GraphQLString },
-    dob: { type: GraphQLString },
     teamId: { type: GraphQLInt },
     leagueTeamId: { type: GraphQLInt },
     yellowCard: { type: GraphQLInt },
     goalScored: { type: GraphQLInt },
     createdAt: { type: DateTime },
     playerId: { type: GraphQLInt },
+    player: { type: PlayerType },
+    signedWaiver: { type: GraphQLBoolean },
   }),
 });
 
 export const LeaguePlayerInputType = new GraphQLInputObjectType({
   name: 'LeaguePlayerInput',
   fields: () => ({
-    id: { type: GraphQLString },
+    id: { type: GraphQLInt },
+    // First Name and last Name can be inserted here to create mast player record upon creating new league player.
+    firstName: { type: GraphQLString },
+    lastName: { type: GraphQLString },
     dob: { type: GraphQLString },
-    name: { type: GraphQLString },
+    //
     yellowCard: { type: GraphQLInt },
     goalScored: { type: GraphQLInt },
     createdAt: { type: DateTime },
     leagueTeamId: { type: GraphQLInt },
+    playerId: { type: GraphQLInt },
+    player: { type: PlayerInputType },
+    signedWaiver: { type: GraphQLBoolean },
   }),
 });
 
@@ -66,8 +75,6 @@ export const MatchPlayerType = new GraphQLObjectType({
   name: 'MatchPlayer',
   fields: () => ({
     id: { type: GraphQLInt },
-    name: { type: GraphQLString },
-    dob: { type: GraphQLString },
     teamId: { type: GraphQLInt },
     matchId: { type: GraphQLInt },
     leagueTeamId: { type: GraphQLInt },
@@ -75,6 +82,7 @@ export const MatchPlayerType = new GraphQLObjectType({
     goalScored: { type: GraphQLInt },
     leaguePlayerId: { type: GraphQLInt },
     createdAt: { type: DateTime },
+    player: { type: PlayerType },
   }),
 });
 
@@ -82,8 +90,6 @@ export const MatchPlayerInputType = new GraphQLInputObjectType({
   name: 'MatchPlayerInput',
   fields: () => ({
     id: { type: GraphQLInt },
-    name: { type: GraphQLString },
-    dob: { type: GraphQLString },
     teamId: { type: GraphQLInt },
     matchId: { type: GraphQLInt },
     leagueTeamId: { type: GraphQLInt },
@@ -91,5 +97,6 @@ export const MatchPlayerInputType = new GraphQLInputObjectType({
     goalScored: { type: GraphQLInt },
     leaguePlayerId: { type: GraphQLInt },
     createdAt: { type: DateTime },
+    player: { type: PlayerInputType },
   }),
 });
