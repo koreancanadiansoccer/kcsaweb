@@ -150,7 +150,7 @@ jobs:
         id: deploy
         run: |
           aws deploy create-deployment \
-            --application-name "kcsa-webserver" \
-            --deployment-group-name "deploy-kcsaweb-ec2" \
+            --application-name "kcsa-web-deploy" \
+            --deployment-group-name "deploy" \
             --deployment-config-name CodeDeployDefault.OneAtATime \
             --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
