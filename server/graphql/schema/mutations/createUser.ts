@@ -8,7 +8,6 @@ import {
   AccountType,
   AccountStatus,
 } from '../../../db/models/user.model';
-import { sendEmail } from '../../../utils/sendemail';
 
 // defined custom type to make temporary object
 interface Args {

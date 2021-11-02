@@ -7,29 +7,29 @@ import {
   Default,
   AllowNull,
   HasOne,
-} from "sequelize-typescript";
-import keys from "lodash/keys";
+} from 'sequelize-typescript';
+import keys from 'lodash/keys';
 
-import { Team } from "./team.model";
-import { LeagueTeam } from "./leagueteam.model";
+import { Team } from './team.model';
+import { LeagueTeam } from './leagueteam.model';
 
 export enum AccountType {
-  ADMIN = "ADMIN",
-  CAPTAIN = "CAPTAIN",
+  ADMIN = 'ADMIN',
+  CAPTAIN = 'CAPTAIN',
 }
 
 export enum AccountStatus {
-  INVITED = "INVITED",
-  ACCEPTED = "ACCEPTED",
+  INVITED = 'INVITED',
+  ACCEPTED = 'ACCEPTED',
 }
 
-@Table({ tableName: "user" })
+@Table({ tableName: 'user' })
 export class User extends Model {
   @AllowNull(false)
   @Column
   name!: string;
 
-  @AllowNull(false)
+  // Note: Password can be null upon captain invitation
   @Column
   password!: string;
 
@@ -38,11 +38,11 @@ export class User extends Model {
   email!: string;
 
   @Default(false)
-  @Column({ field: "is_admin" })
+  @Column({ field: 'is_admin' })
   isAdmin!: boolean;
 
   @AllowNull(false)
-  @Column({ field: "phone_number" })
+  @Column({ field: 'phone_number' })
   phoneNumber!: string;
 
   @Column({ type: DataType.ENUM({ values: keys(AccountType) }) })

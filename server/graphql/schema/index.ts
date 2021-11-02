@@ -31,7 +31,7 @@ import { updateMatch } from './mutations/updateMatch';
 import { deleteMatch } from './mutations/deleteMatch';
 import { updateGallery } from './mutations/updateGallery';
 import { updateAnnouncement } from './mutations/updateAnnouncement';
-
+import { sendInvite } from './mutations/sendInvite';
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -70,7 +70,8 @@ const Mutation = new GraphQLObjectType({
     updateMatch,
     deleteMatch,
     updateGallery,
-    updateAnnouncement
+    updateAnnouncement,
+    sendInvite,
   },
 });
 

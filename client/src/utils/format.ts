@@ -30,3 +30,32 @@ export const shortenName = (name: string): string => {
       : nameTemp.charAt(0).toUpperCase() + nameTemp.slice(1);
   }).join('.');
 };
+
+/**
+ * Phone number formatting
+ */
+export const formatPhone = (num: string, addParentheses = true): string => {
+  const p1 = num.slice(0, 3);
+  const p2 = num.slice(3, 6);
+  const p3 = num.slice(6, 10);
+
+  if (p1.length < 1) {
+    return '';
+  }
+  if (p1.length < 3 || p2.length < 1) {
+    return `(${p1}`;
+  }
+  if (p2.length < 3 || p3.length < 1) {
+    return `(${p1}) ${p2}`;
+  }
+
+  return addParentheses ? `(${p1}) ${p2} ${p3}` : `${p1} ${p2} ${p3}`;
+};
+
+/**
+ * Convert formatted phone number into string of numeric digits.
+ *
+ * @param num
+ */
+export const unformatPhone = (num: string): string =>
+  num.replace(/[^0-9]/g, '').substr(0, 10);
