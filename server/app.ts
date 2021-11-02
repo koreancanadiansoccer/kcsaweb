@@ -14,6 +14,8 @@ const SECRET = 'KCSA_SECRET_WEB';
 const PORT = process.env.PORT || 5000;
 
 (async () => {
+  console.info('NODE ENV?');
+  console.info(process.env.NODE_ENV);
   console.info('Init server');
   // Sync sequelize.
   if (process.env.NODE_ENV !== 'production') {
@@ -37,7 +39,7 @@ const PORT = process.env.PORT || 5000;
     console.info('Could not establish a connection with redis. ' + err);
   });
 
-  redisClient.on('connect', function (err) {
+  redisClient.on('connect', function () {
     console.info('Connected to redis successfully');
   });
 

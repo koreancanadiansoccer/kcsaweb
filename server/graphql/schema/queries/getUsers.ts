@@ -6,7 +6,7 @@ import { User } from '../../../db/models/user.model';
 export const getUsers = {
   type: new GraphQLList(UserType),
   async resolve(): Promise<User[]> {
-    const users = await User.findAll();
+    const users = await User.findAll({ where: { isAdmin: false } });
     return users;
   },
 };
