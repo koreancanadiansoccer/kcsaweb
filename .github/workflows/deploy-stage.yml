@@ -62,9 +62,10 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
           SOURCE: '*'
+          SOURCE: "/home/runner/work/kcsaweb/kcsaweb/client/build/*"
           REMOTE_HOST: ${{ secrets.HOST }}
           REMOTE_USER: ${{ secrets.USERNAME }}
-          TARGET: '/home/ubuntu/kcsa_tmp/'
+          TARGET: '/home/ubuntu/kcsa_client_build/'
 
       # Step 3 : Commit to branch.
       # - name: Create commit
