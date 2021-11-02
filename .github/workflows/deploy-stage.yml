@@ -61,7 +61,8 @@ jobs:
         uses: easingthemes/ssh-deploy@v2.2.11
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          SOURCE: '/home/runner/work/kcsaweb/kcsaweb/client/build/*'
+          SOURCE: '*'
+          SOURCE: "client/build/*"
           REMOTE_HOST: ${{ secrets.HOST }}
           REMOTE_USER: ${{ secrets.USERNAME }}
           TARGET: '/home/ubuntu/kcsa_client_build/'
