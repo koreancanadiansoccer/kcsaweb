@@ -29,9 +29,6 @@ jobs:
       #          continuous integration, and deployment -- or any situation where you want to make sure you're doing a clean install of your dependencies.
       - name: npm install for Server
         run: |
-          echo ${{ secrets.EC2_SSH_KEY }}
-          echo ${{ secrets.HOST }}
-          echo ${{ secrets.USERNAME }}
           echo 'Current location in CI : '
           pwd
           npm ci
@@ -46,6 +43,7 @@ jobs:
           npm run build
           echo 'CLIENT DONE'
           ls -ltr
+          echo $secrets
         env:
           CI: false
 
@@ -62,10 +60,10 @@ jobs:
       - name: Deploy to my EC2 instance
         uses: easingthemes/ssh-deploy@v2.2.11
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_T3A_MICRO_KEY }}
           SOURCE: 'client/build/*'
-          REMOTE_HOST: ${{ secrets.HOST }}
-          REMOTE_USER: ${{ secrets.USERNAME }}
+          REMOTE_HOST: ${{ secrets.EC2_T3A_MICRO_HOST }}
+          REMOTE_USER: ${{ secrets.EC2_T3A_MICRO_USER }}
           TARGET: '/home/ubuntu/kcsa_client_build/'
 
       # Step 3 : Commit to branch.
@@ -133,7 +131,7 @@ jobs:
       #       --deployment-group-name "deploy-kcsaweb-ec2" \
       #       --deployment-config-name CodeDeployDefault.OneAtATime \
 
-  #Deploy
+    #Deploy -t3a micro
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -156,3 +154,26 @@ jobs:
             --deployment-group-name "kcsa-t3a-micro-deployment" \
             --deployment-config-name CodeDeployDefault.OneAtATime \
             --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
+
+  # deploy:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+
+  #   if: github.ref == 'refs/heads/master'
+  #   steps:
+  #     # Step 1
+  #     - name: Configure AWS credentials
+  #       uses: aws-actions/configure-aws-credentials@v1
+  #       with:
+  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         aws-region: us-east-1
+  #     # Step 2
+  #     - name: Create CodeDeploy Deployment
+  #       id: deploy
+  #       run: |
+  #         aws deploy create-deployment \
+  #           --application-name "kcsa-web-deploy" \
+  #           --deployment-group-name "deploy" \
+  #           --deployment-config-name CodeDeployDefault.OneAtATime \
+  #           --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
