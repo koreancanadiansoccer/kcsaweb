@@ -1,5 +1,6 @@
 import { Team } from './team';
 export interface User {
+  id: number;
   name: string;
   email: string;
   status: string;
@@ -18,7 +19,8 @@ export interface NewCaptain {
 // NOT USED ATM:
 export interface UserInput {
   name: string;
-  password: string;
   email: string;
   phoneNumber: string;
+  password: string;
+  passwordConfirm: string;
 }

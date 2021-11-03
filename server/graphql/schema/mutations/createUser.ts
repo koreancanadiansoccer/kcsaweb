@@ -1,8 +1,12 @@
-import { GraphQLString, GraphQLNonNull } from 'graphql';
+import {
+  GraphQLString,
+  GraphQLNonNull,
+  GraphQLInt,
+  GraphQLBoolean,
+} from 'graphql';
 // password encryption
 import { hash } from 'bcryptjs';
 
-import { UserType } from '../../types/user';
 import {
   User,
   AccountType,
@@ -15,20 +19,23 @@ interface Args {
 }
 
 /**
- * TODO:
- * Set session once user is registered. 제일 마지막에 유지하기
+ * Registers user.
  */
 export const createUser = {
-  type: UserType,
+  type: GraphQLBoolean,
   args: {
+    id: { type: new GraphQLNonNull(GraphQLInt) },
     name: { type: new GraphQLNonNull(GraphQLString) },
     password: { type: new GraphQLNonNull(GraphQLString) },
     email: { type: new GraphQLNonNull(GraphQLString) },
     phoneNumber: { type: new GraphQLNonNull(GraphQLString) },
     type: { type: GraphQLString },
-    status: { type: GraphQLString },
   },
-  async resolve(parent: object, args: Args): Promise<User | undefined> {
+  async resolve(
+    parent: object,
+    args: Args,
+    { req }: any
+  ): Promise<boolean | undefined> {
     try {
       // check if all required forms exist or not
       if (
@@ -43,25 +50,30 @@ export const createUser = {
         args.email = args.email.trim();
       }
 
-      // check if the user has already registered
-      const findUser = await User.findOne({ where: { email: args.email } });
+      // Check account was created from admin invitation.
+      const findUser = await User.findOne({ where: { id: args.id } });
 
-      if (!findUser) {
-        // encrypted password
-        const hashed = await hash(args.password, 8);
+      if (findUser) {
+        const hashedPassword = await hash(args.password, 8);
+        await User.update(
+          {
+            name: args.name,
+            password: hashedPassword,
+            email: args.email,
+            phoneNumber: args.phoneNumber,
+            status: AccountStatus.ACCEPTED,
+            isAdmin: false,
+            type: AccountType.CAPTAIN,
+          },
+          { where: { id: findUser.id } }
+        );
 
-        //TODO: generate Token
+        // Set userId to session upon successful login.
+        req.session.userId = findUser.id;
 
-        const user = await User.create({
-          ...args,
-          password: hashed,
-          isAdmin: false,
-        });
-
-        return user;
-      } else {
-        throw 'You have already registerd!';
+        return true;
       }
+      throw Error('Could not find account - Please contact admin');
     } catch (err) {
       console.error(err);
     }

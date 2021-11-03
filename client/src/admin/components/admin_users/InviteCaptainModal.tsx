@@ -121,7 +121,7 @@ export const InviteNewCaptainModal: FunctionComponent<InviteNewCaptainProps> = (
                 : ''
             );
 
-            setNewCaptain({ ...newCaptain, email: evt.target.value.trim() });
+            setNewCaptain({ ...newCaptain, email: email.trim() });
           }}
         />
       </Box>

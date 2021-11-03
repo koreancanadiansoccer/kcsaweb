@@ -1,4 +1,6 @@
 import { GraphQLString, GraphQLList, GraphQLNonNull } from 'graphql';
+import CryptoJS from 'crypto-js';
+import * as dotenv from 'dotenv';
 
 import { UserType } from '../../types/user';
 import {
@@ -9,6 +11,7 @@ import {
 import { Team } from '../../../db/models/team.model';
 import { sendEmail } from '../../../utils/sendemail';
 
+dotenv.config();
 interface Args {
   [key: string]: string | AccountType | AccountStatus;
 }
@@ -33,6 +36,7 @@ export const sendInvite = {
       throw Error('User with same email address exist');
     }
 
+    //4d657373616765
     const user = await User.create({
       name: args.name,
       email: args.email,
@@ -41,11 +45,16 @@ export const sendInvite = {
       isAdmin: false,
     });
 
+    const ciphertext = CryptoJS.AES.encrypt(
+      user.id.toString(),
+      'secret key 123'
+    ).toString();
+
     // Create team
     const team = await Team.create({ name: args.teamName, captainId: user.id });
 
-    //Send invitation email.
-    await sendEmail(user.name, user.email, team.name);
+    // Send invitation email.
+    await sendEmail(user.name, user.email, team.name, ciphertext);
 
     const users = await User.findAll({
       include: [Team],

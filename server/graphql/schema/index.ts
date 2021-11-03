@@ -1,6 +1,7 @@
 import { GraphQLObjectType, GraphQLSchema } from 'graphql';
 
 // Queries
+import { getUser } from './queries/getUser';
 import { getUsers } from './queries/getUsers';
 import { getLeagues } from './queries/getLeagues';
 import { getLeague } from './queries/getLeague';
@@ -36,6 +37,7 @@ import { sendInvite } from './mutations/sendInvite';
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {
+    getUser,
     getUsers,
     getLeagues,
     getLeague,

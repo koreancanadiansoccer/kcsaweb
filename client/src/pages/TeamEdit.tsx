@@ -9,8 +9,10 @@ import find from 'lodash/find';
 import { ViewerContext } from '../context/homeViewer';
 import { Tabs, PanelOptions } from '../components/tabs/Tabs';
 import { TeamGeneral } from '../components/TeamEdit/TeamGeneral';
+
 /**
  * Page for captains to edit their team and update scores.
+ * TODO: update to grab data from team.
  */
 const UnstyledTeamEdit: FunctionComponent = () => {
   const { viewer } = useContext(ViewerContext);
