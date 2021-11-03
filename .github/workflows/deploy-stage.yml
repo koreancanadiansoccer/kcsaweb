@@ -29,6 +29,9 @@ jobs:
       #          continuous integration, and deployment -- or any situation where you want to make sure you're doing a clean install of your dependencies.
       - name: npm install for Server
         run: |
+          echo ${{ secrets.EC2_SSH_KEY }}
+          echo ${{ secrets.HOST }}
+          echo ${{ secrets.USERNAME }}
           echo 'Current location in CI : '
           pwd
           npm ci
@@ -43,7 +46,6 @@ jobs:
           npm run build
           echo 'CLIENT DONE'
           ls -ltr
-          echo $secrets
         env:
           CI: false
 
@@ -150,7 +152,7 @@ jobs:
         id: deploy
         run: |
           aws deploy create-deployment \
-            --application-name "kcsa-web-deploy" \
-            --deployment-group-name "deploy" \
+            --application-name "kcsa-t3a-micro" \
+            --deployment-group-name "kcsa-t3a-micro-deployment" \
             --deployment-config-name CodeDeployDefault.OneAtATime \
             --github-location repository=${{ github.repository }},commitId=${{ github.sha }}

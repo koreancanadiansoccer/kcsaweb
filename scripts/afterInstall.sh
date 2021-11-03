@@ -23,7 +23,7 @@ sudo cp /home/ubuntu/config/.env /home/ubuntu/kcsaweb/.
 # sudo npx sequelize-cli db:migrate
 
 #Set up nginx
-sudo cp -r /home/ubuntu/kcsa_client_build/* /var/www/kcsa-demo/
+sudo cp -r /home/ubuntu/kcsa_client_build/* /var/www/kcsa/
 
 
 
