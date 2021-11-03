@@ -3,10 +3,11 @@
 ## Set up the EC2 instance:
 
 1. Launch an EC2 instance
-2. Connect to instance
-3. Generate ssh deploy key on server and add it to github repo
+1. Edit up security to inbound for http.
+1. Connect to instance
+1. Generate ssh deploy key on server and add it to github repo
    (https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
-4. Connect to it and install NodeJS on it (https://github.com/nodesource/distributions)
+1. Connect to it and install NodeJS on it (https://github.com/nodesource/distributions)
 
 ## Set up the RDS instance:
 

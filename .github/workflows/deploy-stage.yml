@@ -59,6 +59,8 @@ jobs:
 
       - name: Deploy to my EC2 instance
         uses: easingthemes/ssh-deploy@v2.2.11
+        run: |
+          echo $secrets
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
           SOURCE: 'client/build/*'
