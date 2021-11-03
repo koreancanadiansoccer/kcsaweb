@@ -241,7 +241,7 @@ const UnstyledAbout: FunctionComponent<AboutProps> = ({ className }) => {
                 </Box>
                 <Box my={5} mx={3}>
                   <Typography>E-mail</Typography>
-                  <Typography>CanadaKCSA@hotmail.com</Typography>
+                  <Typography>koreancanadiansoccer@gmail.com</Typography>
                 </Box>
               </Box>
             </Box>
