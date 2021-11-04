@@ -15,7 +15,7 @@ import { ViewerContext } from '../../context/homeViewer';
 import { AboutNav } from './components/AboutNav';
 import { TeamsNav } from './components/TeamsNav';
 import { AnnouncementNav } from './components/AnnouncementNav';
-import { LeagueNav } from './components/LeagueNav'
+import { LeagueNav } from './components/LeagueNav';
 interface NavigationProps {
   className?: string;
 }
@@ -61,7 +61,7 @@ const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
 
                 {viewer?.user && !viewer?.user?.isAdmin && (
                   <Button component={RouteLink} to={'/login'} color="secondary">
-                    Update Club
+                    View Club
                   </Button>
                 )}
 
@@ -71,7 +71,11 @@ const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
                   </Button>
                 )}
 
-                {viewer?.user && <Button color="secondary">Logout</Button>}
+                {viewer?.user && (
+                  <Box ml={3}>
+                    <Button color="secondary">Logout</Button>
+                  </Box>
+                )}
               </Box>
             </Box>
           </Container>
@@ -84,5 +88,9 @@ const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
 export const Navigation = withTheme(styled(UnstyledNavigation)`
   .MuiButton-contained {
     box-shadow: none;
+  }
+
+  .MuiBox-root {
+    font-weight: 700;
   }
 `);

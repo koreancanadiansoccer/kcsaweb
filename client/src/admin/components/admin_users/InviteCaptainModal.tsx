@@ -33,7 +33,9 @@ export const InviteNewCaptainModal: FunctionComponent<InviteNewCaptainProps> = (
 }) => {
   // Init state for new product.
   const [newCaptain, setNewCaptain] = useState<NewCaptain>({
-    name: '',
+    firstName: '',
+    lastName: '',
+    dob: '',
     phoneNumber: '',
     email: '',
     teamName: '',
@@ -44,7 +46,8 @@ export const InviteNewCaptainModal: FunctionComponent<InviteNewCaptainProps> = (
 
   const isValid = useMemo(
     () =>
-      !!newCaptain?.name &&
+      !!newCaptain?.firstName &&
+      !!newCaptain?.lastName &&
       !!newCaptain?.phoneNumber &&
       newCaptain?.phoneNumber.length === 10 &&
       !!newCaptain?.email &&
@@ -57,7 +60,9 @@ export const InviteNewCaptainModal: FunctionComponent<InviteNewCaptainProps> = (
   useEffect(
     () =>
       setNewCaptain({
-        name: '',
+        firstName: '',
+        lastName: '',
+        dob: '',
         phoneNumber: '',
         email: '',
         teamName: '',
@@ -71,13 +76,46 @@ export const InviteNewCaptainModal: FunctionComponent<InviteNewCaptainProps> = (
         <Typography variant="body1">Captain Name</Typography>
 
         <Input
-          label="Captain Name"
-          placeholder="Captain Name"
+          label="First Name"
+          placeholder="First Name"
           required
-          value={newCaptain?.name}
+          value={newCaptain?.firstName}
           fullWidth
           onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-            setNewCaptain({ ...newCaptain, name: evt.target.value });
+            setNewCaptain({ ...newCaptain, firstName: evt.target.value });
+          }}
+        />
+      </Box>
+
+      <Box>
+        <Input
+          label="Last Name"
+          placeholder="Last Name"
+          required
+          value={newCaptain?.lastName}
+          fullWidth
+          onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+            setNewCaptain({ ...newCaptain, lastName: evt.target.value });
+          }}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="body1">Date of Birth</Typography>
+
+        <Input
+          label="Date of Birth"
+          placeholder="Date of birth"
+          type="date"
+          helperText="You can leave this blank - Captains will be requried to put in during registration"
+          required
+          value={newCaptain?.dob}
+          fullWidth
+          InputLabelProps={{
+            shrink: true,
+          }}
+          onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+            setNewCaptain({ ...newCaptain, dob: evt.target.value });
           }}
         />
       </Box>

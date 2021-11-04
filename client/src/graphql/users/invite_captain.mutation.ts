@@ -5,7 +5,9 @@ import { User } from '../../types/user';
 import { USER_FRAGMENT } from './user.fragment';
 
 export interface SendInviteInput {
-  name: string;
+  firstName: string;
+  lastName: string;
+  dob: string;
   email: string;
   phoneNumber: string;
   teamName: string;
@@ -18,13 +20,17 @@ export interface SendInviteResult {
 // Swap out to common fragment
 export const SEND_INVITE = gql`
   mutation SendInvite(
-    $name: String!
+    $firstName: String!
+    $lastName: String!
+    $dob: String!
     $email: String!
     $phoneNumber: String!
     $teamName: String!
   ) {
     sendInvite(
-      name: $name
+      firstName: $firstName
+      lastName: $lastName
+      dob: $dob
       email: $email
       teamName: $teamName
       phoneNumber: $phoneNumber

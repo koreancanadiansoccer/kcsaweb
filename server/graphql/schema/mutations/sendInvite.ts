@@ -1,5 +1,4 @@
 import { GraphQLString, GraphQLList, GraphQLNonNull } from 'graphql';
-import CryptoJS from 'crypto-js';
 import * as dotenv from 'dotenv';
 
 import { UserType } from '../../types/user';
@@ -10,7 +9,7 @@ import {
 } from '../../../db/models/user.model';
 import { Team } from '../../../db/models/team.model';
 import { sendEmail } from '../../../utils/sendemail';
-
+import { encodeIDBase64 } from '../utils';
 dotenv.config();
 interface Args {
   [key: string]: string | AccountType | AccountStatus;
@@ -19,13 +18,21 @@ interface Args {
 export const sendInvite = {
   type: new GraphQLList(UserType),
   args: {
-    name: { type: new GraphQLNonNull(GraphQLString) },
+    firstName: { type: new GraphQLNonNull(GraphQLString) },
+    lastName: { type: new GraphQLNonNull(GraphQLString) },
+    dob: { type: new GraphQLNonNull(GraphQLString) },
     email: { type: new GraphQLNonNull(GraphQLString) },
     phoneNumber: { type: new GraphQLNonNull(GraphQLString) },
     teamName: { type: new GraphQLNonNull(GraphQLString) },
   },
   async resolve(parent: object, args: Args): Promise<User[]> {
-    if (!args.name || !args.email || !args.phoneNumber || !args.teamName) {
+    if (
+      !args.firstName ||
+      !args.lastName ||
+      !args.email ||
+      !args.phoneNumber ||
+      !args.teamName
+    ) {
       throw Error('Please fill all required fields!');
     }
 
@@ -38,23 +45,21 @@ export const sendInvite = {
 
     //4d657373616765
     const user = await User.create({
-      name: args.name,
+      firstName: args.firstName,
+      lastName: args.lastName,
+      dob: args.dob,
       email: args.email,
       phoneNumber: args.phoneNumber,
       status: AccountStatus.INVITED,
       isAdmin: false,
     });
-
-    const ciphertext = CryptoJS.AES.encrypt(
-      user.id.toString(),
-      'secret key 123'
-    ).toString();
+    const cipherText = encodeIDBase64(user.id);
 
     // Create team
     const team = await Team.create({ name: args.teamName, captainId: user.id });
 
     // Send invitation email.
-    await sendEmail(user.name, user.email, team.name, ciphertext);
+    await sendEmail(user.firstName, user.email, team.name, cipherText);
 
     const users = await User.findAll({
       include: [Team],

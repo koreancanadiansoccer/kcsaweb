@@ -155,6 +155,7 @@ jobs:
             --deployment-config-name CodeDeployDefault.OneAtATime \
             --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
 
+  # t3a small
   # deploy:
   #   needs: build
   #   runs-on: ubuntu-latest

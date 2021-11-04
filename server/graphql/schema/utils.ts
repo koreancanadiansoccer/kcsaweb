@@ -1,4 +1,5 @@
 import map from 'lodash/map';
+import CryptoJS from 'crypto-js';
 
 import { MatchPlayer } from '../../db/models/matchplayer.model';
 import { LeaguePlayer } from '../../db/models/leagueplayer.model';
@@ -7,6 +8,23 @@ import { Team } from '../../db/models/team.model';
 import { Match } from '../../db/models/match.model';
 import { League } from '../../db/models/league.model';
 import { Player } from '../../db/models/player.model';
+
+export const encodeIDBase64 = (id: number): string => {
+  const str = `id=${id}`;
+  const wordArray = CryptoJS.enc.Utf8.parse(str);
+  const base64 = CryptoJS.enc.Base64.stringify(wordArray);
+  return base64;
+};
+
+// Decode base 64.
+// Once decoded, it will have id={id}
+export const decodeIDBase64 = (encodedId: string): number => {
+  const parsedWordArray = CryptoJS.enc.Base64.parse(encodedId);
+  const parsedStr = parsedWordArray.toString(CryptoJS.enc.Utf8);
+  const id = parsedStr.split('=');
+
+  return parseInt(id[1], 0);
+};
 
 // Return league data to be used on admin - league details page.
 export const AdminGetLeauge = async (leagueId: number): Promise<League> => {

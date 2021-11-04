@@ -19,6 +19,14 @@ const UnstyledTeamEdit: FunctionComponent = () => {
   const { id } = useParams<{ id: string }>();
 
   const [tabSelected, setTabSelected] = useState(0);
+
+  /**
+   * Call TeamEditQuery -> Grab User's team, teamplayer, Active; leagueteam, league players, matches
+   */
+
+  /**
+   * Redirect to home if: user is not logged in, & if user;s team ID do not match against id.
+   */
   // team to edit;
   const leagueTeam = useMemo(
     () =>
@@ -29,6 +37,7 @@ const UnstyledTeamEdit: FunctionComponent = () => {
     [id]
   );
   console.info(leagueTeam);
+
   // Tabs Panel
   const panelOptions: PanelOptions[] = useMemo(
     () => [

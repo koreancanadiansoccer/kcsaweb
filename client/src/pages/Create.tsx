@@ -3,12 +3,13 @@ import React, {
   useEffect,
   useState,
   useCallback,
+  useContext,
 } from 'react';
 import { useMutation, useLazyQuery } from '@apollo/client';
 import Box from '@material-ui/core/Box';
 import { useLocation, useHistory } from 'react-router-dom';
 
-import { UserInput, User } from '../types/user';
+import { UserInput, User, ACCOUNTSTATUS } from '../types/user';
 import { CreateUser } from '../components/create/CreateUser';
 import {
   CREATE_USER,
@@ -21,6 +22,7 @@ import {
   UserQueryVariable,
 } from '../graphql/users/get_user.query';
 import { parseError } from '../graphql/client';
+import { ViewerContext } from '../context/homeViewer';
 
 interface CreateProps {
   className?: string;
@@ -31,6 +33,8 @@ interface CreateProps {
  */
 
 export const Create: FunctionComponent<CreateProps> = ({ className }) => {
+  const { viewer, setViewer } = useContext(ViewerContext);
+
   const [user, setUser] = useState<User>();
   const history = useHistory();
   const location = useLocation();
@@ -53,7 +57,8 @@ export const Create: FunctionComponent<CreateProps> = ({ className }) => {
     if (encryptedUserId) {
       userQuery({ variables: { encryptedUserId: encryptedUserId } });
     } else {
-      console.info('no encryptedUserId - should redirect to home page');
+      // If no token was passed in, redirect to login.
+      history.replace({ pathname: '/login' });
     }
   }, [encryptedUserId]);
 
@@ -61,6 +66,14 @@ export const Create: FunctionComponent<CreateProps> = ({ className }) => {
   useEffect(() => {
     // If no error/loading set values.
     if (userQueryObj?.data?.getUser) {
+      // If user status is in 'registering team', redirect them.
+      if (
+        userQueryObj?.data?.getUser.status === ACCOUNTSTATUS.REGISTERINGTEAM
+      ) {
+        // If user was already registered
+        history.replace({ pathname: '/registerteam' });
+        return;
+      }
       setUser(userQueryObj.data.getUser);
     }
   }, [userQueryObj]);
@@ -75,7 +88,9 @@ export const Create: FunctionComponent<CreateProps> = ({ className }) => {
         const res = await createUserMut({
           variables: {
             id: user.id,
-            name: newUser.name,
+            firstName: newUser.firstName,
+            lastName: newUser.lastName,
+            dob: newUser.dob,
             password: newUser.password,
             email: newUser.email,
             phoneNumber: newUser.phoneNumber,
@@ -84,7 +99,8 @@ export const Create: FunctionComponent<CreateProps> = ({ className }) => {
 
         // If success, redirect to team edit page
         if (res.data?.createUser) {
-          history.push(`/teamedit/:${user.team.id}`);
+          setViewer({ ...viewer, user: res.data.createUser });
+          history.push(`/registerteam`);
         }
         // 로그인라우터로 이동 후 등록하면서 로그인
       } catch (e) {

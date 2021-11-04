@@ -18,16 +18,24 @@ export enum AccountType {
   CAPTAIN = 'CAPTAIN',
 }
 
-export enum AccountStatus {
+export enum ACCOUNTSTATUS {
   INVITED = 'INVITED',
-  ACCEPTED = 'ACCEPTED',
+  REGISTERINGTEAM = 'REGISTERINGTEAM',
+  COMPLETED = 'COMPLETED',
 }
 
 @Table({ tableName: 'user' })
 export class User extends Model {
   @AllowNull(false)
   @Column
-  name!: string;
+  firstName!: string;
+
+  @AllowNull(false)
+  @Column
+  lastName!: string;
+
+  @Column
+  dob!: string;
 
   // Note: Password can be null upon captain invitation
   @Column
@@ -48,8 +56,8 @@ export class User extends Model {
   @Column({ type: DataType.ENUM({ values: keys(AccountType) }) })
   type!: AccountType;
 
-  @Column({ type: DataType.ENUM({ values: keys(AccountStatus) }) })
-  status!: AccountStatus;
+  @Column
+  status!: string;
 
   @HasOne(() => Team) team?: Team[];
 

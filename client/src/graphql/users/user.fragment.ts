@@ -2,7 +2,9 @@ import { TEAM_FRAGMENT } from '../teams/team.fragment';
 
 export const USER_FRAGMENT = `
 id
-name
+firstName
+lastName
+dob
 email
 phoneNumber
 status

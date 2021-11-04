@@ -1,7 +1,8 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useContext } from 'react';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import { useMutation } from '@apollo/client';
+import { useHistory } from 'react-router-dom';
 
 import { LoginInput } from '../types/login';
 import {
@@ -11,6 +12,8 @@ import {
 } from '../graphql/login/login.mutation';
 import { LoginForm } from '../components/login/LoginForm';
 import { parseError } from '../graphql/client';
+import { ACCOUNTSTATUS } from '../types/user';
+import { ViewerContext } from '../context/homeViewer';
 interface LoginProps {
   className?: string;
 }
@@ -20,6 +23,8 @@ interface LoginProps {
  */
 
 const UnstyledLogin: FunctionComponent<LoginProps> = () => {
+  const history = useHistory();
+  const { viewer, setViewer } = useContext(ViewerContext);
   const [loginUserMut] = useMutation<LoginData, CreateLoginDataInput>(
     LOGIN_USER
   );
@@ -33,6 +38,14 @@ const UnstyledLogin: FunctionComponent<LoginProps> = () => {
         },
       });
       console.info(res);
+      if (res.data?.loginUser) {
+        setViewer({ ...viewer, user: res.data.loginUser });
+
+        // Redirect to register team if user have not finished this step.
+        if (res.data?.loginUser.status === ACCOUNTSTATUS.REGISTERINGTEAM) {
+          history.replace({ pathname: '/registerteam' });
+        }
+      }
     } catch (e) {
       console.info(parseError(e));
     }

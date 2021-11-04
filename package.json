@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dist/app.js",
     "client": "cd client && npm start",
-    "server": "ts-node-dev --tree-kill --exit-child server/app.ts",
+    "server": "ts-node-dev --tree-kill --transpile-only --exit-child server/app.ts",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "tsc -p .",
     "test": "echo \"Error: no test specified\" && exit 1",

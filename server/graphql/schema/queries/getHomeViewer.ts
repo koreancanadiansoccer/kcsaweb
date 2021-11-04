@@ -23,6 +23,7 @@ export const getHomeViewer = {
     if (req.session.userId) {
       userId = req.session.userId;
       user = await User.findOne({
+        include: [{ model: Team, include: [Player] }],
         where: { id: userId },
       });
     }

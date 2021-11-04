@@ -19,6 +19,7 @@ import { createAppTheme } from './styles/theme';
 import { client } from './graphql/client';
 import { Login } from './pages/Login';
 import { Create } from './pages/Create';
+import { RegisterTeam } from './pages/RegisterTeam';
 import { Media } from './pages/announcement/media/Media';
 import { GET_HOME_VIEWER } from './graphql/homeViewer';
 import { ViewerContext } from './context/homeViewer';
@@ -29,10 +30,9 @@ const App: FunctionComponent = () => {
   const theme = createAppTheme();
   const { pathname } = useLocation();
   const [viewer, setViewer] = useState<HomeViewer>();
-  const isAdminRoute = useMemo(
-    () => includes(pathname.split('/'), 'admin'),
-    [pathname]
-  );
+  const isAdminRoute = useMemo(() => includes(pathname.split('/'), 'admin'), [
+    pathname,
+  ]);
 
   /**BELOW QUERY IS EXMAPLE TO SHOW CONNETION BETWEEN GQL AND FRONTEND - TODO: REMOVE */
   const { loading, data } = useQuery(GET_HOME_VIEWER, { client: client });
@@ -122,6 +122,10 @@ const App: FunctionComponent = () => {
 
             <Route path="/create">
               <Create />
+            </Route>
+
+            <Route path="/registerteam">
+              <RegisterTeam />
             </Route>
 
             <Route exact path="/gallery">

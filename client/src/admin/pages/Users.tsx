@@ -25,8 +25,14 @@ enum MODAL_TYPE {
 }
 
 const tableColumns = [
-  { title: 'Name', field: 'name' },
+  {
+    title: 'Name',
+    render: (user: User) => {
+      return `${user.firstName} ${user.lastName}`;
+    },
+  },
   { title: 'Email', field: 'email' },
+  { title: 'DOB', field: 'dob' },
   {
     title: 'Phone ',
     render: (user: User) => {

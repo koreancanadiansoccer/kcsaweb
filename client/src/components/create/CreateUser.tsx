@@ -33,7 +33,9 @@ const UnstyledCreate: FunctionComponent<CreateProps> = ({
   onAdd,
 }) => {
   const [newUser, setNewUser] = useState<UserInput>({
-    name: origUser?.name || '',
+    firstName: origUser?.firstName || '',
+    lastName: origUser?.lastName || '',
+    dob: origUser?.dob || '',
     email: origUser?.email || '',
     phoneNumber: origUser?.phoneNumber || '',
     password: '',
@@ -48,13 +50,14 @@ const UnstyledCreate: FunctionComponent<CreateProps> = ({
       ? 'Passwords not matching'
       : '';
   }, [newUser]);
-  // const [passwordConfrimError, setPasswordConfirmError] = useState('');
 
   const isValid = useMemo(
     () =>
-      !!newUser?.name &&
+      !!newUser?.firstName &&
+      !!newUser?.lastName &&
       !!newUser?.email &&
       !emailError &&
+      !!newUser?.dob &&
       !!newUser?.phoneNumber &&
       !phoneError &&
       !!newUser?.password &&
@@ -67,18 +70,21 @@ const UnstyledCreate: FunctionComponent<CreateProps> = ({
   useEffect(() => {
     if (origUser)
       setNewUser({
-        name: origUser?.name || '',
+        firstName: origUser?.firstName || '',
+        lastName: origUser?.lastName || '',
         email: origUser?.email || '',
+        dob: origUser?.dob || '',
         phoneNumber: origUser?.phoneNumber || '',
         password: '',
         passwordConfirm: '',
       });
   }, [origUser]);
+
   return (
     <Box className={className} my={20}>
       <Box>
         <Typography variant="h4" align="center">
-          Welcome to KCSA{origUser?.name ? `, ${origUser?.name}` : ''}
+          Welcome to KCSA{origUser?.firstName ? `, ${origUser?.firstName}` : ''}
         </Typography>
         <Box mt={3}>
           <Typography variant="h5" align="center">
@@ -93,14 +99,44 @@ const UnstyledCreate: FunctionComponent<CreateProps> = ({
             className="create-field"
             type="text"
             label="Name:"
-            value={newUser.name}
+            value={newUser.firstName}
             fullWidth
             margin="normal"
             onChange={(evt: ChangeEvent<HTMLInputElement>) => {
               setNewUser({
                 ...newUser,
-                name: evt.target.value,
+                firstName: evt.target.value,
               });
+            }}
+          />
+
+          <Input
+            className="create-field"
+            type="text"
+            label="Name:"
+            value={newUser.lastName}
+            fullWidth
+            margin="normal"
+            onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+              setNewUser({
+                ...newUser,
+                lastName: evt.target.value,
+              });
+            }}
+          />
+          <Input
+            className="create-field"
+            label="Date of Birth"
+            placeholder="date of birth"
+            type="date"
+            value={newUser.dob}
+            fullWidth
+            margin="normal"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setNewUser({ ...newUser, dob: e.target.value });
             }}
           />
 
