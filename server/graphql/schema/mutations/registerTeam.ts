@@ -66,7 +66,7 @@ export const registerTeam = {
         await User.update(
           {
             phoneNumber: args.phoneNumber,
-            status: ACCOUNTSTATUS.ACCEPTED,
+            status: ACCOUNTSTATUS.COMPLETED,
           },
           { where: { id: req.session.userId } }
         );
