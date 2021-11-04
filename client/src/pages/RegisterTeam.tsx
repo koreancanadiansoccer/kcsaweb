@@ -36,7 +36,7 @@ export const RegisterTeam: FunctionComponent = () => {
   //Step configurations
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = [
-    { label: 'Confugre Team', comp: <TeamConfig handleNext={handleNext} /> },
+    { label: 'Configure Team', comp: <TeamConfig handleNext={handleNext} /> },
     { label: 'Add Players', comp: <PlayerConfig handleBack={handleBack} /> },
   ];
 
