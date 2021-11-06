@@ -24,6 +24,8 @@ export const RegisterTeam: FunctionComponent = () => {
   const history = useHistory();
   const [direction, setDirection] = useState('right');
 
+  const redirectState = history.location.state as { [key: string]: string };
+
   const handleNext = () => {
     setDirection('right');
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -36,6 +38,7 @@ export const RegisterTeam: FunctionComponent = () => {
 
   //Step configurations
   const [activeStep, setActiveStep] = React.useState(0);
+
   const steps = [
     { label: 'Configure Club', comp: <TeamConfig handleNext={handleNext} /> },
     { label: 'Add Players', comp: <PlayerConfig handleBack={handleBack} /> },
@@ -46,6 +49,12 @@ export const RegisterTeam: FunctionComponent = () => {
       history.replace({ pathname: '/login' });
       return;
     }
+
+    if (viewer.user.status === ACCOUNTSTATUS.COMPLETED) {
+      history.replace({ pathname: '/' });
+      return;
+    }
+
     if (viewer.user.status === ACCOUNTSTATUS.INVITED) {
       history.replace({ pathname: '/' });
       return;
@@ -71,6 +80,12 @@ export const RegisterTeam: FunctionComponent = () => {
   return (
     <Box my={10}>
       <Container>
+        {redirectState?.msg && (
+          <Typography className="boldText" color="error">
+            {redirectState.msg}
+          </Typography>
+        )}
+
         <Typography className="boldText" variant="h5">
           Register your club.
         </Typography>

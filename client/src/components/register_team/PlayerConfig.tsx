@@ -27,6 +27,7 @@ import {
 import { parseError } from '../../graphql/client';
 import { ViewerContext } from '../../context/homeViewer';
 import { PlayerInput } from '../../types/player';
+import { ErrorAlert } from '../alert_msg/Alerts';
 
 interface TeamConfigProps {
   handleBack: () => void;
@@ -58,6 +59,7 @@ const UnstyledPlayerConfig: FunctionComponent<TeamConfigProps> = ({
     history.replace({ pathname: '/' });
     return <Box>No Team Found</Box>;
   }
+  const [errorMsg, setErrorMsg] = useState('');
 
   const isValid = useMemo(() => {
     if (!players || players.length === 0) return false;
@@ -85,12 +87,13 @@ const UnstyledPlayerConfig: FunctionComponent<TeamConfigProps> = ({
         },
       });
 
+      // Registation complete - redirect to team dashboard.
       if (res.data?.registerTeam) {
         setViewer({ ...viewer, user: res.data.registerTeam });
-        history.replace({ pathname: '/teamedit' });
+        history.replace({ pathname: '/dashboard' });
       }
     } catch (e) {
-      console.info(parseError(e));
+      setErrorMsg(parseError(e));
     }
   }, [registerTeamMut, players]);
 
@@ -216,6 +219,7 @@ const UnstyledPlayerConfig: FunctionComponent<TeamConfigProps> = ({
           </Button>
         </Box>
       </Box>
+      <ErrorAlert msg={errorMsg} resetMsg={() => setErrorMsg('')} />
     </Box>
   );
 };

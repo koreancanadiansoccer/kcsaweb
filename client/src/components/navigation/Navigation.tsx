@@ -1,21 +1,24 @@
-import React, { FunctionComponent, useContext } from 'react';
+import React, { FunctionComponent, useCallback, useContext } from 'react';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
-import { Link as RouteLink } from 'react-router-dom';
+import { Link as RouteLink, useHistory } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
 
 import { Button } from '../button/Button';
 import { Logo } from '../icons/Logo';
 // import { LogoNew } from '../icons/LogoNew'; TBD to use
 import { ViewerContext } from '../../context/homeViewer';
+import { LOGOUT } from '../../graphql/users/logout.mutation';
 
 import { AboutNav } from './components/AboutNav';
 import { TeamsNav } from './components/TeamsNav';
 import { AnnouncementNav } from './components/AnnouncementNav';
 import { LeagueNav } from './components/LeagueNav';
+
 interface NavigationProps {
   className?: string;
 }
@@ -24,6 +27,20 @@ const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
   className,
 }) => {
   const { viewer } = useContext(ViewerContext);
+  const [logoutMut] = useMutation(LOGOUT);
+  const history = useHistory();
+
+  const logout = useCallback(async () => {
+    try {
+      const res = await logoutMut();
+
+      if (res) {
+        history.replace({ pathname: '/', state: { reload: true } });
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, [viewer]);
 
   return (
     <Box className={className}>
@@ -60,8 +77,12 @@ const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
                 )}
 
                 {viewer?.user && !viewer?.user?.isAdmin && (
-                  <Button component={RouteLink} to={'/login'} color="secondary">
-                    View Club
+                  <Button
+                    component={RouteLink}
+                    to="/dashboard"
+                    color="secondary"
+                  >
+                    Club Dashboard
                   </Button>
                 )}
 
@@ -73,7 +94,9 @@ const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
 
                 {viewer?.user && (
                   <Box ml={3}>
-                    <Button color="secondary">Logout</Button>
+                    <Button onClick={logout} color="secondary">
+                      Logout
+                    </Button>
                   </Box>
                 )}
               </Box>

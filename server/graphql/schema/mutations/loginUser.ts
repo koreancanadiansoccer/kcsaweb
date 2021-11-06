@@ -21,31 +21,27 @@ export const loginUser = {
     args: Args,
     { req }: any
   ): Promise<User | undefined> {
-    try {
-      // find the user from database
-      const user = await User.findOne({
-        include: [{ model: Team, include: [Player] }],
-        where: { email: args.email },
-      });
+    // find the user from database
+    const user = await User.findOne({
+      include: [{ model: Team, include: [Player] }],
+      where: { email: args.email },
+    });
 
-      if (!user) {
-        throw 'Unable to Find User!';
-      }
-
-      // check the password is vaild or not
-      const validPassword = await compare(args.password, user.password);
-      if (!validPassword) {
-        throw 'Incorrect Password!';
-      }
-
-      // Set userId to session upon successful login.
-      req.session.userId = user.id;
-      if (user.type === AccountType.CAPTAIN) req.session.isCaptain = true;
-      if (user.type === AccountType.ADMIN) req.session.isAdmin = true;
-
-      return user;
-    } catch (err) {
-      console.error(err);
+    if (!user) {
+      throw Error('Unable to Find User!');
     }
+
+    // check the password is vaild or not
+    const validPassword = await compare(args.password, user.password);
+    if (!validPassword) {
+      throw Error('Incorrect Password!');
+    }
+
+    // Set userId to session upon successful login.
+    req.session.userId = user.id;
+    if (user.type === AccountType.CAPTAIN) req.session.isCaptain = true;
+    if (user.type === AccountType.ADMIN) req.session.isAdmin = true;
+
+    return user;
   },
 };

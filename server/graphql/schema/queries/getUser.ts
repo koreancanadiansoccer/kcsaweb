@@ -11,6 +11,10 @@ export const getUser = {
   args: { encryptedUserId: { type: new GraphQLNonNull(GraphQLString) } },
   async resolve(parent: object, args: any): Promise<User> {
     const id = decodeIDBase64(args.encryptedUserId);
+
+    if (isNaN(id)) {
+      throw Error('Invalid token');
+    }
     // If current date is > 7 day, fail this call.
     const user = await User.findOne({
       include: [Team],

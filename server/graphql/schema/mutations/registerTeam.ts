@@ -37,39 +37,35 @@ export const registerTeam = {
 
       if (args.step === STEPS.PLAYERS) {
         // Destroy all players.
-        await Promise.all(
-          map(args.players, async (player) => {
-            if (player.id) {
-              await Player.update(
-                {
-                  firstName: player.firstName,
-                  lastName: player.lastName,
-                  dob: player.dob,
-                  teamId: args.teamId,
-                },
-                {
-                  where: { id: player.id },
-                }
-              );
-            } else {
+        const team = await Team.findOne({
+          where: { captainId: req.session.userId },
+        });
+
+        if (team) {
+          await Player.destroy({
+            where: { teamId: team.id },
+          });
+
+          await Promise.all(
+            map(args.players, async (player) => {
               await Player.create({
                 firstName: player.firstName,
                 lastName: player.lastName,
                 dob: player.dob,
                 teamId: args.teamId,
               });
-            }
-          })
-        );
+            })
+          );
 
-        // Update User status to completed registration.
-        await User.update(
-          {
-            phoneNumber: args.phoneNumber,
-            status: ACCOUNTSTATUS.COMPLETED,
-          },
-          { where: { id: req.session.userId } }
-        );
+          // Update User status to completed registration.
+          await User.update(
+            {
+              phoneNumber: args.phoneNumber,
+              status: ACCOUNTSTATUS.COMPLETED,
+            },
+            { where: { id: req.session.userId } }
+          );
+        }
       }
 
       const user = await User.findOne({

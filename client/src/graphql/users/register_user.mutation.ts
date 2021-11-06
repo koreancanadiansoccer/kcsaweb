@@ -5,8 +5,9 @@ import { User } from '../../types/user';
 import { USER_FRAGMENT } from './user.fragment';
 
 export interface RegisterUserDataResult {
-  createUser: User;
+  registerUser: User;
 }
+
 export interface RegisterUserDataInput {
   id: number;
   firstName: string;

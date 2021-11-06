@@ -3,7 +3,7 @@ import includes from 'lodash/includes';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ApolloProvider, useQuery } from '@apollo/client';
-import { Switch, Route, useLocation } from 'react-router-dom';
+import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 
 import { Navigation } from './components/navigation/Navigation';
@@ -15,7 +15,7 @@ import { About } from './pages/About';
 import { Announcements } from './pages/announcement/news_notice/Announcement';
 import { League } from './pages/League';
 import { Team } from './pages/Team';
-import { TeamEdit } from './pages/TeamEdit';
+import { Dashboard } from './pages/Dashboard';
 import { createAppTheme } from './styles/theme';
 import { client } from './graphql/client';
 import { Login } from './pages/Login';
@@ -30,6 +30,7 @@ import { HomeViewer, generateLeagueDataByAge } from './types/home_viewer';
 const App: FunctionComponent = () => {
   const theme = createAppTheme();
   const { pathname } = useLocation();
+  const history = useHistory();
   const [viewer, setViewer] = useState<HomeViewer>();
   const isAdminRoute = useMemo(
     () => includes(pathname.split('/'), 'admin'),
@@ -38,6 +39,18 @@ const App: FunctionComponent = () => {
 
   /**BELOW QUERY IS EXMAPLE TO SHOW CONNETION BETWEEN GQL AND FRONTEND - TODO: REMOVE */
   const { loading, data } = useQuery(GET_HOME_VIEWER, { client: client });
+
+  // Reset data.
+  useEffect(() => {
+    if (
+      history.location.state &&
+      (history.location.state as { [key: string]: boolean }).reload
+    ) {
+      (history.location.state as { [key: string]: boolean }).reload = false;
+      location.reload();
+      history.replace('/');
+    }
+  }, [history.location.state]);
 
   useEffect(() => {
     if (!loading && data) {
@@ -107,8 +120,8 @@ const App: FunctionComponent = () => {
                   <Team />
                 </Route>
 
-                <Route path="/teamedit/:id">
-                  <TeamEdit />
+                <Route exact path="/dashboard">
+                  <Dashboard />
                 </Route>
 
                 <Route exact path="/announcement">

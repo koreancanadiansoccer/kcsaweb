@@ -23,6 +23,7 @@ import {
 } from '../graphql/users/get_user.query';
 import { parseError } from '../graphql/client';
 import { ViewerContext } from '../context/homeViewer';
+import { ErrorAlert } from '../components/alert_msg/Alerts';
 
 interface CreateProps {
   className?: string;
@@ -40,6 +41,8 @@ export const Create: FunctionComponent<CreateProps> = ({ className }) => {
   const location = useLocation();
   const query = new URLSearchParams(location.search);
   const encryptedUserId = query.get('token');
+  const [error, setError] = useState('');
+  const redirectState = history.location.state as { [key: string]: string };
 
   // Create user mut.
   const [registerUserMut] = useMutation<
@@ -51,21 +54,51 @@ export const Create: FunctionComponent<CreateProps> = ({ className }) => {
   const [userQuery, userQueryObj] = useLazyQuery<
     UserQueryData,
     UserQueryVariable
-  >(GET_USER);
+  >(GET_USER, {
+    errorPolicy: 'all',
+    onError() {
+      if (!viewer.user) {
+        history.replace({
+          pathname: '/login',
+          state: { redirectPath: '/create' },
+        });
+        return;
+      }
+      history.replace({ pathname: '/dashboard' });
+      return;
+    },
+  });
 
   useEffect(() => {
     if (encryptedUserId) {
       userQuery({ variables: { encryptedUserId: encryptedUserId } });
     } else {
-      // If no token was passed in, redirect to login.
-      history.replace({ pathname: '/login' });
+      if (!viewer.user) {
+        // If no token was passed in, redirect to login.
+        history.replace({
+          pathname: '/login',
+        });
+        return;
+      }
+
+      // If user is logged in, redirect to home page.
+      history.replace({
+        pathname: '/',
+      });
+      return;
     }
-  }, [encryptedUserId]);
+  }, [encryptedUserId, viewer]);
+
+  useEffect(() => {
+    if (redirectState?.msg) {
+      setError(redirectState.msg);
+    }
+  }, [redirectState]);
 
   // Pull league data.
   useEffect(() => {
     // If no error/loading set values.
-    if (userQueryObj?.data?.getUser) {
+    if (!userQueryObj.loading && userQueryObj?.data?.getUser) {
       // If user status is in 'registering team', redirect them.
       if (
         userQueryObj?.data?.getUser.status === ACCOUNTSTATUS.REGISTERINGTEAM
@@ -74,6 +107,13 @@ export const Create: FunctionComponent<CreateProps> = ({ className }) => {
         history.replace({ pathname: '/registerteam' });
         return;
       }
+
+      if (userQueryObj?.data?.getUser.status === ACCOUNTSTATUS.COMPLETED) {
+        // If user was already registered
+        history.replace({ pathname: '/dashboard' });
+        return;
+      }
+
       setUser(userQueryObj.data.getUser);
     }
   }, [userQueryObj]);
@@ -98,12 +138,12 @@ export const Create: FunctionComponent<CreateProps> = ({ className }) => {
         });
 
         // If success, redirect to team edit page
-        if (res.data?.createUser) {
-          setViewer({ ...viewer, user: res.data.createUser });
+        if (res.data?.registerUser) {
+          setViewer({ ...viewer, user: res.data.registerUser });
           history.push(`/registerteam`);
         }
       } catch (e) {
-        console.info(parseError(e));
+        setError(parseError(e));
       }
     },
     [user]
@@ -116,6 +156,8 @@ export const Create: FunctionComponent<CreateProps> = ({ className }) => {
         origUser={user}
         onAdd={(newUser: UserInput) => createUser(newUser)}
       />
+
+      <ErrorAlert msg={error} resetMsg={() => setError('')} />
     </Box>
   );
 };

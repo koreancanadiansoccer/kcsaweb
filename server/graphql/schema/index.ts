@@ -36,6 +36,7 @@ import { registerTeam } from './mutations/registerTeam';
 import { registerUser } from './mutations/registerUser';
 import { updateCaptain } from './mutations/updateCaptain';
 import { sendEmailNotif as sendEmail } from './mutations/sendEmail';
+import { logout } from './mutations/logout';
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -80,6 +81,7 @@ const Mutation = new GraphQLObjectType({
     registerUser,
     updateCaptain,
     sendEmail,
+    logout,
   },
 });
 

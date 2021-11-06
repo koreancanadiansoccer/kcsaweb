@@ -3,7 +3,7 @@ import { Team } from './team';
 export enum ACCOUNTSTATUS {
   INVITED = 'INVITED',
   REGISTERINGTEAM = 'REGISTERINGTEAM',
-  ACCEPTED = 'ACCEPTED',
+  COMPLETED = 'COMPLETED',
 }
 
 export const EMAIL_REGEX = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;

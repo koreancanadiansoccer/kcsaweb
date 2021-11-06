@@ -31,6 +31,7 @@ import {
 } from '../../graphql/users/register_team.mutation';
 import { parseError } from '../../graphql/client';
 import { ViewerContext } from '../../context/homeViewer';
+import { ErrorAlert } from '../alert_msg/Alerts';
 
 interface TeamConfigProps {
   handleNext: () => void;
@@ -53,6 +54,7 @@ const UnstyledTeamConfig: FunctionComponent<TeamConfigProps> = ({
   const [file, setFile] = useState<File>();
   const [fileLink, setFileLink] = useState('');
 
+  const [errorMsg, setErrorMsg] = useState('');
   const { generateUploadUrls } = useImgUpload();
 
   const isValid = useMemo(
@@ -97,7 +99,7 @@ const UnstyledTeamConfig: FunctionComponent<TeamConfigProps> = ({
         handleNext();
       }
     } catch (e) {
-      console.info(parseError(e));
+      setErrorMsg(parseError(e));
     }
   }, [registerTeamMut, team, file]);
 
@@ -256,6 +258,7 @@ const UnstyledTeamConfig: FunctionComponent<TeamConfigProps> = ({
           Update & Continue
         </Button>
       </Box>
+      <ErrorAlert msg={errorMsg} resetMsg={() => setErrorMsg('')} />
     </Box>
   );
 };

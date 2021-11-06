@@ -4,20 +4,21 @@ import React, {
   ChangeEvent,
   useMemo,
   useEffect,
-} from "react";
-import { withTheme } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
-import styled from "styled-components";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
+} from 'react';
+import { withTheme } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
+import styled from 'styled-components';
+import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
 
-import { Input } from "../input/Input";
-import { Button } from "../button/Button";
-import { LoginInput } from "../../types/login";
+import { Input } from '../input/Input';
+import { Button } from '../button/Button';
+import { LoginInput } from '../../types/login';
 
 interface LoginProps {
   className?: string;
   onAdd: (user: LoginInput) => Promise<void>;
+  error?: string;
 }
 
 /**
@@ -26,21 +27,25 @@ interface LoginProps {
 const UnstyledLoginForm: FunctionComponent<LoginProps> = ({
   className,
   onAdd,
+  error,
 }) => {
   const [newLogin, setNewLogin] = useState<LoginInput>({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
-  const isValid = useMemo(() => !!newLogin?.email && !!newLogin?.password, [
-    newLogin,
-  ]);
+  const [emailError, setEmailError] = useState('');
+
+  const isValid = useMemo(
+    () => !!newLogin?.email && !emailError && !!newLogin?.password,
+    [newLogin]
+  );
 
   useEffect(
     () =>
       setNewLogin({
-        email: "",
-        password: "",
+        email: '',
+        password: '',
       }),
     []
   );
@@ -55,47 +60,68 @@ const UnstyledLoginForm: FunctionComponent<LoginProps> = ({
 
       <Box display="flex" justifyContent="center" alignItems="center" mt={4}>
         <Paper className="login-form">
-          <Input
-            className="login-field"
-            type="email"
-            label="Email:"
-            value={newLogin.email}
-            fullWidth
-            margin="normal"
-            onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-              setNewLogin({
-                ...newLogin,
-                email: evt.target.value,
-              });
-            }}
-          />
+          <form>
+            <Input
+              className="login-field"
+              type="email"
+              label="Email:"
+              value={newLogin.email}
+              error={!!emailError}
+              helperText={emailError}
+              fullWidth
+              margin="normal"
+              onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+                const email = evt.target.value;
 
-          <Input
-            className="login-field"
-            type="password"
-            label="Password:"
-            value={newLogin.password}
-            fullWidth
-            margin="normal"
-            onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-              setNewLogin({
-                ...newLogin,
-                password: evt.target.value,
-              });
-            }}
-          />
+                setEmailError(
+                  !/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(email)
+                    ? 'Please enter valid email'
+                    : ''
+                );
 
-          <Box textAlign="center" mt={3}>
-            <Button
-              disabled={!isValid}
-              size="large"
-              variant="contained"
-              color="primary"
-              onClick={() => void onAdd(newLogin)}
-            >
-              LOGIN
-            </Button>
-          </Box>
+                setNewLogin({
+                  ...newLogin,
+                  email: email.trim(),
+                });
+              }}
+            />
+
+            <Input
+              className="login-field"
+              type="password"
+              label="Password:"
+              value={newLogin.password}
+              fullWidth
+              margin="normal"
+              onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+                setNewLogin({
+                  ...newLogin,
+                  password: evt.target.value,
+                });
+              }}
+            />
+            {error && (
+              <Box textAlign="center" fontWeight={700}>
+                <Typography color="error">{error}</Typography>
+              </Box>
+            )}
+
+            <Box textAlign="center" mt={3}>
+              <Button
+                type="submit"
+                disabled={!isValid}
+                size="large"
+                variant="contained"
+                color="primary"
+                onClick={(evt) => {
+                  evt.preventDefault();
+                  void onAdd(newLogin);
+                }}
+              >
+                LOGIN
+              </Button>
+            </Box>
+          </form>
         </Paper>
       </Box>
     </Box>

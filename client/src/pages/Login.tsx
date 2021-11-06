@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useContext } from 'react';
+import React, {
+  FunctionComponent,
+  useCallback,
+  useContext,
+  useState,
+} from 'react';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import { useMutation } from '@apollo/client';
@@ -14,6 +19,7 @@ import { LoginForm } from '../components/login/LoginForm';
 import { parseError } from '../graphql/client';
 import { ACCOUNTSTATUS } from '../types/user';
 import { ViewerContext } from '../context/homeViewer';
+
 interface LoginProps {
   className?: string;
 }
@@ -29,37 +35,60 @@ const UnstyledLogin: FunctionComponent<LoginProps> = () => {
     LOGIN_USER
   );
 
-  const loginUser = async (newLogin: LoginInput) => {
-    try {
-      const res = await loginUserMut({
-        variables: {
-          email: newLogin.email,
-          password: newLogin.password,
-        },
-      });
-      console.info(res);
-      if (res.data?.loginUser) {
-        setViewer({ ...viewer, user: res.data.loginUser });
+  const [error, setError] = useState('');
 
-        // Redirect to admin.
-        if (res.data?.loginUser.isAdmin) {
-          history.replace({ pathname: '/admin' });
-        }
+  const loginUser = useCallback(
+    async (newLogin: LoginInput) => {
+      try {
+        setError('');
 
-        // Redirect to register team if user have not finished this step.
-        if (res.data?.loginUser.status === ACCOUNTSTATUS.REGISTERINGTEAM) {
-          history.replace({ pathname: '/registerteam' });
+        const res = await loginUserMut({
+          variables: {
+            email: newLogin.email,
+            password: newLogin.password,
+          },
+        });
+
+        if (res.data?.loginUser) {
+          setViewer({ ...viewer, user: res.data.loginUser });
+          // If admin, Redirect to admin.
+          if (res.data?.loginUser.isAdmin) {
+            history.replace({ pathname: '/admin' });
+            return;
+          }
+
+          if (res.data?.loginUser.status === ACCOUNTSTATUS.INVITED) {
+            history.replace({ pathname: '/create' });
+            return;
+          }
+
+          // Redirect to register team if user have not finished this step.
+          if (res.data?.loginUser.status === ACCOUNTSTATUS.REGISTERINGTEAM) {
+            history.replace({ pathname: '/registerteam' });
+            return;
+          }
+
+          const path = history.location.state as { [key: string]: string };
+          const redirect = path?.redirectPath;
+          if (redirect) {
+            history.replace({ pathname: redirect });
+            return;
+          }
+
+          history.replace({ pathname: '/' });
         }
+      } catch (e) {
+        setError(parseError(e));
       }
-    } catch (e) {
-      console.info(parseError(e));
-    }
-  };
+    },
+    [loginUserMut]
+  );
 
   return (
     <>
       <LoginForm
         className="Login"
+        error={error}
         onAdd={(newLogin: LoginInput) => loginUser(newLogin)}
       />
     </>
