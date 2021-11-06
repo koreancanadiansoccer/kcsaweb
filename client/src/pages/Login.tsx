@@ -41,6 +41,11 @@ const UnstyledLogin: FunctionComponent<LoginProps> = () => {
       if (res.data?.loginUser) {
         setViewer({ ...viewer, user: res.data.loginUser });
 
+        // Redirect to admin.
+        if (res.data?.loginUser.isAdmin) {
+          history.replace({ pathname: '/admin' });
+        }
+
         // Redirect to register team if user have not finished this step.
         if (res.data?.loginUser.status === ACCOUNTSTATUS.REGISTERINGTEAM) {
           history.replace({ pathname: '/registerteam' });

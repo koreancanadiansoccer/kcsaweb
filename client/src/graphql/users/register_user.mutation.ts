@@ -4,10 +4,10 @@ import { User } from '../../types/user';
 
 import { USER_FRAGMENT } from './user.fragment';
 
-export interface CreateUserDataResult {
+export interface RegisterUserDataResult {
   createUser: User;
 }
-export interface CreateUserDataInput {
+export interface RegisterUserDataInput {
   id: number;
   firstName: string;
   lastName: string;
@@ -20,8 +20,8 @@ export interface CreateUserDataInput {
 /**
  * Mutation for creating a new user account.
  */
-export const CREATE_USER = gql`
-  mutation CreateUser(
+export const REGISTER_USER = gql`
+  mutation RegisterUser(
     $id: Int!
     $firstName: String!
     $lastName: String!
@@ -30,7 +30,7 @@ export const CREATE_USER = gql`
     $email: String!
     $phoneNumber: String!
   ) {
-    createUser(
+    registerUser(
       id: $id
       firstName: $firstName
       lastName: $lastName

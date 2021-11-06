@@ -81,11 +81,12 @@ const UnstyledCreate: FunctionComponent<CreateProps> = ({
   }, [origUser]);
 
   return (
-    <Box className={className} my={20}>
+    <Box className={className} mt={5} mb={10}>
       <Box>
-        <Typography variant="h4" align="center">
+        <Typography variant="h4" align="center" className="boldText">
           Welcome to KCSA{origUser?.firstName ? `, ${origUser?.firstName}` : ''}
         </Typography>
+
         <Box mt={3}>
           <Typography variant="h5" align="center">
             Please confirm following information and create password.

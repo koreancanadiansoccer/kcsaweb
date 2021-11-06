@@ -16,7 +16,6 @@ import { getAnnouncement } from './queries/getAnnouncement';
 import { getAnnouncements } from './queries/getAnnouncements';
 import { getMatches } from './queries/getMatches';
 // Mutations
-import { createUser } from './mutations/createUser';
 import { createLeague } from './mutations/createLeague';
 import { updateLeague } from './mutations/updateLeague';
 import { createTeam } from './mutations/createTeam';
@@ -34,6 +33,9 @@ import { updateGallery } from './mutations/updateGallery';
 import { updateAnnouncement } from './mutations/updateAnnouncement';
 import { sendInvite } from './mutations/sendInvite';
 import { registerTeam } from './mutations/registerTeam';
+import { registerUser } from './mutations/registerUser';
+import { updateCaptain } from './mutations/updateCaptain';
+import { sendEmailNotif as sendEmail } from './mutations/sendEmail';
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -58,7 +60,6 @@ const RootQuery = new GraphQLObjectType({
 const Mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
-    createUser,
     createLeague,
     createAnnouncement,
     updateLeague,
@@ -76,6 +77,9 @@ const Mutation = new GraphQLObjectType({
     updateAnnouncement,
     sendInvite,
     registerTeam,
+    registerUser,
+    updateCaptain,
+    sendEmail,
   },
 });
 

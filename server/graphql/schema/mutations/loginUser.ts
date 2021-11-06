@@ -25,7 +25,7 @@ export const loginUser = {
       // find the user from database
       const user = await User.findOne({
         include: [{ model: Team, include: [Player] }],
-        where: { where: { email: args.email } },
+        where: { email: args.email },
       });
 
       if (!user) {

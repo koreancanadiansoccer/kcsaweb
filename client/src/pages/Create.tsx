@@ -12,10 +12,10 @@ import { useLocation, useHistory } from 'react-router-dom';
 import { UserInput, User, ACCOUNTSTATUS } from '../types/user';
 import { CreateUser } from '../components/create/CreateUser';
 import {
-  CREATE_USER,
-  CreateUserDataResult,
-  CreateUserDataInput,
-} from '../graphql/users/create_users.mutation';
+  REGISTER_USER,
+  RegisterUserDataResult,
+  RegisterUserDataInput,
+} from '../graphql/users/register_user.mutation';
 import {
   GET_USER,
   UserQueryData,
@@ -42,10 +42,10 @@ export const Create: FunctionComponent<CreateProps> = ({ className }) => {
   const encryptedUserId = query.get('token');
 
   // Create user mut.
-  const [createUserMut] = useMutation<
-    CreateUserDataResult,
-    CreateUserDataInput
-  >(CREATE_USER);
+  const [registerUserMut] = useMutation<
+    RegisterUserDataResult,
+    RegisterUserDataInput
+  >(REGISTER_USER);
 
   // Get Teams data.
   const [userQuery, userQueryObj] = useLazyQuery<
@@ -85,7 +85,7 @@ export const Create: FunctionComponent<CreateProps> = ({ className }) => {
         return;
       }
       try {
-        const res = await createUserMut({
+        const res = await registerUserMut({
           variables: {
             id: user.id,
             firstName: newUser.firstName,
@@ -102,7 +102,6 @@ export const Create: FunctionComponent<CreateProps> = ({ className }) => {
           setViewer({ ...viewer, user: res.data.createUser });
           history.push(`/registerteam`);
         }
-        // 로그인라우터로 이동 후 등록하면서 로그인
       } catch (e) {
         console.info(parseError(e));
       }

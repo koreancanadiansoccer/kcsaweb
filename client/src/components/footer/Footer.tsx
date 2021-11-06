@@ -17,16 +17,16 @@ const UnstyledNavigation: FunctionComponent<FooterProps> = ({ className }) => {
       <Box className="footer-container">
         <Container>
           <Box display="flex" alignItems="flex-left" justifyContent="flex-left">
-            <Box className="color-logo" ml={10} mt={12}>
+            <Box className="color-logo" ml={10} mt={7}>
               <img
                 src={ColorLogo}
                 alt="color-logo-pic"
                 className="color-logo-pic"
               />
             </Box>
-            <Box borderLeft={1} borderColor="#ffffff" ml={11} mt={12}></Box>
+            <Box borderLeft={1} borderColor="#ffffff" ml={11} mt={5}></Box>
             <Box>
-              <Box className="contact-title" mt={12} ml={10}>
+              <Box className="contact-title" mt={5} ml={10}>
                 Contact
                 <Box className="title-line" mt={2.5} />
               </Box>
@@ -52,10 +52,15 @@ const UnstyledNavigation: FunctionComponent<FooterProps> = ({ className }) => {
 
 export const Footer = withTheme(styled(UnstyledNavigation)`
   color: white;
+
   .footer-container {
     background-color: #1c1c1c;
-    height: 24.375rem;
+    height: 15rem;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
   }
+
   .color-logo-pic {
     width: 130px;
     height: 130px;

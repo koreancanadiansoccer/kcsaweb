@@ -19,7 +19,7 @@ interface Args {
 /**
  * Registers user.
  */
-export const createUser = {
+export const registerUser = {
   type: UserType,
   args: {
     id: { type: new GraphQLNonNull(GraphQLInt) },

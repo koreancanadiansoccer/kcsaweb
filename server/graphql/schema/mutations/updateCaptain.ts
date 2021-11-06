@@ -1,4 +1,9 @@
-import { GraphQLString, GraphQLList, GraphQLNonNull } from 'graphql';
+import {
+  GraphQLString,
+  GraphQLList,
+  GraphQLNonNull,
+  GraphQLInt,
+} from 'graphql';
 import * as dotenv from 'dotenv';
 
 import { UserType } from '../../types/user';
@@ -8,16 +13,19 @@ import {
   ACCOUNTSTATUS,
 } from '../../../db/models/user.model';
 import { Team } from '../../../db/models/team.model';
-import { sendEmail } from '../../../utils/sendemail';
-import { encodeIDBase64 } from '../utils';
+
 dotenv.config();
 interface Args {
   [key: string]: string | AccountType | ACCOUNTSTATUS;
 }
 
-export const sendInvite = {
+/**
+ * Update captain from admin modal.
+ */
+export const updateCaptain = {
   type: new GraphQLList(UserType),
   args: {
+    id: { type: new GraphQLNonNull(GraphQLInt) },
     firstName: { type: new GraphQLNonNull(GraphQLString) },
     lastName: { type: new GraphQLNonNull(GraphQLString) },
     dob: { type: GraphQLString },
@@ -27,6 +35,7 @@ export const sendInvite = {
   },
   async resolve(parent: object, args: Args): Promise<User[]> {
     if (
+      !args.id ||
       !args.firstName ||
       !args.lastName ||
       !args.email ||
@@ -36,31 +45,40 @@ export const sendInvite = {
       throw Error('Please fill all required fields!');
     }
 
-    // check if the user has already registered
-    const findUser = await User.findOne({ where: { email: args.email } });
+    // Confirm we already have user account.
+    const findUser = await User.findOne({ where: { id: args.id } });
 
-    if (findUser) {
-      throw Error('User with same email address exist');
+    if (!findUser) {
+      throw Error('User to update could not be retrieved.');
     }
 
-    const user = await User.create({
-      firstName: args.firstName,
-      lastName: args.lastName,
-      dob: args.dob,
-      email: args.email,
-      phoneNumber: args.phoneNumber,
-      status: ACCOUNTSTATUS.INVITED,
-      isAdmin: false,
+    await User.update(
+      {
+        firstName: args.firstName,
+        lastName: args.lastName,
+        dob: args.dob,
+        email: args.email,
+        phoneNumber: args.phoneNumber,
+        status: ACCOUNTSTATUS.INVITED,
+        isAdmin: false,
+        type: AccountType.CAPTAIN,
+      },
+      { where: { id: findUser.id } }
+    );
+
+    // Find team and update
+    const team = await Team.findOne({
+      where: { captainId: findUser.id },
     });
 
-    // Encode user id.
-    const cipherText = encodeIDBase64(user.id);
-
-    // Create team
-    const team = await Team.create({ name: args.teamName, captainId: user.id });
-
-    // Send invitation email.
-    await sendEmail(user.firstName, user.email, team.name, cipherText);
+    if (team) {
+      await Team.update(
+        {
+          name: args.teamName,
+        },
+        { where: { id: team.id } }
+      );
+    }
 
     const users = await User.findAll({
       include: [Team],

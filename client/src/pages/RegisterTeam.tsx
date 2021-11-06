@@ -9,6 +9,7 @@ import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
 import { useHistory } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { map } from 'lodash';
@@ -36,7 +37,7 @@ export const RegisterTeam: FunctionComponent = () => {
   //Step configurations
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = [
-    { label: 'Configure Team', comp: <TeamConfig handleNext={handleNext} /> },
+    { label: 'Configure Club', comp: <TeamConfig handleNext={handleNext} /> },
     { label: 'Add Players', comp: <PlayerConfig handleBack={handleBack} /> },
   ];
 
@@ -51,6 +52,10 @@ export const RegisterTeam: FunctionComponent = () => {
     }
   }, [viewer]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [activeStep]);
+
   const variants = {
     initial:
       direction === 'right'
@@ -61,15 +66,15 @@ export const RegisterTeam: FunctionComponent = () => {
         ? { opacity: 1, x: 0, y: 0 }
         : { opacity: 1, x: 0, y: 0 },
     exit: { opacity: 0 },
-    // exit:
-    //   direction === 'right'
-    //     ? { opacity: 0, x: -500, y: 0 }
-    //     : { opacity: 0, x: 1000, y: 0 },
   };
 
   return (
-    <Box mt={20} mb={20}>
+    <Box my={10}>
       <Container>
+        <Typography className="boldText" variant="h5">
+          Register your club.
+        </Typography>
+
         <Stepper activeStep={activeStep}>
           {steps.map((step, idx) => {
             const stepProps: { completed?: boolean } = {};

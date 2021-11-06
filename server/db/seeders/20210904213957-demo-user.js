@@ -6,9 +6,10 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert('user', [
       {
-        name: 'admin',
-        password: await hash('1234', 8),
-        email: 'example_admin@example.com',
+        firstName: 'admin',
+        lastName: 'admin',
+        password: await hash('Kcsaadmin2021!', 8),
+        email: 'kcsaadmin',
         phone_number: '1234567890',
         is_admin: true,
         type: 'ADMIN',
@@ -18,7 +19,8 @@ module.exports = {
       },
 
       {
-        name: 'stanley',
+        firstName: 'Stanley',
+        lastName: 'Moon',
         password: await hash('1234', 8),
         email: 'example@example.com',
         phone_number: '9876543210',
@@ -42,9 +44,10 @@ module.exports = {
 
     await queryInterface.bulkDelete('user', [
       {
-        name: 'admin',
-        password: await hash('1234', 8),
-        email: 'example_admin@example.com',
+        firstName: 'admin',
+        lastName: 'admin',
+        password: await hash('Kcsaadmin2021!', 8),
+        email: 'kcsaadmin',
         phoneNumber: '123-456-7890',
         is_admin: true,
         type: 'ADMIN',
@@ -54,7 +57,8 @@ module.exports = {
       },
 
       {
-        name: 'stanley',
+        firstName: 'Stanley',
+        lastName: 'Moon',
         password: await hash('1234', 8),
         email: 'example@example.com',
         phoneNumber: '987-654-3210',

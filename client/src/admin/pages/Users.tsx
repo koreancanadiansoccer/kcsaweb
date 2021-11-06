@@ -1,4 +1,5 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState, useMemo } from 'react';
+import { find } from 'lodash';
 import AddIcon from '@material-ui/icons/Add';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -7,8 +8,9 @@ import { useMutation, useQuery } from '@apollo/client';
 import { Table } from '../../components/table/Table';
 import { Loader } from '../../components/loader/Loader';
 import { Button } from '../../components/button/Button';
-import { ErrorAlert } from '../../components/errorAlert/ErrorAlert';
+import { ErrorAlert } from '../../components/alert_msg/Alerts';
 import { InviteNewCaptainModal } from '../components/admin_users/InviteCaptainModal';
+import { UpdateCaptainModal } from '../components/admin_users/UpdateCaptinModal';
 import { User, NewCaptain } from '../../types/user';
 import { GET_USERS, GetUsersResult } from '../../graphql/users/get_users.query';
 import {
@@ -39,7 +41,7 @@ const tableColumns = [
       return formatPhone(user.phoneNumber);
     },
   },
-  { title: 'Status', field: 'status' },
+  { title: 'Invite Status', field: 'status' },
 ];
 
 export const Users: FunctionComponent = () => {
@@ -52,8 +54,12 @@ export const Users: FunctionComponent = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState('');
   const [users, setUsers] = useState<User[]>();
-
+  const [updateUserId, setUpdateUserId] = useState<number>();
   const [openModal, setOpenModal] = useState<MODAL_TYPE | null>(null);
+
+  const updateUser = useMemo(() => {
+    return find(users, (user) => user.id === updateUserId);
+  }, [updateUserId, users]);
 
   useEffect(() => {
     setLoading(userDataQuery.loading);
@@ -91,6 +97,15 @@ export const Users: FunctionComponent = () => {
           onSubmit={(newCaptain) => sendInvite(newCaptain)}
         />
       )}
+
+      {openModal === MODAL_TYPE.EDIT_CAPTAIN && updateUser && (
+        <UpdateCaptainModal
+          open={openModal === MODAL_TYPE.EDIT_CAPTAIN}
+          onClose={() => setOpenModal(null)}
+          setUsers={(newUsers: User[]) => setUsers(newUsers)}
+          selectedCaptain={updateUser}
+        />
+      )}
       <Box>
         <Typography variant="h4">Users/Captains</Typography>
 
@@ -108,6 +123,12 @@ export const Users: FunctionComponent = () => {
           title="Users"
           columns={tableColumns}
           data={users}
+          onRowClick={(evt, data) => {
+            if (data?.id) {
+              setUpdateUserId(data.id);
+              setOpenModal(MODAL_TYPE.EDIT_CAPTAIN);
+            }
+          }}
           options={{
             pageSize: 10,
             rowStyle: (data) => {
@@ -118,7 +139,7 @@ export const Users: FunctionComponent = () => {
           }}
         />
 
-        <ErrorAlert error={error} resetError={() => setError('')} />
+        <ErrorAlert msg={error} resetMsg={() => setError('')} />
       </Box>
     </>
   );

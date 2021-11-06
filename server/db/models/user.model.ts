@@ -59,7 +59,7 @@ export class User extends Model {
   @Column
   status!: string;
 
-  @HasOne(() => Team) team?: Team[];
+  @HasOne(() => Team) team?: Team;
 
   @HasMany(() => LeagueTeam) leagueTeams?: LeagueTeam[];
 }
