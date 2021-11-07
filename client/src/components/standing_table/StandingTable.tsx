@@ -43,7 +43,6 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
   headerLongField,
   rowLongField,
   paperShadow = 3,
-  //DONE: set the default value
   hideHeader,
   flexWidth = 1,
   tableType,

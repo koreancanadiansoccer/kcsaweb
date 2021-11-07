@@ -2,7 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 
-const Divider = styled.div`
+interface DividerProps {
+  margin: string;
+}
+interface HorizontalDividerProps {
+  margin?: string;
+}
+
+const Divider = styled.div<DividerProps>`
   background: linear-gradient(
     90deg,
     #f17f42 0%,
@@ -14,13 +21,15 @@ const Divider = styled.div`
   height: 6px;
   width: 100%;
   max-width: 203px;
-  margin: 0 auto;
+  margin: ${(p) => p.margin};
 `;
 
-export const HorizontalDivider: React.FC = () => {
+export const HorizontalDivider: React.FC<HorizontalDividerProps> = ({
+  margin = '0 auto',
+}) => {
   return (
     <Box>
-      <Divider />
+      <Divider margin={margin} />
     </Box>
   );
 };

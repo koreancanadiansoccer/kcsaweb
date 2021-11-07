@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import CheckCircleOutline from '@material-ui/icons/CheckCircleOutline';
@@ -29,6 +30,7 @@ const UnstyledGallerySlide: FunctionComponent<GallerySlideProps> = ({
   className,
   mobileView,
 }) => {
+  const history = useHistory();
   const { viewer } = useContext(ViewerContext);
 
   const [showGallery, setShowGallery] = useState<Gallery>();
@@ -52,11 +54,25 @@ const UnstyledGallerySlide: FunctionComponent<GallerySlideProps> = ({
       position="relative"
       overflow="hidden"
     >
-      <Box className="image-banner">
+      <Box
+        className="image-banner"
+        onClick={() => {
+          history.push({
+            pathname: `/gallery/${showGallery.id}`,
+            state: { gallery: showGallery },
+          });
+        }}
+      >
         <Typography variant="h6" className="image-title">
-          {showGallery?.title}
+          {showGallery.title}
         </Typography>
-        <Box className="thumbnail-box">
+
+        <Box
+          className="thumbnail-box"
+          display="flex"
+          justifyContent="start"
+          position="relative"
+        >
           {map(viewer.galleries, (gallery) => (
             <Box
               key={gallery.id}
@@ -70,7 +86,10 @@ const UnstyledGallerySlide: FunctionComponent<GallerySlideProps> = ({
                 key={gallery.id}
                 src={gallery.galleryImages![0].imageURL}
                 alt="test"
-                onClick={() => setShowGallery(gallery)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowGallery(gallery);
+                }}
               />
               <CheckCircleOutline className="check-circle" />
             </Box>
@@ -79,7 +98,8 @@ const UnstyledGallerySlide: FunctionComponent<GallerySlideProps> = ({
       </Box>
 
       <AutoSlide
-        className="slider-item"
+        slidesContainerClassName="slider-item"
+        slidesImgClassName={'gallery-main-slides'}
         galleryImages={showGallery.galleryImages}
         intervalTime={4000}
       />
@@ -95,6 +115,7 @@ export const GallerySlide = withTheme(styled(UnstyledGallerySlide)`
     width: 100%;
     position: absolute;
     z-index: 3;
+    cursor: pointer;
   }
 
   .image-banner: hover .thumbnail-box {
@@ -117,16 +138,14 @@ export const GallerySlide = withTheme(styled(UnstyledGallerySlide)`
   }
 
   .thumbnail-box {
-    position: relative;
     top: 71.28%;
     height: 20%;
     background: rgba(20, 36, 45, 0.7);
-    justify-content: start;
     opacity: 0;
-    display: flex;
     transition-property: opacity;
     transition-duration: 0.5s;
     transition-timing-function: ease-out;
+    cursor: default;
   }
 
   .thumbnail {
@@ -166,7 +185,7 @@ export const GallerySlide = withTheme(styled(UnstyledGallerySlide)`
     background-color: black;
   }
 
-  .default-slides {
+  .gallery-main-slides {
     display: falex;
     width: 100%;
     height: 441px;
@@ -176,13 +195,5 @@ export const GallerySlide = withTheme(styled(UnstyledGallerySlide)`
       height: inherit;
       width: auto;
     }
-  }
-
-  .active {
-    display: flex;
-  }
-
-  .inactive {
-    display: none;
   }
 `);
