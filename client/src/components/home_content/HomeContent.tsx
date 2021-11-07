@@ -168,4 +168,8 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
   );
 };
 
-export const HomeContent = withTheme(styled(UnstyledHomeContent)``);
+export const HomeContent = withTheme(styled(UnstyledHomeContent)`
+  .team-logo {
+
+  }
+`);
