@@ -1,8 +1,4 @@
-import React, {
-  FunctionComponent,
-  useEffect,
-  useState,
-} from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import map from 'lodash/map';
@@ -10,16 +6,13 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 
 import { GalleryImage } from '../../types/gallery';
-import { Thumbnail } from '../thumbnail/Thumbnail';
 
 interface AutoSlideProps {
   className?: string;
-  slidesContainerClassName?: string;
-  slidesImgClassName?: string;
   galleryImages: GalleryImage[];
   intervalTime: number;
   activeThumbnail: boolean;
-  numOfThumbnail?: number;
+  clickedIndex: number;
 }
 
 /**
@@ -27,14 +20,13 @@ interface AutoSlideProps {
  */
 const UnstyledAutoSlide: FunctionComponent<AutoSlideProps> = ({
   className,
-  slidesContainerClassName = 'default-slide-container',
-  slidesImgClassName = 'default-slides',
   galleryImages,
   intervalTime = 2000,
   activeThumbnail = false,
-  numOfThumbnail = 6,
+  clickedIndex = 0,
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [curClickIndex, setCurClickIndex] = useState(clickedIndex);
 
   useEffect(() => {
     // Use interval to make automatic slides.
@@ -49,6 +41,12 @@ const UnstyledAutoSlide: FunctionComponent<AutoSlideProps> = ({
     }
   }, [activeIndex]);
 
+  // Showing clicked thumbnails while preventing infinite render
+  if (curClickIndex !== clickedIndex) {
+    setCurClickIndex(clickedIndex);
+    setActiveIndex(clickedIndex);
+  }
+
   // When new Gallery is rendering, preventing delays in showing images
   if (activeIndex >= galleryImages.length) {
     setActiveIndex(0);
@@ -59,16 +57,16 @@ const UnstyledAutoSlide: FunctionComponent<AutoSlideProps> = ({
   }
 
   return (
-    <Box className={className}>
-      <Box className={slidesContainerClassName}>
+    <>
+      <Box className={className}>
         {map(galleryImages, (image, index) => (
           <Box
             key={index}
             className={
               /* Use css to choose whether to show the image or not */
               index === activeIndex
-                ? `active ${slidesImgClassName}`
-                : `inactive ${slidesImgClassName}`
+                ? 'active default-slides'
+                : 'inactive default-slides'
             }
           >
             <img
@@ -79,35 +77,15 @@ const UnstyledAutoSlide: FunctionComponent<AutoSlideProps> = ({
           </Box>
         ))}
       </Box>
-
       {activeThumbnail && (
-        <>
-          <Box display="flex" justifyContent="center">
-            <Box display="flex" justifyContent="flex-end" width="70rem">
-              <Typography variant="subtitle1" component="div">
-                {activeIndex + 1} / {galleryImages.length}
-              </Typography>
-            </Box>
-          </Box>
-
-          <Thumbnail
-            galleryImages={galleryImages}
-            numOfThumbnail={numOfThumbnail}
-            onSelect={(index: number) => setActiveIndex(index)}
-            activeIndex={activeIndex}
-          />
-        </>
+        <Box className="slide-pagination">
+          <Typography variant="subtitle1" component="div">
+            {activeIndex + 1} / {galleryImages.length}
+          </Typography>
+        </Box>
       )}
-    </Box>
+    </>
   );
 };
 
-export const AutoSlide = withTheme(styled(UnstyledAutoSlide)`
-  .active {
-    display: flex !important;
-  }
-
-  .inactive {
-    display: none !important;
-  }
-`);
+export const AutoSlide = withTheme(styled(UnstyledAutoSlide)``);

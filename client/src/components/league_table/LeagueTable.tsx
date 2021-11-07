@@ -73,13 +73,11 @@ export const LeagueTable = withTheme(styled(UnstyledLeagueTable)`
     display: flex;
     align-items: center;
     width: 100%;
-    justify-content: flex-start;
-    padding-left: 1.5rem;
+    justify-content: space-evenly;
 
     img {
       width: 25px;
       height: 25px;
-      margin-right: 0.5rem;
     }
   }
 `);
