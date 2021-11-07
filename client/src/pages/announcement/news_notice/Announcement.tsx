@@ -1,38 +1,37 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
-import Box from '@material-ui/core/Box';
+import React, { FunctionComponent, useState, useEffect, useMemo } from 'react';
+import styled from 'styled-components';
+import { withTheme } from '@material-ui/core/styles';
 import { useQuery } from '@apollo/client';
-import { useParams, useHistory } from 'react-router';
-import find from 'lodash/find';
+import { useHistory, useParams } from 'react-router-dom';
+import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
+import map from 'lodash/map';
+import dayjs from 'dayjs';
 import { scroller } from 'react-scroll';
 
-import { Table } from '../../../components/table/Table';
 import { Announcement } from '../../../types/announcement';
 import { GET_ANNOUNCEMENTS } from '../../../graphql/announcement/get_announcements.query';
 import { parseError } from '../../../graphql/client';
+import AboutBanner from '../../../assets/about.png';
 
 import { AnnouncmentDetail } from './AnnouncmentDetail';
-
+import { AnnouncementTable } from './AnnouncementTable';
 interface AnnouncementProps {
   className?: string;
 }
 
-const tableColumns = [
-  { title: 'Title', field: 'title' },
-  { title: 'Date Posted', field: 'createdAt' },
-];
-
 /**
  * Announcement Page.
  */
-export const Announcements: FunctionComponent<AnnouncementProps> = ({
+const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
   className,
 }) => {
-  const [announcements, setAnnouncements] = useState<Announcement[]>();
-  const [selectedAnnouncement, setSelectedAnnouncement] =
-    useState<Announcement>();
-
-  const { id } = useParams<{ id: string }>();
   const history = useHistory();
+  const { id } = useParams<{ id: string }>();
+
+  const [announcements, setAnnouncements] = useState<Announcement[]>();
+  const [selectedID, setSelectedID] = useState<string>(id);
 
   // Get Announcement data.
   const announcementDataQuery = useQuery(GET_ANNOUNCEMENTS);
@@ -47,23 +46,10 @@ export const Announcements: FunctionComponent<AnnouncementProps> = ({
     // If no error/loading set values.
     if (!loading && !error && announcementDataQuery?.data?.getAnnouncements) {
       setAnnouncements(announcementDataQuery.data.getAnnouncements);
-      {
-        id
-          ? setSelectedAnnouncement(
-              find(
-                announcementDataQuery.data.getAnnouncements,
-                (announcement) => announcement.id === id
-              )
-            )
-          : setSelectedAnnouncement({
-              id: '',
-              title: '',
-              subtitle: '',
-              content: '',
-              imageURL: '',
-              showOnHomepage: false,
-            });
-      }
+    }
+
+    if (!id) {
+      setSelectedID('')
     }
 
     if (announcementDataQuery.error) {
@@ -71,44 +57,79 @@ export const Announcements: FunctionComponent<AnnouncementProps> = ({
     }
   }, [announcementDataQuery, loading, error, id]);
 
-  if (!announcements) {
+  const selectedAnnouncement = useMemo(() => {
+    if (!announcements || !setSelectedID.length) return null;
+    return announcements[parseInt(selectedID)];
+  }, [selectedID, id, announcements]);
+
+  const tableRowData = useMemo(() => {
+    if (!announcements) return null;
+    return map(announcements, (announcement, idx) => {
+      return {
+        'No.': idx + 1 + '.',
+        Title: announcement.title,
+        Date: dayjs(announcement.createdAt, 'YYYY-MM-DDTHH:mm').format('YYYY-MM-DD'),
+      };
+    })
+  }, [announcements]);
+
+  if (!announcements || !tableRowData) {
     return <div>loading...</div>;
   }
 
   return (
-    <Box className={className} my={5}>
-      {selectedAnnouncement && selectedAnnouncement?.id != '' && (
-        <AnnouncmentDetail
-          imgSrc={selectedAnnouncement.imageURL}
-          title={selectedAnnouncement.title}
-          contentToDisplay={selectedAnnouncement.content}
-        />
-      )}
+    <Box className={className} mb={6}>
       <Box
-        className={className}
+        className="news-banner-container"
         display="flex"
-        justifyContent="center"
         alignItems="center"
+        id="selectedAnnouncement"
       >
-        <Table
-          style={{ width: 1250 }}
-          title="Announcement Info"
-          columns={tableColumns}
-          data={announcements}
-          onRowClick={(evt, data) => {
-            setSelectedAnnouncement(data);
-            history.push(`/announcement/${data?.id}`);
-            scroller.scrollTo('selectedAnnouncement', {
-              smooth: false,
-              offset: -150,
-              duration: 500,
-            });
-          }}
-          options={{
-            pageSize: 10,
+        <Typography variant="h3" className="news-banner-text">
+          Announcement
+        </Typography>
+      </Box>
+
+      <Container>
+        {selectedAnnouncement && (
+          <AnnouncmentDetail
+            announcement={selectedAnnouncement}
+            maxLength={announcements.length}
+            moveClick={(id: number) => {
+              setSelectedID(String(id));
+              history.push(`/announcement/${id}`);
+              scroller.scrollTo('selectedAnnouncement', {
+                smooth: false,
+                offset: 300,
+                duration: 500,
+              });
+            }}
+          />
+        )}
+
+        <AnnouncementTable
+          tableRowData={tableRowData}
+          selectedID={selectedID}
+          onChange={(id: string) => {
+            setSelectedID(id);
           }}
         />
-      </Box>
+      </Container>
     </Box>
   );
 };
+
+export const Announcements = withTheme(styled(UnstyledAnnouncements)`
+  .news-banner-container {
+    background-image: url(${AboutBanner});
+    min-width: 100px; /*or 70%, or what you want*/
+    height: 284px; /*or 70%, or what you want*/
+    background-size: 100% 100%;
+  }
+
+  .news-banner-text {
+    font-weight: 700;
+    color: white;
+    margin-left: 7rem;
+  }
+`);

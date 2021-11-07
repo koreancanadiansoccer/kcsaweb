@@ -12,7 +12,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { Gallery, GalleryImage } from '../../types/gallery';
 import AboutBanner from '../../assets/about.png';
 import { HorizontalDivider } from '../divider/HorizontalDivider';
-import { AutoSlide } from '../autoSlide/AutoSlide';
+import { AutoSlide } from '../auto_slide/AutoSlide';
 
 interface GalleryDetailProps {
   className?: string;

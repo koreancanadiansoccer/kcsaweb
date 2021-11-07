@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import map from 'lodash/map';
 import orderBy from 'lodash/orderBy';
 
+
 import LogoGrey from '../../assets/logo_grey.svg';
 import { LeagueTable } from '../league_table/LeagueTable';
 import { LeagueSelect } from '../league_select/LeagueSelect';
@@ -92,7 +93,13 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
 
   const leagueScorerData = useMemo(() => {
     if (!viewer.leaguePlayersGroupAge) return null;
-    return generateScorerData(viewer.leaguePlayersGroupAge[tableAgeType]);
+    return generateScorerData(
+      orderBy(
+        viewer.leaguePlayersGroupAge[tableAgeType],
+        ['goalScored'],
+        ['desc']
+      ).slice(0, 10)
+    );
   }, [viewer, tableAgeType]);
 
   return (

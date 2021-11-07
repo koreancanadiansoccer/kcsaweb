@@ -102,6 +102,7 @@ const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
                       location={selectedMatch.location}
                       homeTeam={selectedMatch.homeTeam}
                       awayTeam={selectedMatch.awayTeam}
+                      status={selectedMatch.status}
                     />
                   </motion.div>
                 </Box>

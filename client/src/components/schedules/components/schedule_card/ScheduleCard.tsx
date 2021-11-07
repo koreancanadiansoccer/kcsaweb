@@ -16,6 +16,7 @@ interface ScheduleCardProps {
   awayTeam: MatchTeam;
   className?: string;
   noHover?: boolean;
+  status?: string;
 }
 
 /**
@@ -28,6 +29,7 @@ const UnstyledScheduledCard: FunctionComponent<ScheduleCardProps> = ({
   awayTeam,
   className,
   noHover,
+  status,
 }) => {
   return (
     <motion.div whileHover={{ scale: noHover ? 1 : 1.08 }}>
@@ -55,7 +57,23 @@ const UnstyledScheduledCard: FunctionComponent<ScheduleCardProps> = ({
                 <Box>{homeTeam.team.name}</Box>
               </Box>
 
-              <Box ml="auto">vs</Box>
+              <Box ml="auto">
+                {status === 'COMPLETE' ? (
+                  <Box>
+                    <Box display="inline" pr={2} fontSize={22}>
+                      {homeTeam.goalScored}
+                    </Box>
+
+                    <span> vs </span>
+
+                    <Box display="inline" pl={2} fontSize={22}>
+                      {awayTeam.goalConceded}
+                    </Box>
+                  </Box>
+                ) : (
+                  'vs'
+                )}
+              </Box>
 
               {/* Away team emblem and name */}
               <Box
@@ -83,8 +101,19 @@ const UnstyledScheduledCard: FunctionComponent<ScheduleCardProps> = ({
 export const ScheduleCard = withTheme(styled(UnstyledScheduledCard)`
   min-width: 332px;
   cursor: pointer;
+
   .text-sub {
     font-size: 0.875rem;
     font-weight: 700;
+  }
+
+  .home-team-score {
+    font-size: 1.3rem;
+    padding-right: 1rem;
+  }
+
+  .away-team-score {
+    font-size: 1.3rem;
+    padding-left: 1rem;
   }
 `);
