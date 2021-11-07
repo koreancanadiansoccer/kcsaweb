@@ -303,7 +303,7 @@ export const CaptainGeneral = withTheme(styled(UnstyledCaptainGeneral)`
   }
 
   .create-field {
-    width: 30rem;
+    width: 100%;
   }
   .MuiInputBase-root.Mui-disabled {
     background: gainsboro;

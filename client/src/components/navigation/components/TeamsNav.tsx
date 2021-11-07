@@ -3,11 +3,72 @@ import Divider from '@material-ui/core/Divider';
 import Box from '@material-ui/core/Box';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Collapse from '@material-ui/core/Collapse';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
 import { Link as RouteLink } from 'react-router-dom';
 import map from 'lodash/map';
 
 import { Button } from '../../button/Button';
 import { ViewerContext } from '../../../context/homeViewer';
+
+interface TeamMobileNavProps {
+  onClose: () => void;
+}
+
+export const TeamMobileNav: React.FC<TeamMobileNavProps> = ({ onClose }) => {
+  const { viewer } = useContext(ViewerContext);
+  const [teameOpen, setTeamOpen] = useState(false);
+  const handleClick = () => {
+    setTeamOpen(!teameOpen);
+  };
+
+  return (
+    <>
+      <ListItem button onClick={handleClick}>
+        <ListItemText primary="CLUBS" />
+        {teameOpen ? <ExpandLess /> : <ExpandMore />}
+      </ListItem>
+
+      <Collapse in={teameOpen} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          {map(viewer?.leagueTeamGroupAge, (leagueTeams, key) => {
+            return (
+              <Box key={`team-age-${key}`}>
+                <Divider
+                  style={{ backgroundColor: 'rgb(255 255 255 / 36%)' }}
+                />
+                <Box style={{ fontSize: '1rem' }}>{key}</Box>
+                <Divider
+                  style={{ backgroundColor: 'rgb(255 255 255 / 36%)' }}
+                />
+
+                {map(leagueTeams, (leagueTeam) => (
+                  <Box
+                    key={`team-nav-link-${leagueTeam.team.name}-${leagueTeam.id}`}
+                  >
+                    <ListItem
+                      component={RouteLink}
+                      to={`/teams/${leagueTeam.id}`}
+                      onClick={onClose}
+                      button
+                      style={{ paddingLeft: '3rem', paddingTop: '0' }}
+                    >
+                      <ListItemText primary={leagueTeam.team.name} />
+                    </ListItem>
+                  </Box>
+                ))}
+              </Box>
+            );
+          })}
+        </List>
+      </Collapse>
+    </>
+  );
+};
 
 export const TeamsNav: React.FC = () => {
   const { viewer } = useContext(ViewerContext);

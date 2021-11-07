@@ -251,6 +251,6 @@ export const CreateUser = withTheme(styled(UnstyledCreate)`
   }
 
   .create-field {
-    width: 500px;
+    width: 100%;
   }
 `);

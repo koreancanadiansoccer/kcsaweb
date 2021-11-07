@@ -2,7 +2,8 @@ import React, { FunctionComponent } from 'react';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import { withTheme } from '@material-ui/core/styles';
+import { withTheme, useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import styled from 'styled-components';
 
 import ColorLogo from '../../assets/logo_footer.png';
@@ -12,12 +13,49 @@ interface FooterProps {
 }
 
 const UnstyledNavigation: FunctionComponent<FooterProps> = ({ className }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  if (isMobile) {
+    return (
+      <Box className={className}>
+        <Box className="footer-container">
+          <Container>
+            <Box
+              display="flex"
+              alignContent="center"
+              justifyContent="center"
+              mt={4}
+            >
+              <Box>
+                Contact
+                <Box className="title-line" mt={1} />
+                <Box mt={1.5}>647-542-7942</Box>
+                <Box mt={1.5}>koreancanadiansoccer@gmail.com</Box>
+                <Box mt={1.5}>
+                  리그 참가 및 재 캐나다 대한축구협회에 대한 질문은 위의 E-mail
+                  로 해주시면 감사하겠습니다.
+                </Box>
+              </Box>
+              <Box>
+                <img
+                  src={ColorLogo}
+                  alt="color-logo-pic"
+                  className="color-logo-pic"
+                />
+              </Box>
+            </Box>
+          </Container>
+        </Box>
+      </Box>
+    );
+  }
   return (
     <Box className={className}>
       <Box className="footer-container">
         <Container>
           <Box display="flex" alignItems="flex-left" justifyContent="flex-left">
-            <Box className="color-logo" ml={10} mt={7}>
+            <Box ml={10} mt={7}>
               <img
                 src={ColorLogo}
                 alt="color-logo-pic"
@@ -62,8 +100,7 @@ export const Footer = withTheme(styled(UnstyledNavigation)`
   }
 
   .color-logo-pic {
-    width: 130px;
-    height: 130px;
+    width: 100px;
   }
 
   .separate-line {
