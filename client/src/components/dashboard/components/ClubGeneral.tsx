@@ -2,7 +2,6 @@ import React, {
   FunctionComponent,
   useState,
   useCallback,
-  useEffect,
   useMemo,
   useContext,
   ChangeEvent,
@@ -16,52 +15,54 @@ import find from 'lodash/find';
 import isEqual from 'lodash/isEqual';
 import { useMutation } from '@apollo/client';
 
-import { Team } from '../../types/team';
-import { ageOptions } from '../../types/age.enum';
-import { Button } from '../button/Button';
-import { ResourceType } from '../../types/resource.enum';
-import { Input } from '../input/Input';
-import { ImgDropzone } from '../dropzone/DropZone';
-import { useImgUpload } from '../../hooks/useImgUpload';
-import { Select, ColorSelect } from '../select/Select';
-import { colorSelectOptions } from '../../utils/color';
-import { TeamContext } from '../../context/team';
+import { Team } from '../../../types/team';
+import { ageOptions } from '../../../types/age.enum';
+import { ResourceType } from '../../../types/resource.enum';
+import { Button } from '../../button/Button';
+import { Input } from '../../input/Input';
+import { ImgDropzone } from '../../dropzone/DropZone';
+import { useImgUpload } from '../../../hooks/useImgUpload';
+import { Select, ColorSelect } from '../../select/Select';
+import { colorSelectOptions } from '../../../utils/color';
 import {
-  UPDATE_TEAM,
-  UpdateTeamInput,
-  UpdateTeamResult,
-} from '../../graphql/teams/update_team.mutation';
-import { parseError } from '../../graphql/client';
+  UpdateDashboardInput,
+  UpdateDashboardResult,
+  UPDATE_DASHBOARD,
+  STEPS,
+} from '../../../graphql/update_dashboard.mutation';
+import { parseError } from '../../../graphql/client';
+import { DashboardViewerContext } from '../../../context/dashboardViewer';
+import { ErrorAlert } from '../../alert_msg/Alerts';
 
 /**
  * Show and allow update to general team info
  */
-const UnstyledTeamGneral: FunctionComponent = () => {
-  const { team: origTeam, setTeam: setOrigTeam } = useContext(TeamContext);
+const UnstyledClubGneral: FunctionComponent = () => {
+  const { dashboardViewer, setDashboardViewer } = useContext(
+    DashboardViewerContext
+  );
 
-  const [team, setTeam] = useState<Team>(origTeam);
+  if (!dashboardViewer.team) {
+    return <Box>Could not find team</Box>;
+  }
+
+  const [team, setTeam] = useState<Team>(dashboardViewer.team);
   const [file, setFile] = useState<File>();
   const [fileLink, setFileLink] = useState('');
 
   const { generateUploadUrls } = useImgUpload();
 
-  const hasNoChanges = useMemo(() => isEqual(team, origTeam) && !file, [
-    team,
-    origTeam,
-    file,
-  ]);
-
-  const [updateTeamMutation] = useMutation<UpdateTeamResult, UpdateTeamInput>(
-    UPDATE_TEAM
+  const hasNoChanges = useMemo(
+    () => isEqual(team, dashboardViewer.team) && !file,
+    [team, dashboardViewer, file]
   );
 
-  /**
-   * Orig team data can be updated from parent
-   * Keep data in sync.
-   */
-  useEffect(() => {
-    setTeam(origTeam);
-  }, [origTeam]);
+  const [error, setError] = useState('');
+
+  const [updateDashboardMut] = useMutation<
+    UpdateDashboardResult,
+    UpdateDashboardInput
+  >(UPDATE_DASHBOARD);
 
   const updateTeam = useCallback(async () => {
     try {
@@ -77,22 +78,27 @@ const UnstyledTeamGneral: FunctionComponent = () => {
           ResourceType.LOGO
         );
       }
-
-      const res = await updateTeamMutation({
+      if (!dashboardViewer.user) {
+        setError('Error - please refresh');
+        return;
+      }
+      const res = await updateDashboardMut({
         variables: {
-          updateTeam: { ...team, teamLogoURL: teamLogoURL },
+          step: STEPS.UPDATETEAM,
+          id: dashboardViewer.user.id,
+          team: { ...team, teamLogoURL },
         },
       });
 
       if (res.data) {
-        setOrigTeam(res.data.updateTeam);
+        setDashboardViewer(res.data?.updateDashboard);
         setFile(undefined);
         setFileLink('');
       }
     } catch (e) {
       console.info(parseError(e));
     }
-  }, [updateTeamMutation, team, file]);
+  }, [updateDashboardMut, team, file, dashboardViewer]);
 
   // Handle logo file update.
   const handleUploadChange = async (files: File[]) => {
@@ -105,7 +111,7 @@ const UnstyledTeamGneral: FunctionComponent = () => {
 
   return (
     <Box>
-      <Box my={2}>
+      <Box mb={2}>
         <Typography variant="body1">Club Name</Typography>
 
         <Input
@@ -212,8 +218,9 @@ const UnstyledTeamGneral: FunctionComponent = () => {
           Update General Info
         </Button>
       </Box>
+      <ErrorAlert msg={error} resetMsg={() => setError('')} />
     </Box>
   );
 };
 
-export const TeamGeneral = withTheme(styled(UnstyledTeamGneral)``);
+export const ClubGeneral = withTheme(styled(UnstyledClubGneral)``);

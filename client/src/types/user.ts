@@ -37,5 +37,5 @@ export interface UserInput {
   email: string;
   phoneNumber: string;
   password: string;
-  passwordConfirm: string;
+  passwordConfirm?: string;
 }

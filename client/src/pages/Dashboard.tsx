@@ -1,6 +1,5 @@
 import React, {
   FunctionComponent,
-  useMemo,
   useContext,
   useState,
   useEffect,
@@ -8,14 +7,28 @@ import React, {
 import { withTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
-import { useParams, useHistory } from 'react-router';
-import find from 'lodash/find';
+import { useHistory } from 'react-router';
+import { useQuery } from '@apollo/client';
 
 import { ViewerContext } from '../context/homeViewer';
-import { Tabs, PanelOptions } from '../components/tabs/Tabs';
-import { TeamGeneral } from '../components/TeamEdit/TeamGeneral';
+import { Club } from '../components/dashboard/Club';
+import { CaptainGeneral } from '../components/dashboard/CaptainGeneral';
+import { LeagueSelect } from '../components/league_select/LeagueSelect';
 import { ACCOUNTSTATUS } from '../types/user';
+import { DashboardViewer } from '../types/dashboard';
+import {
+  GET_DASHBOARD_VIEWER,
+  DashBoardQuery,
+} from '../graphql/dashboard.query';
+import { DashboardViewerContext } from '../context/dashboardViewer';
+
+enum TabType {
+  CAPTAIN = 'CAPTAIN',
+  TEAM = 'TEAM',
+  LEAGUE = 'LEAGUE',
+}
 
 /**
  * Page for captains to edit their team and update scores.
@@ -23,13 +36,18 @@ import { ACCOUNTSTATUS } from '../types/user';
  */
 const UnstyledDashboard: FunctionComponent = () => {
   const { viewer } = useContext(ViewerContext);
-  const { id } = useParams<{ id: string }>();
   const history = useHistory();
-  const [tabSelected, setTabSelected] = useState(0);
+  const [teamTabType, setTeamTabType] = useState<TabType>(TabType.CAPTAIN);
 
-  /**
-   * Call TeamEditQuery -> Grab User's team, teamplayer, Active; leagueteam, league players, matches
-   */
+  const [dashboardViewer, setDashboardViewer] = useState<DashboardViewer>();
+
+  const dashboardDataQuery = useQuery<DashBoardQuery>(GET_DASHBOARD_VIEWER);
+
+  useEffect(() => {
+    if (dashboardDataQuery.data) {
+      setDashboardViewer(dashboardDataQuery.data.getDashboardViewer);
+    }
+  }, [dashboardDataQuery]);
 
   /**
    * Redirect to home if: user is not logged in, & if user;s team ID do not match against id.
@@ -57,40 +75,61 @@ const UnstyledDashboard: FunctionComponent = () => {
     }
   }, [viewer]);
 
-  // team to edit;
-  const leagueTeam = useMemo(
-    () =>
-      find(
-        viewer.leagueTeams,
-        (leagueTeam) => leagueTeam.id === parseInt(id, 10)
-      ),
-    [id]
-  );
-  console.info(leagueTeam);
-  // Tabs Panel
-  const panelOptions: PanelOptions[] = useMemo(
-    () => [
-      {
-        label: 'General',
-        comp: <TeamGeneral />,
-      },
-    ],
-    []
-  );
+  if (!dashboardViewer) {
+    return <Box>Error</Box>;
+  }
 
   return (
-    <Box>
-      Team Edit page for captains
-      <Box mt={5}>
-        <Container>
-          <Tabs
-            value={tabSelected}
-            setValue={(value: number) => setTabSelected(value)}
-            panelOptions={panelOptions}
-          />
-        </Container>
+    <DashboardViewerContext.Provider
+      value={{ dashboardViewer, setDashboardViewer }}
+    >
+      <Box>
+        <Box mt={5}>
+          <Container>
+            <Box mb={4}>
+              <Typography variant="h4" className="boldText">
+                Gunners Dashboard
+              </Typography>
+            </Box>
+
+            <Box display="flex" justifyContent="start">
+              <Box mr={5}>
+                <LeagueSelect
+                  title="CAPTAIN"
+                  selected={teamTabType === TabType.CAPTAIN}
+                  onClick={() => setTeamTabType(TabType.CAPTAIN)}
+                />
+              </Box>
+
+              <Box mr={5}>
+                <LeagueSelect
+                  title="CLUB"
+                  selected={teamTabType === TabType.TEAM}
+                  onClick={() => setTeamTabType(TabType.TEAM)}
+                />
+              </Box>
+              <LeagueSelect
+                title="LEAGUE"
+                selected={teamTabType === TabType.LEAGUE}
+                onClick={() => setTeamTabType(TabType.LEAGUE)}
+              />
+            </Box>
+
+            {teamTabType === TabType.CAPTAIN && (
+              <Box mt={5}>
+                <CaptainGeneral />
+              </Box>
+            )}
+
+            {teamTabType === TabType.TEAM && (
+              <Box mt={1.5}>
+                <Club />
+              </Box>
+            )}
+          </Container>
+        </Box>
       </Box>
-    </Box>
+    </DashboardViewerContext.Provider>
   );
 };
 

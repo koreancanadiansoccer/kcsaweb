@@ -245,11 +245,6 @@ const UnstyledCreate: FunctionComponent<CreateProps> = ({
 };
 
 export const CreateUser = withTheme(styled(UnstyledCreate)`
-  .login-title {
-    font-size: 2em;
-    font-weight: bold;
-  }
-
   .create-form {
     padding: 20px;
     border: 2px solid rgba(142, 142, 147, 0.2);
