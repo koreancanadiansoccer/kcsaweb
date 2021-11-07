@@ -31,7 +31,6 @@ const UnstyledAnnouncementDetail: FunctionComponent<AnnouncementProps> = ({
     <Box className={className} pt={10}>
       <Paper
         elevation={3}
-        id="selectedAnnouncement"
       >
         <Box py={6}>
           <Box

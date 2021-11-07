@@ -48,13 +48,17 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
       setAnnouncements(announcementDataQuery.data.getAnnouncements);
     }
 
+    if (!id) {
+      setSelectedID('')
+    }
+
     if (announcementDataQuery.error) {
       setError(parseError(announcementDataQuery.error));
     }
-  }, [announcementDataQuery, loading, error]);
+  }, [announcementDataQuery, loading, error, id]);
 
   const selectedAnnouncement = useMemo(() => {
-    if (!announcements) return null;
+    if (!announcements || !setSelectedID.length) return null;
     return announcements[parseInt(selectedID)];
   }, [selectedID, id, announcements]);
 
@@ -75,7 +79,12 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
 
   return (
     <Box className={className} mb={6}>
-      <Box className="news-banner-container" display="flex" alignItems="center">
+      <Box
+        className="news-banner-container"
+        display="flex"
+        alignItems="center"
+        id="selectedAnnouncement"
+      >
         <Typography variant="h3" className="news-banner-text">
           Announcement
         </Typography>
@@ -91,7 +100,7 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
               history.push(`/announcement/${id}`);
               scroller.scrollTo('selectedAnnouncement', {
                 smooth: false,
-                offset: -20,
+                offset: 300,
                 duration: 500,
               });
             }}

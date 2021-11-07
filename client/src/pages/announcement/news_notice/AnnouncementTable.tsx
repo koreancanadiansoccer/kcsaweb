@@ -20,6 +20,7 @@ interface AnnouncementTableProps {
 /**
  * Announcement Page Table.
  */
+
 const UnstyledAnnouncementTable: FunctionComponent<AnnouncementTableProps> = ({
   className,
   tableRowData,
@@ -59,7 +60,7 @@ const UnstyledAnnouncementTable: FunctionComponent<AnnouncementTableProps> = ({
             history.push(`/announcement/${idx}`);
             scroller.scrollTo('selectedAnnouncement', {
               smooth: false,
-              offset: -20,
+              offset: 300,
               duration: 500,
             });
           }}
