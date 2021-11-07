@@ -62,7 +62,7 @@ const UnstyledPagination: FunctionComponent<PaginationProps> = ({
         variant="body2"
         className="page-number"
       >
-        {activePage + 1}-{lastPage} of {lastPage}
+        {activePage + 1} of {lastPage}
       </Typography>
 
       <Box className={activePage + 1 != lastPage? "next-page" : "non-cursor"} onClick={nextPageChange} mr={3}>
@@ -93,7 +93,7 @@ export const Pagination = withTheme(styled(UnstyledPagination)`
   }
 
   .first-page-button {
-    margin-left: -20px;
+    margin-left: -1.3rem;
   }
 
   .prev-page {
@@ -127,7 +127,7 @@ export const Pagination = withTheme(styled(UnstyledPagination)`
   }
 
   .last-page-button {
-    margin-right: -20px;
+    margin-right: -1.3rem;
   }
 
   .MuiSvgIcon-root {
