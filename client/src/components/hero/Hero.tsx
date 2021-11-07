@@ -267,10 +267,10 @@ export const Hero = withTheme(styled(UnstyledHero)`
     background-size: 100% 100%;
   }
 
-  // .hero-content {
-  //   margin-left: 13.5%;
-  //   padding: 0;
-  // }
+  .hero-content {
+    display: flex;
+    flex-direction: row;
+  }
 
   .hero-sub {
     max-height: 6.875rem;
