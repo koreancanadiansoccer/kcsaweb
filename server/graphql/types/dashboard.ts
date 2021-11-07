@@ -2,6 +2,7 @@ import { GraphQLObjectType } from 'graphql';
 
 import { UserType } from './user';
 import { TeamType, LeagueTeamType } from './team';
+import { LeagueType } from './league';
 
 // Definition home viewer data types.
 // Gets called on main home page load.
@@ -12,5 +13,6 @@ export const DashboardViewerType = new GraphQLObjectType({
     user: { type: UserType },
     team: { type: TeamType },
     leagueTeam: { type: LeagueTeamType },
+    league: { type: LeagueType },
   }),
 });

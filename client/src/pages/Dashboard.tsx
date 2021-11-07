@@ -15,6 +15,7 @@ import { useQuery } from '@apollo/client';
 import { ViewerContext } from '../context/homeViewer';
 import { Club } from '../components/dashboard/Club';
 import { CaptainGeneral } from '../components/dashboard/CaptainGeneral';
+import { ClubLeague } from '../components/dashboard/ClubLeague';
 import { LeagueSelect } from '../components/league_select/LeagueSelect';
 import { ACCOUNTSTATUS } from '../types/user';
 import { DashboardViewer } from '../types/dashboard';
@@ -108,6 +109,7 @@ const UnstyledDashboard: FunctionComponent = () => {
                   onClick={() => setTeamTabType(TabType.TEAM)}
                 />
               </Box>
+
               <LeagueSelect
                 title="LEAGUE"
                 selected={teamTabType === TabType.LEAGUE}
@@ -124,6 +126,12 @@ const UnstyledDashboard: FunctionComponent = () => {
             {teamTabType === TabType.TEAM && (
               <Box mt={1.5}>
                 <Club />
+              </Box>
+            )}
+
+            {teamTabType === TabType.LEAGUE && (
+              <Box mt={1.5}>
+                <ClubLeague />
               </Box>
             )}
           </Container>

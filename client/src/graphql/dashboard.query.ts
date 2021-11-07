@@ -21,6 +21,11 @@ export const GET_DASHBOARD_VIEWER = gql`
       leagueTeam {
         ${LEAGUE_TEAM_FRAGMENT}
       }
+      league{
+        id
+        name
+        year
+      }
     }
   }
 `;

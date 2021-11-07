@@ -1,6 +1,4 @@
 import React, { FunctionComponent } from 'react';
-import { withTheme } from '@material-ui/core/styles';
-import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 
 import { Tabs, PanelOptions } from '../tabs/Tabs';
@@ -20,9 +18,9 @@ const panelOptions: PanelOptions[] = [
 ];
 
 /**
- * Show and allow update to general team info
+ * Show and allow update to general team info and players
  */
-const UnstyledClub: FunctionComponent = () => {
+export const Club: FunctionComponent = () => {
   const [tabSelected, setTabSelected] = React.useState(0);
 
   return (
@@ -37,5 +35,3 @@ const UnstyledClub: FunctionComponent = () => {
     </Box>
   );
 };
-
-export const Club = withTheme(styled(UnstyledClub)``);

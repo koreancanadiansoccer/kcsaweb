@@ -3,7 +3,6 @@ import { League } from '../../../db/models/league.model';
 import { Team } from '../../../db/models/team.model';
 import { LeagueTeam } from '../../../db/models/leagueteam.model';
 import { User } from '../../../db/models/user.model';
-import { Match } from '../../../db/models/match.model';
 import { LeaguePlayer } from '../../../db/models/leagueplayer.model';
 import { Player } from '../../../db/models/player.model';
 
@@ -16,6 +15,7 @@ export const getDashboardViewer = {
   ): Promise<{
     user: User | null;
     team: Team | null;
+    league: League | null;
     leagueTeam: LeagueTeam | null;
   }> {
     const userId = req.session.userId;
@@ -44,6 +44,6 @@ export const getDashboardViewer = {
       });
     }
 
-    return { user, team, leagueTeam };
+    return { user, team, leagueTeam, league };
   },
 };
