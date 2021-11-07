@@ -132,6 +132,4 @@ export const Announcements = withTheme(styled(UnstyledAnnouncements)`
     color: white;
     margin-left: 7rem;
   }
-
-
 `);

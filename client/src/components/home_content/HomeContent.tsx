@@ -93,16 +93,13 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
 
   const leagueScorerData = useMemo(() => {
     if (!viewer.leaguePlayersGroupAge) return null;
-    else {
-      return generateScorerData(
-        orderBy(
-          viewer.leaguePlayersGroupAge[tableAgeType],
-          ['goalScored'],
-          ['desc']
-        ).slice(0, 10)
-      );
-    }
-
+    return generateScorerData(
+      orderBy(
+        viewer.leaguePlayersGroupAge[tableAgeType],
+        ['goalScored'],
+        ['desc']
+      ).slice(0, 10)
+    );
   }, [viewer, tableAgeType]);
 
   return (
@@ -164,15 +161,11 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
           </Box>
 
           {/* Galleries Slide Show */}
-          <GallerySlide className={'gallery-slide'} />
+          <GallerySlide />
         </Box>
       </Container>
     </Box>
   );
 };
 
-export const HomeContent = withTheme(styled(UnstyledHomeContent)`
-  .gallery-slide {
-    box-shadow: 5px 5px 8px 0px gray;
-  }
-`);
+export const HomeContent = withTheme(styled(UnstyledHomeContent)``);

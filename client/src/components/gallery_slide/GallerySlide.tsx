@@ -86,6 +86,8 @@ const UnstyledGallerySlide: FunctionComponent<GallerySlideProps> = ({
 };
 
 export const GallerySlide = withTheme(styled(UnstyledGallerySlide)`
+  box-shadow: 5px 5px 8px 0px gray;
+
   .image-banner {
     height: 100%;
     width: 100%;
