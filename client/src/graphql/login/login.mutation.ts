@@ -1,8 +1,10 @@
 import { gql } from '@apollo/client';
 
+import { User } from '../../types/user';
+import { USER_FRAGMENT } from '../users/user.fragment';
+
 export interface LoginData {
-  email: string;
-  password: string;
+  loginUser: User;
 }
 export interface CreateLoginDataInput {
   email: string;
@@ -15,7 +17,7 @@ export interface CreateLoginDataInput {
 export const LOGIN_USER = gql`
   mutation LoginUser($email: String!, $password: String!) {
     loginUser(email: $email, password: $password) {
-      email
+     ${USER_FRAGMENT}
     }
   }
 `;

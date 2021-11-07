@@ -6,6 +6,7 @@ import {
   ForeignKey,
   Default,
   AllowNull,
+  BelongsTo,
 } from 'sequelize-typescript';
 
 import { Player } from './player.model';
@@ -63,6 +64,7 @@ export class Team extends Model {
   isActive!: boolean;
 
   @ForeignKey(() => User) @Column({ field: 'captain_id' }) captainId!: number;
+  @BelongsTo(() => User) captain!: User;
 
   // Association with all players
   @HasMany(() => Player) players!: Player[];

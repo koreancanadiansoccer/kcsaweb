@@ -10,6 +10,7 @@ import AboutBanner from '../assets/about.png';
 import ColorLogo from '../assets/logo_color.svg';
 import PresidentPic from '../assets/president.png';
 import ContactCardLogo from '../assets/Contact_card_logo.png';
+import { Button } from '../components/button/Button';
 
 interface AboutProps {
   className?: string;
@@ -186,7 +187,7 @@ const UnstyledAbout: FunctionComponent<AboutProps> = ({ className }) => {
             >
               <Box className="contact-form" mr={10}>
                 <form onSubmit={onSubmit}>
-                  <Box className="firstname-form" mb={10}>
+                  <Box className="firstname-form" mb={5}>
                     <div>First name</div>
                     <input
                       type="text"
@@ -197,7 +198,7 @@ const UnstyledAbout: FunctionComponent<AboutProps> = ({ className }) => {
                     ></input>
                   </Box>
 
-                  <Box className="email-form" mb={10}>
+                  <Box className="email-form" mb={5}>
                     <div>E-mail</div>
                     <input
                       type="text"
@@ -207,7 +208,8 @@ const UnstyledAbout: FunctionComponent<AboutProps> = ({ className }) => {
                       placeholder="JohnDoe@KCSA.com"
                     ></input>
                   </Box>
-                  <Box className="email-form" mb={10}>
+
+                  <Box className="email-form" mb={5}>
                     <div>Comments</div>
                     <input
                       type="text"
@@ -217,10 +219,11 @@ const UnstyledAbout: FunctionComponent<AboutProps> = ({ className }) => {
                       placeholder="Comment"
                     ></input>
                   </Box>
-                  <Box className="button-form" mb={10}>
-                    <button type="submit" className="form-summit">
-                      submit
-                    </button>
+
+                  <Box mb={10}>
+                    <Button type="submit" color="secondary" size="large">
+                      SUBMIT
+                    </Button>
                   </Box>
                 </form>
               </Box>
@@ -228,20 +231,19 @@ const UnstyledAbout: FunctionComponent<AboutProps> = ({ className }) => {
                 <Box my={5} mx={3}>
                   <Typography>Contact</Typography>
                 </Box>
+
                 <Box my={5} mx={3}>
-                  <img
-                    src={ContactCardLogo}
-                    alt="contact-card-pic"
-                    className="contact-card-pic"
-                  />
+                  <img src={ContactCardLogo} alt="contact-card-pic" />
                 </Box>
+
                 <Box my={5} mx={3}>
                   <Typography>Phone</Typography>
                   <Typography>647-542-7942</Typography>
                 </Box>
+
                 <Box my={5} mx={3}>
                   <Typography>E-mail</Typography>
-                  <Typography>CanadaKCSA@hotmail.com</Typography>
+                  <Typography>koreancanadiansoccer@gmail.com</Typography>
                 </Box>
               </Box>
             </Box>
@@ -358,7 +360,7 @@ export const About = withTheme(styled(UnstyledAbout)`
     height: 56px;
     left: 361px;
     top: 2084px;
-
+    padding-left: 1rem;
     background: #ffffff;
     border: 1px solid #eeeeee;
     box-sizing: border-box;
@@ -371,7 +373,7 @@ export const About = withTheme(styled(UnstyledAbout)`
     height: 296px;
     left: 361px;
     top: 2308px;
-
+    padding-left: 1rem;
     background: #ffffff;
     border: 1px solid #eeeeee;
     box-sizing: border-box;

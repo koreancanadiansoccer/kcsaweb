@@ -8,6 +8,7 @@ export interface Player {
 }
 
 export interface PlayerInput {
+  id?: number;
   firstName: string;
   lastName: string;
   teamId?: number;

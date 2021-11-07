@@ -129,10 +129,7 @@ export const CreateLeaguePlayersModal: FunctionComponent<CreateLeaguePlayersModa
       console.error(e);
     }
   }, [newLeaguePlayers, selectedTeam, origLeague]);
-  // console.log('league players');
-  // console.log(leaguePlayers);
-  // console.log('player ');
-  // console.log(teamPlayersQuery.data?.getPlayers);
+
   // Create option list for select.
   const playersOption = useMemo(() => {
     // Filter out already added players.
@@ -305,7 +302,6 @@ export const CreateLeaguePlayersModal: FunctionComponent<CreateLeaguePlayersModa
           })}
 
         {/* Add new plyaers */}
-
         <Button
           size="large"
           onClick={() => {

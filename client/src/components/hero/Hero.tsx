@@ -92,7 +92,7 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
 
               <Box color={'white'} ml={3}>
                 <Box fontSize="2.5rem" fontWeight={700}>
-                  {"Welcome to KCSA's Official Website"}
+                  {"Welcome to KCSA's Official Website test"}
                 </Box>
 
                 <Box fontSize="1.5rem" fontWeight={700}>

@@ -1,6 +1,7 @@
 import { GraphQLObjectType, GraphQLSchema } from 'graphql';
 
 // Queries
+import { getUser } from './queries/getUser';
 import { getUsers } from './queries/getUsers';
 import { getLeagues } from './queries/getLeagues';
 import { getLeague } from './queries/getLeague';
@@ -14,8 +15,8 @@ import { getMainGalleries } from './queries/getMainGalleries';
 import { getAnnouncement } from './queries/getAnnouncement';
 import { getAnnouncements } from './queries/getAnnouncements';
 import { getMatches } from './queries/getMatches';
+import { getDashboardViewer } from './queries/getDashboardViewer';
 // Mutations
-import { createUser } from './mutations/createUser';
 import { createLeague } from './mutations/createLeague';
 import { updateLeague } from './mutations/updateLeague';
 import { createTeam } from './mutations/createTeam';
@@ -31,11 +32,18 @@ import { updateMatch } from './mutations/updateMatch';
 import { deleteMatch } from './mutations/deleteMatch';
 import { updateGallery } from './mutations/updateGallery';
 import { updateAnnouncement } from './mutations/updateAnnouncement';
-
+import { sendInvite } from './mutations/sendInvite';
+import { registerTeam } from './mutations/registerTeam';
+import { registerUser } from './mutations/registerUser';
+import { updateCaptain } from './mutations/updateCaptain';
+import { sendEmailNotif as sendEmail } from './mutations/sendEmail';
+import { logout } from './mutations/logout';
+import { updateDashboard } from './mutations/updateDashboard';
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {
+    getUser,
     getUsers,
     getLeagues,
     getLeague,
@@ -49,13 +57,13 @@ const RootQuery = new GraphQLObjectType({
     getAnnouncements,
     getPlayers,
     getMatches,
+    getDashboardViewer,
   },
 });
 
 const Mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
-    createUser,
     createLeague,
     createAnnouncement,
     updateLeague,
@@ -70,7 +78,14 @@ const Mutation = new GraphQLObjectType({
     updateMatch,
     deleteMatch,
     updateGallery,
-    updateAnnouncement
+    updateAnnouncement,
+    sendInvite,
+    registerTeam,
+    registerUser,
+    updateCaptain,
+    sendEmail,
+    logout,
+    updateDashboard,
   },
 });
 

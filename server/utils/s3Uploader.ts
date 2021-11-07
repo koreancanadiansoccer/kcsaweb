@@ -5,7 +5,7 @@ dotenv.config();
 
 const TEAM_LOGO_BUCKET = process.env.TEAM_LOGO_BUCKET;
 const ANNOUNCEMENTS_BUCKET = process.env.ANNOUNCEMENTS_BUCKET;
-const S3_REGION = process.env.REGION;
+const S3_REGION = process.env.S3_REGION;
 
 interface S3UploadURLs {
   s3SignedUrl: string;
@@ -47,9 +47,9 @@ export const AWSS3Uploader = async (
 
   const s3 = new S3({
     signatureVersion: 'v4',
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: process.env.REGION,
+    accessKeyId: process.env.S3_AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.S3_AWS_SECRET_ACCESS_KEY,
+    region: process.env.S3_REGION,
   });
 
   const handleResource = {
