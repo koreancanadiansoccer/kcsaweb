@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useRef, useEffect } from 'react';
-import { withTheme, useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { withTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
@@ -10,12 +9,9 @@ import { useLocation } from 'react-router';
 import AboutBanner from '../assets/about.png';
 import ColorLogo from '../assets/logo_color.svg';
 import PresidentPic from '../assets/president.png';
-import ContactCardLogo from '../assets/Contact_card_logo.png';
 import { Button } from '../components/button/Button';
 
-import { AboutMobile } from './AboutMobile';
-
-interface AboutProps {
+interface AboutMobileProps {
   className?: string;
   firstname: string;
   email: string;
@@ -26,10 +22,9 @@ interface AboutProps {
 /**
  * About Page.
  */
-const UnstyledAbout: FunctionComponent<AboutProps> = ({ className }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
+const UnstyledAboutMobile: FunctionComponent<AboutMobileProps> = ({
+  className,
+}) => {
   const aboutScrollRef = useRef<HTMLDivElement>(null);
   const presidentScrollRef = useRef<HTMLDivElement>(null);
   const contactScrollRef = useRef<HTMLDivElement>(null);
@@ -65,10 +60,6 @@ const UnstyledAbout: FunctionComponent<AboutProps> = ({ className }) => {
     window.location.href = `mailto:${email}?subject="${firstName}:Inquiry"&body=${comments}`;
   };
 
-  if (isMobile) {
-    return <AboutMobile />;
-  }
-
   return (
     <>
       {/* About Banner Section */}
@@ -80,12 +71,13 @@ const UnstyledAbout: FunctionComponent<AboutProps> = ({ className }) => {
         >
           <Container>
             <Box
-              className="about-text"
               display="flex"
               justifyContent="center"
               alignItems="flex-start"
               color="white"
               flexDirection="column"
+              fontWeight={700}
+              fontSize={24}
             >
               About KCSA
             </Box>
@@ -100,8 +92,8 @@ const UnstyledAbout: FunctionComponent<AboutProps> = ({ className }) => {
               <Box className="title-line" mt={2.5} />
             </Box>
 
-            <Box display="flex" alignItems="flex-end" justifyContent="flex-end">
-              <Box className="color-logo" mr={10}>
+            <Box>
+              <Box className="color-logo">
                 <img
                   src={ColorLogo}
                   alt="color-logo-pic"
@@ -109,22 +101,23 @@ const UnstyledAbout: FunctionComponent<AboutProps> = ({ className }) => {
                 />
               </Box>
 
-              <Box className="about-subtitle" mb={3}>
+              <Box className="about-subtitle" my={3}>
                 We are KCSA
-                <Typography>
-                  Welcome to the official website of the Korean Canadian Soccer
-                  Association (KCSA). KCSA is a football organization based in
-                  the GTA area. Our purpose is to operate football competitions
-                  across multiple age categories with the goal of promoting
-                  collaboration and solidarity within the Korean and
-                  multicultural football communities. Our hope is that football
-                  assists with the difficulties of recent immigrants by
-                  promoting a healthy and active lifestyle. Our league and
-                  tournaments range from youth to senior age divisions. We
-                  strive to be the most open and welcoming community for every
-                  footballer from our diverse communities within the GTA area.
-                </Typography>
               </Box>
+
+              <Typography>
+                Welcome to the official website of the Korean Canadian Soccer
+                Association (KCSA). KCSA is a football organization based in the
+                GTA area. Our purpose is to operate football competitions across
+                multiple age categories with the goal of promoting collaboration
+                and solidarity within the Korean and multicultural football
+                communities. Our hope is that football assists with the
+                difficulties of recent immigrants by promoting a healthy and
+                active lifestyle. Our league and tournaments range from youth to
+                senior age divisions. We strive to be the most open and
+                welcoming community for every footballer from our diverse
+                communities within the GTA area.
+              </Typography>
             </Box>
           </Box>
           <Box className="seperate-line" mt={6} />
@@ -138,17 +131,19 @@ const UnstyledAbout: FunctionComponent<AboutProps> = ({ className }) => {
               <Box className="title-line" mt={2.5} />
             </Box>
 
-            <Box display="flex" alignItems="flex-end" justifyContent="flex-end">
-              <Box className="president-div" mr={10}>
+            <Box>
+              <Box className="president-div">
                 <img
                   src={PresidentPic}
                   alt="president-pic"
                   className="president-pic"
                 />
-                <Box textAlign="center">제 21 - 22대 협회장. 허 경</Box>
+                <Box textAlign="center" mt={2}>
+                  제 21 - 23대 협회장. 허 경
+                </Box>
               </Box>
 
-              <Box className="president-content" mb={3}>
+              <Box className="president-content" my={3}>
                 <Typography>
                   캐나다 한인동포 여러분, 안녕하십니까. 축구라는 매개체를 통하여
                   우리 한인동포들은 고향의 따뜻함과때로는 먼 타지에서의 생활로
@@ -185,12 +180,8 @@ const UnstyledAbout: FunctionComponent<AboutProps> = ({ className }) => {
               <Box className="title-line" mt={2.5} />
             </Box>
 
-            <Box
-              display="flex"
-              alignItems="flex-start"
-              justifyContent="flex-start"
-            >
-              <Box className="contact-form" mr={10}>
+            <Box>
+              <Box mr={10}>
                 <form onSubmit={onSubmit}>
                   <Box className="firstname-form" mb={5}>
                     <div>First name</div>
@@ -225,31 +216,12 @@ const UnstyledAbout: FunctionComponent<AboutProps> = ({ className }) => {
                     ></input>
                   </Box>
 
-                  <Box mb={10}>
+                  <Box mb={3}>
                     <Button type="submit" color="secondary" size="large">
                       SUBMIT
                     </Button>
                   </Box>
                 </form>
-              </Box>
-              <Box className="contact-card" mb={3}>
-                <Box my={5} mx={3}>
-                  <Typography>Contact</Typography>
-                </Box>
-
-                <Box my={5} mx={3}>
-                  <img src={ContactCardLogo} alt="contact-card-pic" />
-                </Box>
-
-                <Box my={5} mx={3}>
-                  <Typography>Phone</Typography>
-                  <Typography>647-542-7942</Typography>
-                </Box>
-
-                <Box my={5} mx={3}>
-                  <Typography>E-mail</Typography>
-                  <Typography>koreancanadiansoccer@gmail.com</Typography>
-                </Box>
               </Box>
             </Box>
           </Box>
@@ -259,11 +231,11 @@ const UnstyledAbout: FunctionComponent<AboutProps> = ({ className }) => {
   );
 };
 
-export const About = withTheme(styled(UnstyledAbout)`
+export const AboutMobile = withTheme(styled(UnstyledAboutMobile)`
   .about-banner-container {
     background-image: url(${AboutBanner});
-    min-width: 100px; /*or 70%, or what you want*/
-    height: 284px;
+    min-width: 100px;
+    height: 100px;
     background-size: 100% 100%;
   }
 
@@ -279,6 +251,7 @@ export const About = withTheme(styled(UnstyledAbout)`
     line-height: 2.938rem;
     color: #000000;
   }
+
   .president-title {
     font-weight: bold;
     font-size: 2.5rem;
@@ -346,8 +319,8 @@ export const About = withTheme(styled(UnstyledAbout)`
   }
 
   .contact-card {
-    width: 336px;
-    height: 408px;
+    width: 100%;
+    height: 100%;
 
     background: rgba(214, 214, 214, 0.38);
     border-radius: 5px;
@@ -361,7 +334,8 @@ export const About = withTheme(styled(UnstyledAbout)`
   }
 
   .form-control {
-    width: 684px;
+    // width: 684px;
+    width: 100%;
     height: 56px;
     left: 361px;
     top: 2084px;
@@ -374,8 +348,8 @@ export const About = withTheme(styled(UnstyledAbout)`
   }
 
   .form-comments {
-    width: 684px;
-    height: 296px;
+    width: 100%;
+    height: 10rem;
     left: 361px;
     top: 2308px;
     padding-left: 1rem;

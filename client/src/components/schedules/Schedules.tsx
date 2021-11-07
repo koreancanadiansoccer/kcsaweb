@@ -6,11 +6,12 @@ import React, {
   useContext,
   useMemo,
 } from 'react';
+import map from 'lodash/map';
+import times from 'lodash/times';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
-import map from 'lodash/map';
 import { motion } from 'framer-motion';
 import ScrollContainer from 'react-indiana-drag-scroll';
 
@@ -18,11 +19,12 @@ import { ViewerContext } from '../../context/homeViewer';
 import { LeagueSelect } from '../league_select/LeagueSelect';
 
 import { ScheduleCard } from './components/schedule_card/ScheduleCard';
+import { ScheduleDefaultCard } from './components/schedule_card/ScheduleDefaultCard';
 
 interface SchedulesProps {
   className?: string;
 }
-
+const CardW = 380;
 /**
  * Schedule section shown on home page.
  */
@@ -41,14 +43,25 @@ const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
     return <Box>No matches scheduled yet</Box>;
   }
 
-  const seletedAgeMatches = useMemo(() => matches[leagueAgeType], [
-    leagueAgeType,
-  ]);
+  const seletedAgeMatches = useMemo(
+    () => matches[leagueAgeType],
+    [leagueAgeType]
+  );
 
   // Reset scroll upon league change.
   useEffect(() => {
     if (ref.current) {
-      ref.current.scrollLeft = 0;
+      ref.current.scrollLeft = 500;
+      // console.log(window.innerWidth);
+
+      // const test = window.innerWidth - CardW * 4;
+      // const testDib = window.innerWidth / (CardW * 4);
+      // const dib = test / CardW;
+      // console.log(test);
+      // console.log(testDib);
+      // console.log(dib);
+      // // const window.innerWidth
+      // ref.current.style.paddingLeft = `${CardW * testDib}px`;
     }
   }, [leagueAgeType]);
 
@@ -85,30 +98,64 @@ const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
             </Box>
           </Container>
 
+          {/* <ScrollContainer innerRef={ref}>
+            <Box display="flex">
+              {times(4, () => {
+                return (
+                  <Box>
+                    <ScheduleDefaultCard />
+                  </Box>
+                );
+              })}
+            </Box>
+          </ScrollContainer> */}
+
           {/* Scrollable schedule section */}
           <ScrollContainer className="schedules-card-container" innerRef={ref}>
-            {map(seletedAgeMatches, (selectedMatch, idx) => (
-              <Box key={`league-match-schedules-${selectedMatch.id}`}>
-                <Box key={`sched-${idx}`} className="scheudle-card">
-                  <motion.div
-                    initial={{ opacity: 0, x: -50, y: -50 }}
-                    animate={{ opacity: 1, x: 0, y: 0 }}
-                    transition={{
-                      delay: idx * 0.2,
-                    }}
-                  >
-                    <ScheduleCard
-                      date={selectedMatch.date}
-                      location={selectedMatch.location}
-                      homeTeam={selectedMatch.homeTeam}
-                      awayTeam={selectedMatch.awayTeam}
-                      status={selectedMatch.status}
-                    />
-                  </motion.div>
-                </Box>
-              </Box>
-            ))}
+            {!seletedAgeMatches || seletedAgeMatches.length === 0
+              ? times(4, () => {
+                  return (
+                    <Box>
+                      <ScheduleDefaultCard />
+                    </Box>
+                  );
+                })
+              : // <ScheduleDefaultCard />
+                // <ScheduleDefaultCard />
+                map(seletedAgeMatches, (selectedMatch, idx) => (
+                  <Box key={`league-match-schedules-${selectedMatch.id}`}>
+                    <Box key={`sched-${idx}`} className="scheudle-card">
+                      <motion.div
+                        initial={{ opacity: 0, x: -50, y: -50 }}
+                        animate={{ opacity: 1, x: 0, y: 0 }}
+                        transition={{
+                          delay: idx * 0.2,
+                        }}
+                      >
+                        <ScheduleCard
+                          date={selectedMatch.date}
+                          location={selectedMatch.location}
+                          homeTeam={selectedMatch.homeTeam}
+                          awayTeam={selectedMatch.awayTeam}
+                          status={selectedMatch.status}
+                        />
+                      </motion.div>
+                    </Box>
+                  </Box>
+                ))}
           </ScrollContainer>
+
+          {/* <Container>
+            <Box display="flex" className="test">
+              {times(10, () => {
+                return (
+                  <Box>
+                    <ScheduleDefaultCard />
+                  </Box>
+                );
+              })}
+            </Box>
+          </Container> */}
         </Box>
       </Box>
     </>
@@ -129,6 +176,17 @@ export const Schedules = withTheme(styled(UnstyledSchedules)`
     width: 130%;
     top: 110%;
     background: #f17f42;
+  }
+
+  .test {
+    // Might need below later.
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    overflow-x: scroll;
+    white-space: nowrap;
+    div {
+      scroll-snap-align: center;
+    }
   }
 
   .schedules-container {
@@ -155,12 +213,14 @@ export const Schedules = withTheme(styled(UnstyledSchedules)`
       div {
         // scroll-snap-align: center;
       }
+
       mask-image: linear-gradient(
         transparent,
         black 20%,
         black 80%,
         transparent 100%
       );
+
       -webkit-mask-image: linear-gradient(
         to right,
         transparent,

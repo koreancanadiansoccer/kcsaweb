@@ -1,12 +1,12 @@
 import React, { FunctionComponent, useState, useContext, useMemo } from 'react';
-import { withTheme } from '@material-ui/core/styles';
+import { withTheme, useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import { motion } from 'framer-motion';
 import map from 'lodash/map';
 import orderBy from 'lodash/orderBy';
-
 
 import LogoGrey from '../../assets/logo_grey.svg';
 import { LeagueTable } from '../league_table/LeagueTable';
@@ -76,6 +76,9 @@ const generateScorerData = (leaguePlayers: LeaeguePlayerHomeViewer[]) => {
 const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
   className,
 }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const { viewer } = useContext(ViewerContext);
 
   const [tableAgeType, setTableAgeType] = useState<string>(
@@ -105,19 +108,23 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
   return (
     <Box my={5} className={className}>
       <Container>
-        <Box display="flex" justifyContent="start" alignItems="start">
+        <Box
+          display={isMobile ? '' : 'flex'}
+          justifyContent={isMobile ? '' : 'start'}
+          alignItems={isMobile ? '' : 'start'}
+        >
           <Box
             display="flex"
             flexDirection="column"
             justifyContent="start"
-            alignItems="center"
+            alignItems="start"
             minWidth={275}
           >
             {/* League selection */}
             <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
+              display={'flex'}
+              justifyContent={isMobile ? 'center' : 'center'}
+              alignItems={'center'}
               mb={5}
             >
               {map(viewer.leagueAgeKeys, (leagueAge) => (
@@ -133,7 +140,10 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
 
             {/* League table */}
             {map(viewer.leagueAgeKeys, (leagueAge) => (
-              <Box key={`league-standing-score-table-${leagueAge}`}>
+              <Box
+                key={`league-standing-score-table-${leagueAge}`}
+                width={'100%'}
+              >
                 {tableAgeType === leagueAge && (
                   <motion.div
                     initial={{ opacity: 0, x: -50, y: -50 }}
@@ -161,7 +171,9 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
           </Box>
 
           {/* Galleries Slide Show */}
-          <GallerySlide />
+          <Box mt={5}>
+            <GallerySlide mobileView={isMobile} />
+          </Box>
         </Box>
       </Container>
     </Box>

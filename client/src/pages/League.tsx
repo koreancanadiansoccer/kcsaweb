@@ -1,11 +1,11 @@
 import React, { FunctionComponent, useState, useMemo, useContext } from 'react';
-import { withTheme } from '@material-ui/core/styles';
+import { withTheme, useTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import styled from 'styled-components';
 import Container from '@material-ui/core/Container';
 import { useParams } from 'react-router';
-import Typography from '@material-ui/core/Typography';
 import find from 'lodash/find';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import AboutBanner from '../assets/about.png';
 import { ViewerContext } from '../context/homeViewer';
@@ -27,31 +27,42 @@ enum TabType {
  * NOTE: This  might be broken into submenu per season.
  */
 const UnstyledLeague: FunctionComponent<LeagueProps> = ({ className }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const { viewer } = useContext(ViewerContext);
   const [teamTabType, setTeamTabType] = useState<TabType>(TabType.STANDING);
   const { id } = useParams<{ id: string }>();
 
   const league = useMemo(
-    () =>
-      find(
-        viewer.leagues,
-        (league) => league.id === parseInt(id, 10)
-      ), [id]
+    () => find(viewer.leagues, (league) => league.id === parseInt(id, 10)),
+    [id]
   );
 
   if (!league || !viewer.leagueTeamGroupAge || !viewer.matchesByAge)
     return <div>Loading...</div>;
-
+  // margin-left: 7rem;
   return (
     <Box className={className}>
       <Box
         className="league-banner-container"
         display="flex"
         alignItems="center"
+        height={isMobile ? '100px' : '240px'}
       >
-        <Typography variant="h3" className="league-banner-text">
-          {league?.name} {league.year}
-        </Typography>
+        <Container>
+          <Box
+            className="league-banner-text"
+            display="flex"
+            justifyContent="center"
+            alignItems="flex-start"
+            color="white"
+            flexDirection="column"
+            fontSize={isMobile ? 24 : '2.5rem'}
+          >
+            {league?.name} {league.year}
+          </Box>
+        </Container>
       </Box>
 
       <Container>
@@ -98,13 +109,11 @@ export const League = withTheme(styled(UnstyledLeague)`
   .league-banner-container {
     background-image: url(${AboutBanner});
     min-width: 100px; /*or 70%, or what you want*/
-    height: 284px; /*or 70%, or what you want*/
     background-size: 100% 100%;
 
     .league-banner-text {
       font-weight: 700;
       color: white;
-      margin-left: 7rem;
     }
   }
 

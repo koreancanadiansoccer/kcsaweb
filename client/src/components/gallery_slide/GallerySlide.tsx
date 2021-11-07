@@ -19,6 +19,7 @@ import { AutoSlide } from '../auto_slide/AutoSlide';
 
 interface GallerySlideProps {
   className?: string;
+  mobileView?: boolean;
 }
 
 /**
@@ -26,6 +27,7 @@ interface GallerySlideProps {
  */
 const UnstyledGallerySlide: FunctionComponent<GallerySlideProps> = ({
   className,
+  mobileView,
 }) => {
   const { viewer } = useContext(ViewerContext);
 
@@ -44,8 +46,8 @@ const UnstyledGallerySlide: FunctionComponent<GallerySlideProps> = ({
 
   return (
     <Box
-      ml={10}
-      sx={{ width: '70%', height: '441px' }}
+      ml={!mobileView && 10}
+      sx={{ width: mobileView ? '100%' : '70%', height: '100%' }}
       className={className}
       position="relative"
       overflow="hidden"

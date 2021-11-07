@@ -97,6 +97,7 @@ const App: FunctionComponent = () => {
               <Route path="/admin">
                 <Admin />
               </Route>
+
               <Box style={{ paddingBottom: '15rem' }}>
                 <Route exact path="/">
                   <Home />

@@ -84,58 +84,56 @@ const UnstyledDashboard: FunctionComponent = () => {
     <DashboardViewerContext.Provider
       value={{ dashboardViewer, setDashboardViewer }}
     >
-      <Box>
-        <Box mt={5}>
-          <Container>
-            <Box mb={4}>
-              <Typography variant="h4" className="boldText">
-                Gunners Dashboard
-              </Typography>
-            </Box>
+      <Box mt={5} mb={10}>
+        <Container>
+          <Box mb={4}>
+            <Typography variant="h4" className="boldText">
+              Gunners Dashboard
+            </Typography>
+          </Box>
 
-            <Box display="flex" justifyContent="start">
-              <Box mr={5}>
-                <LeagueSelect
-                  title="CAPTAIN"
-                  selected={teamTabType === TabType.CAPTAIN}
-                  onClick={() => setTeamTabType(TabType.CAPTAIN)}
-                />
-              </Box>
-
-              <Box mr={5}>
-                <LeagueSelect
-                  title="CLUB"
-                  selected={teamTabType === TabType.TEAM}
-                  onClick={() => setTeamTabType(TabType.TEAM)}
-                />
-              </Box>
-
+          <Box display="flex" justifyContent="start">
+            <Box mr={5}>
               <LeagueSelect
-                title="LEAGUE"
-                selected={teamTabType === TabType.LEAGUE}
-                onClick={() => setTeamTabType(TabType.LEAGUE)}
+                title="CAPTAIN"
+                selected={teamTabType === TabType.CAPTAIN}
+                onClick={() => setTeamTabType(TabType.CAPTAIN)}
               />
             </Box>
 
-            {teamTabType === TabType.CAPTAIN && (
-              <Box mt={5}>
-                <CaptainGeneral />
-              </Box>
-            )}
+            <Box mr={5}>
+              <LeagueSelect
+                title="CLUB"
+                selected={teamTabType === TabType.TEAM}
+                onClick={() => setTeamTabType(TabType.TEAM)}
+              />
+            </Box>
 
-            {teamTabType === TabType.TEAM && (
-              <Box mt={1.5}>
-                <Club />
-              </Box>
-            )}
+            <LeagueSelect
+              title="LEAGUE"
+              selected={teamTabType === TabType.LEAGUE}
+              onClick={() => setTeamTabType(TabType.LEAGUE)}
+            />
+          </Box>
 
-            {teamTabType === TabType.LEAGUE && (
-              <Box mt={1.5}>
-                <ClubLeague />
-              </Box>
-            )}
-          </Container>
-        </Box>
+          {teamTabType === TabType.CAPTAIN && (
+            <Box mt={5}>
+              <CaptainGeneral />
+            </Box>
+          )}
+
+          {teamTabType === TabType.TEAM && (
+            <Box mt={1.5}>
+              <Club />
+            </Box>
+          )}
+
+          {teamTabType === TabType.LEAGUE && (
+            <Box mt={1.5}>
+              <ClubLeague />
+            </Box>
+          )}
+        </Container>
       </Box>
     </DashboardViewerContext.Provider>
   );
