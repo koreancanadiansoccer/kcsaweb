@@ -15,7 +15,7 @@ import map from 'lodash/map';
 
 import { Gallery } from '../../types/gallery';
 import { ViewerContext } from '../../context/homeViewer';
-import { AutoSlide } from '../autoSlide/AutoSlide';
+import { AutoSlide } from '../auto_slide/AutoSlide';
 
 interface GallerySlideProps {
   className?: string;
@@ -93,13 +93,6 @@ export const GallerySlide = withTheme(styled(UnstyledGallerySlide)`
     z-index: 3;
   }
 
-  .image-banner: hover .image-title {
-    transition-property: opacity;
-    transition-duration: 0.5s;
-    transition-timing-function: ease-out;
-    opacity: 1;
-  }
-
   .image-banner: hover .thumbnail-box {
     transition-property: opacity;
     transition-duration: 0.5s;
@@ -117,10 +110,6 @@ export const GallerySlide = withTheme(styled(UnstyledGallerySlide)`
     font-weight: 500;
     color: white;
     margin-top: 0;
-    opacity: 0;
-    transition-property: opacity;
-    transition-duration: 0.5s;
-    transition-timing-function: ease-out;
   }
 
   .thumbnail-box {

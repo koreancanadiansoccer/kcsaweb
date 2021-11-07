@@ -47,7 +47,6 @@ const App: FunctionComponent = () => {
         leaguePlayersGroupAge,
         matchesByAge,
         leagueTeams,
-        leagueActive,
         matches,
       } = generateLeagueDataByAge(homeViewerData.leagues);
 
@@ -62,7 +61,6 @@ const App: FunctionComponent = () => {
         matchesByAge,
         matches,
         leagueTeams,
-        leagueActive,
       });
     }
   }, [loading, data]);
@@ -108,11 +106,7 @@ const App: FunctionComponent = () => {
               <TeamEdit />
             </Route>
 
-            <Route exact path="/announcement">
-              <Announcements />
-            </Route>
-
-            <Route path="/announcement/:id">
+            <Route path="/announcement/:id?">
               <Announcements />
             </Route>
 

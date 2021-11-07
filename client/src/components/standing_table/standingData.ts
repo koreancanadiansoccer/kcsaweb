@@ -54,6 +54,13 @@ export interface LeaguePageSchedule {
   TIME: string;
 }
 
+/* Announcement page Data */
+export const AnnouncementPageStandingHeader = [
+  'No.',
+  'Title',
+  'Date',
+];
+
 export type TableRow =
   | HomeScorer
   | HomeStanding

@@ -16,13 +16,6 @@ export interface LeaeguePlayerHomeViewer extends LeaguePlayer {
   teamAgeType: string;
 }
 
-export interface LeagueActiveHomeViewer {
-  id: number;
-  name: string;
-  ageType: string;
-  year: string;
-}
-
 export interface HomeViewer {
   user?: User;
   announcements?: Announcement[];
@@ -33,7 +26,6 @@ export interface HomeViewer {
   leagueTeams?: LeagueTeam[];
   leaguePlayersGroupAge?: { [key: string]: LeaeguePlayerHomeViewer[] };
   matchesByAge?: { [key: string]: Match[] };
-  leagueActive?: { [key: string]: LeagueActiveHomeViewer };
   matches?: Match[];
 }
 
@@ -49,20 +41,9 @@ export const generateLeagueDataByAge = (
   | 'leaguePlayersGroupAge'
   | 'matchesByAge'
   | 'leagueTeams'
-  | 'leagueActive'
   | 'matches'
 > => {
   const leagueAgeKeys = map(leagues, (league) => league.leagueAgeType);
-
-  const leagueActive: { [key: string]: LeagueActiveHomeViewer } = {};
-  forEach(leagues, (league) => {
-    leagueActive[league.leagueAgeType] = {
-      id: league.id,
-      name: league.name,
-      ageType: league.leagueAgeType,
-      year: league.year,
-    };
-  });
 
   /**
    * Get leagueTeams by age
@@ -118,7 +99,6 @@ export const generateLeagueDataByAge = (
     leaguePlayersGroupAge,
     matchesByAge,
     leagueTeams,
-    leagueActive,
     matches,
   };
 };

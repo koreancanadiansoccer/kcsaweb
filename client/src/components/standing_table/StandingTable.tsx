@@ -27,6 +27,9 @@ interface StandingTable {
   headerClassName?: string;
   rowContentClassName?: string;
   dividerClassName?: string;
+  rowClick?: (id: number) => Promise<void>;
+  pagination?: JSX.Element;
+  selectedRow?: number;
 }
 
 /**
@@ -39,19 +42,23 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
   tableHeaderData,
   headerLongField,
   rowLongField,
-  paperShadow,
+  paperShadow = 3,
+  //DONE: set the default value
   hideHeader,
-  flexWidth,
+  flexWidth = 1,
   tableType,
-  standingTableClassName,
-  headerClassName,
-  rowContentClassName,
-  dividerClassName,
+  standingTableClassName = 'default-standing-table-box',
+  headerClassName = 'default-table-header',
+  rowContentClassName = 'default-row-content',
+  dividerClassName = 'default-standing-table-divider',
+  rowClick,
+  pagination,
+  selectedRow,
 }) => {
   return (
     <Box className={className}>
-      <Paper elevation={typeof paperShadow === 'number' ? paperShadow : 3}>
-        <Box px={2} py={5.625} className={standingTableClassName ? standingTableClassName : "default-standing-table-box"}>
+      <Paper elevation={paperShadow}>
+        <Box px={2} py={5.625} className={standingTableClassName}>
           {title && (
             <Box textAlign="center" mb={2} className="default-table-title">
               {title}
@@ -62,7 +69,7 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
           <Box
             display="flex"
             justifyContent="space-around"
-            className={headerClassName ? headerClassName : "default-table-header"}
+            className={headerClassName}
             py={0.75}
             px={1}
           >
@@ -91,7 +98,21 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
             </Box>
           ) : (
             map(tableRowData, (data, dataRowIdx) => (
-              <Box key={`table-${dataRowIdx}`} className={rowContentClassName ? rowContentClassName : "default-row-content"}>
+              <Box
+                key={`table-${dataRowIdx}`}
+                className={
+                  selectedRow === dataRowIdx
+                    ? 'default-selected-row'
+                    : rowContentClassName
+                }
+                onClick={
+                  rowClick
+                    ? () => {
+                        void rowClick(dataRowIdx);
+                      }
+                    : undefined
+                }
+              >
                 <Box
                   display="flex"
                   justifyContent="space-around"
@@ -111,7 +132,7 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
                     return (
                       <Box
                         key={`table-data-${key}-${idx}`}
-                        flex={isNameField ? 4 : flexWidth ? flexWidth : 1}
+                        flex={isNameField ? 4 : flexWidth}
                         display="flex"
                         justifyContent="center"
                         py={2}
@@ -121,11 +142,13 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
                     );
                   })}
                 </Box>
-                <Divider className={dividerClassName ? dividerClassName : "default-standing-table-divider"} />
+                <Divider className={dividerClassName} />
               </Box>
             ))
           )}
         </Box>
+
+        {pagination && pagination}
       </Paper>
     </Box>
   );
@@ -140,5 +163,9 @@ export const StandingTable = withTheme(styled(UnstyledStandingTable)`
   .default-table-header {
     font-size: 0.75rem;
     background-color: ${({ theme }) => theme.palette.grey[200]};
+  }
+
+  .default-selected-row {
+    opacity: 0.5;
   }
 `);
