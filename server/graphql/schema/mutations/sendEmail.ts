@@ -13,7 +13,7 @@ import {
   ACCOUNTSTATUS,
 } from '../../../db/models/user.model';
 import { Team } from '../../../db/models/team.model';
-import { sendEmail } from '../../../utils/sendemail';
+import { sendEmail, generateSignupHTML } from '../../../utils/sendemail';
 import { encodeIDBase64 } from '../utils';
 dotenv.config();
 interface Args {
@@ -48,11 +48,15 @@ export const sendEmailNotif = {
           const cipherText = encodeIDBase64(findUser.id);
 
           // Send email
+          // Send invitation email.
           await sendEmail(
-            findUser.firstName,
             findUser.email,
-            findUser.team.name,
-            cipherText
+            generateSignupHTML(
+              findUser.firstName,
+              findUser.email,
+              findUser.team.name,
+              cipherText
+            )
           );
         }
       })
