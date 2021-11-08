@@ -61,8 +61,8 @@ const UnstyledTeam: FunctionComponent<TeamProps> = ({ className }) => {
       {/* Teams - hero */}
       <TeamHero
         teamColor={leagueTeam?.team.teamColor}
-        name={leagueTeam?.team.name}
-        captain={'test'}
+        name={leagueTeam?.team.name.toUpperCase()}
+        captain={leagueTeam?.team.captain}
         foundedDate={leagueTeam?.team.foundedDate}
         teamLogo={leagueTeam?.team.teamLogoURL}
       >

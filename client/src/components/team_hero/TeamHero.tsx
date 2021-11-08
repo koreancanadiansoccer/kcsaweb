@@ -6,12 +6,13 @@ import styled from 'styled-components';
 import dayjs from 'dayjs';
 
 import LogoGrey from '../../assets/logo_grey.svg';
+import { User } from '../../types/user';
 
 interface TeamHeroProps {
   className?: string;
   teamColor?: string;
   name?: string;
-  captain?: string;
+  captain?: User;
   foundedDate?: string;
   teamLogo?: string;
 }
@@ -54,7 +55,8 @@ const UnstyledTeamHero: FunctionComponent<TeamHeroProps> = ({
 
           <Box mt={9}>
             <Typography variant="h6" className="boldText">
-              Club Officials: {captain}
+              Club Officials:{' '}
+              {`${captain?.firstName} ${captain?.lastName}`.toUpperCase()}
             </Typography>
           </Box>
 

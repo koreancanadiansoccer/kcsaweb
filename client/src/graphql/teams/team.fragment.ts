@@ -41,6 +41,12 @@ status
 leagueId
 teamId
 team{
+  captain{
+    firstName,
+    lastName,
+    id,
+    email,
+  }
   teamLogoURL
   name
   teamColor
