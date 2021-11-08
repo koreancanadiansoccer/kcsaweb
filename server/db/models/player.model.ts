@@ -35,6 +35,10 @@ export class Player extends Model {
   @Column({ field: 'yellow_card' })
   yellowCard!: number;
 
+  @Default(0)
+  @Column({ field: 'red_card' })
+  redCard!: number;
+
   @Column email!: string;
 
   // Associations.

@@ -16,7 +16,8 @@ import { Modal } from '../../../components/modal/Modal';
 import { Input } from '../../../components/input/Input';
 import { Button } from '../../../components/button/Button';
 import { formatPhone, unformatPhone } from '../../../utils/format';
-
+import { ageOptions } from '../../../types/age.enum';
+import { Select } from '../../../components/select/Select';
 interface InviteNewCaptainProps extends Pick<DialogProps, 'open' | 'onClose'> {
   onSubmit: (newCaptain: NewCaptain) => Promise<void>;
 }
@@ -34,6 +35,7 @@ export const InviteNewCaptainModal: FunctionComponent<InviteNewCaptainProps> =
       phoneNumber: '',
       email: '',
       teamName: '',
+      teamAgeType: '',
     });
 
     const [emailError, setEmailError] = useState('');
@@ -47,7 +49,8 @@ export const InviteNewCaptainModal: FunctionComponent<InviteNewCaptainProps> =
         newCaptain?.phoneNumber.length === 10 &&
         !!newCaptain?.email &&
         EMAIL_REGEX.test(newCaptain?.email) &&
-        !!newCaptain?.teamName,
+        !!newCaptain?.teamName &&
+        !!newCaptain.teamAgeType,
       [newCaptain]
     );
 
@@ -61,6 +64,7 @@ export const InviteNewCaptainModal: FunctionComponent<InviteNewCaptainProps> =
           phoneNumber: '',
           email: '',
           teamName: '',
+          teamAgeType: '',
         }),
       [open]
     );
@@ -118,11 +122,11 @@ export const InviteNewCaptainModal: FunctionComponent<InviteNewCaptainProps> =
         <Divider />
 
         <Box mt={2}>
-          <Typography variant="body1">Team Name</Typography>
+          <Typography variant="body1">Club Name</Typography>
 
           <Input
-            label="Team Name"
-            placeholder="Team Name"
+            label="Club Name"
+            placeholder="Club Name"
             required
             value={newCaptain?.teamName}
             fullWidth
@@ -130,6 +134,29 @@ export const InviteNewCaptainModal: FunctionComponent<InviteNewCaptainProps> =
               setNewCaptain({ ...newCaptain, teamName: evt.target.value });
             }}
           />
+        </Box>
+
+        {/* Team Age group */}
+        <Box my={2}>
+          <Typography variant="body1"> Club Age Group</Typography>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+            width="100%"
+            my={2}
+          >
+            <Box width="50%">
+              <Select
+                options={ageOptions}
+                isClearable
+                createable
+                handleChange={(option: any) => {
+                  setNewCaptain({ ...newCaptain, teamAgeType: option?.value });
+                }}
+              />
+            </Box>
+          </Box>
         </Box>
 
         <Divider />

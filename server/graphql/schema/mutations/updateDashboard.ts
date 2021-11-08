@@ -37,6 +37,7 @@ export const updateDashboard = {
     { req }: any
   ): Promise<{
     user: User | null;
+    league: League | null;
     team: Team | null;
     leagueTeam: LeagueTeam | null;
   }> {
@@ -110,6 +111,6 @@ export const updateDashboard = {
       });
     }
 
-    return { user, team, leagueTeam };
+    return { user, team, league, leagueTeam };
   },
 };

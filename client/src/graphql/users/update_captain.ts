@@ -11,6 +11,7 @@ export interface UpdateCaptainInput {
   email: string;
   phoneNumber: string;
   teamName: string;
+  teamAgeType: string;
   id: number;
 }
 
@@ -27,6 +28,7 @@ export const UPDATE_CAPTAIN = gql`
     $email: String!
     $phoneNumber: String!
     $teamName: String!
+    $teamAgeType: String!
     $id: Int!
   ) {
     updateCaptain(
@@ -35,6 +37,7 @@ export const UPDATE_CAPTAIN = gql`
       dob: $dob
       email: $email
       teamName: $teamName
+      teamAgeType: $teamAgeType
       phoneNumber: $phoneNumber
       id: $id
     ) {

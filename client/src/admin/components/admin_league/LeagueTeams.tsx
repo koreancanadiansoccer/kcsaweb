@@ -32,9 +32,11 @@ import { LeagueContext } from '../../../context/league';
 
 import { CreateLeagueTeamModal } from './modals/CreateLeagueTeamModal';
 import { CreateLeaguePlayersModal } from './modals/CreateLeaguePlayersModal';
+import { InviteLeagueTeamModal } from './modals/InviteLeagueTeam';
 
 const tableColumns = [
   { title: 'Name', field: 'name' },
+  { title: 'Status', field: 'status' },
   { title: 'Age', field: 'teamAgeType' },
   { title: 'Played', field: 'played' },
   { title: 'Gs', field: 'goalScored' },
@@ -47,6 +49,7 @@ const tableColumns = [
 
 enum MODAL_TYPE {
   CREATE_TEAM = 'CREATE_TEAM',
+  INVITE_TEAM = 'INVITE_TEAM',
   ADD_PLAYERS = 'ADD_PLAYERS',
 }
 
@@ -131,6 +134,17 @@ const UnstyledLeagueTeams: FunctionComponent = () => {
         />
       )}
 
+      {/* Invite new teams */}
+      {openModal === MODAL_TYPE.INVITE_TEAM && (
+        <InviteLeagueTeamModal
+          open={openModal === MODAL_TYPE.INVITE_TEAM}
+          age={origLeague.leagueAgeType}
+          teams={teamQuery.data.getTeams}
+          leagueTeams={leagueTeams}
+          onClose={() => setOpenModal(null)}
+        />
+      )}
+
       {/* Adding players to league team */}
       {openModal === MODAL_TYPE.ADD_PLAYERS && selectedTeam && (
         <CreateLeaguePlayersModal
@@ -145,7 +159,7 @@ const UnstyledLeagueTeams: FunctionComponent = () => {
         <Typography>
           Clubs - Click club to add active players for the league.
         </Typography>
-        <Box my={3}>
+        <Box my={3} display="flex">
           <Button
             startIcon={<AddIcon />}
             onClick={() => setOpenModal(MODAL_TYPE.CREATE_TEAM)}
@@ -154,13 +168,15 @@ const UnstyledLeagueTeams: FunctionComponent = () => {
             Add Clubs(Manual)
           </Button>
 
-          <Button
-            startIcon={<AddIcon />}
-            // onClick={() => setOpenModal(MODAL_TYPE.CREATE_TEAM)}
-            color="secondary"
-          >
-            Invite Clubs
-          </Button>
+          <Box ml={4}>
+            <Button
+              startIcon={<AddIcon />}
+              onClick={() => setOpenModal(MODAL_TYPE.INVITE_TEAM)}
+              color="secondary"
+            >
+              Invite Clubs/Resend Invite
+            </Button>
+          </Box>
         </Box>
 
         <Table

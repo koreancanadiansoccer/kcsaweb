@@ -8,9 +8,10 @@ import {
   ACCOUNTSTATUS,
 } from '../../../db/models/user.model';
 import { Team } from '../../../db/models/team.model';
-import { sendEmail } from '../../../utils/sendemail';
+import { sendEmail, generateSignupHTML } from '../../../utils/sendemail';
 import { encodeIDBase64 } from '../utils';
 dotenv.config();
+
 interface Args {
   [key: string]: string | AccountType | ACCOUNTSTATUS;
 }
@@ -24,6 +25,7 @@ export const sendInvite = {
     email: { type: new GraphQLNonNull(GraphQLString) },
     phoneNumber: { type: new GraphQLNonNull(GraphQLString) },
     teamName: { type: new GraphQLNonNull(GraphQLString) },
+    teamAgeType: { type: new GraphQLNonNull(GraphQLString) },
   },
   async resolve(parent: object, args: Args): Promise<User[]> {
     if (
@@ -31,7 +33,8 @@ export const sendInvite = {
       !args.lastName ||
       !args.email ||
       !args.phoneNumber ||
-      !args.teamName
+      !args.teamName ||
+      !args.teamAgeType
     ) {
       throw Error('Please fill all required fields!');
     }
@@ -57,10 +60,17 @@ export const sendInvite = {
     const cipherText = encodeIDBase64(user.id);
 
     // Create team
-    const team = await Team.create({ name: args.teamName, captainId: user.id });
+    const team = await Team.create({
+      name: args.teamName,
+      teamAgeType: args.teamAgeType,
+      captainId: user.id,
+    });
 
     // Send invitation email.
-    await sendEmail(user.firstName, user.email, team.name, cipherText);
+    await sendEmail(
+      user.email,
+      generateSignupHTML(user.firstName, user.email, team.name, cipherText)
+    );
 
     const users = await User.findAll({
       include: [Team],

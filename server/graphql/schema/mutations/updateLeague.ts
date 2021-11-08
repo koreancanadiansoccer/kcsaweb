@@ -39,10 +39,10 @@ export const updateLeague = {
       await Promise.all(
         map(args.newTeams, async (newTeam) => {
           await LeagueTeam.create({
-            name: 'test',
             teamId: newTeam.id,
             teamAgeType: newTeam.teamAgeType,
             leagueId: args.league.id,
+            captainId: args.newTeam.captainId,
           });
         })
       );

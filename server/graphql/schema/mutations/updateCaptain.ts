@@ -32,6 +32,7 @@ export const updateCaptain = {
     email: { type: new GraphQLNonNull(GraphQLString) },
     phoneNumber: { type: new GraphQLNonNull(GraphQLString) },
     teamName: { type: new GraphQLNonNull(GraphQLString) },
+    teamAgeType: { type: new GraphQLNonNull(GraphQLString) },
   },
   async resolve(parent: object, args: Args): Promise<User[]> {
     if (
@@ -40,7 +41,8 @@ export const updateCaptain = {
       !args.lastName ||
       !args.email ||
       !args.phoneNumber ||
-      !args.teamName
+      !args.teamName ||
+      !args.teamAgeType
     ) {
       throw Error('Please fill all required fields!');
     }
@@ -75,6 +77,7 @@ export const updateCaptain = {
       await Team.update(
         {
           name: args.teamName,
+          teamAgeType: args.teamAgeType,
         },
         { where: { id: team.id } }
       );

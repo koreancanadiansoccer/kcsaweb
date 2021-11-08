@@ -51,6 +51,14 @@ export const getHomeViewer = {
               model: Team,
               as: 'team',
               required: true,
+              include: [
+                {
+                  as: 'captain',
+                  model: User,
+                  duplicating: false,
+                  subQuery: false,
+                },
+              ],
             },
           ],
         },
@@ -65,6 +73,14 @@ export const getHomeViewer = {
                   model: Team,
                   as: 'team',
                   required: true,
+                  include: [
+                    {
+                      as: 'captain',
+                      model: User,
+                      duplicating: false,
+                      subQuery: false,
+                    },
+                  ],
                 },
               ],
             },
@@ -76,6 +92,14 @@ export const getHomeViewer = {
                   model: Team,
                   as: 'team',
                   required: true,
+                  include: [
+                    {
+                      as: 'captain',
+                      model: User,
+                      duplicating: false,
+                      subQuery: false,
+                    },
+                  ],
                 },
               ],
             },

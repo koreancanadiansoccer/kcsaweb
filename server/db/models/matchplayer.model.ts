@@ -23,6 +23,10 @@ export class MatchPlayer extends Model {
   @Column({ field: 'yellow_card' })
   yellowCard!: number;
 
+  @Default(0)
+  @Column({ field: 'red_Card' })
+  redCard!: number;
+
   @Column email!: string;
 
   // Associations with league team.

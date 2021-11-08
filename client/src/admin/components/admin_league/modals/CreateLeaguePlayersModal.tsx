@@ -18,6 +18,8 @@ import every from 'lodash/every';
 import filter from 'lodash/filter';
 import { useMutation, useQuery } from '@apollo/client';
 import Divider from '@material-ui/core/Divider';
+import Checkbox from '@material-ui/core/Checkbox';
+import Chip from '@material-ui/core/Chip';
 
 import {
   CREATE_LEAGUE_PLAYER,
@@ -35,6 +37,7 @@ import {
   LeaguePlayer,
   LeaguePlayerInput,
 } from '../../../../types/player';
+import { LEAGUE_TEAM_STATUS } from '../../../../types/team';
 import { LeagueContext } from '../../../../context/league';
 
 interface CreateLeaguePlayersModalProps
@@ -42,6 +45,7 @@ interface CreateLeaguePlayersModalProps
   selectedTeamId: number;
 }
 
+// NOTE: This is used as Update league team as well
 export const CreateLeaguePlayersModal: FunctionComponent<CreateLeaguePlayersModalProps> =
   ({ selectedTeamId, open, onClose, fullScreen }) => {
     const { league: origLeague, setLeague: setOrigLeague } =
@@ -56,6 +60,10 @@ export const CreateLeaguePlayersModal: FunctionComponent<CreateLeaguePlayersModa
       [origLeague, selectedTeamId]
     );
 
+    const [registerComplete, setRegisterComplete] = useState(
+      selectedTeam?.status === LEAGUE_TEAM_STATUS.REGISTERED
+    );
+
     const [leaguePlayers, setLeaguePlayers] = useState<LeaguePlayer[]>(
       selectedTeam?.leaguePlayers || []
     );
@@ -63,6 +71,9 @@ export const CreateLeaguePlayersModal: FunctionComponent<CreateLeaguePlayersModa
     // Update list
     useEffect(() => {
       setLeaguePlayers(selectedTeam?.leaguePlayers || []);
+      setRegisterComplete(
+        selectedTeam?.status === LEAGUE_TEAM_STATUS.REGISTERED
+      );
     }, [origLeague, selectedTeam]);
 
     const [newLeaguePlayers, setNewLeaguePlayers] = useState<
@@ -99,31 +110,35 @@ export const CreateLeaguePlayersModal: FunctionComponent<CreateLeaguePlayersModa
       CreateLeaguePlayerInput
     >(CREATE_LEAGUE_PLAYER);
 
-    const createLeaguePlayers = useCallback(async () => {
-      if (!selectedTeam) {
-        return 'no team';
-      }
-
-      try {
-        const res = await createLeaguePlayerMut({
-          variables: {
-            newLeaguePlayers: newLeaguePlayers,
-            leagueTeamId: selectedTeam?.id,
-            teamId: selectedTeam?.teamId,
-            leagueId: origLeague.id,
-          },
-        });
-
-        if (res?.data?.createLeaguePlayers) {
-          setOrigLeague(res.data?.createLeaguePlayers);
-
-          // Reset selection:
-          setNewLeaguePlayers([]);
+    const createLeaguePlayers = useCallback(
+      async (registerComplete?: boolean) => {
+        if (!selectedTeam) {
+          return 'no team';
         }
-      } catch (e) {
-        console.error(e);
-      }
-    }, [newLeaguePlayers, selectedTeam, origLeague]);
+
+        try {
+          const res = await createLeaguePlayerMut({
+            variables: {
+              newLeaguePlayers: newLeaguePlayers,
+              completeRegister: registerComplete,
+              leagueTeamId: selectedTeam?.id,
+              teamId: selectedTeam?.teamId,
+              leagueId: origLeague.id,
+            },
+          });
+
+          if (res?.data?.createLeaguePlayers) {
+            setOrigLeague(res.data?.createLeaguePlayers);
+
+            // Reset selection:
+            setNewLeaguePlayers([]);
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      },
+      [newLeaguePlayers, selectedTeam, origLeague]
+    );
 
     // Create option list for select.
     const playersOption = useMemo(() => {
@@ -218,7 +233,51 @@ export const CreateLeaguePlayersModal: FunctionComponent<CreateLeaguePlayersModa
           selectedTeam?.team.name || 'Team'
         } - List of players in this league.`}
       >
-        <Typography variant="body1">Add players from past</Typography>
+        <Box my={3}>
+          <Typography variant="h6">
+            Current league team invitaional status:
+            <Chip
+              label={selectedTeam?.status}
+              style={{
+                backgroundColor:
+                  (selectedTeam?.status === LEAGUE_TEAM_STATUS.REGISTERED &&
+                    'seagreen') ||
+                  (selectedTeam?.status === LEAGUE_TEAM_STATUS.CLUBCONFIRMED &&
+                    'orange') ||
+                  '',
+                color:
+                  (selectedTeam?.status === LEAGUE_TEAM_STATUS.REGISTERED &&
+                    'white') ||
+                  (selectedTeam?.status === LEAGUE_TEAM_STATUS.CLUBCONFIRMED &&
+                    'white') ||
+                  '',
+              }}
+            />
+          </Typography>
+
+          <Typography variant="body2">
+            *Complete League Team Registration.
+          </Typography>
+
+          <Typography variant="body2" color="error">
+            *You cannot undo this.
+          </Typography>
+
+          <Checkbox
+            checked={registerComplete}
+            disabled={registerComplete}
+            color="primary"
+            onChange={() => {
+              createLeaguePlayers(!registerComplete);
+            }}
+          />
+        </Box>
+
+        <Box my={3}>
+          <Divider />
+        </Box>
+
+        <Typography variant="h6">Add League Players</Typography>
 
         <Box width="100%" my={2}>
           <Typography variant="body1">

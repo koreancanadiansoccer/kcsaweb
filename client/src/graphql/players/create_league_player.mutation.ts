@@ -9,6 +9,7 @@ export interface CreateLeaguePlayerInput {
   leagueTeamId: number;
   teamId: number;
   leagueId: number;
+  completeRegister?: boolean;
 }
 
 export interface CreateLeaguePlayerOutput {
@@ -19,8 +20,8 @@ export interface CreateLeaguePlayerOutput {
  * Mutation for creating a new player.
  */
 export const CREATE_LEAGUE_PLAYER = gql`
-  mutation createLeaguePlayers($newLeaguePlayers: [LeaguePlayerInput], $leagueTeamId: Int! $teamId: Int!, $leagueId: Int!),  {
-    createLeaguePlayers(newLeaguePlayers: $newLeaguePlayers, leagueTeamId: $leagueTeamId, teamId: $teamId, leagueId: $leagueId) {
+  mutation createLeaguePlayers($newLeaguePlayers: [LeaguePlayerInput], $leagueTeamId: Int! $teamId: Int!, $leagueId: Int!, $completeRegister: Boolean!),  {
+    createLeaguePlayers(newLeaguePlayers: $newLeaguePlayers, leagueTeamId: $leagueTeamId, teamId: $teamId, leagueId: $leagueId,completeRegister: $completeRegister ){
       ${LEAGUE_FRAGMENT}
     }
   }

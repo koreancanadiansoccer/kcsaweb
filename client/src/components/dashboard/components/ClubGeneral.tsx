@@ -16,13 +16,12 @@ import isEqual from 'lodash/isEqual';
 import { useMutation } from '@apollo/client';
 
 import { Team } from '../../../types/team';
-import { ageOptions } from '../../../types/age.enum';
 import { ResourceType } from '../../../types/resource.enum';
 import { Button } from '../../button/Button';
 import { Input } from '../../input/Input';
 import { ImgDropzone } from '../../dropzone/DropZone';
 import { useImgUpload } from '../../../hooks/useImgUpload';
-import { Select, ColorSelect } from '../../select/Select';
+import { ColorSelect } from '../../select/Select';
 import { colorSelectOptions } from '../../../utils/color';
 import {
   UpdateDashboardInput,

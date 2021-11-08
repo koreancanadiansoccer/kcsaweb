@@ -2,6 +2,7 @@ import { GraphQLList, GraphQLString } from 'graphql';
 
 import { TeamType } from '../../types/team';
 import { Team } from '../../../db/models/team.model';
+import { User } from '../../../db/models/user.model';
 
 /**
  * Get all teams data.
@@ -15,10 +16,12 @@ export const getTeams = {
     if (args.leagueAgeType) whereStatement.teamAgeType = args.leagueAgeType;
 
     const teams = await Team.findAll({
+      include: [
+        { as: 'captain', model: User, duplicating: false, subQuery: false },
+      ],
       order: [['createdAt', 'DESC']],
       where: whereStatement,
     });
-
     return teams;
   },
 };

@@ -58,11 +58,6 @@ export class Team extends Model {
   })
   teamColor!: string;
 
-  // TODO: Do we need this?
-  @Default(false)
-  @Column({ field: 'is_active' })
-  isActive!: boolean;
-
   @ForeignKey(() => User) @Column({ field: 'captain_id' }) captainId!: number;
   @BelongsTo(() => User) captain!: User;
 

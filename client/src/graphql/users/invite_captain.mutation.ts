@@ -11,6 +11,7 @@ export interface SendInviteInput {
   email: string;
   phoneNumber: string;
   teamName: string;
+  teamAgeType: string;
 }
 
 export interface SendInviteResult {
@@ -26,6 +27,7 @@ export const SEND_INVITE = gql`
     $email: String!
     $phoneNumber: String!
     $teamName: String!
+    $teamAgeType: String!
   ) {
     sendInvite(
       firstName: $firstName
@@ -33,6 +35,7 @@ export const SEND_INVITE = gql`
       dob: $dob
       email: $email
       teamName: $teamName
+      teamAgeType: $teamAgeType
       phoneNumber: $phoneNumber
     ) {
       ${USER_FRAGMENT}

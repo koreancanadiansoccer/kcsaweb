@@ -9,6 +9,12 @@ id
 name
 foundedDate
 teamLogoURL
+captain {
+  firstName,
+  lastName,
+  id,
+  email,
+}
 played
 win
 loss
@@ -17,7 +23,6 @@ goalScored
 goalConceded
 teamAgeType
 teamColor
-isActive
 players{
   ${PLAYER_FRAGMENT}
   createdAt
@@ -32,7 +37,7 @@ loss
 tie
 goalScored
 goalConceded
-isActive
+status
 leagueId
 teamId
 team{
@@ -57,15 +62,12 @@ loss
 tie
 goalScored
 goalConceded
-isActive
-captainId
 leagueId
 teamId
 team {
   name
   foundedDate
   teamAgeType
-  captainId
   teamLogoURL
 }
 matchPlayers{

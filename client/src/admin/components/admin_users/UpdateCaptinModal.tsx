@@ -7,6 +7,7 @@ import React, {
   useCallback,
 } from 'react';
 import isEqual from 'lodash/isEqual';
+import find from 'lodash/find';
 import { DialogProps } from '@material-ui/core/Dialog';
 import Box from '@material-ui/core/Box';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -30,6 +31,8 @@ import {
   SendEmailResult,
   SendEmailInput,
 } from '../../../graphql/send_email';
+import { ageOptions } from '../../../types/age.enum';
+import { Select } from '../../../components/select/Select';
 
 export interface UpdateCaptainModalProps
   extends Pick<DialogProps, 'open' | 'onClose'> {
@@ -61,7 +64,11 @@ export const UpdateCaptainModal: FunctionComponent<UpdateCaptainModalProps> = ({
   const update = useCallback(async () => {
     try {
       const res = await updateCaptain({
-        variables: { ...captain, teamName: captain.team.name },
+        variables: {
+          ...captain,
+          teamName: captain.team.name,
+          teamAgeType: captain.team.teamAgeType,
+        },
       });
 
       if (res.data?.updateCaptain) {
@@ -163,11 +170,11 @@ export const UpdateCaptainModal: FunctionComponent<UpdateCaptainModalProps> = ({
         <Divider />
 
         <Box mt={2}>
-          <Typography variant="body1">Team Name</Typography>
+          <Typography variant="body1">Club Name</Typography>
 
           <Input
-            label="Team Name"
-            placeholder="Team Name"
+            label="Club Name"
+            placeholder="Club Name"
             required
             value={captain?.team?.name}
             fullWidth
@@ -176,6 +183,38 @@ export const UpdateCaptainModal: FunctionComponent<UpdateCaptainModalProps> = ({
               setCaptain({ ...captain, team: team });
             }}
           />
+        </Box>
+
+        <Divider />
+
+        <Box my={2}>
+          <Typography variant="body1"> Club Age Group</Typography>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+            width="100%"
+            my={2}
+          >
+            <Box width="50%">
+              <Select
+                defaultValue={find(
+                  ageOptions,
+                  (ageOption) => ageOption.value === captain.team.teamAgeType
+                )}
+                options={ageOptions}
+                isClearable
+                createable
+                handleChange={(option: any) => {
+                  const team = {
+                    ...captain.team,
+                    teamAgeType: option?.value,
+                  };
+                  setCaptain({ ...captain, team: team });
+                }}
+              />
+            </Box>
+          </Box>
         </Box>
 
         <Divider />

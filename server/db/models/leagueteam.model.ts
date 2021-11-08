@@ -15,6 +15,12 @@ import { LeaguePlayer } from './leagueplayer.model';
 import { Match } from './match.model';
 import { MatchPlayer } from './matchplayer.model';
 
+export enum LEAGUE_TEAM_STATUS {
+  INVITED = 'INVITED',
+  CLUBCONFIRMED = 'CLUB CONFIRMED',
+  REGISTERED = 'REGISTERED',
+}
+
 // Team data associated with league.
 @Table({ tableName: 'league_team' })
 export class LeagueTeam extends Model {
@@ -42,9 +48,10 @@ export class LeagueTeam extends Model {
   @Column({ field: 'goal_conceded' })
   goalConceded!: number;
 
-  @Default(false)
-  @Column({ field: 'is_active' })
-  isActive!: boolean;
+  @Column({
+    field: 'status',
+  })
+  status!: string;
 
   @ForeignKey(() => User) @Column({ field: 'captain_id' }) captainId!: number;
 

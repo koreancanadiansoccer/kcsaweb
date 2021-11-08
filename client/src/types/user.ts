@@ -27,6 +27,7 @@ export interface NewCaptain {
   teamName: string;
   phoneNumber: string;
   email: string;
+  teamAgeType: string;
 }
 
 // NOT USED ATM:

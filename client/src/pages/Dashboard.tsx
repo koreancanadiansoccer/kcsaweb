@@ -9,7 +9,7 @@ import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
-import { useHistory } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 import { useQuery } from '@apollo/client';
 
 import { ViewerContext } from '../context/homeViewer';
@@ -38,7 +38,14 @@ enum TabType {
 const UnstyledDashboard: FunctionComponent = () => {
   const { viewer } = useContext(ViewerContext);
   const history = useHistory();
-  const [teamTabType, setTeamTabType] = useState<TabType>(TabType.CAPTAIN);
+
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const setLeagueTab = query.get('league');
+
+  const [teamTabType, setTeamTabType] = useState<TabType>(
+    setLeagueTab ? TabType.LEAGUE : TabType.CAPTAIN
+  );
 
   const [dashboardViewer, setDashboardViewer] = useState<DashboardViewer>();
 

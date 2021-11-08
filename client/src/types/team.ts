@@ -1,5 +1,6 @@
 import { AgeEnums } from './age.enum';
 import { Player, LeaguePlayer, MatchPlayer } from './player';
+import { User } from './user';
 export interface TeamInput {
   name: string;
   teamAgeType: string;
@@ -10,6 +11,7 @@ export interface TeamInput {
 export interface Team {
   id: number;
   name: string;
+  captain?: User;
   foundedDate: string;
   teamLogoURL?: string;
   teamAgeType: AgeEnums | string;
@@ -24,6 +26,12 @@ export interface Team {
   players?: Player[];
 }
 
+export enum LEAGUE_TEAM_STATUS {
+  INVITED = 'INVITED',
+  CLUBCONFIRMED = 'CLUB CONFIRMED',
+  REGISTERED = 'REGISTERED',
+}
+
 export interface LeagueTeam {
   id: number;
   played: number;
@@ -32,7 +40,7 @@ export interface LeagueTeam {
   tie: number;
   goalScored: number;
   goalConceded: number;
-  isActive: boolean;
+  status: string;
   captainId: string;
   team: Team;
   teamId: number;
@@ -50,8 +58,6 @@ export interface MatchTeam {
   tie: number;
   goalScored: number;
   goalConceded: number;
-  teamAgeType: AgeEnums | string;
-  isActive: boolean;
   captainId: string;
   teamId: number;
   team: Team;
