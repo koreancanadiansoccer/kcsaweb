@@ -45,7 +45,8 @@ export const ClubLeague: FunctionComponent = () => {
     return (
       <Box mt={5}>
         <Typography variant="h6" className="boldText">
-          {dashboardViewer.league.name} is open for register!
+          {dashboardViewer.league.year} {dashboardViewer.league.name}{' '}
+          {dashboardViewer.league.leagueType} LEAGUE is open for registeration!
         </Typography>
         <Box mt={2}>
           <Button size="large" color="secondary">

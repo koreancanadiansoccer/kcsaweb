@@ -54,9 +54,8 @@ enum MODAL_TYPE {
  * Show and allow update to teams associated with league.
  */
 const UnstyledLeagueTeams: FunctionComponent = () => {
-  const { league: origLeague, setLeague: setOrigLeague } = useContext(
-    LeagueContext
-  );
+  const { league: origLeague, setLeague: setOrigLeague } =
+    useContext(LeagueContext);
 
   const [leagueTeams, setLeagueTeams] = useState<LeagueTeam[]>(
     origLeague.leagueTeams
@@ -152,7 +151,15 @@ const UnstyledLeagueTeams: FunctionComponent = () => {
             onClick={() => setOpenModal(MODAL_TYPE.CREATE_TEAM)}
             color="secondary"
           >
-            Add Clubs
+            Add Clubs(Manual)
+          </Button>
+
+          <Button
+            startIcon={<AddIcon />}
+            // onClick={() => setOpenModal(MODAL_TYPE.CREATE_TEAM)}
+            color="secondary"
+          >
+            Invite Clubs
           </Button>
         </Box>
 

@@ -54,7 +54,7 @@ const UnstyledScheduledCard: FunctionComponent<ScheduleCardProps> = ({
                     alt="home team logo"
                   />
                 </Box>
-                <Box>{homeTeam.team.name}</Box>
+                <Box>{homeTeam.team.name.toUpperCase()}</Box>
               </Box>
 
               <Box ml="auto">
@@ -67,7 +67,7 @@ const UnstyledScheduledCard: FunctionComponent<ScheduleCardProps> = ({
                     <span> vs </span>
 
                     <Box display="inline" pl={2} fontSize={22}>
-                      {awayTeam.goalConceded}
+                      {awayTeam.goalScored}
                     </Box>
                   </Box>
                 ) : (
@@ -88,7 +88,7 @@ const UnstyledScheduledCard: FunctionComponent<ScheduleCardProps> = ({
                     alt="away team logo"
                   />
                 </Box>
-                <Box>{awayTeam.team.name}</Box>
+                <Box>{awayTeam.team.name.toUpperCase()}</Box>
               </Box>
             </Box>
           </Box>

@@ -88,7 +88,7 @@ const UnstyledDashboard: FunctionComponent = () => {
         <Container>
           <Box mb={4}>
             <Typography variant="h4" className="boldText">
-              Gunners Dashboard
+              Club Dashboard
             </Typography>
           </Box>
 

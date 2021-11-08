@@ -8,6 +8,7 @@ import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import { useMutation } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
+import Box from '@material-ui/core/Box';
 
 import { LoginInput } from '../types/login';
 import {
@@ -85,13 +86,13 @@ const UnstyledLogin: FunctionComponent<LoginProps> = () => {
   );
 
   return (
-    <>
+    <Box mb={10}>
       <LoginForm
         className="Login"
         error={error}
         onAdd={(newLogin: LoginInput) => loginUser(newLogin)}
       />
-    </>
+    </Box>
   );
 };
 

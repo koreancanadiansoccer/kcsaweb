@@ -24,7 +24,7 @@ import { ScheduleDefaultCard } from './components/schedule_card/ScheduleDefaultC
 interface SchedulesProps {
   className?: string;
 }
-const CardW = 380;
+// const CardW = 380;
 /**
  * Schedule section shown on home page.
  */
@@ -64,7 +64,7 @@ const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
       // ref.current.style.paddingLeft = `${CardW * testDib}px`;
     }
   }, [leagueAgeType]);
-
+  // console.log(seletedAgeMatches);
   return (
     <>
       <Box className={className}>

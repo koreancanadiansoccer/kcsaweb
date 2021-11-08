@@ -34,7 +34,6 @@ export interface LeaguePlayer {
 }
 
 export interface MatchPlayer {
-  name: string;
   dob?: string;
   goalScored: number;
   yellowCard: number;

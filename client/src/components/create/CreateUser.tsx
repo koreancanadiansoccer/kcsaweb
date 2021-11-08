@@ -5,12 +5,13 @@ import React, {
   useMemo,
   useEffect,
 } from 'react';
-import { withTheme } from '@material-ui/core/styles';
+import { withTheme, useTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import { Input } from '../input/Input';
 import { Button } from '../button/Button';
@@ -32,6 +33,9 @@ const UnstyledCreate: FunctionComponent<CreateProps> = ({
   origUser,
   onAdd,
 }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const [newUser, setNewUser] = useState<UserInput>({
     firstName: origUser?.firstName || '',
     lastName: origUser?.lastName || '',
@@ -89,33 +93,38 @@ const UnstyledCreate: FunctionComponent<CreateProps> = ({
 
         <Box mt={3}>
           <Typography variant="h5" align="center">
-            Please confirm following information and create password.
+            Please verify the following information and complete the sign-up
+            process
           </Typography>
         </Box>
       </Box>
 
       <Box display="flex" justifyContent="center" alignItems="center" mt={4}>
-        <Paper className="create-form">
-          <Input
-            className="create-field"
-            type="text"
-            label="Name:"
-            value={newUser.firstName}
-            fullWidth
-            margin="normal"
-            onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-              setNewUser({
-                ...newUser,
-                firstName: evt.target.value,
-              });
-            }}
-          />
+        <Paper className={isMobile ? 'create-form-mobile' : 'create-form'}>
+          <Box width={isMobile ? '100%' : 500}>
+            <Input
+              className="create-field"
+              type="text"
+              label="First Name:"
+              value={newUser.firstName}
+              error={!newUser?.firstName}
+              fullWidth
+              margin="normal"
+              onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+                setNewUser({
+                  ...newUser,
+                  firstName: evt.target.value,
+                });
+              }}
+            />
+          </Box>
 
           <Input
             className="create-field"
             type="text"
-            label="Name:"
+            label="Last Name:"
             value={newUser.lastName}
+            error={!newUser?.lastName}
             fullWidth
             margin="normal"
             onChange={(evt: ChangeEvent<HTMLInputElement>) => {
@@ -125,6 +134,7 @@ const UnstyledCreate: FunctionComponent<CreateProps> = ({
               });
             }}
           />
+
           <Input
             className="create-field"
             label="Date of Birth"
@@ -132,6 +142,7 @@ const UnstyledCreate: FunctionComponent<CreateProps> = ({
             type="date"
             value={newUser.dob}
             fullWidth
+            error={!newUser?.dob}
             margin="normal"
             InputLabelProps={{
               shrink: true,
@@ -195,7 +206,7 @@ const UnstyledCreate: FunctionComponent<CreateProps> = ({
             label="Password:"
             value={newUser.password}
             fullWidth
-            error={!!passwordError}
+            error={!!passwordError || !newUser.password}
             helperText={passwordError}
             margin="normal"
             onChange={(evt: ChangeEvent<HTMLInputElement>) => {
@@ -215,7 +226,7 @@ const UnstyledCreate: FunctionComponent<CreateProps> = ({
             type="password"
             label="Confirm Password:"
             value={newUser.passwordConfirm}
-            error={!!passwordConfrimError}
+            error={!!passwordConfrimError || !newUser.passwordConfirm}
             helperText={passwordConfrimError}
             fullWidth
             onChange={(evt: ChangeEvent<HTMLInputElement>) => {
@@ -249,8 +260,9 @@ export const CreateUser = withTheme(styled(UnstyledCreate)`
     padding: 20px;
     border: 2px solid rgba(142, 142, 147, 0.2);
   }
-
-  .create-field {
-    width: 100%;
+  .create-form-mobile {
+    width: 90%;
+    padding: 20px;
+    border: 2px solid rgba(142, 142, 147, 0.2);
   }
 `);

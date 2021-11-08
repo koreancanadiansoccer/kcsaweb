@@ -75,7 +75,7 @@ const UnstyledTeamHero: FunctionComponent<TeamHeroProps> = ({
 };
 
 export const TeamHero = withTheme(styled(UnstyledTeamHero)`
-  height: 100%; /*or 70%, or what you want*/
+  height: 100%;
   background: ${({ teamColor }) =>
     `linear-gradient(90deg, ${teamColor} 0%, rgba(6, 6, 6, 1) 60%, black 81%);`};
   color: white;

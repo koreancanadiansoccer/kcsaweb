@@ -60,7 +60,8 @@ const UnstyledLeague: FunctionComponent<LeagueProps> = ({ className }) => {
             flexDirection="column"
             fontSize={isMobile ? 24 : '2.5rem'}
           >
-            {league?.name} {league.year}
+            {league?.name} {league.year} {league.leagueType}{' '}
+            {league.leagueAgeType}
           </Box>
         </Container>
       </Box>

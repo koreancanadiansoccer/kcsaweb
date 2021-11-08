@@ -146,30 +146,6 @@ const UnstyledClubGneral: FunctionComponent = () => {
 
       <Divider />
 
-      <Box my={2}>
-        <Typography variant="body1">Club Age Group</Typography>
-
-        <Typography variant="body2" color="error">
-          *OPEN/SENIOR or custome values.
-        </Typography>
-
-        <Select
-          defaultValue={find(
-            ageOptions,
-            (ageOption) => ageOption.value === team.teamAgeType
-          )}
-          isClearable
-          options={ageOptions}
-          createable
-          // eslint-disable-next-line
-          handleChange={(option: any) => {
-            setTeam({ ...team, teamAgeType: option?.value });
-          }}
-        />
-      </Box>
-
-      <Divider />
-
       <Box my={3}>
         <Typography variant="body1">Club Color</Typography>
 

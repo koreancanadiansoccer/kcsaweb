@@ -18,6 +18,7 @@ interface StandingTable {
   tableRowData: TableRow[] | null;
   tableHeaderData: string[];
   headerLongField: string[];
+  rowCapitalField: string[];
   rowLongField: string[];
   paperShadow?: number;
   hideHeader?: string;
@@ -128,6 +129,7 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
                     if (key === 'name' && tableType === TableType.SCORER) {
                       value = shortenName(property as string);
                     }
+
                     return (
                       <Box
                         key={`table-data-${key}-${idx}`}

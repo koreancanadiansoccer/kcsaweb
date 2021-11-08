@@ -16,13 +16,12 @@ import { useMutation } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
 
 import { Team } from '../../types/team';
-import { ageOptions } from '../../types/age.enum';
 import { Button } from '../button/Button';
 import { ResourceType } from '../../types/resource.enum';
 import { Input } from '../input/Input';
 import { ImgDropzone } from '../dropzone/DropZone';
 import { useImgUpload } from '../../hooks/useImgUpload';
-import { Select, ColorSelect } from '../select/Select';
+import { ColorSelect } from '../select/Select';
 import { colorSelectOptions } from '../../utils/color';
 import {
   RegisterTeamInput,
@@ -58,11 +57,7 @@ const UnstyledTeamConfig: FunctionComponent<TeamConfigProps> = ({
   const { generateUploadUrls } = useImgUpload();
 
   const isValid = useMemo(
-    () =>
-      !!team.name &&
-      !!team.foundedDate &&
-      !!team.teamAgeType &&
-      !!team.teamColor,
+    () => !!team.name && !!team.foundedDate && !!team.teamColor,
     [team]
   );
 
@@ -117,6 +112,7 @@ const UnstyledTeamConfig: FunctionComponent<TeamConfigProps> = ({
       <Typography variant="body1" color="error">
         *You can edit this later.
       </Typography>
+
       <Box my={2}>
         <Typography variant="body1">
           Club Name
@@ -165,38 +161,6 @@ const UnstyledTeamConfig: FunctionComponent<TeamConfigProps> = ({
       </Box>
 
       <Divider />
-
-      <Box my={2}>
-        <Typography variant="body1">
-          Club Age Group
-          <span
-            style={{
-              color: 'red',
-              fontSize: '1rem',
-            }}
-          >
-            &nbsp;*
-          </span>
-        </Typography>
-
-        <Typography variant="body2" color="error">
-          *OPEN/SENIOR/OVER40 or custom values.
-        </Typography>
-
-        <Select
-          defaultValue={find(
-            ageOptions,
-            (ageOption) => ageOption.value === team.teamAgeType
-          )}
-          isClearable
-          options={ageOptions}
-          createable
-          // eslint-disable-next-line
-          handleChange={(option: any) => {
-            setTeam({ ...team, teamAgeType: option?.value });
-          }}
-        />
-      </Box>
 
       <Divider />
 

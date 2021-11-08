@@ -75,11 +75,11 @@ export const AdminTeamPlayers: FunctionComponent = () => {
     {
       title: 'Name',
       render: (rowData: Player) => {
-        return `${rowData.firstName} ${rowData.lastName}`;
+        return `${rowData.firstName} ${rowData.lastName}`.toUpperCase();
       },
     },
     { title: 'Date of Birth', field: 'dob' },
-    { title: 'GoalScored', field: 'goalScored' },
+    { title: 'Goals', field: 'goalScored' },
     { title: 'Yellow', field: 'yellowCard' },
     { title: 'Created', field: 'createdAt' },
   ];

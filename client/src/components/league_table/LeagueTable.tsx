@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { HorizontalDivider } from '../divider/HorizontalDivider';
 import { TableType } from '../../types/table_type';
 import { ViewerContext } from '../../context/homeViewer';
-import { StandingTable } from '../standing_table/StandingTable'
+import { StandingTable } from '../standing_table/StandingTable';
 import {
   HomeStandingHeader,
   HomeScorerHeader,

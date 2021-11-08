@@ -52,7 +52,7 @@ export const registerTeam = {
                 firstName: player.firstName,
                 lastName: player.lastName,
                 dob: player.dob,
-                teamId: args.teamId,
+                teamId: team.id,
               });
             })
           );

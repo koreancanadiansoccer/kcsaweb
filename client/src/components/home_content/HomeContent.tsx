@@ -33,7 +33,7 @@ const generateStandingData = (leagueTeams: LeagueTeam[]) => {
               src={leagueTeam.team.teamLogoURL || LogoGrey}
               alt="hero-main"
             />
-            <div>{leagueTeam.team.name}</div>
+            <div>{leagueTeam.team.name.toUpperCase()}</div>
           </div>
         ),
         played: leagueTeam.played,
@@ -58,7 +58,9 @@ const generateScorerData = (leaguePlayers: LeaeguePlayerHomeViewer[]) => {
         club: (
           <div className="team-logo">
             <img src={leaguePlayer.teamLogoURL || LogoGrey} alt="hero-main" />
-            <div style={{ marginRight: '0.5rem' }}>{leaguePlayer.teamName}</div>
+            <div style={{ marginRight: '0.5rem' }}>
+              {leaguePlayer.teamName.toUpperCase()}
+            </div>
           </div>
         ),
         goals: leaguePlayer.goalScored,
@@ -156,6 +158,7 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
                       tableAgeType={tableAgeType}
                       tableRowData={leagueStandingData}
                     />
+
                     {/* Score table */}
                     <Box mt={5}>
                       <LeagueTable
@@ -182,6 +185,5 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
 
 export const HomeContent = withTheme(styled(UnstyledHomeContent)`
   .team-logo {
-
   }
 `);

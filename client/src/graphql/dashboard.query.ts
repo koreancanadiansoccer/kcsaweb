@@ -25,6 +25,7 @@ export const GET_DASHBOARD_VIEWER = gql`
         id
         name
         year
+        leagueType
       }
     }
   }

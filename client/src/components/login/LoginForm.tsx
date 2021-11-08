@@ -51,7 +51,7 @@ const UnstyledLoginForm: FunctionComponent<LoginProps> = ({
   );
 
   return (
-    <Box className={className} mt={20}>
+    <Box className={className} mt={10}>
       <Box>
         <Typography className="login-title" variant="h4" align="center">
           Login
@@ -138,6 +138,7 @@ export const LoginForm = withTheme(styled(UnstyledLoginForm)`
     border: 2px solid rgba(142, 142, 147, 0.2);
   }
   .login-field {
-    width: 500px;
+    min-width: 300px;
+    width: 100%;
   }
 `);

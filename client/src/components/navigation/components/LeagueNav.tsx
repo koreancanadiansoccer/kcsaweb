@@ -43,7 +43,11 @@ export const LeagueMobileNav: React.FC<LeagueMobileNavProps> = ({
                 <Divider
                   style={{ backgroundColor: 'rgb(255 255 255 / 36%)' }}
                 />
-                <Box style={{ fontSize: '1rem' }}>{league.leagueAgeType}</Box>
+
+                <Box
+                  style={{ fontSize: '1rem' }}
+                >{`${league.year} ${league.name} ${league.leagueType}`}</Box>
+
                 <Divider
                   style={{ backgroundColor: 'rgb(255 255 255 / 36%)' }}
                 />
@@ -56,7 +60,7 @@ export const LeagueMobileNav: React.FC<LeagueMobileNavProps> = ({
                     button
                     style={{ paddingLeft: '3rem', paddingTop: '0' }}
                   >
-                    <ListItemText primary={league.name} />
+                    <ListItemText primary={league.leagueAgeType} />
                   </ListItem>
                 </Box>
               </Box>
@@ -106,8 +110,8 @@ export const LeagueNav: React.FC = () => {
             <Box key={`league-age-${league.leagueAgeType}`}>
               <Divider />
 
-              <Box textAlign="center" className="boldText">
-                {league.leagueAgeType}
+              <Box textAlign="center" className="boldText" px={2}>
+                {`${league.year} ${league.name} ${league.leagueType}`}
               </Box>
 
               <Divider />
@@ -118,7 +122,7 @@ export const LeagueNav: React.FC = () => {
                   component={RouteLink}
                   to={`/league/${league.id}`}
                 >
-                  <Box textAlign="center"> {league.name}</Box>
+                  <Box textAlign="center">{league.leagueAgeType}</Box>
                 </MenuItem>
               </Box>
             </Box>

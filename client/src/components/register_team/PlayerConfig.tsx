@@ -100,7 +100,8 @@ const UnstyledPlayerConfig: FunctionComponent<TeamConfigProps> = ({
   return (
     <Box>
       <Typography variant="body1" color="error">
-        *Please add at least one player with name and D.O.B. <br />
+        *Minimum one player registration is requried.
+        <br />
         You can add/edit more players later.
       </Typography>
 

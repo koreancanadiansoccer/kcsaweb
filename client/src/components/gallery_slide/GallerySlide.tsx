@@ -49,7 +49,10 @@ const UnstyledGallerySlide: FunctionComponent<GallerySlideProps> = ({
   return (
     <Box
       ml={!mobileView && 10}
-      sx={{ width: mobileView ? '100%' : '70%', height: '100%' }}
+      sx={{
+        width: mobileView ? '100%' : '70%',
+        height: mobileView ? '100%' : '441px',
+      }}
       className={className}
       position="relative"
       overflow="hidden"

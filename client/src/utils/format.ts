@@ -12,12 +12,8 @@ export const displayFullName = (
   firstName: string,
   lastName: string
 ): string => {
-  return `${firstName} ${lastName}`;
+  return `${firstName} ${lastName}`.toUpperCase();
 };
-// map(
-//   name.split(' '),
-//   (name) => name.charAt(0).toUpperCase() + name.slice(1)
-// ).join(' ');
 
 /**
  * Format name -> Stanley Dong Moon -> S.D.Moon

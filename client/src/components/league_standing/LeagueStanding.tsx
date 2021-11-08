@@ -12,8 +12,6 @@ import { LeagueTeam } from '../../types/team';
 import { StandingTable } from '../standing_table/StandingTable';
 import { LeaguePageStandingHeader } from '../standing_table/standingData';
 
-
-
 interface LeagueStandingProps {
   className?: string;
   teams: LeagueTeam[] | null;
@@ -36,7 +34,7 @@ const generateStandingData = (leagueTeams: LeagueTeam[]) => {
               src={leagueTeam.team.teamLogoURL || LogoGrey}
               alt="league-tab-standing"
             />
-            <div>{leagueTeam.team.name}</div>
+            <div>{leagueTeam.team.name.toUpperCase()}</div>
           </div>
         ),
         Played: leagueTeam.played,
@@ -51,7 +49,7 @@ const generateStandingData = (leagueTeams: LeagueTeam[]) => {
   );
 
   return map(orderData, (data, idx) => ({ Position: idx + 1, ...data }));
-}
+};
 
 /**
  * League page standings table

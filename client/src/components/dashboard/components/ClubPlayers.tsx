@@ -99,11 +99,11 @@ export const ClubPlayers: FunctionComponent = () => {
     {
       title: 'Name',
       render: (rowData: Player) => {
-        return `${rowData.firstName} ${rowData.lastName}`;
+        return `${rowData.firstName} ${rowData.lastName}`.toUpperCase();
       },
     },
     { title: 'D.O.B', field: 'dob' },
-    { title: 'GoalScored', field: 'goalScored' },
+    { title: 'Goals', field: 'goalScored' },
     { title: 'Yellow', field: 'yellowCard' },
     { title: 'Created', field: 'createdAt' },
   ];

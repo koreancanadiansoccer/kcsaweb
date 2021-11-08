@@ -40,7 +40,7 @@ export const RegisterTeam: FunctionComponent = () => {
   const [activeStep, setActiveStep] = React.useState(0);
 
   const steps = [
-    { label: 'Configure Club', comp: <TeamConfig handleNext={handleNext} /> },
+    { label: 'Add Club Info.', comp: <TeamConfig handleNext={handleNext} /> },
     { label: 'Add Players', comp: <PlayerConfig handleBack={handleBack} /> },
   ];
 
@@ -87,7 +87,7 @@ export const RegisterTeam: FunctionComponent = () => {
         )}
 
         <Typography className="boldText" variant="h5">
-          Register your club.
+          Register Your Club:
         </Typography>
 
         <Stepper activeStep={activeStep}>

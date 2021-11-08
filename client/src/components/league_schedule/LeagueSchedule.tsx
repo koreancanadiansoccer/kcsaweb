@@ -35,7 +35,7 @@ const generateScheduleData = (match: Match) => {
           className="home-team-logo"
           onClick={() => history.push(`/teams/${match.homeTeam.id}`)}
         >
-          <div>{match.homeTeam.team.name}</div>
+          <div>{match.homeTeam.team.name.toUpperCase()}</div>
           <img
             src={match.homeTeam.team.teamLogoURL || LogoGrey}
             alt={match.homeTeam.team.name}
@@ -55,14 +55,14 @@ const generateScheduleData = (match: Match) => {
             src={match.awayTeam.team.teamLogoURL || LogoGrey}
             alt={match.awayTeam.team.name}
           />
-          <div>{match.awayTeam.team.name}</div>
+          <div>{match.awayTeam.team.name.toUpperCase()}</div>
         </div>
       ),
       LOCATION: match.location,
-      TIME: dayjs(match.date, 'YYYY-MM-DDTHH:mm').format('h:m A'),
+      TIME: dayjs(match.date, 'YYYY-MM-DDTHH:mm').format('h:mm A'),
     },
   ];
-}
+};
 
 /**
  * League page Schedule table
@@ -74,7 +74,7 @@ const UnstyledLeagueSchedule: FunctionComponent<LeagueScheduleProps> = ({
   const matchesGroupRounds = useMemo(() => {
     const orderData = orderBy(matches, ['date', 'id'], ['asc', 'asc']);
     return groupBy(orderData, (match) => match.matchDay);
-  }, [matches])
+  }, [matches]);
 
   return (
     <Box className={className} mt={10}>
@@ -88,7 +88,7 @@ const UnstyledLeagueSchedule: FunctionComponent<LeagueScheduleProps> = ({
         const matchDayDate = dayjs(
           matchesByRound[0].date,
           'YYYY-MM-DDTHH:mm'
-        ).format('dddd DD MMMM YYYY');
+        ).format('dddd, MMMM DD YYYY');
 
         return (
           <Accordion className="accordion-container" key={`match-day-${key}`}>
@@ -120,7 +120,8 @@ const UnstyledLeagueSchedule: FunctionComponent<LeagueScheduleProps> = ({
                       dividerClassName={'league-schedule-divider'}
                     />
                   </Box>
-                );})}
+                );
+              })}
             </AccordionDetails>
           </Accordion>
         );
