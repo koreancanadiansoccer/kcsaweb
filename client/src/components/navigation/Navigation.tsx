@@ -26,10 +26,9 @@ import { Link as RouteLink, useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 
 import { Button } from '../button/Button';
-import { Logo } from '../icons/Logo';
-// import { LogoNew } from '../icons/LogoNew'; TBD to use
 import { ViewerContext } from '../../context/homeViewer';
 import { LOGOUT } from '../../graphql/users/logout.mutation';
+import LogoNew from '../../assets/logo_new.svg';
 
 import { AboutNav, AboutMobileNav } from './components/AboutNav';
 import { TeamsNav, TeamMobileNav } from './components/TeamsNav';
@@ -106,7 +105,12 @@ const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
             <Toolbar className="toolbar-mobile">
               <Box minWidth={100}>
                 <RouteLink to="/">
-                  <Logo />
+                  {/* <Logo /> */}
+                  <img
+                    src={LogoNew}
+                    alt="color-logo-pic"
+                    style={{ width: '70px' }}
+                  />
                 </RouteLink>
               </Box>
               <Box>
@@ -179,7 +183,11 @@ const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
             >
               <Box minWidth={100}>
                 <RouteLink to="/">
-                  <Logo />
+                  <img
+                    src={LogoNew}
+                    alt="color-logo-pic"
+                    style={{ width: '75px' }}
+                  />
                 </RouteLink>
               </Box>
 

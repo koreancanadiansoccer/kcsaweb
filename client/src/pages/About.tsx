@@ -8,7 +8,7 @@ import Container from '@material-ui/core/Container';
 import { useLocation } from 'react-router';
 
 import AboutBanner from '../assets/about.png';
-import ColorLogo from '../assets/logo_color.svg';
+import Logo from '../assets/logo_new.svg';
 import PresidentPic from '../assets/president.png';
 import ContactCardLogo from '../assets/Contact_card_logo.png';
 import { Button } from '../components/button/Button';
@@ -103,7 +103,7 @@ const UnstyledAbout: FunctionComponent<AboutProps> = ({ className }) => {
             <Box display="flex" alignItems="flex-end" justifyContent="flex-end">
               <Box className="color-logo" mr={10}>
                 <img
-                  src={ColorLogo}
+                  src={Logo}
                   alt="color-logo-pic"
                   className="color-logo-pic"
                 />

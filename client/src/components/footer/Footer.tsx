@@ -6,7 +6,7 @@ import { withTheme, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import styled from 'styled-components';
 
-import ColorLogo from '../../assets/logo_footer.png';
+import Logo from '../../assets/logo_new.svg';
 
 interface FooterProps {
   className?: string;
@@ -39,7 +39,7 @@ const UnstyledNavigation: FunctionComponent<FooterProps> = ({ className }) => {
               </Box>
               <Box>
                 <img
-                  src={ColorLogo}
+                  src={Logo}
                   alt="color-logo-pic"
                   className="color-logo-pic"
                 />
@@ -55,12 +55,8 @@ const UnstyledNavigation: FunctionComponent<FooterProps> = ({ className }) => {
       <Box className="footer-container">
         <Container>
           <Box display="flex" alignItems="flex-left" justifyContent="flex-left">
-            <Box ml={10} mt={7}>
-              <img
-                src={ColorLogo}
-                alt="color-logo-pic"
-                className="color-logo-pic"
-              />
+            <Box mt={8}>
+              <img src={Logo} alt="color-logo-pic" className="color-logo-pic" />
             </Box>
             <Box borderLeft={1} borderColor="#ffffff" ml={11} mt={5}></Box>
             <Box>

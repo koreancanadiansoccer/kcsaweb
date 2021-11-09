@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useState, useMemo, useContext } from 'react';
-import { withTheme } from '@material-ui/core/styles';
+import { withTheme, useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import styled from 'styled-components';
@@ -31,7 +32,8 @@ enum TabType {
  */
 const UnstyledTeam: FunctionComponent<TeamProps> = ({ className }) => {
   const { viewer } = useContext(ViewerContext);
-
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [teamTabType, setTeamTabType] = useState<TabType>(TabType.SQUAD);
   const { id } = useParams<{ id: string }>();
 
@@ -69,7 +71,7 @@ const UnstyledTeam: FunctionComponent<TeamProps> = ({ className }) => {
         <Box borderRadius={32} mt={10} bgcolor="white" color={'black'} py={5}>
           <Container>
             <Box display="flex" justifyContent="start">
-              <Box mr={5}>
+              <Box mr={isMobile ? 1 : 5}>
                 <LeagueSelect
                   title="SQUAD"
                   selected={teamTabType === TabType.SQUAD}
@@ -77,7 +79,7 @@ const UnstyledTeam: FunctionComponent<TeamProps> = ({ className }) => {
                 />
               </Box>
 
-              <Box mr={5}>
+              <Box mr={isMobile ? 1 : 5}>
                 <LeagueSelect
                   title="SCHEDULE"
                   selected={teamTabType === TabType.SCHEDULE}
@@ -85,7 +87,7 @@ const UnstyledTeam: FunctionComponent<TeamProps> = ({ className }) => {
                 />
               </Box>
               <LeagueSelect
-                title="HISTORY/STATS"
+                title="HISTORY"
                 selected={teamTabType === TabType.HISTORY}
                 onClick={() => setTeamTabType(TabType.HISTORY)}
               />

@@ -7,7 +7,7 @@ import Container from '@material-ui/core/Container';
 import { useLocation } from 'react-router';
 
 import AboutBanner from '../assets/about.png';
-import ColorLogo from '../assets/logo_color.svg';
+import Logo from '../assets/logo_new.svg';
 import PresidentPic from '../assets/president.png';
 import { Button } from '../components/button/Button';
 
@@ -95,7 +95,7 @@ const UnstyledAboutMobile: FunctionComponent<AboutMobileProps> = ({
             <Box>
               <Box className="color-logo">
                 <img
-                  src={ColorLogo}
+                  src={Logo}
                   alt="color-logo-pic"
                   className="color-logo-pic"
                 />
