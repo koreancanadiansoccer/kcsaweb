@@ -39,7 +39,7 @@ export const getDashboardViewer = {
     let leagueTeam = null;
     if (league && league.id) {
       leagueTeam = await LeagueTeam.findOne({
-        include: [LeaguePlayer],
+        include: [{ model: LeaguePlayer, include: [Player] }],
         where: { leagueId: league?.id, teamId: team?.id },
       });
     }

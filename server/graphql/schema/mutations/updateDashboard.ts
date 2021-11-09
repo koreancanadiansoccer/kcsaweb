@@ -1,5 +1,12 @@
-import { GraphQLString, GraphQLInt, GraphQLNonNull } from 'graphql';
+import {
+  GraphQLString,
+  GraphQLInt,
+  GraphQLNonNull,
+  GraphQLList,
+} from 'graphql';
 import omit from 'lodash/omit';
+import map from 'lodash/map';
+import { Op } from 'sequelize';
 // password encryption
 import { hash } from 'bcryptjs';
 
@@ -9,9 +16,11 @@ import { Player } from '../../../db/models/player.model';
 import { League } from '../../../db/models/league.model';
 import { LeagueTeam } from '../../../db/models/leagueteam.model';
 import { LeaguePlayer } from '../../../db/models/leagueplayer.model';
+import { Match } from '../../../db/models/match.model';
+import { MatchPlayer } from '../../../db/models/matchplayer.model';
 import { UserInputType } from '../../types/user';
-import { TeamInputType } from '../../types/team';
-import { PlayerInputType } from '../../types/player';
+import { TeamInputType, LeagueTeamInputType } from '../../types/team';
+import { PlayerInputType, LeaguePlayerInputType } from '../../types/player';
 import { DashboardViewerType } from '../../types/dashboard';
 
 enum STEPS {
@@ -19,6 +28,7 @@ enum STEPS {
   UPDATETEAM = 'UPDATETEAM',
   UPDATEPLAYER = 'UPDATEPLAYER',
   CREATEPLAYER = 'CREATEPLAYER',
+  CREATELEAGUEPLAYER = 'CREATELEAGUEPLAYER',
 }
 
 export const updateDashboard = {
@@ -29,6 +39,8 @@ export const updateDashboard = {
     user: { type: UserInputType },
     team: { type: TeamInputType },
     player: { type: PlayerInputType },
+    leagueTeam: { type: LeagueTeamInputType },
+    newLeaguePlayers: { type: new GraphQLList(LeaguePlayerInputType) },
     createPlayer: { type: PlayerInputType },
   },
   async resolve(
@@ -89,6 +101,66 @@ export const updateDashboard = {
       }
     }
 
+    if (args.step === STEPS.CREATELEAGUEPLAYER) {
+      if (args.newLeaguePlayers && args.newLeaguePlayers.length > 0) {
+        const matches = await Match.findAll({
+          where: {
+            leagueId: args.leagueTeam.leagueId,
+            [Op.or]: [
+              { awayTeamId: args.leagueTeam.id },
+              { homeTeamId: args.leagueTeam.id },
+            ],
+          },
+        });
+
+        await Promise.all(
+          map(args.newLeaguePlayers, async (newLeaguePlayer) => {
+            let leaguePlayer: LeaguePlayer;
+            // If id exists,
+            // Player was originally added in 'Players' table.
+            if (newLeaguePlayer.id) {
+              leaguePlayer = await LeaguePlayer.create({
+                leagueTeamId: args.leagueTeam.id,
+                playerId: newLeaguePlayer.id,
+              });
+            }
+
+            // If id doesn't exist, it's totally a new player.
+            if (!newLeaguePlayer.id) {
+              // First create a row in master 'Player' table
+              const player = await Player.create({
+                firstName: newLeaguePlayer.firstName,
+                lastName: newLeaguePlayer.lastName,
+                dob: newLeaguePlayer.dob,
+                teamId: args.leagueTeam.teamId,
+              });
+
+              // Then create a row in league player table.
+              if (player) {
+                leaguePlayer = await LeaguePlayer.create({
+                  leagueTeamId: args.leagueTeam.id,
+                  playerId: player.id,
+                });
+              }
+            }
+
+            if (matches && matches.length > 0) {
+              await Promise.all(
+                map(matches, async (match) => {
+                  await MatchPlayer.create({
+                    leagueTeamId: args.leagueTeam.id,
+                    leaguePlayerId: leaguePlayer.id,
+                    matchId: match.id,
+                    playerId: leaguePlayer.playerId,
+                  });
+                })
+              );
+            }
+          })
+        );
+      }
+    }
+
     // Retrieve back data.
     const user = await User.findOne({
       where: { id: userId },
@@ -106,7 +178,7 @@ export const updateDashboard = {
     let leagueTeam = null;
     if (league && league.id) {
       leagueTeam = await LeagueTeam.findOne({
-        include: [LeaguePlayer],
+        include: [{ model: LeaguePlayer, include: [Player] }],
         where: { leagueId: league?.id, teamId: team?.id },
       });
     }

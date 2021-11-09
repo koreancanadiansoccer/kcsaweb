@@ -34,7 +34,7 @@ export const createLeaguePlayers = {
   },
   async resolve(parent: object, args: any): Promise<League> {
     // loop through newLeaguePlayers
-    if (args.newLeaguePlayers && args.newLeaguePlayers.lenght > 0) {
+    if (args.newLeaguePlayers && args.newLeaguePlayers.length > 0) {
       const matches = await Match.findAll({
         where: {
           leagueId: args.leagueId,

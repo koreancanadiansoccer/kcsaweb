@@ -13,17 +13,17 @@ import {
   RegisterLeagueTeamInput,
 } from '../../graphql/league/register_leagueteam.mutation';
 
-import { ClubGeneral } from './components/ClubGeneral';
-import { ClubPlayers } from './components/ClubPlayers';
+import { DashboardLeagueGeneral } from './components/DashboardLeagueGeneral';
+import { DashboardMatches } from './components/DashboardMatches';
 
 const panelOptions: PanelOptions[] = [
   {
-    label: 'General',
-    comp: <ClubGeneral />,
+    label: 'League Squad',
+    comp: <DashboardLeagueGeneral />,
   },
   {
-    label: 'Players',
-    comp: <ClubPlayers />,
+    label: 'Matches',
+    comp: <DashboardMatches />,
   },
 ];
 

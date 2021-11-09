@@ -15,7 +15,7 @@ import {
   MatchPlayerType,
   MatchPlayerInputType,
 } from './player';
-import { UserTeamType } from './user';
+import { UserTeamType, UserInputType } from './user';
 
 // Definition of types of 'Team' that will be returned from graphql operations.
 export const TeamType = new GraphQLObjectType({
@@ -45,6 +45,7 @@ export const TeamInputType = new GraphQLInputObjectType({
   fields: () => ({
     id: { type: GraphQLInt },
     captainId: { type: GraphQLString },
+    captain: { type: UserInputType },
     name: { type: GraphQLString },
     foundedDate: { type: GraphQLString },
     teamLogoURL: { type: GraphQLString },
@@ -95,6 +96,7 @@ export const LeagueTeamInputType = new GraphQLInputObjectType({
     win: { type: GraphQLInt },
     loss: { type: GraphQLInt },
     tie: { type: GraphQLInt },
+    status: { type: GraphQLString },
     goalScored: { type: GraphQLInt },
     goalConceded: { type: GraphQLInt },
     teamColor: { type: GraphQLString },
