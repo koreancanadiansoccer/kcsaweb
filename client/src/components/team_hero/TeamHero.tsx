@@ -44,7 +44,7 @@ const UnstyledTeamHero: FunctionComponent<TeamHeroProps> = ({
           pt={5}
         >
           {/* Logo */}
-          <Box minWidth={200} maxHeight={341}>
+          <Box width={200} maxHeight={341}>
             <img
               src={teamLogo ? teamLogo : LogoGrey}
               alt="hero-main"
@@ -91,7 +91,7 @@ const UnstyledTeamHero: FunctionComponent<TeamHeroProps> = ({
         pt={10}
       >
         {/* Logo */}
-        <Box minWidth={326} minHeight={341}>
+        <Box width={326} height={341}>
           <img
             src={teamLogo ? teamLogo : LogoGrey}
             alt="hero-main"
