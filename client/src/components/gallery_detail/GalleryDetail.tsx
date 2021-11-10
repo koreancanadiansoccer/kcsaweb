@@ -64,7 +64,7 @@ const UnstyledGalleryDetail: FunctionComponent<GalleryDetailProps> = ({
 
         <AutoSlide
           slidesContainerClassName="slide-container"
-          slidesImgClassName={'gallery-detail-slides'}
+          slidesImgClassName='gallery-detail-slides'
           galleryImages={galleryImages}
           intervalTime={4000}
           activeThumbnail={true}

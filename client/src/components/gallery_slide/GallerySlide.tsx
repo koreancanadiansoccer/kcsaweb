@@ -1,5 +1,3 @@
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import React, {
   FunctionComponent,
   useState,
@@ -16,11 +14,12 @@ import map from 'lodash/map';
 
 import { Gallery } from '../../types/gallery';
 import { ViewerContext } from '../../context/homeViewer';
+import defaultImage from '../../assets/image_default.png';
 import { AutoSlide } from '../auto_slide/AutoSlide';
+
 
 interface GallerySlideProps {
   className?: string;
-  mobileView?: boolean;
 }
 
 /**
@@ -28,7 +27,6 @@ interface GallerySlideProps {
  */
 const UnstyledGallerySlide: FunctionComponent<GallerySlideProps> = ({
   className,
-  mobileView,
 }) => {
   const history = useHistory();
   const { viewer } = useContext(ViewerContext);
@@ -42,16 +40,62 @@ const UnstyledGallerySlide: FunctionComponent<GallerySlideProps> = ({
     }
   });
 
+  // const galleries = useMemo(() => {
+  //   if(isEmpty(viewer.galleries)) return false;
+  //   return viewer.galleries;
+  // }, [viewer])
+
+  // console.log(galleries)
+
   if (!viewer?.galleries || !showGallery) {
-    return <div>loading...</div>;
+    return (
+      <Box
+        ml={10}
+        sx={{
+          width: '54rem',
+          height: '26rem',
+        }}
+        className={className}
+        position="relative"
+      >
+        <Box color='white' height={36} width='100%' position='absolute' className="default-banner" display='flex' alignItems='center'>
+          <Box ml={4} fontSize='medium' fontWeight='bold'>
+            Photos
+          </Box>
+        </Box>
+
+        <Box
+          className="default-image-background"
+          height="inherit"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          >
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <Box>
+              <img src={defaultImage} alt="default-image" />
+            </Box>
+            <Box
+              display="flex"
+              justifyContent="center"
+              fontWeight="bold"
+              fontSize="xx-large"
+              color="#676668"
+            >
+              No Photo
+            </Box>
+          </Box>
+        </Box>
+      </Box>
+    );
   }
 
   return (
     <Box
-      ml={!mobileView && 10}
+      ml={10}
       sx={{
-        width: mobileView ? '100%' : '70%',
-        height: mobileView ? '100%' : '441px',
+        width: '56rem',
+        height: '100%',
       }}
       className={className}
       position="relative"
@@ -102,7 +146,7 @@ const UnstyledGallerySlide: FunctionComponent<GallerySlideProps> = ({
 
       <AutoSlide
         slidesContainerClassName="slider-item"
-        slidesImgClassName={'gallery-main-slides'}
+        slidesImgClassName='gallery-main-slides'
         galleryImages={showGallery.galleryImages}
         intervalTime={4000}
       />
@@ -112,6 +156,14 @@ const UnstyledGallerySlide: FunctionComponent<GallerySlideProps> = ({
 
 export const GallerySlide = withTheme(styled(UnstyledGallerySlide)`
   box-shadow: 5px 5px 8px 0px gray;
+
+  .default-banner {
+    background-color: rgba(20, 36, 45, 0.7);
+  }
+
+  .default-image-background {
+    background-color: #414042;
+  }
 
   .image-banner {
     height: 100%;

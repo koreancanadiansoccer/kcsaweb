@@ -190,16 +190,15 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
           </Box>
 
           {/* Galleries Slide Show */}
-          <Box mt={5}>
-            <GallerySlide mobileView={isMobile} />
-          </Box>
+          {!isMobile && (
+            <Box mt={9.2}>
+              <GallerySlide />
+            </Box>
+          )}
         </Box>
       </Container>
     </Box>
   );
 };
 
-export const HomeContent = withTheme(styled(UnstyledHomeContent)`
-  .team-logo {
-  }
-`);
+export const HomeContent = withTheme(styled(UnstyledHomeContent)``);
