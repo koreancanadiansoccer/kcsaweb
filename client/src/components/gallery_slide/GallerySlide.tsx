@@ -58,7 +58,15 @@ const UnstyledGallerySlide: FunctionComponent<GallerySlideProps> = ({
         className={className}
         position="relative"
       >
-        <Box color='white' height={36} width='100%' position='absolute' className="default-banner" display='flex' alignItems='center'>
+        <Box
+          color='white'
+          height={36}
+          width='100%'
+          position='absolute'
+          className="default-banner"
+          display='flex'
+          alignItems='center'
+        >
           <Box ml={4} fontSize='medium' fontWeight='bold'>
             Photos
           </Box>
