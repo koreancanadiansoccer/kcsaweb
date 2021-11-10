@@ -137,6 +137,7 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
                         display="flex"
                         justifyContent="center"
                         py={2}
+                        minWidth={isNameField ? '8rem' : ''}
                       >
                         {value}
                       </Box>

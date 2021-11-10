@@ -7,6 +7,7 @@ import Container from '@material-ui/core/Container';
 import { motion } from 'framer-motion';
 import map from 'lodash/map';
 import orderBy from 'lodash/orderBy';
+import isEmpty from 'lodash/isEmpty';
 
 import LogoGrey from '../../assets/logo_grey.svg';
 import { LeagueTable } from '../league_table/LeagueTable';
@@ -16,6 +17,11 @@ import { GallerySlide } from '../gallery_slide/GallerySlide';
 import { ViewerContext } from '../../context/homeViewer';
 import { LeaeguePlayerHomeViewer } from '../../types/home_viewer';
 import { LeagueTeam } from '../../types/team';
+import {
+  leagueAgeKeysDefault,
+  standingDefaultData,
+  scorerDefaultData,
+} from '../standing_table/defaultData';
 
 interface HomeContentProps {
   className?: string;
@@ -84,20 +90,30 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
   const { viewer } = useContext(ViewerContext);
 
   const [tableAgeType, setTableAgeType] = useState<string>(
-    viewer.leagueAgeKeys ? viewer.leagueAgeKeys[0] : 'OPEN'
+    isEmpty(viewer.leagueAgeKeys) || !viewer.leagueAgeKeys ? 'OPEN' : viewer.leagueAgeKeys[0]
   );
 
-  if (!viewer?.leagueTeamGroupAge) {
-    return <Box>...Loading</Box>;
-  }
+  const leagueAgeKeysOption = useMemo(() => {
+    if (isEmpty(viewer.leagueAgeKeys) || !viewer.leagueAgeKeys) return leagueAgeKeysDefault;
+    return viewer.leagueAgeKeys;
+  }, [viewer, viewer.leagueAgeKeys]);
 
   const leagueStandingData = useMemo(() => {
-    if (!viewer.leagueTeamGroupAge) return null;
+    if (
+      isEmpty(viewer.leagueTeamGroupAge) ||
+      !viewer.leagueTeamGroupAge ||
+      isEmpty(viewer.leagueTeamGroupAge[tableAgeType])
+    ) { return standingDefaultData; }
+
     return generateStandingData(viewer.leagueTeamGroupAge[tableAgeType]);
   }, [viewer, tableAgeType]);
 
   const leagueScorerData = useMemo(() => {
-    if (!viewer.leaguePlayersGroupAge) return null;
+    if (
+      isEmpty(viewer.leaguePlayersGroupAge) ||
+      !viewer.leaguePlayersGroupAge ||
+      isEmpty(viewer.leaguePlayersGroupAge[tableAgeType])
+      ) { return scorerDefaultData; }
     return generateScorerData(
       orderBy(
         viewer.leaguePlayersGroupAge[tableAgeType],
@@ -129,7 +145,7 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
               alignItems={'center'}
               mb={5}
             >
-              {map(viewer.leagueAgeKeys, (leagueAge) => (
+              {map(leagueAgeKeysOption, (leagueAge) => (
                 <Box key={`home-table-league-selection-${leagueAge}`}>
                   <LeagueSelect
                     title={leagueAge}
@@ -141,7 +157,7 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
             </Box>
 
             {/* League table */}
-            {map(viewer.leagueAgeKeys, (leagueAge) => (
+            {map(leagueAgeKeysOption, (leagueAge) => (
               <Box
                 key={`league-standing-score-table-${leagueAge}`}
                 width={'100%'}

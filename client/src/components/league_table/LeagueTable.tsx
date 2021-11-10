@@ -74,7 +74,7 @@ export const LeagueTable = withTheme(styled(UnstyledLeagueTable)`
     align-items: center;
     width: 100%;
     justify-content: flex-start;
-    padding-left: 1.5rem;
+    padding-left: 1rem;
 
     img {
       width: 25px;
