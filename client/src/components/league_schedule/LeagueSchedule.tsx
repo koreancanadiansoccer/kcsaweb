@@ -101,43 +101,40 @@ const generateScheduleData = (match: Match, isMobile: boolean) => {
       },
     ];
   }
-  else {
-    return [
-      {
-        HOME: (
-          <div
-            className="home-team-logo"
-            onClick={() => history.push(`/teams/${match.homeTeam.id}`)}
-          >
-            <div>{match.homeTeam.team.name.toUpperCase()}</div>
-            <img
-              src={match.homeTeam.team.teamLogoURL || LogoGrey}
-              alt={match.homeTeam.team.name}
-            />
-          </div>
-        ),
-        VS:
-          match.status === 'COMPLETE'
-            ? match.homeTeamScore + ' : ' + match.awayTeamScore
-            : 'VS',
-        AWAY: (
-          <div
-            className="away-team-logo"
-            onClick={() => history.push(`/teams/${match.awayTeam.id}`)}
-          >
-            <img
-              src={match.awayTeam.team.teamLogoURL || LogoGrey}
-              alt={match.awayTeam.team.name}
-            />
-            <div>{match.awayTeam.team.name.toUpperCase()}</div>
-          </div>
-        ),
-        LOCATION: match.location,
-        TIME: dayjs(match.date, 'YYYY-MM-DDTHH:mm').format('h:mm A'),
-      },
-    ];
-  }
-
+  return [
+    {
+      HOME: (
+        <div
+          className="home-team-logo"
+          onClick={() => history.push(`/teams/${match.homeTeam.id}`)}
+        >
+          <div>{match.homeTeam.team.name.toUpperCase()}</div>
+          <img
+            src={match.homeTeam.team.teamLogoURL || LogoGrey}
+            alt={match.homeTeam.team.name}
+          />
+        </div>
+      ),
+      VS:
+        match.status === 'COMPLETE'
+          ? match.homeTeamScore + ' : ' + match.awayTeamScore
+          : 'VS',
+      AWAY: (
+        <div
+          className="away-team-logo"
+          onClick={() => history.push(`/teams/${match.awayTeam.id}`)}
+        >
+          <img
+            src={match.awayTeam.team.teamLogoURL || LogoGrey}
+            alt={match.awayTeam.team.name}
+          />
+          <div>{match.awayTeam.team.name.toUpperCase()}</div>
+        </div>
+      ),
+      LOCATION: match.location,
+      TIME: dayjs(match.date, 'YYYY-MM-DDTHH:mm').format('h:mm A'),
+    },
+  ];
 };
 
 /**
