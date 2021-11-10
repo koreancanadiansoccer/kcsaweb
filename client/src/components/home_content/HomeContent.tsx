@@ -17,7 +17,11 @@ import { GallerySlide } from '../gallery_slide/GallerySlide';
 import { ViewerContext } from '../../context/homeViewer';
 import { LeaeguePlayerHomeViewer } from '../../types/home_viewer';
 import { LeagueTeam } from '../../types/team';
-import { leagueAgeKeysDefault } from '../standing_table/defaultData';
+import {
+  leagueAgeKeysDefault,
+  standingDefaultData,
+  scorerDefaultData,
+} from '../standing_table/defaultData';
 
 interface HomeContentProps {
   className?: string;
@@ -25,21 +29,6 @@ interface HomeContentProps {
 /**
  * Generate standings data.
  */
-const generateStandingDefaultData = () => {
-  const standingDefaultData = [];
-
-  for (let i = 0; i < 8; ++i) {
-    standingDefaultData.push({
-      pos: i + 1,
-      name: '-',
-      played: '-',
-      GD: '-',
-      points: '-',
-    });
-  }
-  return standingDefaultData;
-};
-
 const generateStandingData = (leagueTeams: LeagueTeam[]) => {
   const orderedData = orderBy(
     map(leagueTeams, (leagueTeam) => {
@@ -67,20 +56,6 @@ const generateStandingData = (leagueTeams: LeagueTeam[]) => {
 /**
  * Generate scorer data.
  */
-const generateScorerDefaultData = () => {
-  const scorerDefaultData = [];
-
-  for (let i = 0; i < 4; ++i) {
-    scorerDefaultData.push({
-      pos: i + 1,
-      name: '-',
-      club: '-',
-      goals: '-',
-    });
-  }
-  return scorerDefaultData;
-};
-
 const generateScorerData = (leaguePlayers: LeaeguePlayerHomeViewer[]) => {
   const orderedData = orderBy(
     map(leaguePlayers, (leaguePlayer) => {
@@ -118,21 +93,27 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
     isEmpty(viewer.leagueAgeKeys) || !viewer.leagueAgeKeys ? 'OPEN' : viewer.leagueAgeKeys[0]
   );
 
-  if (!viewer?.leagueTeamGroupAge) {
-    return <Box>...Loading</Box>;
-  }
+  const leagueAgeKeysOption = useMemo(() => {
+    if (isEmpty(viewer.leagueAgeKeys) || !viewer.leagueAgeKeys) return leagueAgeKeysDefault;
+    return viewer.leagueAgeKeys;
+  }, [viewer, viewer.leagueAgeKeys]);
 
   const leagueStandingData = useMemo(() => {
-    if (isEmpty(viewer.leagueTeamGroupAge) || !viewer.leagueTeamGroupAge) {
-      return generateStandingDefaultData();
-    }
+    if (
+      isEmpty(viewer.leagueTeamGroupAge) ||
+      !viewer.leagueTeamGroupAge ||
+      isEmpty(viewer.leagueTeamGroupAge[tableAgeType])
+    ) { return standingDefaultData; }
+
     return generateStandingData(viewer.leagueTeamGroupAge[tableAgeType]);
   }, [viewer, tableAgeType]);
 
   const leagueScorerData = useMemo(() => {
-    if (isEmpty(viewer.leaguePlayersGroupAge) || !viewer.leaguePlayersGroupAge) {
-      return generateScorerDefaultData();
-    }
+    if (
+      isEmpty(viewer.leaguePlayersGroupAge) ||
+      !viewer.leaguePlayersGroupAge ||
+      isEmpty(viewer.leaguePlayersGroupAge[tableAgeType])
+      ) { return scorerDefaultData; }
     return generateScorerData(
       orderBy(
         viewer.leaguePlayersGroupAge[tableAgeType],
@@ -164,91 +145,48 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
               alignItems={'center'}
               mb={5}
             >
-              {isEmpty(viewer.leagueAgeKeys)
-                ? map(leagueAgeKeysDefault, (leagueAge) => (
-                    <Box
-                      key={`home-table-league-default-selection-${leagueAge}`}
-                    >
-                      <LeagueSelect
-                        title={leagueAge}
-                        selected={tableAgeType === leagueAge}
-                        onClick={() => setTableAgeType(leagueAge)}
-                      />
-                    </Box>
-                  ))
-                : map(viewer.leagueAgeKeys, (leagueAge) => (
-                    <Box key={`home-table-league-selection-${leagueAge}`}>
-                      <LeagueSelect
-                        title={leagueAge}
-                        selected={tableAgeType === leagueAge}
-                        onClick={() => setTableAgeType(leagueAge)}
-                      />
-                    </Box>
-                  ))}
+              {map(leagueAgeKeysOption, (leagueAge) => (
+                <Box key={`home-table-league-selection-${leagueAge}`}>
+                  <LeagueSelect
+                    title={leagueAge}
+                    selected={tableAgeType === leagueAge}
+                    onClick={() => setTableAgeType(leagueAge)}
+                  />
+                </Box>
+              ))}
             </Box>
 
             {/* League table */}
-            {isEmpty(viewer.leagueAgeKeys)
-              ? map(leagueAgeKeysDefault, (leagueAge) => (
-                  <Box
-                    key={`league-standing-score-table-${leagueAge}`}
-                    width={'100%'}
+            {map(leagueAgeKeysOption, (leagueAge) => (
+              <Box
+                key={`league-standing-score-table-${leagueAge}`}
+                width={'100%'}
+              >
+                {tableAgeType === leagueAge && (
+                  <motion.div
+                    initial={{ opacity: 0, x: -50, y: -50 }}
+                    animate={{ opacity: 1, x: 0, y: 0 }}
+                    transition={{ delay: 0.2 }}
                   >
-                    {tableAgeType === leagueAge && (
-                      <motion.div
-                        initial={{ opacity: 0, x: -50, y: -50 }}
-                        animate={{ opacity: 1, x: 0, y: 0 }}
-                        transition={{ delay: 0.2 }}
-                      >
-                        {/* League table */}
-                        <LeagueTable
-                          tableType={TableType.STANDING}
-                          tableAgeType={tableAgeType}
-                          tableRowData={leagueStandingData}
-                        />
+                    {/* League table */}
+                    <LeagueTable
+                      tableType={TableType.STANDING}
+                      tableAgeType={tableAgeType}
+                      tableRowData={leagueStandingData}
+                    />
 
-                        {/* Score table */}
-                        <Box mt={5}>
-                          <LeagueTable
-                            tableType={TableType.SCORER}
-                            leagueType={tableAgeType}
-                            tableRowData={leagueScorerData}
-                          />
-                        </Box>
-                      </motion.div>
-                    )}
-                  </Box>
-                ))
-              : map(viewer.leagueAgeKeys, (leagueAge) => (
-                  <Box
-                    key={`league-standing-score-table-${leagueAge}`}
-                    width={'100%'}
-                  >
-                    {tableAgeType === leagueAge && (
-                      <motion.div
-                        initial={{ opacity: 0, x: -50, y: -50 }}
-                        animate={{ opacity: 1, x: 0, y: 0 }}
-                        transition={{ delay: 0.2 }}
-                      >
-                        {/* League table */}
-                        <LeagueTable
-                          tableType={TableType.STANDING}
-                          tableAgeType={tableAgeType}
-                          tableRowData={leagueStandingData}
-                        />
-
-                        {/* Score table */}
-                        <Box mt={5}>
-                          <LeagueTable
-                            tableType={TableType.SCORER}
-                            leagueType={tableAgeType}
-                            tableRowData={leagueScorerData}
-                          />
-                        </Box>
-                      </motion.div>
-                    )}
-                  </Box>
-                ))}
+                    {/* Score table */}
+                    <Box mt={5}>
+                      <LeagueTable
+                        tableType={TableType.SCORER}
+                        leagueType={tableAgeType}
+                        tableRowData={leagueScorerData}
+                      />
+                    </Box>
+                  </motion.div>
+                )}
+              </Box>
+            ))}
           </Box>
 
           {/* Galleries Slide Show */}
