@@ -41,7 +41,6 @@ const UnstyledLeague: FunctionComponent<LeagueProps> = ({ className }) => {
 
   if (!league || !viewer.leagueTeamGroupAge || !viewer.matchesByAge)
     return <div>Loading...</div>;
-  // margin-left: 7rem;
   return (
     <Box className={className}>
       <Box
@@ -92,6 +91,7 @@ const UnstyledLeague: FunctionComponent<LeagueProps> = ({ className }) => {
           <LeagueStanding
             className="standing-table"
             teams={viewer.leagueTeamGroupAge[league.leagueAgeType]}
+            isMobile={isMobile}
           />
         )}
 
@@ -99,6 +99,7 @@ const UnstyledLeague: FunctionComponent<LeagueProps> = ({ className }) => {
           <LeagueSchedule
             className="schedule-table"
             matches={viewer.matchesByAge[league.leagueAgeType]}
+            isMobile={isMobile}
           />
         )}
       </Container>

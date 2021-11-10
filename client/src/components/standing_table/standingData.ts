@@ -28,6 +28,13 @@ export const LeaguePageStandingHeader = [
   'Point',
 ];
 
+export const LeaguePageMobileStandingHeader = [
+  'Position',
+  'Club',
+  'Played',
+  'Point',
+];
+
 export interface LeaguePageStanding {
   Position: number;
   club: JSX.Element;
@@ -44,6 +51,12 @@ export const LeaguePageScheduleHeader = [
   'AWAY',
   'LOCATION',
   'TIME',
+];
+
+export const LeaguePageMobileScheduleHeader = [
+  'HOME',
+  'VS',
+  'AWAY',
 ];
 
 export interface LeaguePageSchedule {

@@ -16,52 +16,128 @@ import dayjs from 'dayjs';
 import LogoGrey from '../../assets/logo_grey.svg';
 import { Match } from '../../types/match';
 import { StandingTable } from '../standing_table/StandingTable';
-import { LeaguePageScheduleHeader } from '../standing_table/standingData';
+import {
+  LeaguePageScheduleHeader,
+  LeaguePageMobileScheduleHeader,
+} from '../standing_table/standingData';
 
 interface LeagueScheduleProps {
   className?: string;
   matches: Match[];
+  isMobile: boolean;
 }
 
 /**
  * Generate League Schedule data
  */
-const generateScheduleData = (match: Match) => {
+const generateScheduleData = (match: Match, isMobile: boolean) => {
   const history = useHistory();
-  return [
-    {
-      HOME: (
-        <div
-          className="home-team-logo"
-          onClick={() => history.push(`/teams/${match.homeTeam.id}`)}
-        >
-          <div>{match.homeTeam.team.name.toUpperCase()}</div>
-          <img
-            src={match.homeTeam.team.teamLogoURL || LogoGrey}
-            alt={match.homeTeam.team.name}
-          />
-        </div>
-      ),
-      VS:
-        match.status === 'COMPLETE'
-          ? match.homeTeamScore + ' : ' + match.awayTeamScore
-          : 'VS',
-      AWAY: (
-        <div
-          className="away-team-logo"
-          onClick={() => history.push(`/teams/${match.awayTeam.id}`)}
-        >
-          <img
-            src={match.awayTeam.team.teamLogoURL || LogoGrey}
-            alt={match.awayTeam.team.name}
-          />
-          <div>{match.awayTeam.team.name.toUpperCase()}</div>
-        </div>
-      ),
-      LOCATION: match.location,
-      TIME: dayjs(match.date, 'YYYY-MM-DDTHH:mm').format('h:mm A'),
-    },
-  ];
+  if (isMobile) {
+    return [
+      {
+        HOME: (
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            onClick={() => history.push(`/teams/${match.homeTeam.id}`)}
+          >
+            <Box fontSize={14} mr={1}>
+              {match.homeTeam.team.name.toUpperCase()}
+            </Box>
+            <img
+              height="25px"
+              width="25px"
+              src={match.homeTeam.team.teamLogoURL || LogoGrey}
+              alt={match.homeTeam.team.name}
+            />
+          </Box>
+        ),
+
+        VS: (
+          <Box
+            className="mobile-vs"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            width={'80%'}
+            height={'66px'}
+          >
+            {match.status === 'COMPLETE' ? (
+              <Typography className="mobile-vs-text">
+                {match.homeTeamScore} : {match.awayTeamScore}
+              </Typography>
+            ) : (
+              <Box display="flex" alignItems="center" flexDirection="column">
+                <Typography className="mobile-vs-text">
+                  {dayjs(match.date, 'YYYY-MM-DDTHH:mm').format('HH:mm')}
+                </Typography>
+                <Typography className="mobile-vs-text">
+                  {match.location}
+                </Typography>
+              </Box>
+            )}
+          </Box>
+        ),
+
+        AWAY: (
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            onClick={() => history.push(`/teams/${match.awayTeam.id}`)}
+          >
+            <img
+              height="25px"
+              width="25px"
+              src={match.awayTeam.team.teamLogoURL || LogoGrey}
+              alt={match.awayTeam.team.name}
+            />
+            <Box fontSize={14} ml={1}>
+              {match.awayTeam.team.name.toUpperCase()}
+            </Box>
+          </Box>
+        ),
+      },
+    ];
+  }
+  else {
+    return [
+      {
+        HOME: (
+          <div
+            className="home-team-logo"
+            onClick={() => history.push(`/teams/${match.homeTeam.id}`)}
+          >
+            <div>{match.homeTeam.team.name.toUpperCase()}</div>
+            <img
+              src={match.homeTeam.team.teamLogoURL || LogoGrey}
+              alt={match.homeTeam.team.name}
+            />
+          </div>
+        ),
+        VS:
+          match.status === 'COMPLETE'
+            ? match.homeTeamScore + ' : ' + match.awayTeamScore
+            : 'VS',
+        AWAY: (
+          <div
+            className="away-team-logo"
+            onClick={() => history.push(`/teams/${match.awayTeam.id}`)}
+          >
+            <img
+              src={match.awayTeam.team.teamLogoURL || LogoGrey}
+              alt={match.awayTeam.team.name}
+            />
+            <div>{match.awayTeam.team.name.toUpperCase()}</div>
+          </div>
+        ),
+        LOCATION: match.location,
+        TIME: dayjs(match.date, 'YYYY-MM-DDTHH:mm').format('h:mm A'),
+      },
+    ];
+  }
+
 };
 
 /**
@@ -70,6 +146,7 @@ const generateScheduleData = (match: Match) => {
 const UnstyledLeagueSchedule: FunctionComponent<LeagueScheduleProps> = ({
   className,
   matches,
+  isMobile,
 }) => {
   const matchesGroupRounds = useMemo(() => {
     const orderData = orderBy(matches, ['date', 'id'], ['asc', 'asc']);
@@ -88,7 +165,7 @@ const UnstyledLeagueSchedule: FunctionComponent<LeagueScheduleProps> = ({
         const matchDayDate = dayjs(
           matchesByRound[0].date,
           'YYYY-MM-DDTHH:mm'
-        ).format('dddd, MMMM DD YYYY');
+        ).format('dddd, DD MMMM YYYY');
 
         return (
           <Accordion className="accordion-container" key={`match-day-${key}`}>
@@ -97,7 +174,7 @@ const UnstyledLeagueSchedule: FunctionComponent<LeagueScheduleProps> = ({
               aria-controls="panel1a-content"
               className="toggle-schedule"
             >
-              <Typography variant="h5" className="match-day-date">
+              <Typography variant={isMobile ? "subtitle1" : "h5"} className="match-day-date">
                 {matchDayDate}
               </Typography>
             </AccordionSummary>
@@ -105,17 +182,25 @@ const UnstyledLeagueSchedule: FunctionComponent<LeagueScheduleProps> = ({
             <AccordionDetails>
               {map(matchesByRound, (match) => {
                 return (
-                  <Box my={2}>
+                  <Box pt={2} pb={isMobile ? 6 : 2}>
                     <StandingTable
-                      tableHeaderData={LeaguePageScheduleHeader}
-                      tableRowData={generateScheduleData(match)}
+                      tableHeaderData={
+                        isMobile
+                          ? LeaguePageMobileScheduleHeader
+                          : LeaguePageScheduleHeader
+                      }
+                      tableRowData={generateScheduleData(match, isMobile)}
                       headerLongField={['LOCATION', 'TIME']}
                       rowLongField={['LOCATION', 'TIME']}
                       paperShadow={0}
                       hideHeader={'VS'}
                       flexWidth={2}
                       standingTableClassName={'league-schedule-table-box'}
-                      headerClassName={'league-schedule-table-header'}
+                      headerClassName={
+                        isMobile
+                          ? 'league-schedule-table-mobile-header'
+                          : 'league-schedule-table-header'
+                      }
                       rowContentClassName={'league-schedule-row-content'}
                       dividerClassName={'league-schedule-divider'}
                     />
@@ -203,6 +288,7 @@ export const LeagueSchedule = withTheme(styled(UnstyledLeagueSchedule)`
   .league-schedule-row-content {
     font-size: 1.2rem;
     font-weight: bold;
+    max-height: 66px;
 
     div {
       padding: 0px 0px;
@@ -210,6 +296,25 @@ export const LeagueSchedule = withTheme(styled(UnstyledLeagueSchedule)`
   }
 
   .league-schedule-divider {
-    margin-top: 2rem;
+    margin-top: 1.5rem;
+  }
+
+  .mobile-vs {
+    background-color: #eeeeee;
+    border-radius: 0.5rem;
+
+    .mobile-vs-text {
+      font-size: smaller;
+      font-weight: 600;
+    }
+  }
+
+  .league-schedule-table-mobile-header {
+    font-style: italic;
+    color: #f17f42;
+    font-size: 1rem;
+    background-color: transparent !important;
+    font-weight: bold;
+    margin-top: -1rem;
   }
 `);
