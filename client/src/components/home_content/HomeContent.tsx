@@ -90,11 +90,14 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
   const { viewer } = useContext(ViewerContext);
 
   const [tableAgeType, setTableAgeType] = useState<string>(
-    isEmpty(viewer.leagueAgeKeys) || !viewer.leagueAgeKeys ? 'OPEN' : viewer.leagueAgeKeys[0]
+    isEmpty(viewer.leagueAgeKeys) || !viewer.leagueAgeKeys
+      ? 'OPEN'
+      : viewer.leagueAgeKeys[0]
   );
 
   const leagueAgeKeysOption = useMemo(() => {
-    if (isEmpty(viewer.leagueAgeKeys) || !viewer.leagueAgeKeys) return leagueAgeKeysDefault;
+    if (isEmpty(viewer.leagueAgeKeys) || !viewer.leagueAgeKeys)
+      return leagueAgeKeysDefault;
     return viewer.leagueAgeKeys;
   }, [viewer, viewer.leagueAgeKeys]);
 
@@ -103,7 +106,9 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
       isEmpty(viewer.leagueTeamGroupAge) ||
       !viewer.leagueTeamGroupAge ||
       isEmpty(viewer.leagueTeamGroupAge[tableAgeType])
-    ) { return standingDefaultData; }
+    ) {
+      return standingDefaultData;
+    }
 
     return generateStandingData(viewer.leagueTeamGroupAge[tableAgeType]);
   }, [viewer, tableAgeType]);
@@ -113,7 +118,9 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
       isEmpty(viewer.leaguePlayersGroupAge) ||
       !viewer.leaguePlayersGroupAge ||
       isEmpty(viewer.leaguePlayersGroupAge[tableAgeType])
-      ) { return scorerDefaultData; }
+    ) {
+      return scorerDefaultData;
+    }
     return generateScorerData(
       orderBy(
         viewer.leaguePlayersGroupAge[tableAgeType],
@@ -190,16 +197,15 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
           </Box>
 
           {/* Galleries Slide Show */}
-          <Box mt={5}>
-            <GallerySlide mobileView={isMobile} />
-          </Box>
+          {!isMobile && (
+            <Box mt={9.2}>
+              <GallerySlide />
+            </Box>
+          )}
         </Box>
       </Container>
     </Box>
   );
 };
 
-export const HomeContent = withTheme(styled(UnstyledHomeContent)`
-  .team-logo {
-  }
-`);
+export const HomeContent = withTheme(styled(UnstyledHomeContent)``);
