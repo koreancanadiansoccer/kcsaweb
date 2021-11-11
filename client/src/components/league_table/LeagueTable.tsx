@@ -18,6 +18,7 @@ interface LeagueTableProps {
   tableType: TableType;
   tableRowData: TableRow[] | null;
   className?: string;
+  clubWidth?: number;
 }
 
 // Simple summary table on home page.
@@ -25,6 +26,7 @@ const UnstyledLeagueTable: FunctionComponent<LeagueTableProps> = ({
   tableType,
   tableRowData,
   className,
+  clubWidth,
 }) => {
   const { viewer } = useContext(ViewerContext);
 
@@ -57,7 +59,7 @@ const UnstyledLeagueTable: FunctionComponent<LeagueTableProps> = ({
         headerLongField={['Club', 'Player']}
         rowLongField={['name', 'club']}
         tableType={tableType}
-        clubWidth={tableType === TableType.SCORER ? 5 : 4}
+        clubWidth={clubWidth}
       />
     </Box>
   );

@@ -180,6 +180,7 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
                       tableType={TableType.STANDING}
                       tableAgeType={tableAgeType}
                       tableRowData={leagueStandingData}
+                      clubWidth={isMobile ? 2 : 4}
                     />
 
                     {/* Score table */}
@@ -188,6 +189,7 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
                         tableType={TableType.SCORER}
                         leagueType={tableAgeType}
                         tableRowData={leagueScorerData}
+                        clubWidth={isMobile ? 4 : 5}
                       />
                     </Box>
                   </motion.div>

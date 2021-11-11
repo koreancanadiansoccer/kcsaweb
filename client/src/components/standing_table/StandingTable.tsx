@@ -83,7 +83,15 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
               return (
                 <Box
                   key={`header-row-${idx}`}
-                  flex={headerText === 'Club' ? clubWidth : isLongField ? 4 : flexWidth ? flexWidth : 1}
+                  flex={
+                    headerText === 'Club'
+                      ? clubWidth
+                      : isLongField
+                      ? 4
+                      : flexWidth
+                      ? flexWidth
+                      : 1
+                  }
                   display="flex"
                   justifyContent="center"
                 >
@@ -135,7 +143,13 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
                     return (
                       <Box
                         key={`table-data-${key}-${idx}`}
-                        flex={key === 'club' ? clubWidth : isNameField ? 4 : flexWidth}
+                        flex={
+                          key === 'club'
+                            ? clubWidth
+                            : isNameField
+                            ? 4
+                            : flexWidth
+                        }
                         display="flex"
                         justifyContent={
                           key === 'club' ? 'flex-start' : 'center'
