@@ -58,7 +58,7 @@ const UnstyledGalleryDetail: FunctionComponent<GalleryDetailProps> = ({
             >
               {gallery.title}
             </Typography>
-            <HorizontalDivider margin={'0'} />
+            <HorizontalDivider margin='0' />
           </Box>
         </Box>
 

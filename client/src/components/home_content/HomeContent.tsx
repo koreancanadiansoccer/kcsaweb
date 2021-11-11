@@ -147,9 +147,9 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
           >
             {/* League selection */}
             <Box
-              display={'flex'}
+              display='flex'
               justifyContent={isMobile ? 'center' : 'center'}
-              alignItems={'center'}
+              alignItems='center'
               mb={5}
             >
               {map(leagueAgeKeysOption, (leagueAge) => (
@@ -167,7 +167,7 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
             {map(leagueAgeKeysOption, (leagueAge) => (
               <Box
                 key={`league-standing-score-table-${leagueAge}`}
-                width={'100%'}
+                width='100%'
               >
                 {tableAgeType === leagueAge && (
                   <motion.div

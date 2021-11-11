@@ -78,7 +78,7 @@ export const TeamDetail: FunctionComponent<TeamDetailProps> = ({
     <TeamContext.Provider value={{ team, setTeam }}>
       <Box className={className}>
         <>
-          <Typography component={'div'} variant="h5">
+          <Typography component='div' variant="h5">
             {team?.name}
           </Typography>
           <Chip label={`${team?.teamAgeType} AGE`} />

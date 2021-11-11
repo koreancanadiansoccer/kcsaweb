@@ -82,7 +82,11 @@ export const inviteLeagueTeam = {
     const name = `${captain?.firstName}`;
     const email = captain?.email;
     const leagueName = `${league.year} ${league.name} ${league.leagueType}`;
-    await sendEmail(email, generateLeagueInvHTML(name, leagueName));
+    await sendEmail(
+      email,
+      `${leagueName} Invitation`,
+      generateLeagueInvHTML(name, leagueName)
+    );
     return await AdminGetLeauge(league.id);
   },
 };

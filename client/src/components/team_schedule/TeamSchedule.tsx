@@ -22,7 +22,7 @@ const UnstyledTeamSchedule: FunctionComponent<TeamScheduleProps> = ({
 }) => {
   return (
     <Box className={className}>
-      <Box className="boldText" fontSize={'1.5rem'} position="relative" mb={6}>
+      <Box className="boldText" fontSize='1.5rem' position="relative" mb={6}>
         SCHEDULE
         <Box className="greyBar"></Box>
       </Box>
@@ -30,7 +30,7 @@ const UnstyledTeamSchedule: FunctionComponent<TeamScheduleProps> = ({
       {map(teamMatches, (match) => {
         return (
           <Box key={`team-${match.id}-schedule-${match.matchDay}`}>
-            <Box className="boldText" fontSize={'1.5rem'} mb={2}>
+            <Box className="boldText" fontSize='1.5rem' mb={2}>
               Match Round {match.matchDay}
             </Box>
             <Box width={'50%'}>
@@ -46,7 +46,7 @@ const UnstyledTeamSchedule: FunctionComponent<TeamScheduleProps> = ({
         );
       })}
 
-      {/* 
+      {/*
       TBD if we are going to use regular card style or this.
       {map(teamMatches, (match) => {
         const opponent =

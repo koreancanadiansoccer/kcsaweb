@@ -142,6 +142,7 @@ const MatchSubmissionInputType = new GraphQLInputObjectType({
     gameSheetLink: { type: GraphQLString },
     matchId: { type: GraphQLInt },
     score: { type: GraphQLInt },
+    status: { type: GraphQLString },
     matchSubmissionPlayers: {
       type: new GraphQLList(
         MatchHomeSubmissionPlayerInputType || MatchAwaySubmissionPlayerInputType
@@ -341,8 +342,7 @@ export const updateDashboard = {
           const doScoreMatch =
             matchSubmissionData.awayTeamScore ===
               awayTeamSubmission.awayTeamScore &&
-            matchSubmissionData.homeTeamScore ===
-              awayTeamSubmission.homeTeamScore;
+            matchSubmissionData.score === awayTeamSubmission.homeTeamScore;
 
           // Scores match, update all match data.
           if (doScoreMatch) {
@@ -419,14 +419,14 @@ export const updateDashboard = {
         await MatchAwaySubmission.update(
           {
             awayTeamScore: matchSubmissionData.score,
-            awayTeamGameSheetLink: matchSubmissionData.awayTeamGameSheetLink,
+            awayTeamGameSheetLink: matchSubmissionData.gameSheetLink,
             homeTeamScore: matchSubmissionData.homeTeamScore,
             status: MatchSubmissionStatus.SUBMITTED,
           },
           {
             where: {
               leagueId: match.leagueId,
-              homeTeamId: matchSubmissionData.homeTeamId,
+              awayTeamId: matchSubmissionData.awayTeamId,
               matchId: match.id,
             },
           }
@@ -464,8 +464,7 @@ export const updateDashboard = {
           match.status !== 'COMPLETE'
         ) {
           const doScoreMatch =
-            matchSubmissionData.awayTeamScore ===
-              homeTeamSubmission.awayTeamScore &&
+            matchSubmissionData.score === homeTeamSubmission.awayTeamScore &&
             matchSubmissionData.homeTeamScore ===
               homeTeamSubmission.homeTeamScore;
 

@@ -69,6 +69,7 @@ export const sendInvite = {
     // Send invitation email.
     await sendEmail(
       user.email,
+      'KCSA Captain Invitation',
       generateSignupHTML(user.firstName, user.email, team.name, cipherText)
     );
 

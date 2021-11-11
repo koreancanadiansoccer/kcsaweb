@@ -90,9 +90,9 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
             <Box display="flex" alignItems="center">
               <VerticalDivider height={100} maxHeight={80} />
 
-              <Box color={'white'} ml={3}>
+              <Box color="white" ml={3}>
                 <Box fontSize="2.5rem" fontWeight={700}>
-                  {"Welcome to KCSA's Official Website test"}
+                  {"Welcome to KCSA's Official Website"}
                 </Box>
 
                 <Box fontSize="1.5rem" fontWeight={700}>
@@ -102,7 +102,7 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
             </Box>
 
             <Box
-              mt={20}
+              mt={10}
               ml={5}
               color="white"
               fontSize="1rem"
@@ -269,7 +269,7 @@ export const Hero = withTheme(styled(UnstyledHero)`
 
   .hero-content {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
   }
 
   .hero-sub {

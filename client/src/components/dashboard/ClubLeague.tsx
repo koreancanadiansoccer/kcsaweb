@@ -124,7 +124,7 @@ export const ClubLeague: FunctionComponent = () => {
     return (
       <Box mt={5}>
         <Typography variant="h6" className="boldText">
-          Pending register confirmation from Admin.
+          {"Your Registration is pending the Admin's approval."}
         </Typography>
       </Box>
     );

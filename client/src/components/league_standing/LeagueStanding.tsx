@@ -11,7 +11,10 @@ import omit from 'lodash/omit';
 import LogoGrey from '../../assets/logo_grey.svg';
 import { LeagueTeam } from '../../types/team';
 import { StandingTable } from '../standing_table/StandingTable';
-import { LeaguePageStandingHeader, LeaguePageMobileStandingHeader } from '../standing_table/standingData';
+import {
+  LeaguePageStandingHeader,
+  LeaguePageMobileStandingHeader,
+} from '../standing_table/standingData';
 
 interface LeagueStandingProps {
   className?: string;
@@ -89,8 +92,7 @@ const UnstyledLeagueStanding: FunctionComponent<LeagueStandingProps> = ({
         }
         headerLongField={['Club']}
         rowLongField={['name', 'club']}
-        standingTableClassName={'league-standing-header'}
-        clubWidth={4}
+        standingTableClassName="league-standing-header"
       />
     </Box>
   );

@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useState, useContext, useMemo } from 'react';
+import React, {
+  FunctionComponent,
+  useState,
+  useContext,
+  useEffect,
+} from 'react';
 import Box from '@material-ui/core/Box';
 import findIndex from 'lodash/findIndex';
 import AddIcon from '@material-ui/icons/Add';
@@ -19,11 +24,15 @@ enum MODAL_TYPE {
 export const DashboardLeagueGeneral: FunctionComponent = () => {
   const { dashboardViewer } = useContext(DashboardViewerContext);
 
-  const leaguePlayers = useMemo(() => {
-    return dashboardViewer.leagueTeam?.leaguePlayers || [];
-  }, [dashboardViewer]);
+  const [leaguePlayers, setLeaguePlayers] = useState(
+    dashboardViewer.leagueTeam?.leaguePlayers || []
+  );
 
   const [openModal, setOpenModal] = useState<MODAL_TYPE | null>(null);
+
+  useEffect(() => {
+    setLeaguePlayers(dashboardViewer.leagueTeam?.leaguePlayers || []);
+  }, [dashboardViewer]);
 
   // Table columns to show.
   const tableColumns = [
@@ -84,9 +93,6 @@ export const DashboardLeagueGeneral: FunctionComponent = () => {
           title="League Squad"
           columns={tableColumns}
           data={leaguePlayers}
-          options={{
-            pageSize: leaguePlayers.length > 20 ? 20 : leaguePlayers.length + 1,
-          }}
         />
       </Box>
     </>

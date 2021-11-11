@@ -202,7 +202,7 @@ export const Schedules = withTheme(styled(UnstyledSchedules)`
       justify-content: start;
       padding: 1rem 1rem;
       margin-top: 2rem;
-
+      padding-left: 25%;
       // Might need below later.
       // scroll-snap-type: x mandatory;
       // -webkit-overflow-scrolling: touch;

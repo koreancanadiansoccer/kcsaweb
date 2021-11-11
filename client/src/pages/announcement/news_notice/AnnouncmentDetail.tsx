@@ -95,7 +95,7 @@ const UnstyledAnnouncementDetail: FunctionComponent<AnnouncementProps> = ({
               {announcement.id !== '1' && (
                 <Box
                   display="flex"
-                  className={'announcement-detail-pagination'}
+                  className='announcement-detail-pagination'
                   onClick={
                     moveClick
                       ? () => {

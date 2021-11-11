@@ -7,11 +7,15 @@ import { LeaguePlayer } from '../../../db/models/leagueplayer.model';
 import { MatchPlayer } from '../../../db/models/matchplayer.model';
 import { Match } from '../../../db/models/match.model';
 import { League } from '../../../db/models/league.model';
-import { MatchHomeSubmission } from '../../../db/models/matchhomesubmission.model';
+import {
+  MatchHomeSubmission,
+  MatchSubmissionStatus,
+} from '../../../db/models/matchhomesubmission.model';
 import { MatchHomeSubmissionPlayers } from '../../../db/models/matchhomesubmissionplayers.model';
 import { MatchAwaySubmission } from '../../../db/models/matchawaysubmission.model';
 import { MatchAwaySubmissionPlayers } from '../../../db/models/matchawaysubmissionplayers.model';
 import { AdminGetLeauge } from '../utils';
+
 /**
  * Create new match
  */
@@ -37,12 +41,14 @@ export const createMatch = {
       leagueId: args.leagueId,
       homeTeamId: args.homeTeamId,
       matchId: match.id,
+      status: MatchSubmissionStatus.PENDING,
     });
 
     const awayMatchSubmission = await MatchAwaySubmission.create({
       leagueId: args.leagueId,
       awayTeamId: args.awayTeamId,
       matchId: match.id,
+      status: MatchSubmissionStatus.PENDING,
     });
 
     // Find league players from home team id.

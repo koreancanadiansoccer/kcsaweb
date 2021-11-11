@@ -81,7 +81,7 @@ export const LeagueDetail: FunctionComponent<LeagueDetailProps> = ({
   return (
     <LeagueContext.Provider value={{ league, setLeague }}>
       <Box className={className}>
-        <Typography component={'div'} variant="h5">
+        <Typography component='div' variant="h5">
           {league?.name}
         </Typography>
 
