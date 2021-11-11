@@ -17,7 +17,6 @@ import { ViewerContext } from '../../context/homeViewer';
 import defaultImage from '../../assets/image_default.png';
 import { AutoSlide } from '../auto_slide/AutoSlide';
 
-
 interface GallerySlideProps {
   className?: string;
 }
@@ -40,13 +39,6 @@ const UnstyledGallerySlide: FunctionComponent<GallerySlideProps> = ({
     }
   });
 
-  // const galleries = useMemo(() => {
-  //   if(isEmpty(viewer.galleries)) return false;
-  //   return viewer.galleries;
-  // }, [viewer])
-
-  // console.log(galleries)
-
   if (!viewer?.galleries || !showGallery) {
     return (
       <Box
@@ -59,15 +51,15 @@ const UnstyledGallerySlide: FunctionComponent<GallerySlideProps> = ({
         position="relative"
       >
         <Box
-          color='white'
+          color="white"
           height={36}
-          width='100%'
-          position='absolute'
+          width="100%"
+          position="absolute"
           className="default-banner"
-          display='flex'
-          alignItems='center'
+          display="flex"
+          alignItems="center"
         >
-          <Box ml={4} fontSize='medium' fontWeight='bold'>
+          <Box ml={4} fontSize="medium" fontWeight="bold">
             Photos
           </Box>
         </Box>
@@ -78,7 +70,7 @@ const UnstyledGallerySlide: FunctionComponent<GallerySlideProps> = ({
           display="flex"
           flexDirection="column"
           justifyContent="center"
-          >
+        >
           <Box display="flex" flexDirection="column" alignItems="center">
             <Box>
               <img src={defaultImage} alt="default-image" />
@@ -154,7 +146,7 @@ const UnstyledGallerySlide: FunctionComponent<GallerySlideProps> = ({
 
       <AutoSlide
         slidesContainerClassName="slider-item"
-        slidesImgClassName='gallery-main-slides'
+        slidesImgClassName="gallery-main-slides"
         galleryImages={showGallery.galleryImages}
         intervalTime={4000}
       />
