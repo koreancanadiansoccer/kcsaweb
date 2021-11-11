@@ -6,36 +6,39 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import map from 'lodash/map';
 import orderBy from 'lodash/orderBy';
+import omit from 'lodash/omit';
 
 import LogoGrey from '../../assets/logo_grey.svg';
 import { LeagueTeam } from '../../types/team';
 import { StandingTable } from '../standing_table/StandingTable';
-import { LeaguePageStandingHeader } from '../standing_table/standingData';
+import { LeaguePageStandingHeader, LeaguePageMobileStandingHeader } from '../standing_table/standingData';
 
 interface LeagueStandingProps {
   className?: string;
   teams: LeagueTeam[] | null;
+  isMobile: boolean;
 }
 
 /**
  * Generate League standings data.
  */
-const generateStandingData = (leagueTeams: LeagueTeam[]) => {
+const generateStandingData = (leagueTeams: LeagueTeam[], isMobile: boolean) => {
   const history = useHistory();
   const orderData = orderBy(
     map(leagueTeams, (leagueTeam) => {
       return {
         club: (
-          <div
+          <Box
             className="league-standing-team-logo"
             onClick={() => history.push(`/teams/${leagueTeam.id}`)}
+            pl={isMobile ? 2 : 18}
           >
             <img
               src={leagueTeam.team.teamLogoURL || LogoGrey}
               alt="league-tab-standing"
             />
             <div>{leagueTeam.team.name.toUpperCase()}</div>
-          </div>
+          </Box>
         ),
         Played: leagueTeam.played,
         Won: leagueTeam.win,
@@ -48,6 +51,13 @@ const generateStandingData = (leagueTeams: LeagueTeam[]) => {
     ['desc', 'desc', 'desc']
   );
 
+  if (isMobile) {
+    return map(orderData, (data, idx) => ({
+      Position: idx + 1,
+      ...omit(data, ['Won', 'Drawn', 'Lost']),
+    }));
+  }
+
   return map(orderData, (data, idx) => ({ Position: idx + 1, ...data }));
 };
 
@@ -57,10 +67,11 @@ const generateStandingData = (leagueTeams: LeagueTeam[]) => {
 const UnstyledLeagueStanding: FunctionComponent<LeagueStandingProps> = ({
   className,
   teams,
+  isMobile,
 }) => {
   const leagueStandingData = useMemo(() => {
     if (!teams) return null;
-    return generateStandingData(teams);
+    return generateStandingData(teams, isMobile);
   }, [teams]);
 
   return (
@@ -73,7 +84,9 @@ const UnstyledLeagueStanding: FunctionComponent<LeagueStandingProps> = ({
 
       <StandingTable
         tableRowData={leagueStandingData}
-        tableHeaderData={LeaguePageStandingHeader}
+        tableHeaderData={
+          isMobile ? LeaguePageMobileStandingHeader : LeaguePageStandingHeader
+        }
         headerLongField={['Club']}
         rowLongField={['name', 'club']}
         standingTableClassName={'league-standing-header'}
@@ -93,7 +106,6 @@ export const LeagueStanding = withTheme(styled(UnstyledLeagueStanding)`
     align-items: center;
     width: 100%;
     justify-content: flex-start;
-    padding-left: 12rem;
 
     &:hover {
       cursor: pointer;
