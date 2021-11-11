@@ -31,6 +31,7 @@ interface StandingTable {
   rowClick?: (id: number) => Promise<void>;
   pagination?: JSX.Element;
   selectedRow?: number;
+  clubWidth?: number;
 }
 
 /**
@@ -54,6 +55,7 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
   rowClick,
   pagination,
   selectedRow,
+  clubWidth,
 }) => {
   return (
     <Box className={className}>
@@ -81,7 +83,7 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
               return (
                 <Box
                   key={`header-row-${idx}`}
-                  flex={isLongField ? 4 : flexWidth ? flexWidth : 1}
+                  flex={headerText === 'Club' ? clubWidth : isLongField ? 4 : flexWidth ? flexWidth : 1}
                   display="flex"
                   justifyContent="center"
                 >
@@ -133,11 +135,13 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
                     return (
                       <Box
                         key={`table-data-${key}-${idx}`}
-                        flex={isNameField ? 4 : flexWidth}
+                        flex={key === 'club' ? clubWidth : isNameField ? 4 : flexWidth}
                         display="flex"
-                        justifyContent="center"
+                        justifyContent={
+                          key === 'club' ? 'flex-start' : 'center'
+                        }
                         py={2}
-                        minWidth={isNameField ? '8rem' : ''}
+                        minWidth={key === 'name' ? '6rem' : ''}
                       >
                         {value}
                       </Box>

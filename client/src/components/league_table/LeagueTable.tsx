@@ -57,6 +57,7 @@ const UnstyledLeagueTable: FunctionComponent<LeagueTableProps> = ({
         headerLongField={['Club', 'Player']}
         rowLongField={['name', 'club']}
         tableType={tableType}
+        clubWidth={tableType === TableType.SCORER ? 5 : 4}
       />
     </Box>
   );
@@ -72,14 +73,13 @@ export const LeagueTable = withTheme(styled(UnstyledLeagueTable)`
   .team-logo {
     display: flex;
     align-items: center;
-    width: 100%;
     justify-content: flex-start;
-    padding-left: 1rem;
+    font-size: small;
 
     img {
       width: 25px;
       height: 25px;
-      margin-right: 0.5rem;
+      margin-right: 0.4rem;
     }
   }
 `);

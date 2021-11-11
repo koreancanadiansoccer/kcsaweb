@@ -33,7 +33,7 @@ const generateStandingData = (leagueTeams: LeagueTeam[]) => {
   const orderedData = orderBy(
     map(leagueTeams, (leagueTeam) => {
       return {
-        name: (
+        club: (
           <div className="team-logo">
             <img
               src={leagueTeam.team.teamLogoURL || LogoGrey}
