@@ -17,12 +17,14 @@ export interface Match {
   homeTeamScore: number;
   homeTeamPhysical: boolean;
   homeTeamNoGameSheet: boolean;
+  homeTeamGameSheetLink: string;
   homeTeamNoShow: boolean;
   // Include team, match players
   awayTeam: MatchTeam;
   awayTeamScore: number;
   awayTeamPhysical: boolean;
   awayTeamNoGameSheet: boolean;
+  awayTeamGameSheetLink: string;
   awayTeamNoShow: boolean;
   status: string;
   matchHomeSubmission: {
@@ -32,6 +34,7 @@ export interface Match {
     homeTeamGameSheetLink: string;
     awayTeamScore: number;
     leagueId: number;
+    status: string;
     matchHomeSubmissionPlayers: MatchSubmissionPlayer[];
   };
   matchAwaySubmission: {
@@ -41,6 +44,7 @@ export interface Match {
     awayTeamGameSheetLink: string;
     homeTeamScore: number;
     leagueId: number;
+    status: string;
     matchAwaySubmissionPlayers: MatchSubmissionPlayer[];
   };
 }

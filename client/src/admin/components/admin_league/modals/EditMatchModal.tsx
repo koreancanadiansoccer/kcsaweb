@@ -45,9 +45,8 @@ export const EditMatchModal: FunctionComponent<EditMatchModalProps> = ({
   onClose,
   fullScreen,
 }) => {
-  const { league: origLeague, setLeague: setOrigLeague } = useContext(
-    LeagueContext
-  );
+  const { league: origLeague, setLeague: setOrigLeague } =
+    useContext(LeagueContext);
 
   const origMatch = useMemo(() => {
     const match = find(
@@ -349,6 +348,21 @@ export const EditMatchModal: FunctionComponent<EditMatchModalProps> = ({
       </Box>
 
       <Divider />
+
+      <Box my={3}>
+        {match.homeTeamGameSheetLink ? (
+          <Box>
+            {/* Hack to reload img with same url: Append random unique query param */}
+            <img
+              style={{ width: '400px', height: '700px' }}
+              src={`${match.homeTeamGameSheetLink}?${Date.now()}`}
+              alt="team-logo"
+            />
+          </Box>
+        ) : (
+          <Box fontStyle="italic">No Game sheet added</Box>
+        )}
+      </Box>
 
       <Box mt={3}>
         <Button

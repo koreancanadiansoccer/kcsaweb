@@ -129,9 +129,11 @@ export const MatchHomeSubmissionPlayerInputType = new GraphQLInputObjectType({
   fields: () => ({
     id: { type: GraphQLInt },
     homeTeamId: { type: GraphQLInt },
+    awayTeamId: { type: GraphQLInt },
     matchId: { type: GraphQLInt },
     leagueTeamId: { type: GraphQLInt },
     matchHomeSubmissionId: { type: GraphQLInt },
+    matchAwaySubmissionId: { type: GraphQLInt },
     yellowCard: { type: GraphQLInt },
     redCard: { type: GraphQLInt },
     goalScored: { type: GraphQLInt },

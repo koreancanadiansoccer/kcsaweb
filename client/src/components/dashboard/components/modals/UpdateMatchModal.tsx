@@ -152,6 +152,12 @@ export const UpdateMatchModal: FunctionComponent<UpdateMatchModalProps> = ({
     );
   }, [submissionData, matchSubmissionPlayers, match, file]);
 
+  const disabled = useMemo(() => {
+    return (
+      submissionData.status === 'SUBMITTED' ||
+      match.status === MatchStatus.COMPLETE
+    );
+  }, [submissionData, match]);
   // Craete new players.
   const [updateDashboardMut] = useMutation<
     UpdateDashboardResult,
@@ -265,15 +271,32 @@ export const UpdateMatchModal: FunctionComponent<UpdateMatchModalProps> = ({
         />
       )}
 
+      {disabled && (
+        <Box mb={1}>
+          <Typography variant="body1" className="boldText" color="error">
+            Edit disabled - Match data submitted - Please contact Admin to
+            update.
+          </Typography>
+        </Box>
+      )}
+
       <Box
         width={isMobile ? '100%' : '50%'}
         my={2}
         justifyContent="space-between"
       >
-        <Box mb={1}>
+        <Box mb={1} display="flex">
           <Typography variant="body1" className="boldText">
             {titleText}
           </Typography>
+
+          {submissionData.status === 'SUBMITTED' && (
+            <Box ml={1}>
+              <Typography variant="body1" className="boldText">
+                - Successfully Submitted.
+              </Typography>
+            </Box>
+          )}
         </Box>
 
         <Box mb={1}>
@@ -302,6 +325,7 @@ export const UpdateMatchModal: FunctionComponent<UpdateMatchModalProps> = ({
                 <Box mx={isMobile ? 0.5 : 1}>
                   <Input
                     label="Goal"
+                    disabled={disabled}
                     placeholder="Goals"
                     value={matchPlayer.goalScored}
                     type="number"
@@ -323,6 +347,7 @@ export const UpdateMatchModal: FunctionComponent<UpdateMatchModalProps> = ({
                 <Box mx={isMobile ? 0.5 : 1}>
                   <Input
                     label="YellowCard"
+                    disabled={disabled}
                     placeholder="Yellowcard"
                     value={matchPlayer.yellowCard}
                     type="number"
@@ -344,6 +369,7 @@ export const UpdateMatchModal: FunctionComponent<UpdateMatchModalProps> = ({
                 <Box mx={isMobile ? 0.5 : 1}>
                   <Input
                     label="RedCard"
+                    disabled={disabled}
                     placeholder="RedCard"
                     value={matchPlayer.redCard}
                     type="number"
@@ -382,6 +408,7 @@ export const UpdateMatchModal: FunctionComponent<UpdateMatchModalProps> = ({
           <Box mx={isMobile ? 0.5 : 1}>
             <Input
               label="Score"
+              disabled={disabled}
               placeholder="Opponent Goals"
               value={
                 isHomeTeam
@@ -419,7 +446,7 @@ export const UpdateMatchModal: FunctionComponent<UpdateMatchModalProps> = ({
             <Box>
               {/* Hack to reload img with same url: Append random unique query param */}
               <img
-                style={{ width: '400px', height: '700px' }}
+                style={{ width: '400px', height: '600px' }}
                 src={`${gameSheetImg}?${Date.now()}`}
                 alt="team-logo"
               />
@@ -440,7 +467,9 @@ export const UpdateMatchModal: FunctionComponent<UpdateMatchModalProps> = ({
       <Divider />
       <Box mt={3}>
         <Button
-          disabled={hasNoChanges || match.status === MatchStatus.COMPLETE}
+          disabled={
+            hasNoChanges || match.status === MatchStatus.COMPLETE || !file
+          }
           size="large"
           onClick={() => void submitMatchData()}
         >

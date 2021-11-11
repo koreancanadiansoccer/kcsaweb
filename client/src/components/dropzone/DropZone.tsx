@@ -103,9 +103,11 @@ export const ImgDropzone: FunctionComponent<ImgDropzoneProps> = ({
 
             {/* Better styling needed; Pictures might go beyond div wrapper */}
             {fileLink && (
-              <div style={{ width: '60px' }}>
-                <img src={fileLink} alt="team logo preview" />
-              </div>
+              <img
+                src={fileLink}
+                style={{ maxWidth: '400x', maxHeight: '200px' }}
+                alt="team logo preview"
+              />
             )}
           </Container>
         )}

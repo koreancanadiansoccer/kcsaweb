@@ -12,6 +12,7 @@ homeTeamGameSheetLink
 homeTeamScore
 awayTeamScore
 matchId
+status
 matchHomeSubmissionPlayers{
 ${MATCH_HOME_SUBMISSION_PLAYER_FRAGMENT}
 }
@@ -25,6 +26,7 @@ awayTeamGameSheetLink
 awayTeamScore
 homeTeamScore
 matchId
+status
 matchAwaySubmissionPlayers{
   ${MATCH_AWAY_SUBMISSION_PLAYER_FRAGMENT}
 }

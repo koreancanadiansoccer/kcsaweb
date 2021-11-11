@@ -36,7 +36,10 @@ export const generateSignupHTML = (
   </html>`;
 };
 
-export const generateLeagueInvHTML = (name: string, leagueName: string): string => {
+export const generateLeagueInvHTML = (
+  name: string,
+  leagueName: string
+): string => {
   const leagueURL = `${URL}/dashboard?league=true`;
 
   return `<html>
@@ -69,7 +72,11 @@ const URL =
     ? 'http://kcsacanada.ca'
     : 'http://localhost:3000';
 
-export const sendEmail = async (email: string, html: string): Promise<void> => {
+export const sendEmail = async (
+  email: string,
+  subject: string,
+  html: string
+): Promise<void> => {
   try {
     const charset = 'UTF-8';
 
@@ -80,7 +87,7 @@ export const sendEmail = async (email: string, html: string): Promise<void> => {
       },
       Message: {
         Subject: {
-          Data: 'KCSA Captain Invitation',
+          Data: subject,
           Charset: charset,
         },
         Body: {

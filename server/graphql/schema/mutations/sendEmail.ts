@@ -51,6 +51,7 @@ export const sendEmailNotif = {
           // Send invitation email.
           await sendEmail(
             findUser.email,
+            'KCSA Captain Invitation',
             generateSignupHTML(
               findUser.firstName,
               findUser.email,

@@ -45,7 +45,10 @@ export const TeamPlayers: FunctionComponent<TeamPlayersProp> = ({
 
       {/* List of players */}
       {map(players, (player) => (
-        <Box position="relative" key={`players-${player.name}`}>
+        <Box
+          position="relative"
+          key={`players-${player.player.id}-${player.player.firstName}`}
+        >
           <Box
             display="flex"
             justifyContent="flex-start"

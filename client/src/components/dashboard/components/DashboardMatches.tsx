@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useState, useMemo, useContext } from 'react';
 import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
 import map from 'lodash/map';
 
 import { DashboardViewerContext } from '../../../context/dashboardViewer';
@@ -20,6 +21,15 @@ export const DashboardMatches: FunctionComponent = () => {
     return dashboardViewer?.matches || [];
   }, [dashboardViewer]);
 
+  if (!matches || matches.length === 0) {
+    return (
+      <Box mt={5}>
+        <Typography variant="h6" className="boldText">
+          No matches available. Please check later.
+        </Typography>
+      </Box>
+    );
+  }
   return (
     <>
       {/* Adding players to league team */}

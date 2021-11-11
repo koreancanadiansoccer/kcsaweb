@@ -42,6 +42,7 @@ const HomeSubmission = new GraphQLObjectType({
     homeTeamGameSheetLink: { type: GraphQLString },
     awayTeamScore: { type: GraphQLInt },
     matchId: { type: GraphQLInt },
+    status: { type: GraphQLString },
     matchHomeSubmissionPlayers: {
       type: new GraphQLList(MatchHomeSubmissionPlayerType),
     },
@@ -58,6 +59,7 @@ const HomeSubmissionInputType = new GraphQLInputObjectType({
     homeTeamGameSheetLink: { type: GraphQLString },
     awayTeamScore: { type: GraphQLInt },
     matchId: { type: GraphQLInt },
+    status: { type: GraphQLString },
     matchHomeSubmissionPlayers: {
       type: new GraphQLList(MatchHomeSubmissionPlayerInputType),
     },
@@ -74,6 +76,7 @@ const AwaySubmission = new GraphQLObjectType({
     awayTeamScore: { type: GraphQLInt },
     homeTeamScore: { type: GraphQLInt },
     matchId: { type: GraphQLInt },
+    status: { type: GraphQLString },
     matchAwaySubmissionPlayers: {
       type: new GraphQLList(MatchAwaySubmissionPlayerType),
     },
@@ -90,6 +93,7 @@ const AwaySubmissionInputType = new GraphQLInputObjectType({
     awayTeamScore: { type: GraphQLInt },
     homeTeamScore: { type: GraphQLInt },
     matchId: { type: GraphQLInt },
+    status: { type: GraphQLString },
     matchAwaySubmissionPlayers: {
       type: new GraphQLList(MatchAwaySubmissionPlayerInputType),
     },
