@@ -58,10 +58,10 @@ const UnstyledGalleryCard: FunctionComponent<GalleryProps> = ({
 
           <CardContent className="card-content">
             <Box className="desc-h5">
-              <Typography variant={'h5'}>{gallery.title}</Typography>
+              <Typography variant='h5'>{gallery.title}</Typography>
             </Box>
             <Box className="desc-date">
-              <Typography variant={'body2'}>
+              <Typography variant='body2'>
                 {gallery.createdAt.slice(0, 10)}
               </Typography>
             </Box>

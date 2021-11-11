@@ -193,16 +193,16 @@ const UnstyledLeagueSchedule: FunctionComponent<LeagueScheduleProps> = ({
                       headerLongField={['LOCATION', 'TIME']}
                       rowLongField={['LOCATION', 'TIME']}
                       paperShadow={0}
-                      hideHeader={'VS'}
+                      hideHeader='VS'
                       flexWidth={2}
-                      standingTableClassName={'league-schedule-table-box'}
+                      standingTableClassName='league-schedule-table-box'
                       headerClassName={
                         isMobile
                           ? 'league-schedule-table-mobile-header'
                           : 'league-schedule-table-header'
                       }
-                      rowContentClassName={'league-schedule-row-content'}
-                      dividerClassName={'league-schedule-divider'}
+                      rowContentClassName='league-schedule-row-content'
+                      dividerClassName='league-schedule-divider'
                     />
                   </Box>
                 );

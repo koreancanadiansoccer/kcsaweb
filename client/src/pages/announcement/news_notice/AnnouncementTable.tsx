@@ -47,11 +47,11 @@ const UnstyledAnnouncementTable: FunctionComponent<AnnouncementTableProps> = ({
             page * rowsPerPage,
             page * rowsPerPage + rowsPerPage
           )}
-          headerClassName={'announcement-table-header'}
+          headerClassName='announcement-table-header'
           tableHeaderData={AnnouncementPageStandingHeader}
           headerLongField={['Title']}
           rowLongField={['Title']}
-          rowContentClassName={'announcement-table-row'}
+          rowContentClassName='announcement-table-row'
           selectedRow={parseInt(selectedID) - rowsPerPage * page}
           rowClick={(id: number) => {
             const idx = id + page * rowsPerPage;

@@ -22,7 +22,7 @@ const UnstyledTeamHistory: FunctionComponent<TeamHistoryProps> = ({
 }) => {
   return (
     <Box className={className}>
-      <Box className="boldText" fontSize={'1.5rem'} position="relative" mb={6}>
+      <Box className="boldText" fontSize='1.5rem' position="relative" mb={6}>
         HISTORY
         <Box className="greyBar"></Box>
       </Box>
@@ -56,7 +56,7 @@ const UnstyledTeamHistory: FunctionComponent<TeamHistoryProps> = ({
       </Box>
 
       {/* Current Season stat */}
-      <Box className="boldText" fontSize={'1rem'} position="relative" mb={1}>
+      <Box className="boldText" fontSize='1rem' position="relative" mb={1}>
         Current Season Stat (2021 KCAS Indoor)
       </Box>
 
@@ -87,7 +87,7 @@ const UnstyledTeamHistory: FunctionComponent<TeamHistoryProps> = ({
       </Box>
 
       {/* Historic Season stat */}
-      <Box className="boldText" fontSize={'1rem'} position="relative" mb={1}>
+      <Box className="boldText" fontSize='1rem' position="relative" mb={1}>
         Historical Stat (Over all historic seasons played)
       </Box>
 

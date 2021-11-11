@@ -89,7 +89,7 @@ const UnstyledLeagueStanding: FunctionComponent<LeagueStandingProps> = ({
         }
         headerLongField={['Club']}
         rowLongField={['name', 'club']}
-        standingTableClassName={'league-standing-header'}
+        standingTableClassName='league-standing-header'
       />
     </Box>
   );
