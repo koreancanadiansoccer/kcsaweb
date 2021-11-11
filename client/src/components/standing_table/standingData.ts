@@ -2,7 +2,7 @@
 export const HomeStandingHeader = ['Pos', 'Club', 'Pl', 'GD', 'Pts'];
 
 export interface HomeStanding {
-  name: JSX.Element;
+  club: JSX.Element;
   played: number;
   GD: number;
   points: number;
