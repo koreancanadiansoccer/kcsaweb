@@ -60,8 +60,8 @@ const generateScheduleData = (match: Match, isMobile: boolean) => {
             display="flex"
             alignItems="center"
             justifyContent="center"
-            width={'80%'}
-            height={'66px'}
+            width="80%"
+            height="66px"
           >
             {match.status === 'COMPLETE' ? (
               <Typography className="mobile-vs-text">
@@ -171,7 +171,10 @@ const UnstyledLeagueSchedule: FunctionComponent<LeagueScheduleProps> = ({
               aria-controls="panel1a-content"
               className="toggle-schedule"
             >
-              <Typography variant={isMobile ? "subtitle1" : "h5"} className="match-day-date">
+              <Typography
+                variant={isMobile ? 'subtitle1' : 'h5'}
+                className="match-day-date"
+              >
                 {matchDayDate}
               </Typography>
             </AccordionSummary>
