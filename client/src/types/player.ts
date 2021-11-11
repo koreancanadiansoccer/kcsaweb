@@ -27,6 +27,7 @@ export interface LeaguePlayer {
   name: string; // to be removed.
   goalScored: number;
   yellowCard: number;
+  redCard: number;
   leagueTeamId: number;
   signedWaiver: boolean;
   playerId: number;
@@ -37,5 +38,16 @@ export interface MatchPlayer {
   dob?: string;
   goalScored: number;
   yellowCard: number;
+  redCard: number;
   player: Player;
+}
+
+export interface MatchSubmissionPlayer {
+  goalScored: number;
+  yellowCard: number;
+  redCard: number;
+  player: Player;
+  homeTeamId: number;
+  id: number;
+  leaguePlayerId: number;
 }

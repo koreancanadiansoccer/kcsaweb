@@ -8,6 +8,10 @@ import { Team } from '../../db/models/team.model';
 import { Match } from '../../db/models/match.model';
 import { League } from '../../db/models/league.model';
 import { Player } from '../../db/models/player.model';
+import { MatchHomeSubmission } from '../../db/models/matchhomesubmission.model';
+import { MatchHomeSubmissionPlayers } from '../../db/models/matchhomesubmissionplayers.model';
+import { MatchAwaySubmission } from '../../db/models/matchawaysubmission.model';
+import { MatchAwaySubmissionPlayers } from '../../db/models/matchawaysubmissionplayers.model';
 
 export const encodeIDBase64 = (id: number): string => {
   const str = `id=${id}`;
@@ -68,6 +72,26 @@ export const AdminGetLeauge = async (leagueId: number): Promise<League> => {
               {
                 model: Team,
                 as: 'team',
+              },
+            ],
+          },
+          {
+            model: MatchHomeSubmission,
+            include: [
+              {
+                model: MatchHomeSubmissionPlayers,
+                include: [Player],
+                separate: true,
+              },
+            ],
+          },
+          {
+            model: MatchAwaySubmission,
+            include: [
+              {
+                model: MatchAwaySubmissionPlayers,
+                include: [Player],
+                separate: true,
               },
             ],
           },

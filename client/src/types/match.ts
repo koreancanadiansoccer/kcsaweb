@@ -1,4 +1,5 @@
 import { MatchTeam } from './team';
+import { MatchSubmissionPlayer } from './player';
 
 export enum MatchStatus {
   PENDING = 'PENDING', // Pending match to be played.
@@ -24,6 +25,24 @@ export interface Match {
   awayTeamNoGameSheet: boolean;
   awayTeamNoShow: boolean;
   status: string;
+  matchHomeSubmission: {
+    id: number;
+    homeTeamId: number;
+    homeTeamScore: number;
+    homeTeamGameSheetLink: string;
+    awayTeamScore: number;
+    leagueId: number;
+    matchHomeSubmissionPlayers: MatchSubmissionPlayer[];
+  };
+  matchAwaySubmission: {
+    id: number;
+    awayTeamId: number;
+    awayTeamScore: number;
+    awayTeamGameSheetLink: string;
+    homeTeamScore: number;
+    leagueId: number;
+    matchAwaySubmissionPlayers: MatchSubmissionPlayer[];
+  };
 }
 
 export interface MatchInput {

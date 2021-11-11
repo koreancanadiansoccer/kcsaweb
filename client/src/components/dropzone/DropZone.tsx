@@ -38,7 +38,7 @@ interface ImgDropzoneProps {
   setFile: (newFiles: File[]) => void;
   fileLink: string;
   maxSize?: number;
-  fileType?: 'logo' | 'announcment';
+  fileType?: 'logo' | 'announcment' | 'gamesheet';
   multiple?: boolean;
 }
 
@@ -53,11 +53,19 @@ export const ImgDropzone: FunctionComponent<ImgDropzoneProps> = ({
   maxSize = 1048675, // Byte value, default is 1048675 (1 MB).
 }) => {
   const preferredFormat = useMemo(() => {
-    if (fileType === 'announcment') {
+    if (fileType === 'announcment')
       return '*Preferred png format with max 5MB size.';
-    }
+    if (fileType === 'gamesheet')
+      return '*Preferred png format with max 5MB size.';
 
     return '*Preferred svg format with transparent background.';
+  }, [fileType]);
+
+  const size = useMemo(() => {
+    if (fileType === 'announcment') return '5MB.';
+    if (fileType === 'gamesheet') return '5MB.';
+
+    return '1MB.';
   }, [fileType]);
 
   return (
@@ -86,7 +94,7 @@ export const ImgDropzone: FunctionComponent<ImgDropzoneProps> = ({
             <input {...getInputProps()} />
             {!isDragActive && (
               <>
-                <p>Click here or drop a file to upload!; Max: 1mb.</p>
+                <p>Click here or drop a file to upload!; Max: {size}.</p>
                 <em>(Only *.jpeg, *.png and *svg images will be accepted)</em>
               </>
             )}

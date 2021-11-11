@@ -148,7 +148,7 @@ export const ClubPlayers: FunctionComponent = () => {
           }
         }}
         options={{
-          pageSize: 20,
+          pageSize: players.length > 20 ? 20 : players.length + 1,
         }}
       />
       <ErrorAlert msg={error} resetMsg={() => setError('')} />

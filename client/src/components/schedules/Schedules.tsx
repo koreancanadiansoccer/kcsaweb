@@ -115,7 +115,7 @@ const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
             {!seletedAgeMatches || seletedAgeMatches.length === 0
               ? times(4, () => {
                   return (
-                    <Box>
+                    <Box key={`default-view-`}>
                       <ScheduleDefaultCard />
                     </Box>
                   );

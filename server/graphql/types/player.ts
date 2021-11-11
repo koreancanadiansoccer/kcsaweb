@@ -18,6 +18,7 @@ export const PlayerType = new GraphQLObjectType({
     dob: { type: GraphQLString },
     teamId: { type: GraphQLInt },
     yellowCard: { type: GraphQLInt },
+    redCard: { type: GraphQLInt },
     goalScored: { type: GraphQLInt },
     createdAt: { type: DateTime },
   }),
@@ -32,6 +33,7 @@ export const PlayerInputType = new GraphQLInputObjectType({
     dob: { type: GraphQLString },
     teamId: { type: GraphQLInt },
     yellowCard: { type: GraphQLInt },
+    redCard: { type: GraphQLInt },
     goalScored: { type: GraphQLInt },
     createdAt: { type: DateTime },
   }),
@@ -44,6 +46,7 @@ export const LeaguePlayerType = new GraphQLObjectType({
     teamId: { type: GraphQLInt },
     leagueTeamId: { type: GraphQLInt },
     yellowCard: { type: GraphQLInt },
+    redCard: { type: GraphQLInt },
     goalScored: { type: GraphQLInt },
     createdAt: { type: DateTime },
     playerId: { type: GraphQLInt },
@@ -62,6 +65,7 @@ export const LeaguePlayerInputType = new GraphQLInputObjectType({
     dob: { type: GraphQLString },
     //
     yellowCard: { type: GraphQLInt },
+    redCard: { type: GraphQLInt },
     goalScored: { type: GraphQLInt },
     createdAt: { type: DateTime },
     leagueTeamId: { type: GraphQLInt },
@@ -79,6 +83,7 @@ export const MatchPlayerType = new GraphQLObjectType({
     matchId: { type: GraphQLInt },
     leagueTeamId: { type: GraphQLInt },
     yellowCard: { type: GraphQLInt },
+    redCard: { type: GraphQLInt },
     goalScored: { type: GraphQLInt },
     leaguePlayerId: { type: GraphQLInt },
     createdAt: { type: DateTime },
@@ -94,6 +99,75 @@ export const MatchPlayerInputType = new GraphQLInputObjectType({
     matchId: { type: GraphQLInt },
     leagueTeamId: { type: GraphQLInt },
     yellowCard: { type: GraphQLInt },
+    redCard: { type: GraphQLInt },
+    goalScored: { type: GraphQLInt },
+    leaguePlayerId: { type: GraphQLInt },
+    createdAt: { type: DateTime },
+    player: { type: PlayerInputType },
+  }),
+});
+
+export const MatchHomeSubmissionPlayerType = new GraphQLObjectType({
+  name: 'MatchHomeSubmissionPlayerType',
+  fields: () => ({
+    id: { type: GraphQLInt },
+    homeTeamId: { type: GraphQLInt },
+    matchId: { type: GraphQLInt },
+    leagueTeamId: { type: GraphQLInt },
+    matchHomeSubmissionId: { type: GraphQLInt },
+    yellowCard: { type: GraphQLInt },
+    redCard: { type: GraphQLInt },
+    goalScored: { type: GraphQLInt },
+    leaguePlayerId: { type: GraphQLInt },
+    createdAt: { type: DateTime },
+    player: { type: PlayerType },
+  }),
+});
+
+export const MatchHomeSubmissionPlayerInputType = new GraphQLInputObjectType({
+  name: 'MatchHomeSubmissionPlayerInputType',
+  fields: () => ({
+    id: { type: GraphQLInt },
+    homeTeamId: { type: GraphQLInt },
+    matchId: { type: GraphQLInt },
+    leagueTeamId: { type: GraphQLInt },
+    matchHomeSubmissionId: { type: GraphQLInt },
+    yellowCard: { type: GraphQLInt },
+    redCard: { type: GraphQLInt },
+    goalScored: { type: GraphQLInt },
+    leaguePlayerId: { type: GraphQLInt },
+    createdAt: { type: DateTime },
+    player: { type: PlayerInputType },
+  }),
+});
+
+export const MatchAwaySubmissionPlayerType = new GraphQLObjectType({
+  name: 'MatchAwaySubmissionPlayerType',
+  fields: () => ({
+    id: { type: GraphQLInt },
+    awayTeamId: { type: GraphQLInt },
+    matchId: { type: GraphQLInt },
+    leagueTeamId: { type: GraphQLInt },
+    matchAwaySubmissionId: { type: GraphQLInt },
+    yellowCard: { type: GraphQLInt },
+    redCard: { type: GraphQLInt },
+    goalScored: { type: GraphQLInt },
+    leaguePlayerId: { type: GraphQLInt },
+    createdAt: { type: DateTime },
+    player: { type: PlayerType },
+  }),
+});
+
+export const MatchAwaySubmissionPlayerInputType = new GraphQLInputObjectType({
+  name: 'MatchAwaySubmissionPlayerInputType',
+  fields: () => ({
+    id: { type: GraphQLInt },
+    awayTeamId: { type: GraphQLInt },
+    matchId: { type: GraphQLInt },
+    leagueTeamId: { type: GraphQLInt },
+    matchAwaySubmissionId: { type: GraphQLInt },
+    yellowCard: { type: GraphQLInt },
+    redCard: { type: GraphQLInt },
     goalScored: { type: GraphQLInt },
     leaguePlayerId: { type: GraphQLInt },
     createdAt: { type: DateTime },

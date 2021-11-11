@@ -16,7 +16,7 @@ export const getMatches = {
         { model: LeagueTeam, as: 'homeTeam' },
         { model: LeagueTeam, as: 'awayTeam' },
       ],
-      where: { id: args.leagueId },
+      where: { leagueId: args.leagueId },
     });
 
     if (!Matches) {

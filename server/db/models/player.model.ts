@@ -12,6 +12,8 @@ import {
 import { Team } from './team.model';
 import { LeaguePlayer } from './leagueplayer.model';
 import { MatchPlayer } from './matchplayer.model';
+import { MatchHomeSubmissionPlayers } from './matchhomesubmissionplayers.model';
+import { MatchAwaySubmissionPlayers } from './matchawaysubmissionplayers.model';
 
 @Table({ tableName: 'player' })
 export class Player extends Model {
@@ -49,4 +51,10 @@ export class Player extends Model {
   @HasMany(() => LeaguePlayer) leaguePlayers!: LeaguePlayer[];
 
   @HasMany(() => MatchPlayer) matchPlayers!: MatchPlayer[];
+
+  @HasMany(() => MatchPlayer)
+  matchHomeSubmissionPlayers!: MatchHomeSubmissionPlayers[];
+
+  @HasMany(() => MatchAwaySubmissionPlayers)
+  matchAwaySubmissionPlayers!: MatchAwaySubmissionPlayers[];
 }

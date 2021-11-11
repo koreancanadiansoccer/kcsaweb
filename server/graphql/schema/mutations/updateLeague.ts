@@ -4,7 +4,10 @@ import map from 'lodash/map';
 import { LeagueType, LeagueInputType } from '../../types/league';
 import { TeamInputType } from '../../types/team';
 import { League } from '../../../db/models/league.model';
-import { LeagueTeam } from '../../../db/models/leagueteam.model';
+import {
+  LeagueTeam,
+  LEAGUE_TEAM_STATUS,
+} from '../../../db/models/leagueteam.model';
 import { MatchPlayer } from '../../../db/models/matchplayer.model';
 import { Match } from '../../../db/models/match.model';
 import { Team } from '../../../db/models/team.model';
@@ -42,7 +45,8 @@ export const updateLeague = {
             teamId: newTeam.id,
             teamAgeType: newTeam.teamAgeType,
             leagueId: args.league.id,
-            captainId: args.newTeam.captainId,
+            captainId: newTeam.captainId || null,
+            status: LEAGUE_TEAM_STATUS.REGISTERED,
           });
         })
       );

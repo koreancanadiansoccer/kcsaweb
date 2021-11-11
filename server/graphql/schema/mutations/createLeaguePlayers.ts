@@ -19,6 +19,10 @@ import { MatchPlayer } from '../../../db/models/matchplayer.model';
 import { League } from '../../../db/models/league.model';
 import { LeagueType } from '../../types/league';
 import { AdminGetLeauge } from '../utils';
+import { MatchHomeSubmission } from '../../../db/models/matchhomesubmission.model';
+import { MatchHomeSubmissionPlayers } from '../../../db/models/matchhomesubmissionplayers.model';
+import { MatchAwaySubmission } from '../../../db/models/matchawaysubmission.model';
+import { MatchAwaySubmissionPlayers } from '../../../db/models/matchawaysubmissionplayers.model';
 
 /**
  * Create new player
@@ -77,6 +81,7 @@ export const createLeaguePlayers = {
           }
 
           if (matches && matches.length > 0) {
+            // Add new players into existing match players.
             await Promise.all(
               map(matches, async (match) => {
                 await MatchPlayer.create({
@@ -85,6 +90,40 @@ export const createLeaguePlayers = {
                   matchId: match.id,
                   playerId: leaguePlayer.playerId,
                 });
+
+                const homeSubmission = await MatchHomeSubmission.findOne({
+                  where: {
+                    homeTeamId: args.leagueTeamId,
+                    matchId: match.id,
+                  },
+                });
+
+                if (homeSubmission) {
+                  await MatchHomeSubmissionPlayers.create({
+                    homeTeamId: homeSubmission.homeTeamId,
+                    leaguePlayerId: leaguePlayer.id,
+                    matchId: match.id,
+                    playerId: leaguePlayer.playerId,
+                    matchHomeSubmissionId: homeSubmission.id,
+                  });
+                }
+
+                const awaySubmission = await MatchAwaySubmission.findOne({
+                  where: {
+                    homeTeamId: args.leagueTeamId,
+                    matchId: match.id,
+                  },
+                });
+
+                if (awaySubmission) {
+                  await MatchAwaySubmissionPlayers.create({
+                    awayTeamId: awaySubmission.awayTeamId,
+                    leaguePlayerId: leaguePlayer.id,
+                    matchId: match.id,
+                    playerId: leaguePlayer.playerId,
+                    matchHomeSubmissionId: awaySubmission.id,
+                  });
+                }
               })
             );
           }

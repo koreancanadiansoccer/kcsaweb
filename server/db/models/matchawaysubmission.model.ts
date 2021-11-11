@@ -6,11 +6,18 @@ import {
   BelongsTo,
   ForeignKey,
   Default,
+  HasMany,
 } from 'sequelize-typescript';
 
 import { League } from './league.model';
 import { Match } from './match.model';
 import { LeagueTeam } from './leagueteam.model';
+import { MatchAwaySubmissionPlayers } from './matchawaysubmissionplayers.model';
+
+export enum MatchSubmissionStatus {
+  PENDING = 'PENDING', // Pending match to be played.
+  SUBMITTED = 'SUBMITTED', // No mismatch happened or Admin submitted.
+}
 
 @Table({ tableName: 'match_away_submission' })
 export class MatchAwaySubmission extends Model {
@@ -36,9 +43,15 @@ export class MatchAwaySubmission extends Model {
   @Column({ field: 'home_team_score' })
   homeTeamScore!: number;
 
+  @Column
+  status!: string;
+
   @AllowNull(false)
   @ForeignKey(() => Match)
   @Column({ field: 'match_id' })
   matchId!: number;
   @BelongsTo(() => Match) Match!: Match;
+
+  @HasMany(() => MatchAwaySubmissionPlayers)
+  matchAwaySubmissionPlayers!: MatchAwaySubmissionPlayers[];
 }

@@ -17,6 +17,7 @@ interface ScheduleCardProps {
   className?: string;
   noHover?: boolean;
   status?: string;
+  mobileWidth?: boolean;
 }
 
 /**
@@ -48,7 +49,7 @@ const UnstyledScheduledCard: FunctionComponent<ScheduleCardProps> = ({
             >
               {/* Home team emblem and name */}
               <Box display="flex" flexDirection="column" alignItems="center">
-                <Box minWidth={80} minHeight={40}>
+                <Box width={80} minHeight={40}>
                   <img
                     src={homeTeam.team.teamLogoURL || LogoGrey}
                     alt="home team logo"
@@ -82,7 +83,7 @@ const UnstyledScheduledCard: FunctionComponent<ScheduleCardProps> = ({
                 alignItems="center"
                 ml="auto"
               >
-                <Box minWidth={80} minHeight={40}>
+                <Box width={80} minHeight={40}>
                   <img
                     src={awayTeam.team.teamLogoURL || LogoGrey}
                     alt="away team logo"
@@ -99,7 +100,7 @@ const UnstyledScheduledCard: FunctionComponent<ScheduleCardProps> = ({
 };
 
 export const ScheduleCard = withTheme(styled(UnstyledScheduledCard)`
-  min-width: 332px;
+  min-width: ${({ mobileWidth }) => (mobileWidth ? '100%' : '332px')};
   cursor: pointer;
 
   .text-sub {

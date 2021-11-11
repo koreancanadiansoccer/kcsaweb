@@ -6,9 +6,12 @@ import { LeagueTeam } from '../../../db/models/leagueteam.model';
 import { LeaguePlayer } from '../../../db/models/leagueplayer.model';
 import { MatchPlayer } from '../../../db/models/matchplayer.model';
 import { Match } from '../../../db/models/match.model';
-import { Team } from '../../../db/models/team.model';
 import { League } from '../../../db/models/league.model';
-
+import { MatchHomeSubmission } from '../../../db/models/matchhomesubmission.model';
+import { MatchHomeSubmissionPlayers } from '../../../db/models/matchhomesubmissionplayers.model';
+import { MatchAwaySubmission } from '../../../db/models/matchawaysubmission.model';
+import { MatchAwaySubmissionPlayers } from '../../../db/models/matchawaysubmissionplayers.model';
+import { AdminGetLeauge } from '../utils';
 /**
  * Create new match
  */
@@ -30,6 +33,18 @@ export const createMatch = {
 
     const match = await Match.create({ ...args });
 
+    const homeMatchSubmission = await MatchHomeSubmission.create({
+      leagueId: args.leagueId,
+      homeTeamId: args.homeTeamId,
+      matchId: match.id,
+    });
+
+    const awayMatchSubmission = await MatchAwaySubmission.create({
+      leagueId: args.leagueId,
+      awayTeamId: args.awayTeamId,
+      matchId: match.id,
+    });
+
     // Find league players from home team id.
     const homePlayers = await LeaguePlayer.findAll({
       where: { leagueTeamId: args.homeTeamId },
@@ -44,6 +59,14 @@ export const createMatch = {
             leaguePlayerId: homePlayer.id,
             matchId: match.id,
             playerId: homePlayer.playerId,
+          });
+
+          await MatchHomeSubmissionPlayers.create({
+            homeTeamId: args.homeTeamId,
+            leaguePlayerId: homePlayer.id,
+            matchId: match.id,
+            playerId: homePlayer.playerId,
+            matchHomeSubmissionId: homeMatchSubmission.id,
           });
         })
       );
@@ -63,6 +86,15 @@ export const createMatch = {
             leaguePlayerId: awayPlayer.id,
             matchId: match.id,
             playerId: awayPlayer.playerId,
+          });
+
+          await MatchAwaySubmissionPlayers.create({
+            awayTeamId: args.awayTeamId,
+            leaguePlayerId: awayPlayer.id,
+            leagueTeamId: args.awayTeamId,
+            matchId: match.id,
+            playerId: awayPlayer.playerId,
+            matchAwaySubmissionId: awayMatchSubmission.id,
           });
         })
       );
@@ -97,91 +129,7 @@ export const createMatch = {
     if (!newMatch) {
       throw Error('Created match could not be found');
     }
-    const league = await League.findOne({
-      include: [
-        {
-          model: LeagueTeam,
-          as: 'leagueTeams',
-          required: true,
-          duplicating: false,
-          include: [
-            LeaguePlayer,
-            {
-              model: Team,
-              as: 'team',
-              required: false,
-            },
-          ],
-        },
-        {
-          model: Match,
-          as: 'matches',
-          required: true,
-          duplicating: false,
-          include: [
-            {
-              as: 'homeTeam',
-              model: LeagueTeam,
-              required: true,
-              duplicating: false,
-              subQuery: false,
-              include: [
-                MatchPlayer,
-                {
-                  model: Team,
-                  as: 'team',
-                  required: true,
-                },
-              ],
-            },
-            {
-              model: LeagueTeam,
-              as: 'awayTeam',
-              required: true,
-              duplicating: false,
-              include: [
-                MatchPlayer,
-                {
-                  model: Team,
-                  as: 'team',
-                  required: true,
-                },
-              ],
-            },
-          ],
-        },
-      ],
-      where: { id: args.leagueId },
-      subQuery: false,
-    });
-    if (!league) {
-      throw Error('League could not be found');
-    }
 
-    // Get league match players.
-    // Looks like sequelize can't handle deeply nested query with conditions.
-    await Promise.all(
-      map(league.matches, async (match, idx) => {
-        const matchId = match.id;
-        const { id: homeTeamId } = match.homeTeam;
-        const { id: awayTeamId } = match.awayTeam;
-
-        //Find players
-        const homeMatchPlayers = await MatchPlayer.findAll({
-          raw: true,
-          where: { matchId: matchId, leagueTeamId: homeTeamId },
-        });
-
-        const awayMatchPlayers = await MatchPlayer.findAll({
-          raw: true,
-          where: { matchId: matchId, leagueTeamId: awayTeamId },
-        });
-
-        league.matches[idx].homeTeam.matchPlayers = homeMatchPlayers;
-        league.matches[idx].awayTeam.matchPlayers = awayMatchPlayers;
-      })
-    );
-
-    return league;
+    return AdminGetLeauge(args.leagueId);
   },
 };

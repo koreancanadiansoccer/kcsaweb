@@ -5,6 +5,7 @@ dotenv.config();
 
 const TEAM_LOGO_BUCKET = process.env.TEAM_LOGO_BUCKET;
 const ANNOUNCEMENTS_BUCKET = process.env.ANNOUNCEMENTS_BUCKET;
+const GAME_SHEET_BUCKET = process.env.GAME_SHEET_BUCKET;
 const S3_REGION = process.env.S3_REGION;
 
 interface S3UploadURLs {
@@ -41,7 +42,7 @@ export const getPresignUrlPromiseFunction = async (
 export const AWSS3Uploader = async (
   fileName: string,
   fileType: string,
-  resourceName: 'LOGO' | 'ANNOUNCEMENT'
+  resourceName: 'LOGO' | 'ANNOUNCEMENT' | 'GAMESHEET'
 ): Promise<S3UploadURLs> => {
   // Set up S3.
 
@@ -55,6 +56,7 @@ export const AWSS3Uploader = async (
   const handleResource = {
     LOGO: TEAM_LOGO_BUCKET,
     ANNOUNCEMENT: ANNOUNCEMENTS_BUCKET,
+    GAMESHEET: GAME_SHEET_BUCKET,
   };
 
   const s3Params = {

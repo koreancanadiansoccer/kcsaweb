@@ -6,11 +6,14 @@ import {
   ForeignKey,
   BelongsTo,
   DataType,
+  HasOne,
   Default,
 } from 'sequelize-typescript';
 
 import { LeagueTeam } from './leagueteam.model';
 import { League } from './league.model';
+import { MatchAwaySubmission } from './matchawaysubmission.model';
+import { MatchHomeSubmission } from './matchhomesubmission.model';
 
 export enum MatchStatus {
   PENDING = 'PENDING', // Pending match to be played.
@@ -95,4 +98,8 @@ export class Match extends Model {
   @Default(false)
   @Column({ field: 'away_team_no_show' })
   awayTeamNoShow!: boolean;
+
+  @HasOne(() => MatchAwaySubmission) matchAwaySubmission?: MatchAwaySubmission;
+
+  @HasOne(() => MatchHomeSubmission) matchHomeSubmission?: MatchHomeSubmission;
 }

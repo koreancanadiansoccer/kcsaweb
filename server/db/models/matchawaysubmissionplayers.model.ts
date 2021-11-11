@@ -11,10 +11,11 @@ import { LeagueTeam } from './leagueteam.model';
 import { Player } from './player.model';
 import { LeaguePlayer } from './leagueplayer.model';
 import { Match } from './match.model';
+import { MatchAwaySubmission } from './matchawaysubmission.model';
 
 // Player data for each match.
-@Table({ tableName: 'match_player' })
-export class MatchPlayer extends Model {
+@Table({ tableName: 'match_away_submission_players' })
+export class MatchAwaySubmissionPlayers extends Model {
   @Default(0)
   @Column({ field: 'goal_scored' })
   goalScored!: number;
@@ -32,14 +33,21 @@ export class MatchPlayer extends Model {
   // Associations with league team.
   @ForeignKey(() => LeagueTeam)
   @Column({ field: 'league_team_id' })
-  leagueTeamId!: number;
-  @BelongsTo(() => LeagueTeam) leagueTeam!: LeagueTeam;
+  awayTeamId!: number;
+  @BelongsTo(() => LeagueTeam) awayTeam!: LeagueTeam;
 
   // Associations with match.
   @ForeignKey(() => Match)
   @Column({ field: 'match_id' })
   matchId!: number;
   @BelongsTo(() => Match) match!: Match;
+
+  // Associations with match.
+  @ForeignKey(() => MatchAwaySubmission)
+  @Column({ field: 'match_away_submission_id' })
+  matchAwaySubmissionId!: number;
+  @BelongsTo(() => MatchAwaySubmission)
+  matchAwaySubmission!: MatchAwaySubmission;
 
   // Associations with player.
   @ForeignKey(() => Player)

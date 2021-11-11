@@ -44,7 +44,7 @@ export const TeamInputType = new GraphQLInputObjectType({
   name: 'TeamInput',
   fields: () => ({
     id: { type: GraphQLInt },
-    captainId: { type: GraphQLString },
+    captainId: { type: GraphQLInt },
     captain: { type: UserInputType },
     name: { type: GraphQLString },
     foundedDate: { type: GraphQLString },
