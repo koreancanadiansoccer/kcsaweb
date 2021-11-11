@@ -115,7 +115,7 @@ const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
               </Box>
               <Box>
                 {!viewer?.user && (
-                  <Button component={RouteLink} to={'/login'} color="secondary">
+                  <Button component={RouteLink} to='/login' color="secondary">
                     Login
                   </Button>
                 )}
@@ -157,7 +157,7 @@ const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
               <LeagueMobileNav onClose={handleDrawerOpen} />
               <TeamMobileNav onClose={handleDrawerOpen} />
               {viewer?.user && (
-                <Box width="90%" mx={'auto'} mt={2}>
+                <Box width="90%" mx='auto' mt={2}>
                   <Button onClick={logout} color="secondary" fullWidth>
                     Logout
                   </Button>
@@ -202,7 +202,7 @@ const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
 
               <Box ml="auto" display="flex">
                 {viewer?.user && viewer?.user?.isAdmin && (
-                  <Button component={RouteLink} to={'/admin'} color="secondary">
+                  <Button component={RouteLink} to='/admin' color="secondary">
                     Admin Panel
                   </Button>
                 )}
@@ -218,7 +218,7 @@ const UnstyledNavigation: FunctionComponent<NavigationProps> = ({
                 )}
 
                 {!viewer?.user && (
-                  <Button component={RouteLink} to={'/login'} color="secondary">
+                  <Button component={RouteLink} to='/login' color="secondary">
                     Login
                   </Button>
                 )}

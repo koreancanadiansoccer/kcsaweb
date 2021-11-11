@@ -121,7 +121,7 @@ const UnstyledCreateGalleryModal: FunctionComponent<CreateGalleryModalProp> = ({
           {/* TODO: upload to S3 */}
           <Box width="100%" mt={1} mb={1}>
             <DropzoneArea
-              dropzoneText={'Drag and drop an image here or click'}
+              dropzoneText='Drag and drop an image here or click'
               filesLimit={30}
               maxFileSize={10485760} // 10MB
               acceptedFiles={[
