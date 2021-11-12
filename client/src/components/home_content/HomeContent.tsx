@@ -34,7 +34,7 @@ const generateStandingData = (leagueTeams: LeagueTeam[]) => {
     map(leagueTeams, (leagueTeam) => {
       return {
         club: (
-          <div className="team-logo">
+          <div className="league-table-team-logo">
             <img
               src={leagueTeam.team.teamLogoURL || LogoGrey}
               alt="hero-main"
@@ -62,7 +62,7 @@ const generateScorerData = (leaguePlayers: LeaeguePlayerHomeViewer[]) => {
       return {
         name: `${leaguePlayer.player.firstName} ${leaguePlayer.player.lastName}`,
         club: (
-          <div className="team-logo">
+          <div className="league-table-team-logo">
             <img src={leaguePlayer.teamLogoURL || LogoGrey} alt="hero-main" />
             <div style={{ marginRight: '0.5rem' }}>
               {leaguePlayer.teamName.toUpperCase()}
@@ -147,9 +147,9 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
           >
             {/* League selection */}
             <Box
-              display='flex'
-              justifyContent={isMobile ? 'center' : 'center'}
-              alignItems='center'
+              display="flex"
+              justifyContent='center'
+              alignItems="center"
               mb={5}
             >
               {map(leagueAgeKeysOption, (leagueAge) => (
@@ -167,7 +167,7 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
             {map(leagueAgeKeysOption, (leagueAge) => (
               <Box
                 key={`league-standing-score-table-${leagueAge}`}
-                width='100%'
+                width="100%"
               >
                 {tableAgeType === leagueAge && (
                   <motion.div
@@ -181,6 +181,7 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
                       tableAgeType={tableAgeType}
                       tableRowData={leagueStandingData}
                       clubWidth={isMobile ? 2 : 4}
+                      flex={isMobile ? [1, 2, 1, 1, 1] : [1, 4, 1, 1, 1]}
                     />
 
                     {/* Score table */}
@@ -190,6 +191,7 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
                         leagueType={tableAgeType}
                         tableRowData={leagueScorerData}
                         clubWidth={isMobile ? 4 : 5}
+                        flex={isMobile ? [1, 4, 4, 1] : [1, 4, 5, 1]}
                       />
                     </Box>
                   </motion.div>
