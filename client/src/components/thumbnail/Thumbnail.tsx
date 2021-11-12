@@ -61,7 +61,7 @@ const UnstyledThumbnail: FunctionComponent<ThumbnailProps> = ({
 
   return (
     <Box className={className} display="flex" justifyContent="center" mb={6}>
-      <Box display="flex">
+      <Box display="flex" width="70rem">
         {/* Only show the arrow button when the number of images over numOfThumbnail */}
         {galleryImages.length > numOfThumbnail && (
           <ChevronLeftIcon
@@ -70,7 +70,13 @@ const UnstyledThumbnail: FunctionComponent<ThumbnailProps> = ({
           />
         )}
 
-        <Box display='flex' justifyContent='flex-start' px={2} width='70rem' className="thumbnail-box">
+        <Box
+          display="flex"
+          justifyContent="flex-start"
+          px={2}
+          width="100%"
+          className="thumbnail-box"
+        >
           {map(
             galleryImages.slice(
               page * numOfThumbnail,
