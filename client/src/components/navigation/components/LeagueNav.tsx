@@ -27,13 +27,7 @@ export const LeagueMobileNav: React.FC<LeagueMobileNavProps> = ({
 
   const leagueName = useMemo(() => {
     if (!viewer.leagues) return "Comming Soon";
-    return (
-      viewer.leagues[0].year +
-      ' ' +
-      viewer.leagues[0].name +
-      ' ' +
-      viewer.leagues[0].leagueType
-    );
+    return `${viewer.leagues[0].year} ${viewer.leagues[0].name} ${viewer.leagues[0].leagueType}`;
   }, [viewer.leagues])
 
   const handleClick = () => {
@@ -84,13 +78,7 @@ export const LeagueNav: React.FC = () => {
 
   const leagueName = useMemo(() => {
     if (!viewer.leagues) return "Comming Soon";
-    return (
-      viewer.leagues[0].year +
-      ' ' +
-      viewer.leagues[0].name +
-      ' ' +
-      viewer.leagues[0].leagueType
-    );
+    return `${viewer.leagues[0].year} ${viewer.leagues[0].name} ${viewer.leagues[0].leagueType}`;
   }, [viewer.leagues])
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
