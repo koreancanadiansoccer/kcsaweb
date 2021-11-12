@@ -22,8 +22,8 @@ const Divider = styled.div<DividerProps>`
     #f17f42 90.1%,
     #d81159 100%
   );
-  height: ${(p) => p.height}px;
-  max-height: ${(p) => p.maxHeight}px;
+  height: ${(p) => p.height}vw;
+  max-height: ${(p) => p.maxHeight}vw;
 `;
 
 export const VerticalDivider: React.FC<VerticalDividerProps> = ({
