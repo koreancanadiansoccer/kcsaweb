@@ -75,7 +75,7 @@ const UnstyledLeagueStanding: FunctionComponent<LeagueStandingProps> = ({
   const leagueStandingData = useMemo(() => {
     if (!teams) return null;
     return generateStandingData(teams, isMobile);
-  }, [teams]);
+  }, [teams, isMobile]);
 
   return (
     <Box className={className} mt={10}>
@@ -90,9 +90,10 @@ const UnstyledLeagueStanding: FunctionComponent<LeagueStandingProps> = ({
         tableHeaderData={
           isMobile ? LeaguePageMobileStandingHeader : LeaguePageStandingHeader
         }
-        headerLongField={['Club']}
-        rowLongField={['name', 'club']}
         standingTableClassName="league-standing-header"
+        clubWidth={isMobile ? 4 : 4}
+        flex={isMobile ? [1, 4, 1, 1] : [1, 4, 1, 1, 1, 1, 1]}
+
       />
     </Box>
   );

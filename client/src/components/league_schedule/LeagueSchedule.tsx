@@ -70,7 +70,7 @@ const generateScheduleData = (match: Match, isMobile: boolean) => {
             ) : (
               <Box display="flex" alignItems="center" flexDirection="column">
                 <Typography className="mobile-vs-text">
-                  {dayjs(match.date, 'YYYY-MM-DDTHH:mm').format('HH:mm')}
+                  {dayjs(match.date, 'YYYY-MM-DDTHH:mm').format('HH:mm a')}
                 </Typography>
                 <Typography className="mobile-vs-text">
                   {match.location}
@@ -190,11 +190,8 @@ const UnstyledLeagueSchedule: FunctionComponent<LeagueScheduleProps> = ({
                           : LeaguePageScheduleHeader
                       }
                       tableRowData={generateScheduleData(match, isMobile)}
-                      headerLongField={['LOCATION', 'TIME']}
-                      rowLongField={['LOCATION', 'TIME']}
                       paperShadow={0}
                       hideHeader='VS'
-                      flexWidth={2}
                       standingTableClassName='league-schedule-table-box'
                       headerClassName={
                         isMobile
@@ -203,6 +200,7 @@ const UnstyledLeagueSchedule: FunctionComponent<LeagueScheduleProps> = ({
                       }
                       rowContentClassName='league-schedule-row-content'
                       dividerClassName='league-schedule-divider'
+                      flex={isMobile ? [2, 2, 2] : [2, 2, 2, 4, 4]}
                     />
                   </Box>
                 );

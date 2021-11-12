@@ -18,7 +18,7 @@ interface LeagueTableProps {
   tableType: TableType;
   tableRowData: TableRow[] | null;
   className?: string;
-  clubWidth?: number;
+  flex: number[];
 }
 
 // Simple summary table on home page.
@@ -26,7 +26,7 @@ const UnstyledLeagueTable: FunctionComponent<LeagueTableProps> = ({
   tableType,
   tableRowData,
   className,
-  clubWidth,
+  flex,
 }) => {
   const { viewer } = useContext(ViewerContext);
 
@@ -56,10 +56,8 @@ const UnstyledLeagueTable: FunctionComponent<LeagueTableProps> = ({
         title={tableTitle}
         tableRowData={tableRowData}
         tableHeaderData={tableHeaderData}
-        headerLongField={['Club', 'Player']}
-        rowLongField={['name', 'club']}
         tableType={tableType}
-        clubWidth={clubWidth}
+        flex={flex}
       />
     </Box>
   );
@@ -72,11 +70,12 @@ export const LeagueTable = withTheme(styled(UnstyledLeagueTable)`
     font-size: 0.9167rem;
   }
 
-  .team-logo {
+  .league-table-team-logo {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    font-size: small;
+    font-size: 0.7rem;
+    font-weight: 500;
 
     img {
       width: 25px;

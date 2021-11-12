@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
 import map from 'lodash/map';
-import find from 'lodash/find';
 
 import { shortenName } from '../../utils/format';
 import { TableType } from '../../types/table_type';
@@ -17,12 +16,8 @@ interface StandingTable {
   title?: string;
   tableRowData: TableRow[] | null;
   tableHeaderData: string[];
-  headerLongField: string[];
-  rowCapitalField: string[];
-  rowLongField: string[];
   paperShadow?: number;
   hideHeader?: string;
-  flexWidth?: number;
   tableType?: TableType;
   standingTableClassName?: string;
   headerClassName?: string;
@@ -31,7 +26,7 @@ interface StandingTable {
   rowClick?: (id: number) => Promise<void>;
   pagination?: JSX.Element;
   selectedRow?: number;
-  clubWidth?: number;
+  flex: number[];
 }
 
 /**
@@ -42,11 +37,8 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
   title,
   tableRowData,
   tableHeaderData,
-  headerLongField,
-  rowLongField,
   paperShadow = 3,
   hideHeader,
-  flexWidth = 1,
   tableType,
   standingTableClassName = 'default-standing-table-box',
   headerClassName = 'default-table-header',
@@ -55,7 +47,7 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
   rowClick,
   pagination,
   selectedRow,
-  clubWidth,
+  flex,
 }) => {
   return (
     <Box className={className}>
@@ -76,22 +68,10 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
             px={1}
           >
             {map(tableHeaderData, (headerText, idx) => {
-              const isLongField = find(
-                headerLongField,
-                (field) => headerText == field
-              );
               return (
                 <Box
                   key={`header-row-${idx}`}
-                  flex={
-                    headerText === 'Club'
-                      ? clubWidth
-                      : isLongField
-                      ? 4
-                      : flexWidth
-                      ? flexWidth
-                      : 1
-                  }
+                  flex={flex[idx]}
                   display="flex"
                   justifyContent="center"
                 >
@@ -107,7 +87,9 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
               No data
             </Box>
           ) : (
-            map(tableRowData, (data, dataRowIdx) => (
+            map(tableRowData, (data, dataRowIdx) => {
+              let colIdx = 0;
+              return (
               <Box
                 key={`table-${dataRowIdx}`}
                 className={
@@ -131,9 +113,6 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
                   px={1}
                 >
                   {map(data, (property, key, idx) => {
-                    const isNameField = find(rowLongField, (field) => {
-                      if (key == field) return true;
-                    });
                     let value: string | number | JSX.Element = property;
 
                     if (key === 'name' && tableType === TableType.SCORER) {
@@ -143,13 +122,7 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
                     return (
                       <Box
                         key={`table-data-${key}-${idx}`}
-                        flex={
-                          key === 'club'
-                            ? clubWidth
-                            : isNameField
-                            ? 4
-                            : flexWidth
-                        }
+                        flex={flex[colIdx++]}
                         display="flex"
                         justifyContent={
                           key === 'club' ? 'flex-start' : 'center'
@@ -164,7 +137,7 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
                 </Box>
                 <Divider className={dividerClassName} />
               </Box>
-            ))
+            )})
           )}
         </Box>
 
