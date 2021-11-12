@@ -49,9 +49,7 @@ const UnstyledAnnouncementTable: FunctionComponent<AnnouncementTableProps> = ({
           )}
           headerClassName='announcement-table-header'
           tableHeaderData={AnnouncementPageStandingHeader}
-          headerLongField={['Title']}
-          rowLongField={['Title']}
-          flex={[1,2,1,1]}
+          flex={[1, 4, 1]}
           rowContentClassName='announcement-table-row'
           selectedRow={parseInt(selectedID) - rowsPerPage * page}
           rowClick={(id: number) => {
