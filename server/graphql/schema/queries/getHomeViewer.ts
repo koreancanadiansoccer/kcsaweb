@@ -29,9 +29,7 @@ export const getHomeViewer = {
     }
 
     const announcements = await Announcement.findAll({
-      where: { showOnHomepage: true },
       order: [['createdAt', 'DESC']],
-      limit: 5,
     });
 
     const galleries = await Gallery.findAll({
