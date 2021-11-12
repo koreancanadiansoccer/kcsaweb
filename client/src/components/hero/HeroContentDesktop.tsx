@@ -18,7 +18,6 @@ interface HomeDesktopProps {
   subIdx: number;
   subIdxUpdate: (idx: number) => void;
   isMedium: boolean;
-  numOfAnnouncements: number;
 }
 
 /**
@@ -32,7 +31,6 @@ const UnstyledHeroContentDesktop: FunctionComponent<HomeDesktopProps> = ({
   subIdx,
   subIdxUpdate,
   isMedium,
-  numOfAnnouncements,
 }) => {
   const history = useHistory();
 
@@ -40,10 +38,6 @@ const UnstyledHeroContentDesktop: FunctionComponent<HomeDesktopProps> = ({
     if (isMedium) return 25;
     return 15;
   }, [isMedium]);
-
-  const announcementID = (id: string) => {
-    return String(numOfAnnouncements - parseInt(id));
-  }
 
   return (
     <Box
@@ -72,7 +66,7 @@ const UnstyledHeroContentDesktop: FunctionComponent<HomeDesktopProps> = ({
           justifyContent="flex-start"
           style={{ cursor: 'pointer' }}
           onClick={() => {
-            history.push(`/announcement/${announcementID(announcements[mainIdx].id)}`);
+            history.push(`/announcement/${announcements[mainIdx].id}`);
           }}
         >
           <img src={announcements[mainIdx].imageURL} alt="hero-main" />
@@ -101,7 +95,9 @@ const UnstyledHeroContentDesktop: FunctionComponent<HomeDesktopProps> = ({
               onClick={() => {
                 mainIdxUpdate(1);
                 subIdxUpdate(1);
-                history.push(`/announcement/${announcementID(announcements[subIdx].id)}`);
+                history.push(
+                  `/announcement/${announcements[subIdx].id}`
+                );
               }}
               style={{ cursor: 'pointer', backgroundColor: '#2f4453' }}
             >
@@ -150,7 +146,9 @@ const UnstyledHeroContentDesktop: FunctionComponent<HomeDesktopProps> = ({
             width="30rem"
             style={{ cursor: 'pointer' }}
             onClick={() => {
-              history.push(`/announcement/${announcementID(announcements[mainIdx].id)}`);
+              history.push(
+                `/announcement/${announcements[mainIdx].id}`
+              );
             }}
           >
             <Box fontSize="1.5rem">{announcements[mainIdx].title}</Box>

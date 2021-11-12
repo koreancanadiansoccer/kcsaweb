@@ -17,7 +17,6 @@ interface HomeMobileProps {
   subIdx: number;
   subIdxUpdate: (idx: number) => void;
   isMedium: boolean;
-  numOfAnnouncements: number;
 }
 
 /**
@@ -28,13 +27,8 @@ const UnstyledHeroContentMobile: FunctionComponent<HomeMobileProps> = ({
   announcements,
   mainIdx,
   mainIdxUpdate,
-  numOfAnnouncements,
 }) => {
   const history = useHistory();
-
-  const announcementID = (id: string) => {
-    return String(numOfAnnouncements - parseInt(id));
-  };
 
   return (
     <Box className={className}>
@@ -50,9 +44,7 @@ const UnstyledHeroContentMobile: FunctionComponent<HomeMobileProps> = ({
           flexDirection="column"
           style={{ cursor: 'pointer' }}
           onClick={() => {
-            history.push(
-              `/announcement/${announcementID(announcements[mainIdx].id)}`
-            );
+            history.push(`/announcement/${announcements[mainIdx].id})}`);
           }}
         >
           {announcements[mainIdx].imageURL && (
@@ -85,7 +77,8 @@ const UnstyledHeroContentMobile: FunctionComponent<HomeMobileProps> = ({
               style={{ cursor: 'pointer' }}
               onClick={() => {
                 history.push(
-                  `/announcement/${announcementID(announcements[mainIdx].id)}`
+                  `/announcement/${announcements[mainIdx].id}
+                  )}`
                 );
               }}
             >

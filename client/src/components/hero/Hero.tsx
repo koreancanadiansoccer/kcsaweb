@@ -3,7 +3,6 @@ import React, {
   useState,
   useContext,
   useCallback,
-  useMemo,
 } from 'react';
 import { withTheme, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -11,7 +10,6 @@ import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import { useHistory } from 'react-router-dom';
-import filter from 'lodash/filter';
 
 import HeroImage from '../../assets/hero.png';
 import { VerticalDivider } from '../divider/VerticalDivider';
@@ -37,11 +35,6 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isMedium = useMediaQuery(theme.breakpoints.down('md'));
-
-  const showOnHomepageAnnouncements = useMemo(() => {
-    if (!viewer.announcements) return null;
-    return filter(viewer.announcements, 'showOnHomepage');
-  }, [viewer.announcements])
 
   const mainIdxUpdate = useCallback(
     (value: number) => {
@@ -95,7 +88,7 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
   );
 
   // No announcements.
-  if (!viewer.announcements || !showOnHomepageAnnouncements || showOnHomepageAnnouncements.length === 0) {
+  if (!viewer?.announcements || viewer.announcements.length === 0) {
     return (
       <Box className={className}>
         <Box className="hero" display="flex" alignItems="center">
@@ -142,7 +135,7 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
       {isMobile ? (
         <Box className="hero" pt={3}>
           <HeroContentMobile
-            announcements={showOnHomepageAnnouncements}
+            announcements={viewer.announcements}
             mainIdx={mainIdx}
             mainIdxUpdate={(idx: number) => {
               mainIdxUpdate(idx);
@@ -152,14 +145,13 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
               subIdxUpdate(idx);
             }}
             isMedium={isMedium}
-            numOfAnnouncements={viewer.announcements.length}
           />
         </Box>
       ) : (
         <Box className="hero" display="flex" alignItems="center">
           <Container className="hero-content">
             <HeroContentDesktop
-              announcements={showOnHomepageAnnouncements}
+              announcements={viewer.announcements}
               mainIdx={mainIdx}
               mainIdxUpdate={(idx: number) => {
                 mainIdxUpdate(idx);
@@ -169,7 +161,6 @@ const UnstyledHero: FunctionComponent<HomeProps> = ({ className }) => {
                 subIdxUpdate(idx);
               }}
               isMedium={isMedium}
-              numOfAnnouncements={viewer.announcements.length}
             />
           </Container>
         </Box>

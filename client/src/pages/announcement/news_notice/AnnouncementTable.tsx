@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useMemo } from 'react';
 import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
@@ -30,6 +30,11 @@ const UnstyledAnnouncementTable: FunctionComponent<AnnouncementTableProps> = ({
   const history = useHistory();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage] = React.useState(10);
+
+  useMemo(() => {
+    if (parseInt(selectedID) < rowsPerPage) setPage(0);
+    else { setPage(Math.floor(parseInt(selectedID) / rowsPerPage)) }
+  }, [selectedID])
 
   const handlePageChange = async (page: number) => {
     setPage(page);
