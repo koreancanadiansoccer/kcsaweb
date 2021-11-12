@@ -42,6 +42,7 @@ const UnstyledGallerySlide: FunctionComponent<GallerySlideProps> = ({
   if (!viewer?.galleries || !showGallery) {
     return (
       <Box
+        mt={9.2}
         ml={10}
         sx={{
           width: '54rem',
@@ -92,6 +93,7 @@ const UnstyledGallerySlide: FunctionComponent<GallerySlideProps> = ({
 
   return (
     <Box
+      mt={9.2}
       ml={10}
       sx={{
         width: '56rem',
