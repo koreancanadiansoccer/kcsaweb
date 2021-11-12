@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useMemo } from 'react';
 import Box from '@material-ui/core/Box';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
@@ -24,6 +24,12 @@ export const LeagueMobileNav: React.FC<LeagueMobileNavProps> = ({
 }) => {
   const { viewer } = useContext(ViewerContext);
   const [leagueOpen, setLeagueOpen] = useState(false);
+
+  const leagueName = useMemo(() => {
+    if (!viewer.leagues) return "Comming Soon";
+    return `${viewer.leagues[0].year} ${viewer.leagues[0].name} ${viewer.leagues[0].leagueType}`;
+  }, [viewer.leagues])
+
   const handleClick = () => {
     setLeagueOpen(!leagueOpen);
   };
@@ -37,21 +43,15 @@ export const LeagueMobileNav: React.FC<LeagueMobileNavProps> = ({
 
       <Collapse in={leagueOpen} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          {map(viewer?.leagues, (league) => {
-            return (
-              <Box key={`league-age-${league.leagueAgeType}`}>
-                <Divider
-                  style={{ backgroundColor: 'rgb(255 255 255 / 36%)' }}
-                />
+          <Box>
+            <Divider style={{ backgroundColor: 'rgb(255 255 255 / 36%)' }} />
 
-                <Box
-                  style={{ fontSize: '1rem' }}
-                >{`${league.year} ${league.name} ${league.leagueType}`}</Box>
+            <Box style={{ fontSize: '1rem' }}>{leagueName}</Box>
 
-                <Divider
-                  style={{ backgroundColor: 'rgb(255 255 255 / 36%)' }}
-                />
+            <Divider style={{ backgroundColor: 'rgb(255 255 255 / 36%)' }} />
 
+            {map(viewer?.leagues, (league) => {
+              return (
                 <Box key={`league-nav-link-${league.name}-${league.id}`}>
                   <ListItem
                     component={RouteLink}
@@ -63,9 +63,9 @@ export const LeagueMobileNav: React.FC<LeagueMobileNavProps> = ({
                     <ListItemText primary={league.leagueAgeType} />
                   </ListItem>
                 </Box>
-              </Box>
-            );
-          })}
+              );
+            })}
+          </Box>
         </List>
       </Collapse>
     </>
@@ -75,6 +75,11 @@ export const LeagueMobileNav: React.FC<LeagueMobileNavProps> = ({
 export const LeagueNav: React.FC = () => {
   const { viewer } = useContext(ViewerContext);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const leagueName = useMemo(() => {
+    if (!viewer.leagues) return "Comming Soon";
+    return `${viewer.leagues[0].year} ${viewer.leagues[0].name} ${viewer.leagues[0].leagueType}`;
+  }, [viewer.leagues])
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -105,17 +110,17 @@ export const LeagueNav: React.FC = () => {
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
         onClose={handleClose}
       >
+        <Box>
+          <Divider />
+
+          <Box textAlign="center" className="boldText" px={2}>
+            {leagueName}
+          </Box>
+
+          <Divider />
+
         {map(viewer?.leagues, (league) => {
           return (
-            <Box key={`league-age-${league.leagueAgeType}`}>
-              <Divider />
-
-              <Box textAlign="center" className="boldText" px={2}>
-                {`${league.year} ${league.name} ${league.leagueType}`}
-              </Box>
-
-              <Divider />
-
               <Box key={`league-nav-link-${league.name}-${league.id}`}>
                 <MenuItem
                   onClick={handleClose}
@@ -125,9 +130,9 @@ export const LeagueNav: React.FC = () => {
                   <Box textAlign="center">{league.leagueAgeType}</Box>
                 </MenuItem>
               </Box>
-            </Box>
           );
         })}
+        </Box>
       </Menu>
     </>
   );
