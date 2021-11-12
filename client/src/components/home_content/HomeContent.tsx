@@ -202,7 +202,7 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
 
           {/* Galleries Slide Show */}
           {!isMobile && (
-            <Box mt={9.2}>
+            <Box display='contents'>
               <GallerySlide />
             </Box>
           )}
