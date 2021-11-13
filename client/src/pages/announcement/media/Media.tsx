@@ -1,10 +1,11 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
-import { withTheme } from '@material-ui/core/styles';
+import { withTheme, useTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
+import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import map from 'lodash/map';
-import Typography from '@material-ui/core/Typography';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import {
   GET_GALLERIES,
@@ -28,7 +29,10 @@ const UnstyledMedia: FunctionComponent<GalleryProps> = ({ className }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage] = React.useState(12);
+  const [rowsPerPage] = React.useState(9);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   // Get Galleries data
   const galleriesQuery = useQuery<GalleryQueryData>(GET_GALLERIES);
@@ -61,34 +65,59 @@ const UnstyledMedia: FunctionComponent<GalleryProps> = ({ className }) => {
         className="media-banner-container"
         display="flex"
         alignItems="center"
+        height={isMobile ? '100px' : '240px'}
       >
-        <Typography variant="h3" className="media-banner-text">
-          Gallery
-        </Typography>
-      </Box>
-      <Box className="init-gallery-page">
-        <Box className="gallery-page" mt={3}>
-          {map(
-            galleries.slice(
-              page * rowsPerPage,
-              page * rowsPerPage + rowsPerPage
-            ),
-            (gallery) => (
-              <GalleryCard className="gallery-card" gallery={gallery} />
-            )
-          )}
-        </Box>
+        <Container>
+          <Box
+            fontSize="h3.fontSize"
+            fontWeight={700}
+            color='white'
+            className="media-banner-text"
+          >
+            Gallery
+          </Box>
+        </Container>
       </Box>
 
-      <Pagination
-        className="pagination"
-        activePage={page}
-        rowsPerPage={rowsPerPage}
-        onChange={(page: number) => {
-          handlePageChange(page);
-        }}
-        imageLength={galleries.length}
-      />
+      <Container>
+        <Box
+          className="init-gallery-page"
+          display='flex'
+          justifyContent='center'
+          height='fit-content'
+        >
+          <Box
+            className="gallery-page"
+            mt={3}
+            display='flex'
+            justifyContent='flex-start'
+            flexWrap='wrap'
+            flexDirection='row'
+            alignItems='flrx-start'
+            ml={13}
+          >
+            {map(
+              galleries.slice(
+                page * rowsPerPage,
+                page * rowsPerPage + rowsPerPage
+              ),
+              (gallery) => (
+                <GalleryCard gallery={gallery} />
+              )
+            )}
+          </Box>
+        </Box>
+
+        <Pagination
+          className="pagination"
+          activePage={page}
+          rowsPerPage={rowsPerPage}
+          onChange={(page: number) => {
+            handlePageChange(page);
+          }}
+          imageLength={galleries.length}
+        />
+      </Container>
     </Box>
   );
 };
@@ -97,37 +126,7 @@ export const Media = withTheme(styled(UnstyledMedia)`
   .media-banner-container {
     background-image: url(${AboutBanner});
     min-width: 100px; /*or 70%, or what you want*/
-    height: 284px; /*or 70%, or what you want*/
     background-size: 100% 100%;
-  }
-
-  .media-banner-text {
-    font-weight: 700;
-    color: white;
-    margin-left: 7rem;
-  }
-
-  .init-gallery-page {
-    display: flex;
-    justify-content: center;
-    height: fit-content;
-  }
-
-  .gallery-page {
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    flex-direction: row;
-    align-items: flex-start;
-    width: 88rem;
-    margin-left: 3rem;
-  }
-
-  .gallery-card {
-    padding: 1.5rem;
-    width: 20rem;
-    height: 400px;
-    margin: 0.6rem;
   }
 
   .pagination {

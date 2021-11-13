@@ -58,6 +58,7 @@ const UnstyledLeague: FunctionComponent<LeagueProps> = ({ className }) => {
             color="white"
             flexDirection="column"
             fontSize={isMobile ? 24 : '2.5rem'}
+            fontWeight={700}
           >
             {league?.name} {league.year} {league.leagueType}{' '}
             {league.leagueAgeType}
@@ -112,11 +113,6 @@ export const League = withTheme(styled(UnstyledLeague)`
     background-image: url(${AboutBanner});
     min-width: 100px; /*or 70%, or what you want*/
     background-size: 100% 100%;
-
-    .league-banner-text {
-      font-weight: 700;
-      color: white;
-    }
   }
 
   .standing-table {

@@ -32,7 +32,13 @@ const UnstyledGalleryCard: FunctionComponent<GalleryProps> = ({
   }
 
   return (
-    <Box className={className}>
+    <Box
+      className={className}
+      height={400}
+      width='20rem'
+      padding='1.5rem'
+      margin='0.6rem'
+    >
 
       <motion.div
         initial={{ opacity: 0, x: 0, y: 0 }}
