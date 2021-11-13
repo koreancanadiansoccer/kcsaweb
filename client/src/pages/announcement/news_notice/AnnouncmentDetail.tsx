@@ -16,6 +16,7 @@ interface AnnouncementProps {
   announcement: Announcement;
   maxLength: number;
   moveClick?: (id: number) => Promise<void>;
+  isMobile?: boolean;
 }
 
 /**
@@ -26,26 +27,30 @@ const UnstyledAnnouncementDetail: FunctionComponent<AnnouncementProps> = ({
   announcement,
   maxLength,
   moveClick,
+  isMobile,
 }) => {
   return (
-    <Box className={className} pt={10}>
-      <Paper
-        elevation={3}
-      >
-        <Box py={6}>
+    <Box className={className} pt={isMobile ? 4 : 10}>
+      <Paper elevation={3}>
+        <Box py={isMobile ? 4 : 6}>
           <Box
             display="flex"
-            flexDirection="row"
-            flexWrap="nowrap"
             justifyContent="space-between"
-            mb={4}
-            px={10}
+            mb={isMobile ? 2 : 4}
+            px={isMobile ? 3 : 10}
+            flexDirection={isMobile ? 'column' : 'row'}
           >
             <Box fontSize="h6.fontSize" fontWeight="fontWeightBold">
               {announcement.title}
             </Box>
 
-            <Box fontSize="h6.fontSize" fontWeight="fontWeightBold">
+            <Box
+              fontSize={isMobile ? 16 : "h6.fontSize"}
+              fontWeight={isMobile ? 500 : 'bold'}
+              display="flex"
+              justifyContent='flex-end'
+              mt={isMobile ? 1 : 0}
+            >
               {dayjs(announcement.createdAt, 'YYYY-MM-DDTHH:mm').format(
                 'YYYY. MM. DD'
               )}
@@ -53,7 +58,7 @@ const UnstyledAnnouncementDetail: FunctionComponent<AnnouncementProps> = ({
           </Box>
           <Divider />
 
-          <Box px={10}>
+          <Box px={isMobile ? 2 : 10}>
             {announcement.imageURL && (
               <Box my={4}>
                 <img
@@ -63,10 +68,14 @@ const UnstyledAnnouncementDetail: FunctionComponent<AnnouncementProps> = ({
                 />
               </Box>
             )}
-            <Box pr={40}>{ReactHtmlParser(announcement.content)}</Box>
+            <Box pr={isMobile ? 0 : 40}>{ReactHtmlParser(announcement.content)}</Box>
 
             <Box
-              className={announcement.id === String(maxLength) ? 'annoucement-pagination' : ''}
+              className={
+                announcement.id === String(maxLength)
+                  ? 'annoucement-pagination'
+                  : ''
+              }
               display="flex"
               justifyContent="space-between"
               mt={5}
@@ -95,7 +104,7 @@ const UnstyledAnnouncementDetail: FunctionComponent<AnnouncementProps> = ({
               {announcement.id !== '1' && (
                 <Box
                   display="flex"
-                  className='announcement-detail-pagination'
+                  className="announcement-detail-pagination"
                   onClick={
                     moveClick
                       ? () => {
