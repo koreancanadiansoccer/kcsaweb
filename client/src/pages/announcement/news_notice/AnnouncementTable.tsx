@@ -30,7 +30,7 @@ const UnstyledAnnouncementTable: FunctionComponent<AnnouncementTableProps> = ({
 }) => {
   const history = useHistory();
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage] = React.useState(10);
+  const [rowsPerPage] = React.useState(isMobile? 5 : 10);
 
   const handlePageChange = async (page: number) => {
     setPage(page);

@@ -99,7 +99,7 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
             fontSize={isMobile ? 24 : 'h3.fontSize'}
             fontWeight={700}
             color="white"
-            ml={4}
+            ml={isMobile ? 3 : 4}
             className="news-banner-text"
           >
             Announcement
