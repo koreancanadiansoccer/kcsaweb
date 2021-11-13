@@ -46,11 +46,10 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
     // If no error/loading set values.
     if (!loading && !error && announcementDataQuery?.data?.getAnnouncements) {
       setAnnouncements(announcementDataQuery.data.getAnnouncements);
+
+      id ? setSelectedID(String(announcementDataQuery.data.getAnnouncements.length - parseInt(id))) : setSelectedID('');
     }
 
-    if (!id) {
-      setSelectedID('')
-    }
 
     if (announcementDataQuery.error) {
       setError(parseError(announcementDataQuery.error));
