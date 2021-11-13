@@ -99,7 +99,6 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
             fontWeight={700}
             color="white"
             ml={isMobile ? 3 : 4}
-            className="news-banner-text"
           >
             Announcement
           </Box>

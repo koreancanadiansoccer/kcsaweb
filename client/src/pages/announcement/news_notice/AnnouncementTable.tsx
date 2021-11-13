@@ -50,7 +50,6 @@ const UnstyledAnnouncementTable: FunctionComponent<AnnouncementTableProps> = ({
           mt={5}
           mb={isMobile ? 3 : 5}
           fontWeight="bold"
-          className="news-standing-banner-text"
         >
           Announcement
         </Box>
