@@ -51,13 +51,13 @@ const UnstyledLeague: FunctionComponent<LeagueProps> = ({ className }) => {
       >
         <Container>
           <Box
-            className="league-banner-text"
             display="flex"
             justifyContent="center"
             alignItems="flex-start"
             color="white"
             flexDirection="column"
             fontSize={isMobile ? 24 : '2.5rem'}
+            fontWeight={700}
           >
             {league?.name} {league.year} {league.leagueType}{' '}
             {league.leagueAgeType}
@@ -67,7 +67,6 @@ const UnstyledLeague: FunctionComponent<LeagueProps> = ({ className }) => {
 
       <Container>
         <Box
-          className="leagueSelect-box"
           display="flex"
           justifyContent="start"
           mt={6}
@@ -112,11 +111,6 @@ export const League = withTheme(styled(UnstyledLeague)`
     background-image: url(${AboutBanner});
     min-width: 100px; /*or 70%, or what you want*/
     background-size: 100% 100%;
-
-    .league-banner-text {
-      font-weight: 700;
-      color: white;
-    }
   }
 
   .standing-table {
