@@ -26,9 +26,9 @@ export const LeagueMobileNav: React.FC<LeagueMobileNavProps> = ({
   const [leagueOpen, setLeagueOpen] = useState(false);
 
   const leagueName = useMemo(() => {
-    if (!viewer.leagues) return "Comming Soon";
+    if (!viewer.leagues || viewer.leagues.length === 0) return 'Coming Soon';
     return `${viewer.leagues[0].year} ${viewer.leagues[0].name} ${viewer.leagues[0].leagueType}`;
-  }, [viewer.leagues])
+  }, [viewer.leagues]);
 
   const handleClick = () => {
     setLeagueOpen(!leagueOpen);
@@ -46,7 +46,7 @@ export const LeagueMobileNav: React.FC<LeagueMobileNavProps> = ({
           <Box>
             <Divider style={{ backgroundColor: 'rgb(255 255 255 / 36%)' }} />
 
-            <Box style={{ fontSize: '1rem' }}>{leagueName}</Box>
+            <Box fontSize="1rem">{leagueName}</Box>
 
             <Divider style={{ backgroundColor: 'rgb(255 255 255 / 36%)' }} />
 
@@ -77,9 +77,9 @@ export const LeagueNav: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const leagueName = useMemo(() => {
-    if (!viewer.leagues) return "Comming Soon";
+    if (!viewer.leagues || viewer.leagues.length === 0) return 'Coming Soon';
     return `${viewer.leagues[0].year} ${viewer.leagues[0].name} ${viewer.leagues[0].leagueType}`;
-  }, [viewer.leagues])
+  }, [viewer.leagues]);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -119,8 +119,8 @@ export const LeagueNav: React.FC = () => {
 
           <Divider />
 
-        {map(viewer?.leagues, (league) => {
-          return (
+          {map(viewer?.leagues, (league) => {
+            return (
               <Box key={`league-nav-link-${league.name}-${league.id}`}>
                 <MenuItem
                   onClick={handleClose}
@@ -130,8 +130,8 @@ export const LeagueNav: React.FC = () => {
                   <Box textAlign="center">{league.leagueAgeType}</Box>
                 </MenuItem>
               </Box>
-          );
-        })}
+            );
+          })}
         </Box>
       </Menu>
     </>

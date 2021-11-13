@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { isEmpty } from 'lodash';
 import Divider from '@material-ui/core/Divider';
 import Box from '@material-ui/core/Box';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -35,6 +36,16 @@ export const TeamMobileNav: React.FC<TeamMobileNavProps> = ({ onClose }) => {
 
       <Collapse in={teameOpen} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
+          {isEmpty(viewer.leagueTeamGroupAge) && (
+            <>
+              <Divider style={{ backgroundColor: 'rgb(255 255 255 / 36%)' }} />
+              <Box fontSize="1rem" textAlign="center" px={2}>
+                Coming soon
+              </Box>
+              <Divider style={{ backgroundColor: 'rgb(255 255 255 / 36%)' }} />
+            </>
+          )}
+
           {map(viewer?.leagueTeamGroupAge, (leagueTeams, key) => {
             return (
               <Box key={`team-age-${key}`}>
@@ -103,6 +114,16 @@ export const TeamsNav: React.FC = () => {
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
         onClose={handleClose}
       >
+        {isEmpty(viewer.leagueTeamGroupAge) && (
+          <>
+            <Divider />
+            <Box textAlign="center" className="boldText" px={2}>
+              Coming soon
+            </Box>
+            <Divider />
+          </>
+        )}
+
         {map(viewer?.leagueTeamGroupAge, (leagueTeams, key) => {
           return (
             <Box key={`team-age-${key}`}>
@@ -114,19 +135,25 @@ export const TeamsNav: React.FC = () => {
 
               <Divider />
 
-              {map(leagueTeams, (leagueTeam) => (
-                <Box
-                  key={`team-nav-link-${leagueTeam.team.name}-${leagueTeam.id}`}
-                >
-                  <MenuItem
-                    onClick={handleClose}
-                    component={RouteLink}
-                    to={`/teams/${leagueTeam.id}`}
-                  >
-                    <Box textAlign="center"> {leagueTeam.team.name}</Box>
-                  </MenuItem>
+              {leagueTeams.length === 0 ? (
+                <Box textAlign="center" className="boldText" px={2}>
+                  Coming soon
                 </Box>
-              ))}
+              ) : (
+                map(leagueTeams, (leagueTeam) => (
+                  <Box
+                    key={`team-nav-link-${leagueTeam.team.name}-${leagueTeam.id}`}
+                  >
+                    <MenuItem
+                      onClick={handleClose}
+                      component={RouteLink}
+                      to={`/teams/${leagueTeam.id}`}
+                    >
+                      <Box textAlign="center"> {leagueTeam.team.name}</Box>
+                    </MenuItem>
+                  </Box>
+                ))
+              )}
             </Box>
           );
         })}
