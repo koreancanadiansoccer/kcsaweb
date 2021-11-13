@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
 import { scroller } from 'react-scroll';
 
 import { StandingTable } from '../../../components/standing_table/StandingTable';
@@ -15,6 +14,7 @@ interface AnnouncementTableProps {
   tableRowData: TableRow[];
   selectedID: string;
   onChange: (id: string) => Promise<void>;
+  isMobile?: boolean;
 }
 
 /**
@@ -26,6 +26,7 @@ const UnstyledAnnouncementTable: FunctionComponent<AnnouncementTableProps> = ({
   tableRowData,
   selectedID,
   onChange,
+  isMobile,
 }) => {
   const history = useHistory();
   const [page, setPage] = React.useState(0);
@@ -38,19 +39,26 @@ const UnstyledAnnouncementTable: FunctionComponent<AnnouncementTableProps> = ({
   return (
     <Box className={className}>
       <Box>
-        <Typography variant="h5" className="news-standing-banner-text">
+        <Box
+          fontSize="h5.fontSize"
+          ml={4}
+          mt={5}
+          mb={isMobile ? 3 : 5}
+          fontWeight="bold"
+          className="news-standing-banner-text"
+        >
           Announcement
-        </Typography>
+        </Box>
 
         <StandingTable
           tableRowData={tableRowData.slice(
             page * rowsPerPage,
             page * rowsPerPage + rowsPerPage
           )}
-          headerClassName='announcement-table-header'
+          headerClassName="announcement-table-header"
           tableHeaderData={AnnouncementPageStandingHeader}
-          flex={[1, 4, 1]}
-          rowContentClassName='announcement-table-row'
+          flex={isMobile ? [1, 4, 1.5] : [1, 4, 1]}
+          rowContentClassName="announcement-table-row"
           selectedRow={parseInt(selectedID) - rowsPerPage * page}
           rowClick={(id: number) => {
             const idx = id + page * rowsPerPage;
@@ -59,7 +67,7 @@ const UnstyledAnnouncementTable: FunctionComponent<AnnouncementTableProps> = ({
             history.push(`/announcement/${idx}`);
             scroller.scrollTo('selectedAnnouncement', {
               smooth: false,
-              offset: 300,
+              offset: isMobile ? 110 : 300,
               duration: 500,
             });
           }}
@@ -72,6 +80,7 @@ const UnstyledAnnouncementTable: FunctionComponent<AnnouncementTableProps> = ({
                 handlePageChange(page);
               }}
               imageLength={tableRowData.length}
+              isMobile={isMobile}
             />
           }
         />
@@ -81,11 +90,6 @@ const UnstyledAnnouncementTable: FunctionComponent<AnnouncementTableProps> = ({
 };
 
 export const AnnouncementTable = withTheme(styled(UnstyledAnnouncementTable)`
-  .news-standing-banner-text {
-    margin: 2rem 0 1rem 3rem;
-    font-weight: bold;
-  }
-
   .announcement-table-header {
     font-size: 1.06rem;
     font-weight: 600;
@@ -97,14 +101,6 @@ export const AnnouncementTable = withTheme(styled(UnstyledAnnouncementTable)`
   }
 
   .announcement-pagination {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    align-items: center;
-    margin-right: 5.5rem;
-    padding-bottom: 2rem;
-
     div svg {
       font-size: medium;
     }

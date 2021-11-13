@@ -1,14 +1,14 @@
 import React, { FunctionComponent, useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
-import { withTheme } from '@material-ui/core/styles';
+import { withTheme, useTheme } from '@material-ui/core/styles';
 import { useQuery } from '@apollo/client';
 import { useHistory, useParams } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
 import map from 'lodash/map';
 import dayjs from 'dayjs';
 import { scroller } from 'react-scroll';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import { Announcement } from '../../../types/announcement';
 import { GET_ANNOUNCEMENTS } from '../../../graphql/announcement/get_announcements.query';
@@ -29,6 +29,8 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
 }) => {
   const history = useHistory();
   const { id } = useParams<{ id: string }>();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [announcements, setAnnouncements] = useState<Announcement[]>();
   const [selectedID, setSelectedID] = useState<string>(id);
@@ -68,7 +70,13 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
       return {
         'No.': idx + 1 + '.',
         Title: announcement.title,
-        Date: dayjs(announcement.createdAt, 'YYYY-MM-DDTHH:mm').format('YYYY-MM-DD'),
+        Date: isMobile
+          ? dayjs(announcement.createdAt, 'YYYY-MM-DDTHH:mm').format(
+              'DD-MMM'
+            )
+          : dayjs(announcement.createdAt, 'YYYY-MM-DDTHH:mm').format(
+              'YYYY-MM-DD'
+            ),
       };
     })
   }, [announcements]);
@@ -83,11 +91,20 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
         className="news-banner-container"
         display="flex"
         alignItems="center"
+        height={isMobile ? '100px' : '240px'}
         id="selectedAnnouncement"
       >
-        <Typography variant="h3" className="news-banner-text">
-          Announcement
-        </Typography>
+        <Container>
+          <Box
+            fontSize={isMobile ? 24 : 'h3.fontSize'}
+            fontWeight={700}
+            color="white"
+            ml={4}
+            className="news-banner-text"
+          >
+            Announcement
+          </Box>
+        </Container>
       </Box>
 
       <Container>
@@ -99,11 +116,12 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
               setSelectedID(String(id));
               history.push(`/announcement/${id}`);
               scroller.scrollTo('selectedAnnouncement', {
-                smooth: false,
-                offset: 300,
+                smooth: true,
+                offset: isMobile ? 110 : 300,
                 duration: 500,
               });
             }}
+            isMobile={isMobile}
           />
         )}
 
@@ -113,6 +131,7 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
           onChange={(id: string) => {
             setSelectedID(id);
           }}
+          isMobile={isMobile}
         />
       </Container>
     </Box>
@@ -123,13 +142,6 @@ export const Announcements = withTheme(styled(UnstyledAnnouncements)`
   .news-banner-container {
     background-image: url(${AboutBanner});
     min-width: 100px; /*or 70%, or what you want*/
-    height: 284px; /*or 70%, or what you want*/
     background-size: 100% 100%;
-  }
-
-  .news-banner-text {
-    font-weight: 700;
-    color: white;
-    margin-left: 7rem;
   }
 `);

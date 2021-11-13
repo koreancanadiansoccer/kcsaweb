@@ -12,6 +12,7 @@ interface PaginationProps {
   onChange: (page: number) => Promise<void>;
   activePage: number;
   rowsPerPage: number;
+  isMobile?: boolean;
 }
 
 /**
@@ -23,53 +24,79 @@ const UnstyledPagination: FunctionComponent<PaginationProps> = ({
   onChange,
   activePage,
   rowsPerPage,
+  isMobile,
 }) => {
   const [lastPage, SetLastPage] = useState(0);
 
   useEffect(() => {
     if (activePage > -1 && imageLength > 0) {
-      SetLastPage(imageLength % rowsPerPage == 0
-                  ? imageLength / rowsPerPage
-                  : Math.ceil(imageLength / rowsPerPage))
+      SetLastPage(
+        imageLength % rowsPerPage == 0
+          ? imageLength / rowsPerPage
+          : Math.ceil(imageLength / rowsPerPage)
+      );
     }
-  })
+  });
 
   const prevPageChange = () => {
     if (activePage > 0) {
       void onChange(activePage - 1);
     }
-  }
+  };
 
   const nextPageChange = () => {
     if (activePage < lastPage - 1) {
       void onChange(activePage + 1);
     }
-  }
+  };
 
   return (
-    <Box className={className}>
-      <Box className={activePage != 0 ? "first-page" : "non-cursor"} onClick={() => { void onChange(0) }}>
+    <Box
+      className={className}
+      display="flex"
+      flexDirection="row"
+      flexWrap="wrap"
+      justifyContent={isMobile ? 'center' : 'flex-end'}
+      alignItems="center"
+      mr={isMobile ? 0 : 11}
+      pb={4}
+    >
+      <Box
+        className={activePage != 0 ? 'first-page' : 'non-cursor'}
+        onClick={() => {
+          void onChange(0);
+        }}
+      >
         <ArrowBackIos />
         <ArrowBackIos className="first-page-button" />
       </Box>
 
-      <Box className={activePage != 0 ? "prev-page" : "non-cursor"} onClick={prevPageChange} ml={3}>
+      <Box
+        className={activePage != 0 ? 'prev-page' : 'non-cursor'}
+        onClick={prevPageChange}
+        ml={3}
+      >
         <ArrowBackIos />
       </Box>
 
-      <Typography
-        component="div"
-        variant="body2"
-        className="page-number"
-      >
+      <Typography component="div" variant="body2" className="page-number">
         {activePage + 1} of {lastPage}
       </Typography>
 
-      <Box className={activePage + 1 != lastPage? "next-page" : "non-cursor"} onClick={nextPageChange} mr={3}>
+      <Box
+        className={activePage + 1 != lastPage ? 'next-page' : 'non-cursor'}
+        onClick={nextPageChange}
+        mr={3}
+      >
         <ArrowForwardIos />
       </Box>
 
-      <Box className={activePage + 1 != lastPage ? "last-page" : "non-cursor"} onClick={() => { void onChange(lastPage - 1) }}>
+      <Box
+        className={activePage + 1 != lastPage ? 'last-page' : 'non-cursor'}
+        onClick={() => {
+          void onChange(lastPage - 1);
+        }}
+      >
         <ArrowForwardIos className="last-page-button" />
         <ArrowForwardIos />
       </Box>
