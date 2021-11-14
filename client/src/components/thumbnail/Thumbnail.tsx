@@ -1,19 +1,21 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
-import { withTheme } from '@material-ui/core/styles';
-import styled from 'styled-components';
-import map from 'lodash/map';
-import Box from '@material-ui/core/Box';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import React, { FunctionComponent, useEffect, useState } from "react";
+import { withTheme } from "@material-ui/core/styles";
+import styled from "styled-components";
+import map from "lodash/map";
+import Box from "@material-ui/core/Box";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
-import { GalleryImage } from '../../types/gallery';
+import { GalleryImage } from "../../types/gallery";
+import { Pagination } from "../pagination/Pagination";
 
 interface ThumbnailProps {
   className?: string;
   galleryImages: GalleryImage[];
-  numOfThumbnail?: number;
+  numOfThumbnail: number;
   activeIndex: number;
   onSelect: (index: number) => Promise<void>;
+  isMobile?: boolean;
 }
 
 /**
@@ -22,9 +24,10 @@ interface ThumbnailProps {
 const UnstyledThumbnail: FunctionComponent<ThumbnailProps> = ({
   className,
   galleryImages,
-  numOfThumbnail = 6,
+  numOfThumbnail,
   activeIndex,
   onSelect,
+  isMobile = false,
 }) => {
   const [page, setPage] = useState(0);
   const [lastPage, SetLastPage] = useState(0);
@@ -39,12 +42,10 @@ const UnstyledThumbnail: FunctionComponent<ThumbnailProps> = ({
     }
 
     if (activeIndex == 0) {
-      setPage(activeIndex)
-    }
-    else if (activeIndex % numOfThumbnail == 0 && page < lastPage - 1) {
+      setPage(activeIndex);
+    } else if (activeIndex % numOfThumbnail == 0 && page < lastPage - 1) {
       setPage(page + 1);
     }
-
   }, [activeIndex]);
 
   const prevPageChange = () => {
@@ -59,53 +60,104 @@ const UnstyledThumbnail: FunctionComponent<ThumbnailProps> = ({
     }
   };
 
+  const handlePageChange = async (page: number) => {
+    setPage(page);
+  };
+
   return (
     <Box className={className} display="flex" justifyContent="center" mb={6}>
-      <Box display="flex" width="70rem">
-        {/* Only show the arrow button when the number of images over numOfThumbnail */}
-        {galleryImages.length > numOfThumbnail && (
-          <ChevronLeftIcon
-            className="chevron-left"
-            onClick={() => prevPageChange()}
-          />
-        )}
-
+      <Box display="flex" width="100%" flexDirection={isMobile ? "column" : ""}>
         <Box
           display="flex"
           justifyContent="flex-start"
-          px={2}
+          px={isMobile ? 0 : 2}
           width="100%"
           className="thumbnail-box"
         >
-          {map(
-            galleryImages.slice(
-              page * numOfThumbnail,
-              page * numOfThumbnail + numOfThumbnail
-            ),
-            (img, index) => (
-              <Box
-                className={
-                  activeIndex === index + page * numOfThumbnail
-                    ? 'thumbnail-item clicked-thumbnail'
-                    : 'thumbnail-item'
-                }
-                key={index}
-              >
-                <img
-                  src={img.imageURL}
-                  alt={img.id}
-                  onClick={() => void onSelect(index + page * numOfThumbnail)}
+          {isMobile ? (
+            <>
+              {map(
+                galleryImages.slice(
+                  page * numOfThumbnail,
+                  page * numOfThumbnail + numOfThumbnail
+                ),
+                (img, index) => (
+                  <Box
+                    className={
+                      activeIndex === index + page * numOfThumbnail
+                        ? "mobile-thumbnail-item clicked-thumbnail"
+                        : "mobile-thumbnail-item"
+                    }
+                    key={index}
+                    flex={activeIndex === index + page * numOfThumbnail ? 3 : 1}
+                    height={100}
+                  >
+                    <img
+                      src={img.imageURL}
+                      alt={img.id}
+                      onClick={() =>
+                        void onSelect(index + page * numOfThumbnail)
+                      }
+                    />
+                  </Box>
+                )
+              )}
+            </>
+          ) : (
+            <>
+              {galleryImages.length > numOfThumbnail && page !== 0 && (
+                <ChevronLeftIcon
+                  className="chevron-left"
+                  onClick={() => prevPageChange()}
                 />
-              </Box>
-            )
+              )}
+
+              {map(
+                galleryImages.slice(
+                  page * numOfThumbnail,
+                  page * numOfThumbnail + numOfThumbnail
+                ),
+                (img, index) => (
+                  <Box
+                    className={
+                      activeIndex === index + page * numOfThumbnail
+                        ? "desktop-thumbnail-item clicked-thumbnail"
+                        : "desktop-thumbnail-item"
+                    }
+                    key={index}
+                  >
+                    <img
+                      src={img.imageURL}
+                      alt={img.id}
+                      onClick={() =>
+                        void onSelect(index + page * numOfThumbnail)
+                      }
+                    />
+                  </Box>
+                )
+              )}
+
+              {/* Only show the arrow button when the number of images over numOfThumbnail */}
+              {galleryImages.length > numOfThumbnail &&
+                page !== lastPage - 1 && (
+                  <ChevronRightIcon
+                    className="chevron-right"
+                    onClick={() => nextPageChange()}
+                  />
+                )}
+            </>
           )}
         </Box>
 
-        {/* Only show the arrow button when the number of images over numOfThumbnail */}
-        {galleryImages.length > numOfThumbnail && (
-          <ChevronRightIcon
-            className="chevron-right"
-            onClick={() => nextPageChange()}
+        {isMobile && galleryImages.length > numOfThumbnail && (
+          <Pagination
+            className="pagination"
+            activePage={page}
+            rowsPerPage={numOfThumbnail}
+            onChange={(page: number) => {
+              handlePageChange(page);
+            }}
+            imageLength={galleryImages.length}
           />
         )}
       </Box>
@@ -118,10 +170,10 @@ export const Thumbnail = withTheme(styled(UnstyledThumbnail)`
     background: rgb(228 230 233);
   }
 
-  .thumbnail-item {
+  .desktop-thumbnail-item {
     height: 100px;
     cursor: pointer;
-    margin: 1rem;
+    margin: 1rem 1.5rem 1rem 1.5rem;
     width: auto !important;
 
     img {
@@ -133,6 +185,16 @@ export const Thumbnail = withTheme(styled(UnstyledThumbnail)`
       &:hover {
         filter: none;
       }
+    }
+  }
+
+  .mobile-thumbnail-item {
+    img {
+      width: 100%;
+      height: 100%;
+      vertical-align: top;
+      max-width: 100%;
+      filter: grayscale(1);
     }
   }
 
@@ -152,5 +214,22 @@ export const Thumbnail = withTheme(styled(UnstyledThumbnail)`
     font-size: 4rem;
     cursor: pointer;
     margin-top: 2rem;
+  }
+
+  .pagination {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+
+    div {
+      font-size: large;
+    }
+
+    div svg {
+      font-size: medium;
+    }
   }
 `);

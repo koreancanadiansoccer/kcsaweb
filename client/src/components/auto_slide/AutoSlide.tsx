@@ -2,15 +2,14 @@ import React, {
   FunctionComponent,
   useEffect,
   useState,
-} from 'react';
-import { withTheme } from '@material-ui/core/styles';
-import styled from 'styled-components';
-import map from 'lodash/map';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
+} from "react";
+import { withTheme } from "@material-ui/core/styles";
+import styled from "styled-components";
+import map from "lodash/map";
+import Box from "@material-ui/core/Box";
 
-import { GalleryImage } from '../../types/gallery';
-import { Thumbnail } from '../thumbnail/Thumbnail';
+import { GalleryImage } from "../../types/gallery";
+import { Thumbnail } from "../thumbnail/Thumbnail";
 
 interface AutoSlideProps {
   className?: string;
@@ -20,6 +19,7 @@ interface AutoSlideProps {
   intervalTime: number;
   activeThumbnail: boolean;
   numOfThumbnail?: number;
+  isMobile?: boolean;
 }
 
 /**
@@ -27,12 +27,13 @@ interface AutoSlideProps {
  */
 const UnstyledAutoSlide: FunctionComponent<AutoSlideProps> = ({
   className,
-  slidesContainerClassName = 'default-slide-container',
-  slidesImgClassName = 'default-slides',
+  slidesContainerClassName = "default-slide-container",
+  slidesImgClassName = "default-slides",
   galleryImages,
   intervalTime = 2000,
   activeThumbnail = false,
   numOfThumbnail = 6,
+  isMobile,
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -60,42 +61,50 @@ const UnstyledAutoSlide: FunctionComponent<AutoSlideProps> = ({
 
   return (
     <Box className={className}>
-      <Box className={slidesContainerClassName}>
-        {map(galleryImages, (image, index) => (
-          <Box
-            key={index}
-            className={
-              /* Use css to choose whether to show the image or not */
-              index === activeIndex
-                ? `active ${slidesImgClassName}`
-                : `inactive ${slidesImgClassName}`
-            }
-          >
-            <img
-              src={image.imageURL}
-              alt={`${image.imageURL}-${image.id}`}
-              className="slider-image"
-            />
-          </Box>
-        ))}
+      <Box>
+        <Box className={slidesContainerClassName}>
+          {map(galleryImages, (image, index) => (
+            <Box
+              key={index}
+              className={
+                /* Use css to choose whether to show the image or not */
+                index === activeIndex
+                  ? `active ${slidesImgClassName}`
+                  : `inactive ${slidesImgClassName}`
+              }
+            >
+              <img
+                src={image.imageURL}
+                alt={`${image.imageURL}-${image.id}`}
+                className="slider-image"
+              />
+            </Box>
+          ))}
+        </Box>
       </Box>
 
       {activeThumbnail && (
         <>
-          <Box display="flex" justifyContent="center">
-            <Box display="flex" justifyContent="flex-end" width="70rem">
-              <Typography variant="subtitle1" component="div">
+          <Box
+            display="flex"
+            justifyContent="center"
+            pb={galleryImages.length > 1 ? 0 : 4}
+          >
+            <Box display="flex" justifyContent="flex-end" width="100%">
+              <Box fontSize={17}>
                 {activeIndex + 1} / {galleryImages.length}
-              </Typography>
+              </Box>
             </Box>
           </Box>
-
-          <Thumbnail
-            galleryImages={galleryImages}
-            numOfThumbnail={numOfThumbnail}
-            onSelect={(index: number) => setActiveIndex(index)}
-            activeIndex={activeIndex}
-          />
+          {galleryImages.length > 1 && (
+            <Thumbnail
+              galleryImages={galleryImages}
+              numOfThumbnail={numOfThumbnail}
+              onSelect={(index: number) => setActiveIndex(index)}
+              activeIndex={activeIndex}
+              isMobile={isMobile}
+            />
+          )}
         </>
       )}
     </Box>

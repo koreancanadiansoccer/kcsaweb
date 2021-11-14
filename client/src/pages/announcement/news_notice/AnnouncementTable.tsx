@@ -41,7 +41,7 @@ const UnstyledAnnouncementTable: FunctionComponent<AnnouncementTableProps> = ({
       return;
     }
 
-    if (parseInt(selectedID) < rowsPerPage) setPage(0);
+    if (parseInt(selectedID) < rowsPerPage || !selectedID.length) setPage(0);
     else {
       setPage(Math.floor(parseInt(selectedID) / rowsPerPage));
     }

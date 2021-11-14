@@ -74,8 +74,15 @@ export const AnnouncementPageStandingHeader = [
   'Date',
 ];
 
+export interface AnnouncementPageStanding {
+  'No.': number;
+  Title: string;
+  Date: JSX.Element;
+}
+
 export type TableRow =
   | HomeScorer
   | HomeStanding
   | LeaguePageStanding
-  | LeaguePageSchedule;
+  | LeaguePageSchedule
+  | AnnouncementPageStanding;

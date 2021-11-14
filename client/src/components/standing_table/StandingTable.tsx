@@ -49,6 +49,7 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
   selectedRow,
   flex,
 }) => {
+
   return (
     <Box className={className}>
       <Paper elevation={paperShadow}>
