@@ -182,7 +182,7 @@ const UnstyledLeagueSchedule: FunctionComponent<LeagueScheduleProps> = ({
             <AccordionDetails>
               {map(matchesByRound, (match) => {
                 return (
-                  <Box pt={2} pb={isMobile ? 6 : 2}>
+                  <Box pt={2} pb={isMobile ? 6 : 2} key={`${key}-${match.id}`}>
                     <StandingTable
                       tableHeaderData={
                         isMobile

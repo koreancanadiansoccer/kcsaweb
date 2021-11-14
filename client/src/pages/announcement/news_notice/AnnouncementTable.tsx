@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useMemo } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
@@ -6,7 +6,10 @@ import Box from '@material-ui/core/Box';
 import { scroller } from 'react-scroll';
 
 import { StandingTable } from '../../../components/standing_table/StandingTable';
-import { TableRow, AnnouncementPageStandingHeader } from '../../../components/standing_table/standingData';
+import {
+  TableRow,
+  AnnouncementPageStandingHeader,
+} from '../../../components/standing_table/standingData';
 import { Pagination } from '../../../components/pagination/Pagination';
 
 interface AnnouncementTableProps {
@@ -30,12 +33,19 @@ const UnstyledAnnouncementTable: FunctionComponent<AnnouncementTableProps> = ({
 }) => {
   const history = useHistory();
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage] = React.useState(isMobile? 5 : 10);
+  const [rowsPerPage] = React.useState(isMobile ? 5 : 10);
 
-  useMemo(() => {
+  useEffect(() => {
+    if (!selectedID) {
+      setPage(0);
+      return;
+    }
+
     if (parseInt(selectedID) < rowsPerPage) setPage(0);
-    else { setPage(Math.floor(parseInt(selectedID) / rowsPerPage)) }
-  }, [selectedID])
+    else {
+      setPage(Math.floor(parseInt(selectedID) / rowsPerPage));
+    }
+  }, [selectedID, rowsPerPage]);
 
   const handlePageChange = async (page: number) => {
     setPage(page);
