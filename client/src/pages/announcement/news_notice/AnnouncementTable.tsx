@@ -32,8 +32,9 @@ const UnstyledAnnouncementTable: FunctionComponent<AnnouncementTableProps> = ({
   const [page, setPage] = React.useState(0);
   const [rowsPerPage] = React.useState(isMobile? 5 : 10);
 
+
   useMemo(() => {
-    if (parseInt(selectedID) < rowsPerPage) setPage(0);
+    if (parseInt(selectedID) < rowsPerPage || !selectedID.length) setPage(0);
     else { setPage(Math.floor(parseInt(selectedID) / rowsPerPage)) }
   }, [selectedID])
 
