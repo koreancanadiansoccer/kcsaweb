@@ -2,7 +2,6 @@ import React, { FunctionComponent, useEffect, useState } from 'react';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIos from '@material-ui/icons/ArrowForwardIos';
 
@@ -57,13 +56,12 @@ const UnstyledPagination: FunctionComponent<PaginationProps> = ({
         <ArrowBackIos />
       </Box>
 
-      <Typography
-        component="div"
-        variant="body2"
-        className="page-number"
+      <Box
+        margin='0 3rem 0 3rem'
+        pb='0.3rem'
       >
         {activePage + 1} of {lastPage}
-      </Typography>
+      </Box>
 
       <Box className={activePage + 1 != lastPage? "next-page" : "non-cursor"} onClick={nextPageChange} mr={3}>
         <ArrowForwardIos />

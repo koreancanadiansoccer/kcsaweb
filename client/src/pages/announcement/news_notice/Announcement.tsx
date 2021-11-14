@@ -5,7 +5,6 @@ import { useQuery } from '@apollo/client';
 import { useHistory, useParams } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
 import map from 'lodash/map';
 import dayjs from 'dayjs';
 import { scroller } from 'react-scroll';
@@ -84,9 +83,11 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
         alignItems="center"
         id="selectedAnnouncement"
       >
-        <Typography variant="h3" className="news-banner-text">
-          Announcement
-        </Typography>
+        <Container>
+          <Box fontSize="2.5rem" fontWeight={700} color="white">
+            Announcement
+          </Box>
+        </Container>
       </Box>
 
       <Container>
@@ -124,11 +125,5 @@ export const Announcements = withTheme(styled(UnstyledAnnouncements)`
     min-width: 100px; /*or 70%, or what you want*/
     height: 284px; /*or 70%, or what you want*/
     background-size: 100% 100%;
-  }
-
-  .news-banner-text {
-    font-weight: 700;
-    color: white;
-    margin-left: 7rem;
   }
 `);
