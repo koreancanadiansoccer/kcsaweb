@@ -32,11 +32,12 @@ const UnstyledScheduledCard: FunctionComponent<ScheduleCardProps> = ({
   className,
   noHover,
   status,
+  mobileWidth,
 }) => (
   <motion.div whileHover={{ scale: noHover ? 1 : 1.08 }}>
     <Box mr={6} borderRadius={8} className={className}>
       <Paper elevation={3}>
-        <Box px={4} py={2} className="text-sub">
+        <Box px={mobileWidth ? 2 : 4} py={2} className="text-sub">
           <Box>{dayjs(date).format('hh:mm A M.DD.YYYY ddd')}</Box>
 
           <Box>{location}</Box>
@@ -61,13 +62,13 @@ const UnstyledScheduledCard: FunctionComponent<ScheduleCardProps> = ({
             <Box ml="auto">
               {status === 'COMPLETE' ? (
                 <Box>
-                  <Box display="inline" pr={2} fontSize={22}>
+                  <Box display="inline" pr={mobileWidth ? 1 : 2} fontSize={22}>
                     {homeTeam.goalScored}
                   </Box>
 
                   <span> vs </span>
 
-                  <Box display="inline" pl={2} fontSize={22}>
+                  <Box display="inline" pl={mobileWidth ? 1 : 2} fontSize={22}>
                     {awayTeam.goalScored}
                   </Box>
                 </Box>
@@ -99,9 +100,8 @@ const UnstyledScheduledCard: FunctionComponent<ScheduleCardProps> = ({
 );
 
 export const ScheduleCard = withTheme(styled(UnstyledScheduledCard)`
-  min-width: 332px;
   cursor: pointer;
-
+  min-width: ${({ mobileWidth }) => (mobileWidth ? '100%' : '332px')};
   .MuiPaper-root {
     background-color: ${({ pastGame }) => (pastGame ? '#eeeeee' : 'white')};
   }
@@ -112,11 +112,13 @@ export const ScheduleCard = withTheme(styled(UnstyledScheduledCard)`
 
   .home-team-score {
     font-size: 1.3rem;
-    padding-right: 1rem;
+    padding-right: ${({ mobileWidth }) => (mobileWidth ? '0.5rem' : '1rem')};
+    // padding-right: 1rem;
   }
 
   .away-team-score {
     font-size: 1.3rem;
-    padding-left: 1rem;
+
+    padding-left: ${({ mobileWidth }) => (mobileWidth ? '0.5rem' : '1rem')};
   }
 `);

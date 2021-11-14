@@ -25,8 +25,11 @@ interface LeagueStandingProps {
 /**
  * Generate League standings data.
  */
-const generateStandingData = (leagueTeams: LeagueTeam[], isMobile: boolean) => {
-  const history = useHistory();
+const generateStandingData = (
+  leagueTeams: LeagueTeam[],
+  isMobile: boolean,
+  history: any
+) => {
   const orderData = orderBy(
     map(leagueTeams, (leagueTeam) => {
       return {
@@ -72,9 +75,10 @@ const UnstyledLeagueStanding: FunctionComponent<LeagueStandingProps> = ({
   teams,
   isMobile,
 }) => {
+  const history = useHistory();
   const leagueStandingData = useMemo(() => {
     if (!teams) return null;
-    return generateStandingData(teams, isMobile);
+    return generateStandingData(teams, isMobile, history);
   }, [teams, isMobile]);
 
   return (
@@ -93,7 +97,6 @@ const UnstyledLeagueStanding: FunctionComponent<LeagueStandingProps> = ({
         standingTableClassName="league-standing-header"
         clubWidth={isMobile ? 4 : 4}
         flex={isMobile ? [1, 4, 1, 1] : [1, 4, 1, 1, 1, 1, 1]}
-
       />
     </Box>
   );
