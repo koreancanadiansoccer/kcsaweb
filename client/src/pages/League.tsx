@@ -51,7 +51,6 @@ const UnstyledLeague: FunctionComponent<LeagueProps> = ({ className }) => {
       >
         <Container>
           <Box
-            className="league-banner-text"
             display="flex"
             justifyContent="center"
             alignItems="flex-start"
@@ -68,7 +67,6 @@ const UnstyledLeague: FunctionComponent<LeagueProps> = ({ className }) => {
 
       <Container>
         <Box
-          className="leagueSelect-box"
           display="flex"
           justifyContent="start"
           mt={6}
