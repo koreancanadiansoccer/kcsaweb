@@ -92,61 +92,63 @@ const App: FunctionComponent = () => {
             {!isAdminRoute && <Navigation />}
 
             <Switch>
-              {/* ADMIN ROUTE */}
-              {/* This route should be guarded for admin access only!! */}
-              <Route path="/admin">
-                <Admin />
-              </Route>
-
-              <Box style={{ paddingBottom: '15rem' }}>
-                <Route exact path="/">
-                  <Home />
+              <>
+                {/* ADMIN ROUTE */}
+                {/* This route should be guarded for admin access only!! */}
+                <Route path="/admin">
+                  <Admin />
                 </Route>
 
-                {/* About section */}
-                <Route
-                  path={['/overview', '/president', '/contact']}
-                  component={About}
-                />
+                <Box style={{ paddingBottom: '15rem' }}>
+                  <Route exact path="/">
+                    <Home />
+                  </Route>
 
-                {/* This might be broken into per season */}
-                <Route path="/league/:id">
-                  <League />
-                </Route>
+                  {/* About section */}
+                  <Route
+                    path={['/overview', '/president', '/contact']}
+                    component={About}
+                  />
 
-                {/* This might be broken into per season */}
-                <Route path="/teams/:id">
-                  <Team />
-                </Route>
+                  {/* This might be broken into per season */}
+                  <Route path="/league/:id">
+                    <League />
+                  </Route>
 
-                <Route exact path="/dashboard">
-                  <Dashboard />
-                </Route>
+                  {/* This might be broken into per season */}
+                  <Route path="/teams/:id">
+                    <Team />
+                  </Route>
 
-                <Route path="/announcement/:id?">
-                  <Announcements />
-                </Route>
+                  <Route exact path="/dashboard">
+                    <Dashboard />
+                  </Route>
 
-                <Route path="/login">
-                  <Login />
-                </Route>
+                  <Route path="/announcement/:id?">
+                    <Announcements />
+                  </Route>
 
-                <Route path="/create">
-                  <Create />
-                </Route>
+                  <Route path="/login">
+                    <Login />
+                  </Route>
 
-                <Route path="/registerteam">
-                  <RegisterTeam />
-                </Route>
+                  <Route path="/create">
+                    <Create />
+                  </Route>
 
-                <Route exact path="/gallery">
-                  <Media />
-                </Route>
+                  <Route path="/registerteam">
+                    <RegisterTeam />
+                  </Route>
 
-                <Route path="/gallery/:id">
-                  <GalleryDetail />
-                </Route>
-              </Box>
+                  <Route exact path="/gallery">
+                    <Media />
+                  </Route>
+
+                  <Route path="/gallery/:id">
+                    <GalleryDetail />
+                  </Route>
+                </Box>
+              </>
             </Switch>
 
             {!isAdminRoute && <Footer />}

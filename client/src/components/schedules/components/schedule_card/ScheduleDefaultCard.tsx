@@ -5,7 +5,6 @@ import styled from 'styled-components';
 
 interface ScheduleCardProps {
   className?: string;
-  idx?: number;
 }
 
 /**
@@ -13,36 +12,25 @@ interface ScheduleCardProps {
  */
 const UnstyledScheduleDefaultCard: FunctionComponent<ScheduleCardProps> = ({
   className,
-  idx,
-}) => {
-  return (
-    <Box mr={6} borderRadius={8} className={className}>
-      <Box
-        fontSize={16}
-        color="white"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        className="center"
-      >
-        <Box>No Match Schedule {idx}</Box>
-      </Box>
+}) => (
+  <Box mr={6} borderRadius={8} className={className}>
+    <Box
+      fontSize={16}
+      color="white"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      height={'100%'}
+    >
+      No Match Schedule
     </Box>
-  );
-};
+  </Box>
+);
 
 export const ScheduleDefaultCard = withTheme(styled(
   UnstyledScheduleDefaultCard
 )`
   min-width: 332px;
-  min-height: 200px;
+  height: 200px;
   background: #c4c4c4;
-
-  .center {
-    position: relative;
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-  }
 `);
