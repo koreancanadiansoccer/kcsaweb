@@ -115,13 +115,13 @@ export const TeamsNav: React.FC = () => {
         onClose={handleClose}
       >
         {isEmpty(viewer.leagueTeamGroupAge) && (
-          <>
+          <Box>
             <Divider />
             <Box textAlign="center" className="boldText" px={2}>
               Coming soon
             </Box>
             <Divider />
-          </>
+          </Box>
         )}
 
         {map(viewer?.leagueTeamGroupAge, (leagueTeams, key) => {

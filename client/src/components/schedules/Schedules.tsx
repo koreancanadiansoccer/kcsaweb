@@ -2,29 +2,37 @@ import React, {
   FunctionComponent,
   useState,
   useRef,
-  useEffect,
   useContext,
   useMemo,
+  useLayoutEffect,
 } from 'react';
 import map from 'lodash/map';
-import times from 'lodash/times';
+import filter from 'lodash/filter';
+import reduce from 'lodash/reduce';
 import { withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import { motion } from 'framer-motion';
 import ScrollContainer from 'react-indiana-drag-scroll';
+import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
 
+import { Match } from '../../types/match';
 import { ViewerContext } from '../../context/homeViewer';
 import { LeagueSelect } from '../league_select/LeagueSelect';
 
 import { ScheduleCard } from './components/schedule_card/ScheduleCard';
 import { ScheduleDefaultCard } from './components/schedule_card/ScheduleDefaultCard';
 
+dayjs.extend(isBetween);
+
 interface SchedulesProps {
   className?: string;
 }
-// const CardW = 380;
+// Default schedule card size - width + padding+margin) - This should not change.
+const CardW = 380;
+
 /**
  * Schedule section shown on home page.
  */
@@ -32,130 +40,181 @@ const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
   className,
 }) => {
   const { viewer } = useContext(ViewerContext);
-  const matches = viewer.matchesByAge;
-  const ref = useRef<HTMLElement | null>(null);
+  // const matches = viewer.matchesByAge;
 
+  // console.log(matches);
+  if (!viewer.matches) {
+    return <Box>No matches scheduled yet</Box>;
+  }
+
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  const [paddingLeft, setPaddingLeft] = useState(0);
   const [leagueAgeType, setLeagueAgeType] = useState(
     viewer.leagueAgeKeys ? viewer.leagueAgeKeys[0] : 'OPEN'
   );
 
-  if (!matches) {
-    return <Box>No matches scheduled yet</Box>;
-  }
+  // Filter matches by two weeks time.
+  const matchesInTwoWeeks = useMemo(() => {
+    // Get dates.
+    const today = dayjs();
+    const weekbefore = dayjs(today).subtract(1, 'week');
+    const weekafter = dayjs(today).add(1, 'week');
 
-  const seletedAgeMatches = useMemo(
-    () => matches[leagueAgeType],
-    [leagueAgeType]
-  );
+    const matchSortedFilteredTwoWeeks = reduce(
+      viewer.matchesByAge,
+      (result: { [key: string]: Match[] }, matches, key) => {
+        // First, sort matches by dates.
+        const sortedMatchesByDate = matches.sort((a, b) =>
+          dayjs(a.date).isAfter(dayjs(b.date)) ? 1 : -1
+        );
 
-  // Reset scroll upon league change.
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.scrollLeft = 500;
-      // console.log(window.innerWidth);
+        // Filter out all other matches that doesn't fall in 2-weeks frame.
+        // eg; We want all matches within:
+        //  Last week <-> Today <-> Nextweek.
+        const filtered = filter(sortedMatchesByDate, (match) => {
+          return dayjs(match.date).isBetween(
+            weekbefore,
+            weekafter,
+            'day',
+            '[)'
+          );
+        });
+        result[key] = filtered;
+        return result;
+      },
+      {}
+    );
+    return matchSortedFilteredTwoWeeks;
+  }, [viewer.matchesByAge]);
 
-      // const test = window.innerWidth - CardW * 4;
-      // const testDib = window.innerWidth / (CardW * 4);
-      // const dib = test / CardW;
-      // console.log(test);
-      // console.log(testDib);
-      // console.log(dib);
-      // // const window.innerWidth
-      // ref.current.style.paddingLeft = `${CardW * testDib}px`;
+  // Matches data for selected age group.
+  const selectedAgeMatches = useMemo(() => {
+    if (matchesInTwoWeeks) {
+      return matchesInTwoWeeks[leagueAgeType];
     }
-  }, [leagueAgeType]);
-  // console.log(seletedAgeMatches);
+  }, [leagueAgeType, matchesInTwoWeeks]);
+
+  // Counds for past week games - gets used to scroll on render so we see upcoming games first.
+  const countPastWeekGames = useMemo(() => {
+    let counts = 0;
+    if (selectedAgeMatches) {
+      counts = filter(selectedAgeMatches, (match) =>
+        dayjs(match.date).isBefore(dayjs())
+      ).length;
+    }
+
+    return counts;
+  }, [selectedAgeMatches]);
+
+  useLayoutEffect(() => {
+    function updateSize() {
+      if (ref.current && containerRef.current) {
+        const computedStyle = window.getComputedStyle(containerRef.current);
+        const marginLeft = parseFloat(computedStyle.marginLeft);
+        const paddingLeft = parseFloat(computedStyle.paddingLeft);
+
+        const totalLeftToPad = marginLeft + paddingLeft;
+
+        /**
+         * This is calculated by getting the marginLeft and paddingLeft value of the title of this section.
+         * The goal is to match the alignment of scrollable section with other parts within this component.
+         */
+        setPaddingLeft(totalLeftToPad);
+
+        /**
+         * On initial render, we need to show the upcoming game by default.
+         *
+         * So we are scrolling to the amount of total width of
+         *  schedule card(width + horizontal paddings + horizontal margins) times the number of pastweek games.
+         */
+        ref.current.scrollLeft = CardW * countPastWeekGames;
+      }
+    }
+
+    window.addEventListener('resize', updateSize);
+    updateSize();
+
+    return () => window.removeEventListener('resize', updateSize);
+  }, [selectedAgeMatches, matchesInTwoWeeks, countPastWeekGames]);
+
   return (
     <>
       <Box className={className}>
         <Box className="schedules-container" py={3}>
-          <Container>
+          <Container ref={containerRef}>
             <Box
               display="flex"
               flexDirection="column"
               justifyContent="space-around"
             >
               {/* League selection */}
-              <Box>
-                <Box display="flex">
-                  {map(viewer.leagueAgeKeys, (leagueAge) => (
-                    <Box key={`home-league-matches-selection-${leagueAge}`}>
-                      <LeagueSelect
-                        title={leagueAge}
-                        selected={leagueAgeType === leagueAge}
-                        onClick={() => setLeagueAgeType(leagueAge)}
-                      />
-                    </Box>
-                  ))}
-                </Box>
+              <Box display="flex">
+                {map(viewer.leagueAgeKeys, (leagueAge) => (
+                  <Box key={`home-league-matches-selection-${leagueAge}`}>
+                    <LeagueSelect
+                      title={leagueAge}
+                      selected={leagueAgeType === leagueAge}
+                      onClick={() => setLeagueAgeType(leagueAge)}
+                    />
+                  </Box>
+                ))}
               </Box>
 
-              <Box mt={4}>
-                <Box display="flex">
-                  <Box className="text-main">Next match schedule</Box>
-                </Box>
+              <Box display="flex" mt={4}>
+                <Box className="text-main">Next match schedule</Box>
               </Box>
             </Box>
           </Container>
 
-          {/* <ScrollContainer innerRef={ref}>
-            <Box display="flex">
-              {times(4, () => {
-                return (
-                  <Box>
-                    <ScheduleDefaultCard />
-                  </Box>
-                );
-              })}
-            </Box>
-          </ScrollContainer> */}
-
           {/* Scrollable schedule section */}
-          <ScrollContainer className="schedules-card-container" innerRef={ref}>
-            {!seletedAgeMatches || seletedAgeMatches.length === 0
-              ? times(4, () => {
+          <ScrollContainer
+            className="schedules-card-container"
+            innerRef={ref}
+            style={{ paddingLeft: paddingLeft }}
+          >
+            {!selectedAgeMatches || selectedAgeMatches.length === 0
+              ? map([1, 2, 3, 4], (numb) => {
                   return (
-                    <Box key={`default-view-`}>
-                      <ScheduleDefaultCard />
-                    </Box>
-                  );
-                })
-              : // <ScheduleDefaultCard />
-                // <ScheduleDefaultCard />
-                map(seletedAgeMatches, (selectedMatch, idx) => (
-                  <Box key={`league-match-schedules-${selectedMatch.id}`}>
-                    <Box key={`sched-${idx}`} className="scheudle-card">
+                    <Box key={`default-shceudle-card-${numb}`} id="test">
                       <motion.div
                         initial={{ opacity: 0, x: -50, y: -50 }}
                         animate={{ opacity: 1, x: 0, y: 0 }}
                         transition={{
-                          delay: idx * 0.2,
+                          delay: numb * 0.2,
                         }}
                       >
-                        <ScheduleCard
-                          date={selectedMatch.date}
-                          location={selectedMatch.location}
-                          homeTeam={selectedMatch.homeTeam}
-                          awayTeam={selectedMatch.awayTeam}
-                          status={selectedMatch.status}
-                        />
+                        <ScheduleDefaultCard />
                       </motion.div>
                     </Box>
+                  );
+                })
+              : map(selectedAgeMatches, (selectedMatch, idx) => (
+                  <Box
+                    key={`sched-${selectedMatch.id}`}
+                    className="scheudle-card"
+                  >
+                    <motion.div
+                      initial={{ opacity: 0, x: -50, y: -50 }}
+                      animate={{ opacity: 1, x: 0, y: 0 }}
+                      transition={{
+                        delay: idx * 0.2,
+                      }}
+                    >
+                      <ScheduleCard
+                        date={selectedMatch.date}
+                        location={selectedMatch.location}
+                        homeTeam={selectedMatch.homeTeam}
+                        awayTeam={selectedMatch.awayTeam}
+                        status={selectedMatch.status}
+                        pastGame={dayjs(selectedMatch.date).isBefore(dayjs())}
+                      />
+                    </motion.div>
                   </Box>
                 ))}
           </ScrollContainer>
-
-          {/* <Container>
-            <Box display="flex" className="test">
-              {times(10, () => {
-                return (
-                  <Box>
-                    <ScheduleDefaultCard />
-                  </Box>
-                );
-              })}
-            </Box>
-          </Container> */}
         </Box>
       </Box>
     </>
@@ -163,93 +222,42 @@ const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
 };
 
 export const Schedules = withTheme(styled(UnstyledSchedules)`
-  position: relative;
-
   .league-selector {
     cursor: pointer;
-  }
-
-  .hl {
-    height: 4px;
-    position: absolute;
-    left: -14%;
-    width: 130%;
-    top: 110%;
-    background: #f17f42;
-  }
-
-  .test {
-    // Might need below later.
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    overflow-x: scroll;
-    white-space: nowrap;
-    div {
-      scroll-snap-align: center;
-    }
   }
 
   .schedules-container {
     background-color: rgba(225, 238, 246, 0.2);
     font-weight: 700;
+  }
 
-    .text-main {
-      font-size: 1rem;
+  .schedules-card-container {
+    display: flex;
+    justify-content: start;
+    margin-top: 2rem;
+    padding: 1rem 1rem;
+
+    div {
+      scroll-snap-align: center;
     }
 
-    .schedules-card-container {
-      display: flex;
-      justify-content: start;
-      padding: 1rem 1rem;
-      margin-top: 2rem;
-      padding-left: 25%;
-      // Might need below later.
-      // scroll-snap-type: x mandatory;
-      // -webkit-overflow-scrolling: touch;
-      // overflow-x: scroll;
-      // white-space: nowrap;
+    mask-image: linear-gradient(
+      transparent,
+      black 20%,
+      black 80%,
+      transparent 100%
+    );
 
-      // Might need below later.
-      div {
-        // scroll-snap-align: center;
-      }
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 20%,
+      black 80%,
+      transparent 100%
+    );
+  }
 
-      mask-image: linear-gradient(
-        transparent,
-        black 20%,
-        black 80%,
-        transparent 100%
-      );
-
-      -webkit-mask-image: linear-gradient(
-        to right,
-        transparent,
-        black 20%,
-        black 80%,
-        transparent 100%
-      );
-
-      .scheudle-card: nth-child(1) {
-        padding-left: 5%;
-        @media (min-width: 1500px) {
-          padding-left: 8%;
-        }
-        @media (min-width: 1600px) {
-          padding-left: 10%;
-        }
-        @media (min-width: 1700px) {
-          padding-left: 13%;
-        }
-        @media (min-width: 1900px) {
-          padding-left: 17%;
-        }
-        @media (min-width: 2000px) {
-          padding-left: 23%;
-        }
-      }
-      .scheudle-card: last-child {
-        padding-right: 15%;
-      }
-    }
+  .scheudle-card: last-child {
+    padding-right: 100%;
   }
 `);

@@ -1,4 +1,6 @@
 import React, { FunctionComponent, useState, useMemo, useContext } from 'react';
+import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import map from 'lodash/map';
@@ -16,6 +18,8 @@ export const DashboardMatches: FunctionComponent = () => {
   const { dashboardViewer } = useContext(DashboardViewerContext);
   const [openModal, setOpenModal] = useState<MODAL_TYPE | null>(null);
   const [selectedMatchId, setSelectedMatchId] = useState<number | undefined>();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const matches = useMemo(() => {
     return dashboardViewer?.matches || [];
@@ -43,27 +47,26 @@ export const DashboardMatches: FunctionComponent = () => {
       )}
 
       <Box>
-        <Box>
-          {map(matches, (match) => (
-            <Box
-              key={match.id}
-              onClick={() => {
-                setSelectedMatchId(match.id);
-                setOpenModal(MODAL_TYPE.UPDATE_MATCH);
-              }}
-            >
-              <ScheduleCard
-                date={match.date}
-                location={match.location}
-                homeTeam={match.homeTeam}
-                awayTeam={match.awayTeam}
-                status={match.status}
-                mobileWidth={true}
-                noHover
-              />
-            </Box>
-          ))}
-        </Box>
+        {map(matches, (match) => (
+          <Box
+            my={3}
+            key={match.id}
+            onClick={() => {
+              setSelectedMatchId(match.id);
+              setOpenModal(MODAL_TYPE.UPDATE_MATCH);
+            }}
+          >
+            <ScheduleCard
+              date={match.date}
+              location={match.location}
+              homeTeam={match.homeTeam}
+              awayTeam={match.awayTeam}
+              status={match.status}
+              mobileWidth={isMobile}
+              noHover
+            />
+          </Box>
+        ))}
       </Box>
     </>
   );

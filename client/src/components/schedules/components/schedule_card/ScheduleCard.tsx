@@ -18,6 +18,7 @@ interface ScheduleCardProps {
   noHover?: boolean;
   status?: string;
   mobileWidth?: boolean;
+  pastGame?: boolean;
 }
 
 /**
@@ -31,78 +32,79 @@ const UnstyledScheduledCard: FunctionComponent<ScheduleCardProps> = ({
   className,
   noHover,
   status,
-}) => {
-  return (
-    <motion.div whileHover={{ scale: noHover ? 1 : 1.08 }}>
-      <Box mr={6} borderRadius={8} className={className}>
-        <Paper elevation={3}>
-          <Box px={4} py={2} className="text-sub">
-            <Box>{dayjs(date).format('hh:mm A M.DD.YYYY ddd')}</Box>
+  mobileWidth,
+}) => (
+  <motion.div whileHover={{ scale: noHover ? 1 : 1.08 }}>
+    <Box mr={6} borderRadius={8} className={className}>
+      <Paper elevation={3}>
+        <Box px={mobileWidth ? 2 : 4} py={2} className="text-sub">
+          <Box>{dayjs(date).format('hh:mm A M.DD.YYYY ddd')}</Box>
 
-            <Box>{location}</Box>
+          <Box>{location}</Box>
 
-            <Box
-              mt={1.125}
-              display="flex"
-              justifyContent="start"
-              alignItems="center"
-            >
-              {/* Home team emblem and name */}
-              <Box display="flex" flexDirection="column" alignItems="center">
-                <Box width={80} minHeight={40}>
-                  <img
-                    src={homeTeam.team.teamLogoURL || LogoGrey}
-                    alt="home team logo"
-                  />
-                </Box>
-                <Box>{homeTeam.team.name.toUpperCase()}</Box>
+          <Box
+            mt={1.125}
+            display="flex"
+            justifyContent="start"
+            alignItems="center"
+          >
+            {/* Home team emblem and name */}
+            <Box display="flex" flexDirection="column" alignItems="center">
+              <Box width={80} minHeight={40}>
+                <img
+                  src={homeTeam.team.teamLogoURL || LogoGrey}
+                  alt="home team logo"
+                />
               </Box>
+              <Box>{homeTeam.team.name.toUpperCase()}</Box>
+            </Box>
 
-              <Box ml="auto">
-                {status === 'COMPLETE' ? (
-                  <Box>
-                    <Box display="inline" pr={2} fontSize={22}>
-                      {homeTeam.goalScored}
-                    </Box>
-
-                    <span> vs </span>
-
-                    <Box display="inline" pl={2} fontSize={22}>
-                      {awayTeam.goalScored}
-                    </Box>
+            <Box ml="auto">
+              {status === 'COMPLETE' ? (
+                <Box>
+                  <Box display="inline" pr={mobileWidth ? 1 : 2} fontSize={22}>
+                    {homeTeam.goalScored}
                   </Box>
-                ) : (
-                  'vs'
-                )}
-              </Box>
 
-              {/* Away team emblem and name */}
-              <Box
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-                ml="auto"
-              >
-                <Box width={80} minHeight={40}>
-                  <img
-                    src={awayTeam.team.teamLogoURL || LogoGrey}
-                    alt="away team logo"
-                  />
+                  <span> vs </span>
+
+                  <Box display="inline" pl={mobileWidth ? 1 : 2} fontSize={22}>
+                    {awayTeam.goalScored}
+                  </Box>
                 </Box>
-                <Box>{awayTeam.team.name.toUpperCase()}</Box>
+              ) : (
+                'vs'
+              )}
+            </Box>
+
+            {/* Away team emblem and name */}
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              ml="auto"
+            >
+              <Box width={80} minHeight={40}>
+                <img
+                  src={awayTeam.team.teamLogoURL || LogoGrey}
+                  alt="away team logo"
+                />
               </Box>
+              <Box>{awayTeam.team.name.toUpperCase()}</Box>
             </Box>
           </Box>
-        </Paper>
-      </Box>
-    </motion.div>
-  );
-};
+        </Box>
+      </Paper>
+    </Box>
+  </motion.div>
+);
 
 export const ScheduleCard = withTheme(styled(UnstyledScheduledCard)`
-  min-width: ${({ mobileWidth }) => (mobileWidth ? '100%' : '332px')};
   cursor: pointer;
-
+  min-width: ${({ mobileWidth }) => (mobileWidth ? '100%' : '332px')};
+  .MuiPaper-root {
+    background-color: ${({ pastGame }) => (pastGame ? '#eeeeee' : 'white')};
+  }
   .text-sub {
     font-size: 0.875rem;
     font-weight: 700;
@@ -110,11 +112,13 @@ export const ScheduleCard = withTheme(styled(UnstyledScheduledCard)`
 
   .home-team-score {
     font-size: 1.3rem;
-    padding-right: 1rem;
+    padding-right: ${({ mobileWidth }) => (mobileWidth ? '0.5rem' : '1rem')};
+    // padding-right: 1rem;
   }
 
   .away-team-score {
     font-size: 1.3rem;
-    padding-left: 1rem;
+
+    padding-left: ${({ mobileWidth }) => (mobileWidth ? '0.5rem' : '1rem')};
   }
 `);

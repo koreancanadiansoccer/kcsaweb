@@ -41,6 +41,7 @@ const UnstyledLeague: FunctionComponent<LeagueProps> = ({ className }) => {
 
   if (!league || !viewer.leagueTeamGroupAge || !viewer.matchesByAge)
     return <div>Loading...</div>;
+
   return (
     <Box className={className}>
       <Box
@@ -66,11 +67,7 @@ const UnstyledLeague: FunctionComponent<LeagueProps> = ({ className }) => {
       </Box>
 
       <Container>
-        <Box
-          display="flex"
-          justifyContent="start"
-          mt={6}
-        >
+        <Box display="flex" justifyContent="start" mt={6}>
           <LeagueSelect
             mt={7}
             title="STANDING"

@@ -11,10 +11,12 @@ import { displayFullName } from '../../utils/format';
 interface TeamPlayersProp {
   players: LeaguePlayer[];
   className?: string;
+  isMobile?: boolean;
 }
 export const TeamPlayers: FunctionComponent<TeamPlayersProp> = ({
   players,
   className,
+  isMobile,
 }) => {
   return (
     <Box className={className}>
@@ -27,7 +29,7 @@ export const TeamPlayers: FunctionComponent<TeamPlayersProp> = ({
         justifyContent="flex-start"
         alignItems="center"
       >
-        <Box minWidth='20%'></Box>
+        <Box minWidth="20%"></Box>
 
         <Box textAlign="center" flex={1}>
           GOAL
@@ -55,26 +57,28 @@ export const TeamPlayers: FunctionComponent<TeamPlayersProp> = ({
             alignItems="center"
             py={3}
           >
-            <Box width='20%' className="boldText" fontSize={'1.3rem'}>
+            <Box width="20%" className="boldText" fontSize={'1.3rem'}>
               {displayFullName(player.player.firstName, player.player.lastName)}
             </Box>
 
-            <Box textAlign="center" flex={1} fontSize='1rem'>
+            <Box textAlign="center" flex={1} fontSize="1rem">
               {player.goalScored}
             </Box>
 
-            <Box textAlign="center" flex={1} fontSize='1rem'>
+            <Box textAlign="center" flex={1} fontSize="1rem">
               {player.yellowCard}
             </Box>
-            <Box textAlign="center" flex={1} fontSize='1rem'>
+            <Box textAlign="center" flex={1} fontSize="1rem">
               0
             </Box>
           </Box>
 
           {/* TODO: Only show on big screen */}
-          <Box position="absolute" top={0} left="20%" height="100%">
-            <Divider orientation="vertical" />
-          </Box>
+          {!isMobile && (
+            <Box position="absolute" top={0} left="20%" height="100%">
+              <Divider orientation="vertical" />
+            </Box>
+          )}
         </Box>
       ))}
     </Box>

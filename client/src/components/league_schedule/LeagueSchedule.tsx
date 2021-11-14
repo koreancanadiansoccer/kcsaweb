@@ -182,7 +182,7 @@ const UnstyledLeagueSchedule: FunctionComponent<LeagueScheduleProps> = ({
             <AccordionDetails>
               {map(matchesByRound, (match) => {
                 return (
-                  <Box pt={2} pb={isMobile ? 6 : 2}>
+                  <Box pt={2} pb={isMobile ? 6 : 2} key={`${key}-${match.id}`}>
                     <StandingTable
                       tableHeaderData={
                         isMobile
@@ -191,15 +191,15 @@ const UnstyledLeagueSchedule: FunctionComponent<LeagueScheduleProps> = ({
                       }
                       tableRowData={generateScheduleData(match, isMobile)}
                       paperShadow={0}
-                      hideHeader='VS'
-                      standingTableClassName='league-schedule-table-box'
+                      hideHeader="VS"
+                      standingTableClassName="league-schedule-table-box"
                       headerClassName={
                         isMobile
                           ? 'league-schedule-table-mobile-header'
                           : 'league-schedule-table-header'
                       }
-                      rowContentClassName='league-schedule-row-content'
-                      dividerClassName='league-schedule-divider'
+                      rowContentClassName="league-schedule-row-content"
+                      dividerClassName="league-schedule-divider"
                       flex={isMobile ? [2, 2, 2] : [2, 2, 2, 4, 4]}
                     />
                   </Box>

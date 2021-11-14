@@ -131,43 +131,45 @@ export const Admin: React.FC = () => {
         <Toolbar />
 
         <Switch>
-          <Route exact path={path}>
-            <h3>Please select a menu.</h3>
-          </Route>
+          <>
+            <Route exact path={path}>
+              <h3>Please select a menu.</h3>
+            </Route>
 
-          {/* Render page for /invite */}
-          <Route path={`${url}/invite`}>
-            <Users />
-          </Route>
+            {/* Render page for /invite */}
+            <Route path={`${url}/invite`}>
+              <Users />
+            </Route>
 
-          {/* Render page for /league */}
-          <Route exact path={`${url}/league`}>
-            <Leagues />
-          </Route>
+            {/* Render page for /league */}
+            <Route exact path={`${url}/league`}>
+              <Leagues />
+            </Route>
 
-          {/* Render page for /league/{id} - a page for specific league} */}
-          <Route path={`${url}/league/:id`}>
-            <LeagueDetail />
-          </Route>
+            {/* Render page for /league/{id} - a page for specific league} */}
+            <Route path={`${url}/league/:id`}>
+              <LeagueDetail />
+            </Route>
 
-          <Route path={`${url}/gallery`}>
-            <Galleries />
-          </Route>
+            <Route path={`${url}/gallery`}>
+              <Galleries />
+            </Route>
 
-          {/* Render page for /teams */}
-          <Route exact path={`${url}/clubs`}>
-            <Teams />
-          </Route>
+            {/* Render page for /teams */}
+            <Route exact path={`${url}/clubs`}>
+              <Teams />
+            </Route>
 
-          <Route path={`${url}/announcement`}>
-            <Announcements />
-          </Route>
+            <Route path={`${url}/announcement`}>
+              <Announcements />
+            </Route>
 
-          {/* Render page for /team/{id} - a page for
+            {/* Render page for /team/{id} - a page for
            specific team} */}
-          <Route path={`${url}/clubs/:id`}>
-            <TeamDetail />
-          </Route>
+            <Route path={`${url}/clubs/:id`}>
+              <TeamDetail />
+            </Route>
+          </>
         </Switch>
       </main>
     </div>

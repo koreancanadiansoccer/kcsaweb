@@ -49,9 +49,14 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
     if (!loading && !error && announcementDataQuery?.data?.getAnnouncements) {
       setAnnouncements(announcementDataQuery.data.getAnnouncements);
 
-      id ? setSelectedID(String(announcementDataQuery.data.getAnnouncements.length - parseInt(id))) : setSelectedID('');
+      id
+        ? setSelectedID(
+            String(
+              announcementDataQuery.data.getAnnouncements.length - parseInt(id)
+            )
+          )
+        : setSelectedID('');
     }
-
 
     if (announcementDataQuery.error) {
       setError(parseError(announcementDataQuery.error));
@@ -70,14 +75,12 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
         'No.': idx + 1 + '.',
         Title: announcement.title,
         Date: isMobile
-          ? dayjs(announcement.createdAt, 'YYYY-MM-DDTHH:mm').format(
-              'DD-MMM'
-            )
+          ? dayjs(announcement.createdAt, 'YYYY-MM-DDTHH:mm').format('DD-MMM')
           : dayjs(announcement.createdAt, 'YYYY-MM-DDTHH:mm').format(
               'YYYY-MM-DD'
             ),
       };
-    })
+    });
   }, [announcements]);
 
   if (!announcements || !tableRowData) {
