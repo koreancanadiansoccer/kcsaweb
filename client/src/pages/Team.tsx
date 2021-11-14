@@ -68,7 +68,7 @@ const UnstyledTeam: FunctionComponent<TeamProps> = ({ className }) => {
         foundedDate={leagueTeam?.team.foundedDate}
         teamLogo={leagueTeam?.team.teamLogoURL}
       >
-        <Box borderRadius={32} mt={10} bgcolor="white" color='black' py={5}>
+        <Box borderRadius={32} mt={10} bgcolor="white" color="black" py={5}>
           <Container>
             <Box display="flex" justifyContent="start">
               <Box mr={isMobile ? 1 : 5}>
@@ -95,7 +95,7 @@ const UnstyledTeam: FunctionComponent<TeamProps> = ({ className }) => {
 
             {teamTabType === TabType.SQUAD && (
               <Box mt={5}>
-                <TeamPlayers players={leagueTeam.leaguePlayers} />
+                <TeamPlayers players={leagueTeam.leaguePlayers} isMobile />
               </Box>
             )}
 
