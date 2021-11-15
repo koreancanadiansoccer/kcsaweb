@@ -93,11 +93,7 @@ const UnstyledHeroContentDesktop: FunctionComponent<HomeDesktopProps> = ({
             {/* Sub announcement */}
             <Box
               onClick={() => {
-                mainIdxUpdate(1);
-                subIdxUpdate(1);
-                history.push(
-                  `/announcement/${announcements[subIdx].id}`
-                );
+                history.push(`/announcement/${announcements[subIdx].id}`);
               }}
               style={{ cursor: 'pointer', backgroundColor: '#2f4453' }}
             >
@@ -146,9 +142,7 @@ const UnstyledHeroContentDesktop: FunctionComponent<HomeDesktopProps> = ({
             width="30rem"
             style={{ cursor: 'pointer' }}
             onClick={() => {
-              history.push(
-                `/announcement/${announcements[mainIdx].id}`
-              );
+              history.push(`/announcement/${announcements[mainIdx].id}`);
             }}
           >
             <Box fontSize="1.5rem">{announcements[mainIdx].title}</Box>

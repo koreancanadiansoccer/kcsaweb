@@ -1,5 +1,6 @@
 import { GraphQLList } from 'graphql';
 import map from 'lodash/map';
+import { Op } from 'sequelize';
 
 import { LeagueType, LeagueInputType } from '../../types/league';
 import { TeamInputType } from '../../types/team';
@@ -8,10 +9,7 @@ import {
   LeagueTeam,
   LEAGUE_TEAM_STATUS,
 } from '../../../db/models/leagueteam.model';
-import { MatchPlayer } from '../../../db/models/matchplayer.model';
-import { Match } from '../../../db/models/match.model';
-import { Team } from '../../../db/models/team.model';
-import { LeaguePlayer } from '../../../db/models/leagueplayer.model';
+import { AdminGetLeauge } from '../utils';
 
 /**
  * Create new league.
@@ -27,7 +25,6 @@ export const updateLeague = {
     args: object | any
   ): Promise<League | undefined> {
     const league = await League.findOne({
-      include: [LeagueTeam],
       where: { id: args.league.id },
     });
 
@@ -35,9 +32,26 @@ export const updateLeague = {
       throw Error('League to update could not be found');
     }
 
+    // If we want to activate the league, first check there are no other active league for same age group.
+    if (args.league.isActive) {
+      const leagueSsam = await League.findOne({
+        where: {
+          leagueAgeType: league.leagueAgeType,
+          isActive: true,
+          id: { [Op.not]: league.id },
+        },
+      });
+
+      if (leagueSsam) {
+        throw Error(
+          'Another league is currently active for same age group. Please deactivate the league first'
+        );
+      }
+    }
+
     await League.update(args.league, { where: { id: args.league.id } });
 
-    // Create new league team from providede Team.
+    // Create new league team from provideded Team.
     if (args.newTeams && args.newTeams.length > 0) {
       await Promise.all(
         map(args.newTeams, async (newTeam) => {
@@ -52,61 +66,6 @@ export const updateLeague = {
       );
     }
 
-    const updatedLeague = await League.findOne({
-      include: [
-        {
-          model: LeagueTeam,
-          as: 'leagueTeams',
-          duplicating: false,
-          include: [
-            LeaguePlayer,
-            {
-              model: Team,
-              as: 'team',
-            },
-          ],
-        },
-        {
-          model: Match,
-          as: 'matches',
-          duplicating: false,
-          include: [
-            {
-              as: 'homeTeam',
-              model: LeagueTeam,
-              duplicating: false,
-              subQuery: false,
-              include: [
-                MatchPlayer,
-                {
-                  model: Team,
-                  as: 'team',
-                },
-              ],
-            },
-            {
-              model: LeagueTeam,
-              as: 'awayTeam',
-              duplicating: false,
-              include: [
-                MatchPlayer,
-                {
-                  model: Team,
-                  as: 'team',
-                },
-              ],
-            },
-          ],
-        },
-      ],
-      where: { id: args.league.id },
-      subQuery: false,
-    });
-
-    if (!updatedLeague) {
-      throw Error('Updated League could not be retrieved');
-    }
-
-    return updatedLeague;
+    return await AdminGetLeauge(args.league.id);
   },
 };

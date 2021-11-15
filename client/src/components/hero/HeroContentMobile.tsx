@@ -75,7 +75,8 @@ const UnstyledHeroContentMobile: FunctionComponent<HomeMobileProps> = ({
             <Box
               mx={3}
               style={{ cursor: 'pointer' }}
-              onClick={() => {
+              onClick={(evt) => {
+                evt.stopPropagation();
                 history.push(
                   `/announcement/${announcements[mainIdx].id}
                   )}`
