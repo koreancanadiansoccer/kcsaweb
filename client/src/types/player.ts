@@ -23,7 +23,7 @@ export interface LeaguePlayerInput {
   dob?: string;
 }
 export interface LeaguePlayer {
-  id: string;
+  id: number;
   name: string; // to be removed.
   goalScored: number;
   yellowCard: number;

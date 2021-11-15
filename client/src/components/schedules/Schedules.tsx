@@ -102,7 +102,7 @@ const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
     let counts = 0;
     if (selectedAgeMatches) {
       counts = filter(selectedAgeMatches, (match) =>
-        dayjs(match.date).isBefore(dayjs())
+        dayjs(match.date).isBefore(dayjs(), 'day')
       ).length;
     }
 
@@ -209,7 +209,10 @@ const UnstyledSchedules: FunctionComponent<SchedulesProps> = ({
                         homeTeam={selectedMatch.homeTeam}
                         awayTeam={selectedMatch.awayTeam}
                         status={selectedMatch.status}
-                        pastGame={dayjs(selectedMatch.date).isBefore(dayjs())}
+                        pastGame={dayjs(selectedMatch.date).isBefore(
+                          dayjs(),
+                          'day'
+                        )}
                       />
                     </motion.div>
                   </Box>
