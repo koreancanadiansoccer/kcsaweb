@@ -21,7 +21,7 @@ const UnstyledPagination: FunctionComponent<PaginationProps> = ({
   className,
   imageLength,
   onChange,
-  activePage,
+  activePage = -1,
   rowsPerPage,
   isMobile,
 }) => {
@@ -61,7 +61,7 @@ const UnstyledPagination: FunctionComponent<PaginationProps> = ({
       pb={4}
     >
       <Box
-        className={activePage != 0 ? 'first-page' : 'non-cursor'}
+        className={activePage > 0? 'first-page' : 'non-cursor'}
         onClick={() => {
           void onChange(0);
         }}
@@ -71,7 +71,7 @@ const UnstyledPagination: FunctionComponent<PaginationProps> = ({
       </Box>
 
       <Box
-        className={activePage != 0 ? 'prev-page' : 'non-cursor'}
+        className={activePage > 0 ? 'prev-page' : 'non-cursor'}
         onClick={prevPageChange}
         ml={3}
       >

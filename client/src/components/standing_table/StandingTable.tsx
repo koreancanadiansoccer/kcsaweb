@@ -18,12 +18,13 @@ interface StandingTable {
   tableHeaderData: string[];
   paperShadow?: number;
   hideHeader?: string;
+  hideRow?: string;
   tableType?: TableType;
   standingTableClassName?: string;
   headerClassName?: string;
   rowContentClassName?: string;
   dividerClassName?: string;
-  rowClick?: (id: number) => Promise<void>;
+  rowClick?: (data: TableRow) => Promise<void>;
   pagination?: JSX.Element;
   selectedRow?: number;
   flex: number[];
@@ -39,6 +40,7 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
   tableHeaderData,
   paperShadow = 3,
   hideHeader,
+  hideRow,
   tableType,
   standingTableClassName = 'default-standing-table-box',
   headerClassName = 'default-table-header',
@@ -101,7 +103,7 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
                 onClick={
                   rowClick
                     ? () => {
-                        void rowClick(dataRowIdx);
+                        void rowClick(data);
                       }
                     : undefined
                 }
@@ -120,20 +122,22 @@ const UnstyledStandingTable: FunctionComponent<StandingTable> = ({
                       value = shortenName(property as string);
                     }
 
-                    return (
-                      <Box
-                        key={`table-data-${key}-${idx}`}
-                        flex={flex[colIdx++]}
-                        display="flex"
-                        justifyContent={
-                          key === 'club' ? 'flex-start' : 'center'
-                        }
-                        py={2}
-                        minWidth={key === 'name' ? '6rem' : ''}
-                      >
-                        {value}
-                      </Box>
-                    );
+                    if (key !== hideRow) {
+                      return (
+                        <Box
+                          key={`table-data-${key}-${idx}`}
+                          flex={flex[colIdx++]}
+                          display="flex"
+                          justifyContent={
+                            key === 'club' ? 'flex-start' : 'center'
+                          }
+                          py={2}
+                          minWidth={key === 'name' ? '6rem' : ''}
+                        >
+                          {value}
+                        </Box>
+                      );
+                    }
                   })}
                 </Box>
                 <Divider className={dividerClassName} />

@@ -2,10 +2,11 @@ import React, { FunctionComponent, useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { withTheme, useTheme } from '@material-ui/core/styles';
 import { useQuery } from '@apollo/client';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams, useLocation } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import map from 'lodash/map';
+import find from 'lodash/find';
 import dayjs from 'dayjs';
 import { scroller } from 'react-scroll';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -28,12 +29,14 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
   className,
 }) => {
   const history = useHistory();
-  const { id } = useParams<{ id: string }>();
+  const location = useLocation();
+  const { idx } = useParams<{ idx: string }>();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const data = location.state as { announcement: Announcement };
 
   const [announcements, setAnnouncements] = useState<Announcement[]>();
-  const [selectedID, setSelectedID] = useState<string>(id);
+  const [selectedIdx, setSelectedIdx] = useState<string>();
 
   // Get Announcement data.
   const announcementDataQuery = useQuery(GET_ANNOUNCEMENTS);
@@ -49,24 +52,21 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
     if (!loading && !error && announcementDataQuery?.data?.getAnnouncements) {
       setAnnouncements(announcementDataQuery.data.getAnnouncements);
 
-      id
-        ? setSelectedID(
-            String(
-              announcementDataQuery.data.getAnnouncements.length - parseInt(id)
-            )
-          )
-        : setSelectedID('');
+      idx ? setSelectedIdx(idx) : setSelectedIdx('');
     }
 
     if (announcementDataQuery.error) {
       setError(parseError(announcementDataQuery.error));
     }
-  }, [announcementDataQuery, loading, error, id]);
 
-  const selectedAnnouncement = useMemo(() => {
-    if (!announcements || !setSelectedID.length) return null;
-    return announcements[parseInt(selectedID)];
-  }, [selectedID, id, announcements]);
+    if (data && announcements) {
+      map(announcements, (announcement, idx) => {
+        if(announcement.id === data.announcement.id && String(idx + 1) !== selectedIdx) {
+          history.push(`/announcement/${idx + 1}`);
+        }
+      })
+    }
+  }, [announcementDataQuery, loading, error, idx, announcements, data]);
 
   const tableRowData = useMemo(() => {
     if (!announcements) return null;
@@ -79,9 +79,15 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
           : dayjs(announcement.createdAt, 'YYYY-MM-DDTHH:mm').format(
               'YYYY-MM-DD'
             ),
+        id: announcement.id
       };
     });
   }, [announcements]);
+
+    const selectedAnnouncement = useMemo(() => {
+      if (!announcements || !selectedIdx || !selectedIdx.length) return null;
+      return find(announcements, (announcement, idx) => String(idx + 1) === selectedIdx);
+    }, [selectedIdx, idx, announcements]);
 
   if (!announcements || !tableRowData) {
     return <div>loading...</div>;
@@ -112,10 +118,11 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
         {selectedAnnouncement && (
           <AnnouncmentDetail
             announcement={selectedAnnouncement}
-            maxLength={announcements.length}
-            moveClick={(id: number) => {
-              setSelectedID(String(id));
-              history.push(`/announcement/${id}`);
+            selectedIdx={selectedIdx}
+            lastID={announcements[0].id}
+            moveClick={(idx: string) => {
+              setSelectedIdx(idx);
+              history.push(`/announcement/${idx}`);
               scroller.scrollTo('selectedAnnouncement', {
                 smooth: true,
                 offset: isMobile ? 110 : 300,
@@ -128,9 +135,9 @@ const UnstyledAnnouncements: FunctionComponent<AnnouncementProps> = ({
 
         <AnnouncementTable
           tableRowData={tableRowData}
-          selectedID={selectedID}
-          onChange={(id: string) => {
-            setSelectedID(id);
+          selectedID={selectedIdx}
+          onChange={(idx: string) => {
+            setSelectedIdx(idx);
           }}
           isMobile={isMobile}
         />

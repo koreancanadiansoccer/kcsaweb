@@ -124,7 +124,7 @@ const App: FunctionComponent = () => {
                     <Dashboard />
                   </Route>
 
-                  <Route path="/announcement/:id?">
+                  <Route path="/announcement/:idx?">
                     <Announcements />
                   </Route>
 

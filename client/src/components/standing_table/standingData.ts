@@ -75,9 +75,10 @@ export const AnnouncementPageStandingHeader = [
 ];
 
 export interface AnnouncementPageStanding {
-  'No.': number;
+  'No.': string;
   Title: string;
   Date: JSX.Element;
+  id: string;
 }
 
 export type TableRow =

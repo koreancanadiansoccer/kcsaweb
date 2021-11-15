@@ -14,8 +14,9 @@ import { Announcement } from '../../../types/announcement';
 interface AnnouncementProps {
   className?: string;
   announcement: Announcement;
-  maxLength: number;
-  moveClick?: (id: number) => Promise<void>;
+  selectedIdx: string;
+  lastID: string;
+  moveClick?: (id: string) => Promise<void>;
   isMobile?: boolean;
 }
 
@@ -25,7 +26,8 @@ interface AnnouncementProps {
 const UnstyledAnnouncementDetail: FunctionComponent<AnnouncementProps> = ({
   className,
   announcement,
-  maxLength,
+  selectedIdx,
+  lastID,
   moveClick,
   isMobile,
 }) => {
@@ -72,7 +74,7 @@ const UnstyledAnnouncementDetail: FunctionComponent<AnnouncementProps> = ({
 
             <Box
               className={
-                announcement.id === String(maxLength)
+                announcement.id === lastID
                   ? 'annoucement-pagination'
                   : ''
               }
@@ -80,15 +82,14 @@ const UnstyledAnnouncementDetail: FunctionComponent<AnnouncementProps> = ({
               justifyContent="space-between"
               mt={5}
             >
-              {announcement.id !== String(maxLength) && (
+              {announcement.id !== lastID && (
                 <Box
                   display="flex"
                   className="announcement-detail-pagination"
                   onClick={
                     moveClick
                       ? () => {
-                          const idx = maxLength - parseInt(announcement.id) - 1;
-                          void moveClick(idx);
+                          void moveClick(String(parseInt(selectedIdx) + 1));
                         }
                       : undefined
                   }
@@ -108,8 +109,7 @@ const UnstyledAnnouncementDetail: FunctionComponent<AnnouncementProps> = ({
                   onClick={
                     moveClick
                       ? () => {
-                          const idx = maxLength - parseInt(announcement.id) + 1;
-                          void moveClick(idx);
+                          void moveClick(String(parseInt(selectedIdx) - 1));
                         }
                       : undefined
                   }

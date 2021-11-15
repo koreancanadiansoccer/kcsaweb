@@ -66,7 +66,10 @@ const UnstyledHeroContentDesktop: FunctionComponent<HomeDesktopProps> = ({
           justifyContent="flex-start"
           style={{ cursor: 'pointer' }}
           onClick={() => {
-            history.push(`/announcement/${announcements[mainIdx].id}`);
+            history.push({
+              pathname: '/announcement',
+              state: { announcement: announcements[mainIdx] },
+            });
           }}
         >
           <img src={announcements[mainIdx].imageURL} alt="hero-main" />
@@ -93,7 +96,10 @@ const UnstyledHeroContentDesktop: FunctionComponent<HomeDesktopProps> = ({
             {/* Sub announcement */}
             <Box
               onClick={() => {
-                history.push(`/announcement/${announcements[subIdx].id}`);
+                history.push({
+                  pathname: '/announcement',
+                  state: { announcement: announcements[subIdx] },
+                });
               }}
               style={{ cursor: 'pointer', backgroundColor: '#2f4453' }}
             >
@@ -142,7 +148,10 @@ const UnstyledHeroContentDesktop: FunctionComponent<HomeDesktopProps> = ({
             width="30rem"
             style={{ cursor: 'pointer' }}
             onClick={() => {
-              history.push(`/announcement/${announcements[mainIdx].id}`);
+              history.push({
+                pathname: '/announcement',
+                state: { announcement: announcements[mainIdx] },
+              });
             }}
           >
             <Box fontSize="1.5rem">{announcements[mainIdx].title}</Box>
