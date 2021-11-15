@@ -278,6 +278,40 @@ export const updateDashboard = {
                     matchId: match.id,
                     playerId: leaguePlayer.playerId,
                   });
+
+                  const homeSubmission = await MatchHomeSubmission.findOne({
+                    where: {
+                      homeTeamId: args.leagueTeam.id,
+                      matchId: match.id,
+                    },
+                  });
+
+                  if (homeSubmission) {
+                    await MatchHomeSubmissionPlayers.create({
+                      homeTeamId: homeSubmission.homeTeamId,
+                      leaguePlayerId: leaguePlayer.id,
+                      matchId: match.id,
+                      playerId: leaguePlayer.playerId,
+                      matchHomeSubmissionId: homeSubmission.id,
+                    });
+                  }
+
+                  const awaySubmission = await MatchAwaySubmission.findOne({
+                    where: {
+                      awayTeamId: args.leagueTeam.id,
+                      matchId: match.id,
+                    },
+                  });
+
+                  if (awaySubmission) {
+                    await MatchAwaySubmissionPlayers.create({
+                      awayTeamId: awaySubmission.awayTeamId,
+                      leaguePlayerId: leaguePlayer.id,
+                      matchId: match.id,
+                      playerId: leaguePlayer.playerId,
+                      matchAwaySubmissionId: awaySubmission.id,
+                    });
+                  }
                 })
               );
             }

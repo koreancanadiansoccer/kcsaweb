@@ -110,7 +110,7 @@ export const createLeaguePlayers = {
 
                 const awaySubmission = await MatchAwaySubmission.findOne({
                   where: {
-                    homeTeamId: args.leagueTeamId,
+                    awayTeamId: args.leagueTeamId,
                     matchId: match.id,
                   },
                 });
@@ -121,7 +121,7 @@ export const createLeaguePlayers = {
                     leaguePlayerId: leaguePlayer.id,
                     matchId: match.id,
                     playerId: leaguePlayer.playerId,
-                    matchHomeSubmissionId: awaySubmission.id,
+                    matchAwaySubmissionId: awaySubmission.id,
                   });
                 }
               })

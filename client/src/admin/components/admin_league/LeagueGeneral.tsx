@@ -30,31 +30,30 @@ import { Input } from '../../../components/input/Input';
 import { Button } from '../../../components/button/Button';
 import { Select } from '../../../components/select/Select';
 import { LeagueContext } from '../../../context/league';
-
+import { ErrorAlert } from '../../../components/alert_msg/Alerts';
 /**
  * Show and allow update to general league info
  */
 const UnstyledLeagueGeneral: FunctionComponent = () => {
-  const { league: origLeague, setLeague: setOrigLeague } = useContext(
-    LeagueContext
-  );
+  const { league: origLeague, setLeague: setOrigLeague } =
+    useContext(LeagueContext);
 
   const [league, setLeague] = useState<League>(origLeague);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     setLeague(league);
-  }, [origLeague]);
+  }, [origLeague, league]);
 
   const [updateLeagueMutation] = useMutation<
     UpdateLeagueResult,
     UpdateLeagueInput
   >(UPDATE_LEAGUE);
 
-  const hasNoChanges = useMemo(() => {
-    return (
-      isEqual(league, origLeague) && league.isActive === origLeague.isActive
-    );
-  }, [league, origLeague]);
+  const hasNoChanges = useMemo(
+    () => isEqual(league, origLeague),
+    [league, origLeague]
+  );
 
   /**
    * Update league
@@ -72,7 +71,7 @@ const UnstyledLeagueGeneral: FunctionComponent = () => {
         setOrigLeague(res.data.updateLeague);
       }
     } catch (e) {
-      console.info(parseError(e));
+      setError(parseError(e));
     }
   }, [league, updateLeagueMutation]);
 
@@ -184,6 +183,8 @@ const UnstyledLeagueGeneral: FunctionComponent = () => {
           Update General info
         </Button>
       </Box>
+
+      <ErrorAlert msg={error} resetMsg={() => setError('')} />
     </Box>
   );
 };
