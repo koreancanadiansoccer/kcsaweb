@@ -546,9 +546,9 @@ export const updateDashboard = {
 
             Match.update(
               {
-                awayTeamScore: matchSubmissionData.awayTeamScore,
+                awayTeamScore: matchSubmissionData.score,
                 awayTeamGameSheetLink:
-                  matchSubmissionData.homeTeamGameSheetLink,
+                  matchSubmissionData.awayTeamGameSheetLink,
                 homeTeamScore: homeTeamSubmission.homeTeamScore,
                 homeTeamGameSheetLink: homeTeamSubmission.homeTeamGameSheetLink,
                 status: MatchStatus.COMPLETE,
