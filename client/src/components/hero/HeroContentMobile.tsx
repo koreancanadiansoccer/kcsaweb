@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
+import Logo from '../../assets/logo_new.svg';
 import { Announcement } from '../../types/announcement';
 
 interface HomeMobileProps {
@@ -49,7 +50,7 @@ const UnstyledHeroContentMobile: FunctionComponent<HomeMobileProps> = ({
         >
           {announcements[mainIdx].imageURL && (
             <img
-              src={announcements[mainIdx].imageURL}
+              src={announcements[mainIdx].imageURL || Logo}
               alt="hero-main"
               style={{
                 height: '30vh',

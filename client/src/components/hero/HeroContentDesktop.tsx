@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
+import Logo from '../../assets/logo_new.svg';
 import { VerticalDivider } from '../divider/VerticalDivider';
 import { Announcement } from '../../types/announcement';
 
@@ -69,7 +70,7 @@ const UnstyledHeroContentDesktop: FunctionComponent<HomeDesktopProps> = ({
             history.push(`/announcement/${announcements[mainIdx].id}`);
           }}
         >
-          <img src={announcements[mainIdx].imageURL} alt="hero-main" />
+          <img src={announcements[mainIdx].imageURL || Logo} alt="hero-main" />
 
           <VerticalDivider height={height} maxHeight={height} />
         </Box>
@@ -99,7 +100,7 @@ const UnstyledHeroContentDesktop: FunctionComponent<HomeDesktopProps> = ({
             >
               <Box display="flex" justifyContent="flex-start">
                 <img
-                  src={announcements[subIdx].imageURL}
+                  src={announcements[subIdx].imageURL || Logo}
                   alt="hero-sub"
                   className="hero-sub-image"
                 />
