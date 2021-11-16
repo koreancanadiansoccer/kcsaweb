@@ -54,7 +54,7 @@ const PORT = process.env.PORT || 5000;
       cookie: {
         path: '/',
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        // secure: process.env.NODE_ENV === 'production',
         maxAge: 1000 * 60 * 60 * 24 * 90, //90 days
       },
     })

@@ -22,12 +22,12 @@ export const registerLeagueTeam = {
   },
   async resolve(
     parent: object,
-    args: Args
-    // { req }: any
+    args: Args,
+    { req }: any
   ): Promise<LeagueTeam | null> {
-    // if (!req.session.userId || req.session.userId !== args.userId) {
-    //   throw Error('Please Login');
-    // }
+    if (!req.session.userId || req.session.userId !== args.userId) {
+      throw Error(`Please Login ${args.userId} ${req.session.userId}`);
+    }
 
     // Find team.
     const findTeam = await Team.findOne({

@@ -26,9 +26,9 @@ export const registerTeam = {
     { req }: any
   ): Promise<User | undefined> {
     // Check if user is logged in.
-    // if (!req.session.userId) {
-    //   throw Error('Please Login');
-    // }
+    if (!req.session.userId) {
+      throw Error(`Please Login ${req.session.userId}`);
+    }
 
     try {
       if (args.step === STEPS.TEAM) {
