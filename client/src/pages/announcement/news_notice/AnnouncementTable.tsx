@@ -7,14 +7,14 @@ import { scroller } from 'react-scroll';
 
 import { StandingTable } from '../../../components/standing_table/StandingTable';
 import {
-  TableRow,
   AnnouncementPageStandingHeader,
+  AnnouncementPageStanding,
 } from '../../../components/standing_table/standingData';
 import { Pagination } from '../../../components/pagination/Pagination';
 
 interface AnnouncementTableProps {
   className?: string;
-  tableRowData: TableRow[];
+  tableRowData: AnnouncementPageStanding[];
   selectedID: string;
   onChange: (id: string) => Promise<void>;
   isMobile?: boolean;
@@ -41,7 +41,7 @@ const UnstyledAnnouncementTable: FunctionComponent<AnnouncementTableProps> = ({
       return;
     }
 
-    if (parseInt(selectedID) < rowsPerPage || !selectedID.length) setPage(0);
+    if (parseInt(selectedID) <= rowsPerPage) setPage(0);
     else {
       setPage(Math.floor(parseInt(selectedID) / rowsPerPage));
     }
@@ -73,12 +73,11 @@ const UnstyledAnnouncementTable: FunctionComponent<AnnouncementTableProps> = ({
           tableHeaderData={AnnouncementPageStandingHeader}
           flex={isMobile ? [1, 4, 1.5] : [1, 4, 1]}
           rowContentClassName="announcement-table-row"
-          selectedRow={parseInt(selectedID) - rowsPerPage * page}
-          rowClick={(id: number) => {
-            const idx = id + page * rowsPerPage;
-
-            void onChange(String(idx));
-            history.push(`/announcement/${idx}`);
+          selectedRow={parseInt(selectedID) - (rowsPerPage * page) - 1}
+          hideRow='id'
+          rowClick={(announcement: AnnouncementPageStanding) => {
+            void onChange(announcement['No.'].split('.')[0]);
+            history.push(`/announcement/${announcement['No.'].split('.')[0]}`);
             scroller.scrollTo('selectedAnnouncement', {
               smooth: false,
               offset: isMobile ? 110 : 300,

@@ -44,7 +44,10 @@ const UnstyledHeroContentMobile: FunctionComponent<HomeMobileProps> = ({
           flexDirection="column"
           style={{ cursor: 'pointer' }}
           onClick={() => {
-            history.push(`/announcement/${announcements[mainIdx].id})}`);
+            history.push({
+              pathname: '/announcement',
+              state: { announcement: announcements[mainIdx] },
+            });
           }}
         >
           {announcements[mainIdx].imageURL && (
