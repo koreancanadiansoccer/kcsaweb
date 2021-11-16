@@ -21,11 +21,16 @@ export const inviteLeagueTeam = {
     leagueId: { type: new GraphQLNonNull(GraphQLInt) },
     teamId: { type: new GraphQLNonNull(GraphQLInt) },
   },
-  async resolve(parent: object, args: Args, { req }: any): Promise<League> {
+  async resolve(
+    parent: object,
+    args: Args
+
+    // { req }: any
+  ): Promise<League> {
     // TODO: Admin check
-    if (!req.session.userId) {
-      throw Error('Please Login');
-    }
+    // if (!req.session.userId) {
+    //   throw Error('Please Login');
+    // }
 
     // Find team.
     const team = await Team.findOne({
