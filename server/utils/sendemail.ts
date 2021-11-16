@@ -3,11 +3,12 @@ import { SendEmailRequest } from 'aws-sdk/clients/ses';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
-const URL =
-  process.env.NODE_ENV === 'production'
-    ? 'http://3.235.141.188'
-    : 'http://localhost:3000';
+// const URL =
+//   process.env.NODE_ENV === 'production'
+//     ? 'http://3.235.141.188'
+//     : 'http://localhost:3000';
 
+const URL = 'http://3.235.141.188';
 export const generateSignupHTML = (
   name: string,
   email: string,
