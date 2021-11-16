@@ -3,6 +3,10 @@ import { SendEmailRequest } from 'aws-sdk/clients/ses';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
+const URL =
+  process.env.NODE_ENV === 'production'
+    ? 'http://3.235.141.188'
+    : 'http://localhost:3000';
 
 export const generateSignupHTML = (
   name: string,
@@ -66,11 +70,6 @@ export const generateLeagueInvHTML = (
   </body>
   </html>`;
 };
-
-const URL =
-  process.env.NODE_ENV === 'production'
-    ? 'http://kcsacanada.ca'
-    : 'http://localhost:3000';
 
 export const sendEmail = async (
   email: string,
