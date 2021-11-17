@@ -81,6 +81,7 @@ export const LeagueTable = withTheme(styled(UnstyledLeagueTable)`
       width: 25px;
       height: 25px;
       margin-right: 0.4rem;
+      border-radius: 50%;
     }
   }
 `);

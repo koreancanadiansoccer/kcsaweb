@@ -14,6 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import { Input } from '../input/Input';
 import { Button } from '../button/Button';
 import { LoginInput } from '../../types/login';
+import { EMAIL_REGEX } from '../../types/user';
 
 interface LoginProps {
   className?: string;
@@ -74,9 +75,7 @@ const UnstyledLoginForm: FunctionComponent<LoginProps> = ({
                 const email = evt.target.value;
 
                 setEmailError(
-                  !/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(email)
-                    ? 'Please enter valid email'
-                    : ''
+                  !EMAIL_REGEX.test(email) ? 'Please enter valid email' : ''
                 );
 
                 setNewLogin({

@@ -46,10 +46,9 @@ const generateScheduleData = (match: Match, isMobile: boolean) => {
               {match.homeTeam.team.name.toUpperCase()}
             </Box>
             <img
-              height="25px"
-              width="25px"
               src={match.homeTeam.team.teamLogoURL || LogoGrey}
               alt={match.homeTeam.team.name}
+              className="schedule-mobile-logos"
             />
           </Box>
         ),
@@ -88,8 +87,7 @@ const generateScheduleData = (match: Match, isMobile: boolean) => {
             onClick={() => history.push(`/teams/${match.awayTeam.id}`)}
           >
             <img
-              height="25px"
-              width="25px"
+              className="schedule-mobile-logos"
               src={match.awayTeam.team.teamLogoURL || LogoGrey}
               alt={match.awayTeam.team.name}
             />
@@ -262,6 +260,7 @@ export const LeagueSchedule = withTheme(styled(UnstyledLeagueSchedule)`
       width: 25px;
       height: 25px;
       margin-left: 1rem;
+      border-radius: 50%;
     }
   }
 
@@ -280,6 +279,7 @@ export const LeagueSchedule = withTheme(styled(UnstyledLeagueSchedule)`
       width: 25px;
       height: 25px;
       margin-right: 1rem;
+      border-radius: 50%;
     }
   }
 
@@ -314,5 +314,11 @@ export const LeagueSchedule = withTheme(styled(UnstyledLeagueSchedule)`
     background-color: transparent !important;
     font-weight: bold;
     margin-top: -1rem;
+  }
+
+  .schedule-mobile-logos {
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
   }
 `);

@@ -123,6 +123,7 @@ export const LeagueStanding = withTheme(styled(UnstyledLeagueStanding)`
       width: 25px;
       height: 25px;
       margin-right: 1rem;
+      border-radius: 50%;
     }
   }
 
