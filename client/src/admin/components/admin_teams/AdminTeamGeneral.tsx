@@ -130,7 +130,6 @@ export const AdminTeamGeneral: FunctionComponent = () => {
             autoOk
             variant="inline"
             inputVariant="outlined"
-            label="Founded Year"
             format="yyyy"
             placeholder="yyyy"
             views={['year']}

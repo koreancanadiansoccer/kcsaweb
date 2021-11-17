@@ -8,18 +8,22 @@ import { Player } from '../../../db/models/player.model';
 import { LeagueTeam } from '../../../db/models/leagueteam.model';
 import { Team } from '../../../db/models/team.model';
 import { Match, MatchStatus } from '../../../db/models/match.model';
+import { MatchHomeSubmission } from '../../../db/models/matchhomesubmission.model';
+import { MatchHomeSubmissionPlayers } from '../../../db/models/matchhomesubmissionplayers.model';
+import { MatchAwaySubmission } from '../../../db/models/matchawaysubmission.model';
+import { MatchAwaySubmissionPlayers } from '../../../db/models/matchawaysubmissionplayers.model';
 
 const upsertPlayers = async (deletePlayers: MatchPlayer[]) => {
   await Promise.all(
     map(deletePlayers, async (player) => {
       const leaguePlayerParams: { [key: string]: string | number } = {};
-      leaguePlayerParams.goalScored = (Sequelize.literal(
+      leaguePlayerParams.goalScored = Sequelize.literal(
         `goal_scored - ${player.goalScored}`
-      ) as unknown) as number;
+      ) as unknown as number;
 
-      leaguePlayerParams.yellowCard = (Sequelize.literal(
+      leaguePlayerParams.yellowCard = Sequelize.literal(
         `yellow_card - ${player.yellowCard}`
-      ) as unknown) as number;
+      ) as unknown as number;
 
       // Update league player data.
       await LeaguePlayer.update(leaguePlayerParams, {
@@ -32,6 +36,53 @@ const upsertPlayers = async (deletePlayers: MatchPlayer[]) => {
       });
     })
   );
+};
+
+const delteMatchSubmissionData = async (
+  matchId: number,
+  homeTeamId: number,
+  awayTeamId: number,
+  homeMatchSubmission?: MatchHomeSubmission | null,
+  awayMatchSubmission?: MatchAwaySubmission | null
+) => {
+  if (homeMatchSubmission) {
+    const homeMatchSubmissionPlayers = await MatchHomeSubmissionPlayers.findAll(
+      {
+        where: {
+          matchId: matchId,
+          homeTeamId: homeTeamId,
+          matchHomeSubmissionId: homeMatchSubmission.id,
+        },
+      }
+    );
+
+    await Promise.all(
+      map(homeMatchSubmissionPlayers, async (homeSubmissionPlayer) => {
+        await homeSubmissionPlayer.destroy();
+      })
+    );
+
+    await homeMatchSubmission.destroy();
+  }
+
+  if (awayMatchSubmission) {
+    const awayMatchSubmissionPlayers = await MatchAwaySubmissionPlayers.findAll(
+      {
+        where: {
+          matchId: matchId,
+          awayTeamId: awayTeamId,
+          matchAwaySubmissionId: awayMatchSubmission.id,
+        },
+      }
+    );
+
+    await Promise.all(
+      map(awayMatchSubmissionPlayers, async (awaySubmissionPlayer) => {
+        await awaySubmissionPlayer.destroy();
+      })
+    );
+    await awayMatchSubmission.destroy();
+  }
 };
 
 const deleteMatchPlayers = async (deletePlayers: MatchPlayer[]) => {
@@ -60,29 +111,25 @@ const upsertTeam = async (
 
   const leagueTeamParms: { [key: string]: string | number } = {};
 
-  leagueTeamParms.goalScored = (Sequelize.literal(
+  leagueTeamParms.goalScored = Sequelize.literal(
     `goal_scored - ${teamScore}`
-  ) as unknown) as number;
+  ) as unknown as number;
 
-  leagueTeamParms.goalConceded = (Sequelize.literal(
+  leagueTeamParms.goalConceded = Sequelize.literal(
     `goal_conceded - ${opponentScore}`
-  ) as unknown) as number;
+  ) as unknown as number;
 
-  leagueTeamParms.win = (Sequelize.literal(
-    `win - ${win}`
-  ) as unknown) as number;
+  leagueTeamParms.win = Sequelize.literal(`win - ${win}`) as unknown as number;
 
-  leagueTeamParms.loss = (Sequelize.literal(
+  leagueTeamParms.loss = Sequelize.literal(
     `loss - ${loss}`
-  ) as unknown) as number;
+  ) as unknown as number;
 
-  leagueTeamParms.tie = (Sequelize.literal(
-    `tie - ${tie}`
-  ) as unknown) as number;
+  leagueTeamParms.tie = Sequelize.literal(`tie - ${tie}`) as unknown as number;
 
-  leagueTeamParms.played = (Sequelize.literal(
+  leagueTeamParms.played = Sequelize.literal(
     `played - ${1}`
-  ) as unknown) as number;
+  ) as unknown as number;
 
   // Update league team stats.
   await LeagueTeam.update(leagueTeamParms, {
@@ -138,9 +185,25 @@ export const deleteMatch = {
       await upsertTeam(awayTeamId, match.awayTeamScore, match.homeTeamScore);
     }
 
-    // Delete match.
+    const homeMatchSubmission = await MatchHomeSubmission.findOne({
+      where: { homeTeamId: homeTeamId, matchId: args.id },
+    });
+
+    const awayMatchSubmission = await MatchAwaySubmission.findOne({
+      where: { awayTeamId: awayTeamId, matchId: args.id },
+    });
+
+    await delteMatchSubmissionData(
+      args.id,
+      homeTeamId,
+      awayTeamId,
+      homeMatchSubmission,
+      awayMatchSubmission
+    );
+
     // Delete all match players.
     await deleteMatchPlayers([...homeMatchPlayers, ...awayMatchPlayers]);
+    // Delete match.
     await match.destroy();
     return { deletedMatchId: args.id };
   },
