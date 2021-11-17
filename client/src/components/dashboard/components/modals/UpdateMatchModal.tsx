@@ -220,8 +220,10 @@ export const UpdateMatchModal: FunctionComponent<UpdateMatchModalProps> = ({
     // Dropzone uploader can accept multiple files.
     const tempFile = files[0];
 
-    setFile(tempFile);
-    setFileLink(URL.createObjectURL(tempFile));
+    if (tempFile) {
+      setFile(tempFile);
+      setFileLink(URL.createObjectURL(tempFile));
+    }
   };
 
   const submitMatchData = useCallback(async () => {
@@ -517,6 +519,10 @@ export const UpdateMatchModal: FunctionComponent<UpdateMatchModalProps> = ({
           fileLink={fileLink}
           fileType="gamesheet"
           maxSize={5242880}
+          resetFiles={() => {
+            setFile(undefined);
+            setFileLink('');
+          }}
           setFile={(files: File[]) => handleImgUploadChange(files)}
         />
       </Box>

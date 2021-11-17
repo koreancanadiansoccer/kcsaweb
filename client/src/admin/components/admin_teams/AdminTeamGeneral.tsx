@@ -43,11 +43,10 @@ export const AdminTeamGeneral: FunctionComponent = () => {
 
   const { generateUploadUrls } = useImgUpload();
 
-  const hasNoChanges = useMemo(() => isEqual(team, origTeam) && !file, [
-    team,
-    origTeam,
-    file,
-  ]);
+  const hasNoChanges = useMemo(
+    () => isEqual(team, origTeam) && !file,
+    [team, origTeam, file]
+  );
 
   const [updateTeamMutation] = useMutation<UpdateTeamResult, UpdateTeamInput>(
     UPDATE_TEAM
@@ -97,8 +96,10 @@ export const AdminTeamGeneral: FunctionComponent = () => {
     // Dropzone uploader can accept multiple files.
     const tempFile = files[0];
 
-    setFile(tempFile);
-    setFileLink(URL.createObjectURL(tempFile));
+    if (tempFile) {
+      setFile(tempFile);
+      setFileLink(URL.createObjectURL(tempFile));
+    }
   };
 
   return (
@@ -200,6 +201,10 @@ export const AdminTeamGeneral: FunctionComponent = () => {
         <ImgDropzone
           fileLink={fileLink}
           setFile={(files: File[]) => handleUploadChange(files)}
+          resetFiles={() => {
+            setFile(undefined);
+            setFileLink('');
+          }}
         />
       </Box>
 

@@ -1,5 +1,5 @@
-import React, { FunctionComponent, useMemo } from 'react';
-import Dropzone, { DropzoneRootProps } from 'react-dropzone';
+import React, { FunctionComponent, useMemo, useState } from 'react';
+import Dropzone, { DropzoneRootProps, FileRejection } from 'react-dropzone';
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 
@@ -40,6 +40,7 @@ interface ImgDropzoneProps {
   maxSize?: number;
   fileType?: 'logo' | 'announcment' | 'gamesheet';
   multiple?: boolean;
+  resetFiles: () => void;
 }
 
 /**
@@ -51,7 +52,10 @@ export const ImgDropzone: FunctionComponent<ImgDropzoneProps> = ({
   fileType = 'logo',
   multiple,
   maxSize = 1048675, // Byte value, default is 1048675 (1 MB).
+  resetFiles,
 }) => {
+  const [error, setErrors] = useState('');
+
   const preferredFormat = useMemo(() => {
     if (fileType === 'announcment')
       return '*Preferred png format with max 5MB size.';
@@ -62,10 +66,10 @@ export const ImgDropzone: FunctionComponent<ImgDropzoneProps> = ({
   }, [fileType]);
 
   const size = useMemo(() => {
-    if (fileType === 'announcment') return '5MB.';
-    if (fileType === 'gamesheet') return '5MB.';
+    if (fileType === 'announcment') return '5MB';
+    if (fileType === 'gamesheet') return '5MB';
 
-    return '1MB.';
+    return '1MB';
   }, [fileType]);
 
   return (
@@ -75,7 +79,30 @@ export const ImgDropzone: FunctionComponent<ImgDropzoneProps> = ({
       </Typography>
 
       <Dropzone
-        onDrop={setFile}
+        onDrop={(files: File[], fileRejections: FileRejection[]) => {
+          resetFiles();
+          setErrors('');
+          let error = '';
+          fileRejections.forEach((file) => {
+            file.errors.forEach((err) => {
+              if (err.code === 'file-too-large') {
+                error = `Error: File exceeds ${size} limit`;
+                return;
+              }
+
+              if (err.code === 'file-invalid-type') {
+                error = 'Error: File type invalid ';
+                return;
+              }
+            });
+          });
+
+          if (error) {
+            setErrors(error);
+            return;
+          }
+          setFile(files);
+        }}
         accept="image/*"
         minSize={0}
         multiple={multiple}
@@ -91,6 +118,11 @@ export const ImgDropzone: FunctionComponent<ImgDropzoneProps> = ({
           <Container
             {...getRootProps({ isDragActive, isDragAccept, isDragReject })}
           >
+            {error && (
+              <Typography variant="body1" color="error">
+                {error}
+              </Typography>
+            )}
             <input {...getInputProps()} />
             {!isDragActive && (
               <>

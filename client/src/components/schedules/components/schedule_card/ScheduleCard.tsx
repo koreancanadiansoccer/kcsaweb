@@ -54,6 +54,7 @@ const UnstyledScheduledCard: FunctionComponent<ScheduleCardProps> = ({
                 <img
                   src={homeTeam.team.teamLogoURL || LogoGrey}
                   alt="home team logo"
+                  className="scheulde-logo-card"
                 />
               </Box>
               <Box>{homeTeam.team.name.toUpperCase()}</Box>
@@ -88,6 +89,7 @@ const UnstyledScheduledCard: FunctionComponent<ScheduleCardProps> = ({
                 <img
                   src={awayTeam.team.teamLogoURL || LogoGrey}
                   alt="away team logo"
+                  className="scheulde-logo-card"
                 />
               </Box>
               <Box>{awayTeam.team.name.toUpperCase()}</Box>
@@ -101,9 +103,11 @@ const UnstyledScheduledCard: FunctionComponent<ScheduleCardProps> = ({
 
 export const ScheduleCard = withTheme(styled(UnstyledScheduledCard)`
   cursor: pointer;
+
   min-width: ${({ mobileWidth }) => (mobileWidth ? '100%' : '332px')};
   .MuiPaper-root {
     background-color: ${({ pastGame }) => (pastGame ? '#eeeeee' : 'white')};
+    color: ${({ pastGame }) => (pastGame ? '#a09c9c' : '#274555')};
   }
   .text-sub {
     font-size: 0.875rem;
@@ -120,5 +124,11 @@ export const ScheduleCard = withTheme(styled(UnstyledScheduledCard)`
     font-size: 1.3rem;
 
     padding-left: ${({ mobileWidth }) => (mobileWidth ? '0.5rem' : '1rem')};
+  }
+
+  .scheulde-logo-card {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
   }
 `);

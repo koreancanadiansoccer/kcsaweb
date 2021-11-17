@@ -103,9 +103,10 @@ const UnstyledClubGneral: FunctionComponent = () => {
   const handleUploadChange = async (files: File[]) => {
     // Dropzone uploader can accept multiple files.
     const tempFile = files[0];
-
-    setFile(tempFile);
-    setFileLink(URL.createObjectURL(tempFile));
+    if (tempFile) {
+      setFile(tempFile);
+      setFileLink(URL.createObjectURL(tempFile));
+    }
   };
 
   return (
@@ -168,9 +169,13 @@ const UnstyledClubGneral: FunctionComponent = () => {
         <Typography variant="body1">Uploaded Logo</Typography>
 
         {team.teamLogoURL ? (
-          <Box width={100} height={100}>
+          <Box>
             {/* Hack to reload img with same url: Append random unique query param */}
-            <img src={`${team.teamLogoURL}?${Date.now()}`} alt="team-logo" />
+            <img
+              src={`${team.teamLogoURL}?${Date.now()}`}
+              alt="team-logo"
+              style={{ width: '100px', height: '100px' }}
+            />
           </Box>
         ) : (
           <Box fontStyle="italic">No logo added</Box>
@@ -182,7 +187,13 @@ const UnstyledClubGneral: FunctionComponent = () => {
 
         <ImgDropzone
           fileLink={fileLink}
-          setFile={(files: File[]) => handleUploadChange(files)}
+          resetFiles={() => {
+            setFile(undefined);
+            setFileLink('');
+          }}
+          setFile={(files: File[]) => {
+            handleUploadChange(files);
+          }}
         />
       </Box>
 

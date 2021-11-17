@@ -103,8 +103,10 @@ const UnstyledTeamConfig: FunctionComponent<TeamConfigProps> = ({
     // Dropzone uploader can accept multiple files.
     const tempFile = files[0];
 
-    setFile(tempFile);
-    setFileLink(URL.createObjectURL(tempFile));
+    if (tempFile) {
+      setFile(tempFile);
+      setFileLink(URL.createObjectURL(tempFile));
+    }
   };
 
   return (
@@ -212,6 +214,10 @@ const UnstyledTeamConfig: FunctionComponent<TeamConfigProps> = ({
         <ImgDropzone
           fileLink={fileLink}
           setFile={(files: File[]) => handleUploadChange(files)}
+          resetFiles={() => {
+            setFile(undefined);
+            setFileLink('');
+          }}
         />
       </Box>
 

@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useMemo } from 'react';
 import { withTheme, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Box from '@material-ui/core/Box';
@@ -32,6 +32,13 @@ const UnstyledTeamHero: FunctionComponent<TeamHeroProps> = ({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
+  const officialName = useMemo(() => {
+    if (captain?.firstName && captain?.lastName)
+      return `${captain?.firstName} ${captain?.lastName}`.toUpperCase();
+    if (captain?.firstName) return captain?.firstName.toUpperCase();
+    return '-';
+  }, [captain]);
+
   if (isMobile) {
     return (
       <Box className={className}>
@@ -44,11 +51,11 @@ const UnstyledTeamHero: FunctionComponent<TeamHeroProps> = ({
           pt={5}
         >
           {/* Logo */}
-          <Box width={200} maxHeight={341}>
+          <Box mb={3}>
             <img
               src={teamLogo ? teamLogo : LogoGrey}
-              alt="hero-main"
-              className="hero-main"
+              alt="team-hero-main"
+              className="team-hero-mobile-img"
             />
           </Box>
 
@@ -60,8 +67,7 @@ const UnstyledTeamHero: FunctionComponent<TeamHeroProps> = ({
 
             <Box mt={9}>
               <Typography variant="h6" className="boldText">
-                Club Officials:{' '}
-                {`${captain?.firstName} ${captain?.lastName}`.toUpperCase()}
+                Club Officials: {officialName}
               </Typography>
             </Box>
 
@@ -91,11 +97,11 @@ const UnstyledTeamHero: FunctionComponent<TeamHeroProps> = ({
         pt={10}
       >
         {/* Logo */}
-        <Box width={326} height={341}>
+        <Box>
           <img
             src={teamLogo ? teamLogo : LogoGrey}
-            alt="hero-main"
-            className="hero-main"
+            alt="team-hero-main"
+            className="team-hero-img"
           />
         </Box>
 
@@ -107,8 +113,7 @@ const UnstyledTeamHero: FunctionComponent<TeamHeroProps> = ({
 
           <Box mt={9}>
             <Typography variant="h6" className="boldText">
-              Club Officials:{' '}
-              {`${captain?.firstName} ${captain?.lastName}`.toUpperCase()}
+              Club Officials: {officialName}
             </Typography>
           </Box>
 
@@ -133,4 +138,16 @@ export const TeamHero = withTheme(styled(UnstyledTeamHero)`
   background: ${({ teamColor }) =>
     `linear-gradient(90deg, ${teamColor} 0%, rgba(6, 6, 6, 1) 60%, black 81%);`};
   color: white;
+
+  .team-hero-img {
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+  }
+
+  .team-hero-mobile-img {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+  }
 `);

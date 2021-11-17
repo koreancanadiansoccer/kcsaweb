@@ -16,7 +16,7 @@ import pick from 'lodash/pick';
 import { useMutation } from '@apollo/client';
 
 import { DashboardViewerContext } from '../../context/dashboardViewer';
-import { User } from '../../types/user';
+import { User, EMAIL_REGEX } from '../../types/user';
 import { Input } from '../input/Input';
 import { Button, ErrorButton } from '../button/Button';
 import { ErrorAlert } from '../alert_msg/Alerts';
@@ -197,9 +197,7 @@ const UnstyledCaptainGeneral: FunctionComponent<CaptainGeneralProps> = ({
           const email = evt.target.value;
 
           setEmailError(
-            !/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(email)
-              ? 'Please enter valid email'
-              : ''
+            !EMAIL_REGEX.test(email) ? 'Please enter valid email' : ''
           );
 
           setCaptain({

@@ -148,7 +148,7 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
             {/* League selection */}
             <Box
               display="flex"
-              justifyContent='center'
+              justifyContent="center"
               alignItems="center"
               mb={5}
             >
@@ -202,7 +202,7 @@ const UnstyledHomeContent: FunctionComponent<HomeContentProps> = ({
 
           {/* Galleries Slide Show */}
           {!isMobile && (
-            <Box display='contents'>
+            <Box display="contents">
               <GallerySlide />
             </Box>
           )}

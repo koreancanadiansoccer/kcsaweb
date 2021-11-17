@@ -22,7 +22,6 @@ import { Team, TeamInput } from '../../types/team';
 const tableColumns = [
   { title: 'Name', field: 'name' },
   { title: 'Age Group', field: 'teamAgeType' },
-  { title: 'isActive', field: 'isActive' },
   { title: 'Created', field: 'createdAt' },
 ];
 
@@ -120,11 +119,6 @@ export const Teams: FunctionComponent = () => {
           }}
           options={{
             pageSize: 10,
-            rowStyle: (data) => {
-              return data.isActive
-                ? { background: 'white' }
-                : { background: '#EEEEEE' };
-            },
           }}
         />
       </Box>
