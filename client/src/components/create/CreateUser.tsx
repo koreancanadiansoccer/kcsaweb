@@ -12,6 +12,11 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 import { Input } from '../input/Input';
 import { Button } from '../button/Button';
@@ -39,7 +44,7 @@ const UnstyledCreate: FunctionComponent<CreateProps> = ({
   const [newUser, setNewUser] = useState<UserInput>({
     firstName: origUser?.firstName || '',
     lastName: origUser?.lastName || '',
-    dob: origUser?.dob || '',
+    dob: origUser?.dob || null,
     email: origUser?.email || '',
     phoneNumber: origUser?.phoneNumber || '',
     password: '',
@@ -48,6 +53,7 @@ const UnstyledCreate: FunctionComponent<CreateProps> = ({
 
   const [emailError, setEmailError] = useState('');
   const [phoneError, setPhoneError] = useState('');
+  const [dobError, setDobError] = useState(false);
   const [passwordError, setPasswordError] = useState('');
   const passwordConfrimError = useMemo(() => {
     return newUser.password !== newUser.passwordConfirm
@@ -62,6 +68,7 @@ const UnstyledCreate: FunctionComponent<CreateProps> = ({
       !!newUser?.email &&
       !emailError &&
       !!newUser?.dob &&
+      !dobError &&
       !!newUser?.phoneNumber &&
       !phoneError &&
       !!newUser?.password &&
@@ -77,7 +84,7 @@ const UnstyledCreate: FunctionComponent<CreateProps> = ({
         firstName: origUser?.firstName || '',
         lastName: origUser?.lastName || '',
         email: origUser?.email || '',
-        dob: origUser?.dob || '',
+        dob: origUser?.dob || null,
         phoneNumber: origUser?.phoneNumber || '',
         password: '',
         passwordConfirm: '',
@@ -134,23 +141,29 @@ const UnstyledCreate: FunctionComponent<CreateProps> = ({
               });
             }}
           />
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              openTo={'year'}
+              autoOk
+              variant="inline"
+              inputVariant="outlined"
+              label="DOB"
+              format="MM/dd/yyyy"
+              placeholder="mm/dd/yyyy"
+              error={!newUser?.dob || dobError}
+              value={newUser.dob}
+              InputAdornmentProps={{ position: 'start' }}
+              onChange={(date, value) => {
+                setDobError(false);
+                const valueParsed = value?.replace('_', '');
+                if (valueParsed?.length !== 10) {
+                  setDobError(true);
+                }
 
-          <Input
-            className="create-field"
-            label="Date of Birth"
-            placeholder="date of birth"
-            type="date"
-            value={newUser.dob}
-            fullWidth
-            error={!newUser?.dob}
-            margin="normal"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              setNewUser({ ...newUser, dob: e.target.value });
-            }}
-          />
+                setNewUser({ ...newUser, dob: date });
+              }}
+            />
+          </MuiPickersUtilsProvider>
 
           <Input
             className="create-field"

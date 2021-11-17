@@ -170,7 +170,7 @@ const UnstyledCaptainGeneral: FunctionComponent<CaptainGeneralProps> = ({
           });
         }}
       />
-      <Input
+      {/* <Input
         className="create-field"
         label="Date of Birth"
         placeholder="date of birth"
@@ -183,7 +183,7 @@ const UnstyledCaptainGeneral: FunctionComponent<CaptainGeneralProps> = ({
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
           setCaptain({ ...captain, dob: e.target.value });
         }}
-      />
+      /> */}
 
       <Input
         className="create-field"

@@ -10,6 +10,11 @@ import Box from '@material-ui/core/Box';
 import DialogActions from '@material-ui/core/DialogActions';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 import { NewCaptain, EMAIL_REGEX } from '../../../types/user';
 import { Modal } from '../../../components/modal/Modal';
@@ -31,7 +36,7 @@ export const InviteNewCaptainModal: FunctionComponent<InviteNewCaptainProps> =
     const [newCaptain, setNewCaptain] = useState<NewCaptain>({
       firstName: '',
       lastName: '',
-      dob: '',
+      dob: null,
       phoneNumber: '',
       email: '',
       teamName: '',
@@ -60,7 +65,7 @@ export const InviteNewCaptainModal: FunctionComponent<InviteNewCaptainProps> =
         setNewCaptain({
           firstName: '',
           lastName: '',
-          dob: '',
+          dob: null,
           phoneNumber: '',
           email: '',
           teamName: '',
@@ -101,22 +106,20 @@ export const InviteNewCaptainModal: FunctionComponent<InviteNewCaptainProps> =
 
         <Box>
           <Typography variant="body1">Date of Birth</Typography>
-
-          <Input
-            label="Date of Birth"
-            placeholder="Date of birth"
-            type="date"
-            helperText="You can leave this blank - Captains will be requried to put in during registration"
-            required
-            value={newCaptain?.dob}
-            fullWidth
-            InputLabelProps={{
-              shrink: true,
-            }}
-            onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-              setNewCaptain({ ...newCaptain, dob: evt.target.value });
-            }}
-          />
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              openTo={'year'}
+              autoOk
+              variant="inline"
+              inputVariant="outlined"
+              label="DOB"
+              format="MM/dd/yyyy"
+              placeholder="mm/dd/yyyy"
+              value={newCaptain.dob}
+              InputAdornmentProps={{ position: 'start' }}
+              onChange={(date) => setNewCaptain({ ...newCaptain, dob: date })}
+            />
+          </MuiPickersUtilsProvider>
         </Box>
 
         <Divider />

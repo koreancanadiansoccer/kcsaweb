@@ -13,6 +13,8 @@ import Divider from '@material-ui/core/Divider';
 import find from 'lodash/find';
 import isEqual from 'lodash/isEqual';
 import { useMutation } from '@apollo/client';
+import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 import { Team } from '../../../types/team';
 import { ageOptions } from '../../../types/age.enum';
@@ -122,19 +124,24 @@ export const AdminTeamGeneral: FunctionComponent = () => {
 
       {/* Founded Date */}
       <Box my={2}>
-        <Typography variant="body1"> Club Founded Date</Typography>
-        <Input
-          id="datetime-local"
-          label="Match Time"
-          value={team?.foundedDate}
-          type="month"
-          onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            setTeam({ ...team, foundedDate: e.target.value });
-          }}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
+        <Typography variant="body1"> Club Founded Year</Typography>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <DatePicker
+            autoOk
+            variant="inline"
+            inputVariant="outlined"
+            label="Founded Year"
+            format="yyyy"
+            placeholder="yyyy"
+            views={['year']}
+            error={!team?.foundedDate}
+            value={team.foundedDate}
+            disableFuture
+            onChange={(date) => {
+              setTeam({ ...team, foundedDate: date });
+            }}
+          />
+        </MuiPickersUtilsProvider>
       </Box>
 
       <Divider />
@@ -186,9 +193,13 @@ export const AdminTeamGeneral: FunctionComponent = () => {
         <Typography variant="body1">Uploaded Logo</Typography>
 
         {team.teamLogoURL ? (
-          <Box width={100} height={100}>
+          <Box>
             {/* Hack to reload img with same url: Append random unique query param */}
-            <img src={`${team.teamLogoURL}?${Date.now()}`} alt="team-logo" />
+            <img
+              src={`${team.teamLogoURL}?${Date.now()}`}
+              alt="team-logo"
+              style={{ width: '100px', height: '100px' }}
+            />
           </Box>
         ) : (
           <Box fontStyle="italic">No logo added</Box>

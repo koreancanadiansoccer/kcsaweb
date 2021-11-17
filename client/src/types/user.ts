@@ -13,7 +13,7 @@ export interface User {
   id: number;
   firstName: string;
   lastName: string;
-  dob: string;
+  dob: Date | null;
   email: string;
   status: ACCOUNTSTATUS;
   phoneNumber: string;
@@ -24,7 +24,7 @@ export interface User {
 export interface NewCaptain {
   firstName: string;
   lastName: string;
-  dob: string;
+  dob: Date | null;
   teamName: string;
   phoneNumber: string;
   email: string;
@@ -35,7 +35,7 @@ export interface NewCaptain {
 export interface UserInput {
   firstName: string;
   lastName: string;
-  dob: string;
+  dob: Date | null;
   email: string;
   phoneNumber: string;
   password: string;

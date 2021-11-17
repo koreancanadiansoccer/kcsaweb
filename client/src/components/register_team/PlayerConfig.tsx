@@ -16,6 +16,11 @@ import every from 'lodash/every';
 import { useMutation } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 import { Button, ErrorButton } from '../button/Button';
 import { Input } from '../input/Input';
@@ -50,7 +55,7 @@ const UnstyledPlayerConfig: FunctionComponent<TeamConfigProps> = ({
           {
             firstName: '',
             lastName: '',
-            dob: '',
+            dob: null,
           },
         ]
   );
@@ -151,24 +156,34 @@ const UnstyledPlayerConfig: FunctionComponent<TeamConfigProps> = ({
               </Box>
 
               <Box mt={1}>
-                <Input
-                  label="DOB"
-                  value={player?.dob}
-                  placeholder="date of birth"
-                  type="date"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-                    const newPlayers = [...players];
-                    newPlayers[idx] = {
-                      ...newPlayers[idx],
-                      dob: evt.target.value,
-                    };
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDatePicker
+                    openTo={'year'}
+                    autoOk
+                    variant="inline"
+                    inputVariant="outlined"
+                    label="DOB"
+                    format="MM/dd/yyyy"
+                    placeholder="mm/dd/yyyy"
+                    error={!player?.dob}
+                    value={player.dob}
+                    InputAdornmentProps={{ position: 'start' }}
+                    onChange={(date) => {
+                      // setDobError(false);
+                      // const valueParsed = value?.replace('_', '');
+                      // if (valueParsed?.length !== 10) {
+                      //   setDobError(true);
+                      // }
+                      const newPlayers = [...players];
+                      newPlayers[idx] = {
+                        ...newPlayers[idx],
+                        dob: date,
+                      };
 
-                    setPlayers(newPlayers);
-                  }}
-                />
+                      setPlayers(newPlayers);
+                    }}
+                  />
+                </MuiPickersUtilsProvider>
               </Box>
             </Box>
 
@@ -196,7 +211,7 @@ const UnstyledPlayerConfig: FunctionComponent<TeamConfigProps> = ({
           onClick={() => {
             const newPlayers = [
               ...players,
-              { firstName: '', lastName: '', dob: '' },
+              { firstName: '', lastName: '', dob: null },
             ];
             setPlayers(newPlayers);
           }}

@@ -2,7 +2,7 @@ export interface Player {
   id: number;
   firstName: string;
   lastName: string;
-  dob: string;
+  dob: Date | null;
   goalScored: number;
   yellowCard: number;
 }
@@ -12,7 +12,7 @@ export interface PlayerInput {
   firstName: string;
   lastName: string;
   teamId?: number;
-  dob?: string;
+  dob?: Date | null;
 }
 
 export interface LeaguePlayerInput {
@@ -20,7 +20,7 @@ export interface LeaguePlayerInput {
   firstName?: string;
   lastName?: string;
   signedWaiver?: boolean;
-  dob?: string;
+  dob?: Date | null;
 }
 export interface LeaguePlayer {
   id: number;

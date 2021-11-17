@@ -12,7 +12,7 @@ export interface Team {
   id: number;
   name: string;
   captain?: User;
-  foundedDate: string;
+  foundedDate: Date | null;
   teamLogoURL?: string;
   teamAgeType: AgeEnums | string;
   teamColor?: string;

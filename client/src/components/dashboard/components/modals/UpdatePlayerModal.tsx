@@ -10,6 +10,11 @@ import Box from '@material-ui/core/Box';
 import DialogActions from '@material-ui/core/DialogActions';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 import { Modal } from '../../../modal/Modal';
 import { Input } from '../../../input/Input';
@@ -91,18 +96,23 @@ export const UpdatePlayerModal: FunctionComponent<CreatePlayerModalProps> = ({
         <Divider />
 
         <Box my={2}>
-          <Input
-            label="DOB"
-            value={updatePlayer?.dob}
-            placeholder="date of birth"
-            type="date"
-            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              setUpdatePlayer({ ...updatePlayer, dob: e.target.value });
-            }}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              openTo={'year'}
+              autoOk
+              variant="inline"
+              inputVariant="outlined"
+              label="DOB"
+              format="MM/dd/yyyy"
+              placeholder="mm/dd/yyyy"
+              error={!updatePlayer?.dob}
+              value={updatePlayer.dob}
+              InputAdornmentProps={{ position: 'start' }}
+              onChange={(date) => {
+                setUpdatePlayer({ ...updatePlayer, dob: date });
+              }}
+            />
+          </MuiPickersUtilsProvider>
         </Box>
 
         <Divider />

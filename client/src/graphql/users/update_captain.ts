@@ -7,7 +7,7 @@ import { USER_FRAGMENT } from './user.fragment';
 export interface UpdateCaptainInput {
   firstName: string;
   lastName: string;
-  dob: string;
+  dob: Date | null;
   email: string;
   phoneNumber: string;
   teamName: string;

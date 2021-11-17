@@ -14,6 +14,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import { useMutation } from '@apollo/client';
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 import { Modal } from '../../../components/modal/Modal';
 import { Input } from '../../../components/input/Input';
@@ -149,22 +154,20 @@ export const UpdateCaptainModal: FunctionComponent<UpdateCaptainModalProps> = ({
 
         <Box>
           <Typography variant="body1">Date of Birth</Typography>
-
-          <Input
-            label="Date of Birth"
-            placeholder="Date of birth"
-            type="date"
-            helperText="You can leave this blank - Captains will be requried to put in during registration"
-            required
-            value={captain?.dob}
-            fullWidth
-            InputLabelProps={{
-              shrink: true,
-            }}
-            onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-              setCaptain({ ...captain, dob: evt.target.value });
-            }}
-          />
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              openTo={'year'}
+              autoOk
+              variant="inline"
+              inputVariant="outlined"
+              label="With keyboard"
+              format="MM/dd/yyyy"
+              placeholder="mm/dd/yyyy"
+              value={captain.dob}
+              InputAdornmentProps={{ position: 'start' }}
+              onChange={(date) => setCaptain({ ...captain, dob: date })}
+            />
+          </MuiPickersUtilsProvider>
         </Box>
 
         <Divider />

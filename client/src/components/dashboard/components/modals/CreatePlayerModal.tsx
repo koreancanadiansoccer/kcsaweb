@@ -10,7 +10,11 @@ import Box from '@material-ui/core/Box';
 import DialogActions from '@material-ui/core/DialogActions';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import dayjs from 'dayjs';
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 import { Modal } from '../../../modal/Modal';
 import { Input } from '../../../input/Input';
@@ -33,7 +37,7 @@ export const CreatePlayerModal: FunctionComponent<CreatePlayerModalProps> = ({
   const [newPlayer, setNewPlayer] = useState<PlayerInput>({
     firstName: '',
     lastName: '',
-    dob: dayjs().subtract(18, 'year').format('YYYY-MM-DD'),
+    dob: null,
   });
 
   const isValid = useMemo(
@@ -47,7 +51,7 @@ export const CreatePlayerModal: FunctionComponent<CreatePlayerModalProps> = ({
       setNewPlayer({
         firstName: '',
         lastName: '',
-        dob: dayjs().subtract(18, 'year').format('YYYY-MM-DD'),
+        dob: null,
       }),
     [open]
   );
@@ -85,18 +89,23 @@ export const CreatePlayerModal: FunctionComponent<CreatePlayerModalProps> = ({
         <Divider />
 
         <Box my={2}>
-          <Input
-            label="DOB"
-            value={newPlayer?.dob}
-            placeholder="date of birth"
-            type="date"
-            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              setNewPlayer({ ...newPlayer, dob: e.target.value });
-            }}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              openTo={'year'}
+              autoOk
+              variant="inline"
+              inputVariant="outlined"
+              label="DOB"
+              format="MM/dd/yyyy"
+              placeholder="mm/dd/yyyy"
+              error={!newPlayer?.dob}
+              value={newPlayer.dob}
+              InputAdornmentProps={{ position: 'start' }}
+              onChange={(date) => {
+                setNewPlayer({ ...newPlayer, dob: date });
+              }}
+            />
+          </MuiPickersUtilsProvider>
         </Box>
 
         <Divider />

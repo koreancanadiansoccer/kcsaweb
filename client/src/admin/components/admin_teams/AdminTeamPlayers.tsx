@@ -9,6 +9,7 @@ import Box from '@material-ui/core/Box';
 import { useMutation } from '@apollo/client';
 import AddIcon from '@material-ui/icons/Add';
 import findIndex from 'lodash/findIndex';
+import dayjs from 'dayjs';
 
 import { CREATE_PLAYER } from '../../../graphql/players/create_player.mutation';
 import { TeamContext } from '../../../context/team';
@@ -78,7 +79,12 @@ export const AdminTeamPlayers: FunctionComponent = () => {
         return `${rowData.firstName} ${rowData.lastName}`.toUpperCase();
       },
     },
-    { title: 'Date of Birth', field: 'dob' },
+    {
+      title: 'Date of Birth',
+      render: (rowData: Player) => {
+        return dayjs(rowData.dob).format('MM/DD/YYYY');
+      },
+    },
     { title: 'Goals', field: 'goalScored' },
     { title: 'Yellow', field: 'yellowCard' },
     { title: 'Created', field: 'createdAt' },
