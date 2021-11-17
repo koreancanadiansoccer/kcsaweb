@@ -85,7 +85,7 @@ export const CreateTeamModal: FunctionComponent<CreateTeamModalProp> = ({
           <Typography variant="body1"> Club Founded Date</Typography>
           <Input
             id="datetime-local"
-            label="Match Time"
+            label="Founded Date"
             value={newTeam?.foundedDate}
             type="month"
             onChange={(e: ChangeEvent<HTMLInputElement>) => {

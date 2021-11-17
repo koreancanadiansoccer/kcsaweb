@@ -74,9 +74,7 @@ const UnstyledTeamHero: FunctionComponent<TeamHeroProps> = ({
             <Box mt={1}>
               <Typography variant="h6" className="boldText">
                 Founded Date:{' '}
-                {foundedDate
-                  ? dayjs(foundedDate, 'YYYY-MM').format('MMMM, YYYY')
-                  : ' - '}
+                {foundedDate ? dayjs(foundedDate).format('YYYY') : ' - '}
               </Typography>
             </Box>
           </Box>
@@ -120,9 +118,7 @@ const UnstyledTeamHero: FunctionComponent<TeamHeroProps> = ({
           <Box mt={1}>
             <Typography variant="h6" className="boldText">
               Founded Date:{' '}
-              {foundedDate
-                ? dayjs(foundedDate, 'YYYY-MM').format('MMMM, YYYY')
-                : ' - '}
+              {foundedDate ? dayjs(foundedDate).format('YYYY') : ' - '}
             </Typography>
           </Box>
         </Box>

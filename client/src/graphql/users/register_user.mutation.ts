@@ -12,7 +12,7 @@ export interface RegisterUserDataInput {
   id: number;
   firstName: string;
   lastName: string;
-  dob: string;
+  dob: Date | null;
   password: string;
   email: string;
   phoneNumber: string;

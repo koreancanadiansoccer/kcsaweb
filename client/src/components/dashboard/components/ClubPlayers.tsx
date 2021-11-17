@@ -9,6 +9,7 @@ import Box from '@material-ui/core/Box';
 import AddIcon from '@material-ui/icons/Add';
 import findIndex from 'lodash/findIndex';
 import { useMutation } from '@apollo/client';
+import dayjs from 'dayjs';
 
 import {
   UpdateDashboardInput,
@@ -102,7 +103,12 @@ export const ClubPlayers: FunctionComponent = () => {
         return `${rowData.firstName} ${rowData.lastName}`.toUpperCase();
       },
     },
-    { title: 'D.O.B', field: 'dob' },
+    {
+      title: 'D.O.B',
+      render: (rowData: Player) => {
+        return dayjs(rowData.dob).format('MM/DD/YYYY');
+      },
+    },
     { title: 'Goals', field: 'goalScored' },
     { title: 'Yellow', field: 'yellowCard' },
     { title: 'Created', field: 'createdAt' },

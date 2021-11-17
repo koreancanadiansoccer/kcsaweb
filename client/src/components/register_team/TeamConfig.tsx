@@ -14,6 +14,8 @@ import Divider from '@material-ui/core/Divider';
 import find from 'lodash/find';
 import { useMutation } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
+import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 import { Team } from '../../types/team';
 import { Button } from '../button/Button';
@@ -55,7 +57,6 @@ const UnstyledTeamConfig: FunctionComponent<TeamConfigProps> = ({
 
   const [errorMsg, setErrorMsg] = useState('');
   const { generateUploadUrls } = useImgUpload();
-
   const isValid = useMemo(
     () => !!team.name && !!team.foundedDate && !!team.teamColor,
     [team]
@@ -148,18 +149,22 @@ const UnstyledTeamConfig: FunctionComponent<TeamConfigProps> = ({
           </span>
         </Typography>
 
-        <Input
-          id="datetime-local"
-          label="Founded Year"
-          value={team?.foundedDate}
-          type="month"
-          onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            setTeam({ ...team, foundedDate: e.target.value });
-          }}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <DatePicker
+            autoOk
+            variant="inline"
+            inputVariant="outlined"
+            format="yyyy"
+            placeholder="yyyy"
+            views={['year']}
+            error={!team?.foundedDate}
+            value={team.foundedDate}
+            disableFuture
+            onChange={(date) => {
+              setTeam({ ...team, foundedDate: date });
+            }}
+          />
+        </MuiPickersUtilsProvider>
       </Box>
 
       <Divider />

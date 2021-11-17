@@ -13,7 +13,7 @@ export const TeamContext = createContext<TeamContextType>({
   team: {
     id: 0,
     name: '',
-    foundedDate: '',
+    foundedDate: null,
     teamAgeType: '',
     teamColor: '',
     teamLogoURL: '',

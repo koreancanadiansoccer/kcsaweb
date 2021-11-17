@@ -4,6 +4,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { useMutation, useQuery } from '@apollo/client';
+import dayjs from 'dayjs';
 
 import { Table } from '../../components/table/Table';
 import { Loader } from '../../components/loader/Loader';
@@ -34,7 +35,13 @@ const tableColumns = [
     },
   },
   { title: 'Email', field: 'email' },
-  { title: 'DOB', field: 'dob' },
+  {
+    title: 'DOB',
+    field: 'dob',
+    render: (user: User) => {
+      return dayjs(user.dob).format('MM/DD/YYYY');
+    },
+  },
   {
     title: 'Phone ',
     render: (user: User) => {

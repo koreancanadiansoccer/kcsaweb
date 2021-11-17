@@ -9,6 +9,7 @@ import Box from '@material-ui/core/Box';
 import findIndex from 'lodash/findIndex';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
+import dayjs from 'dayjs';
 
 import { Button } from '../../button/Button';
 import { Table } from '../../table/Table';
@@ -70,7 +71,7 @@ export const DashboardLeagueGeneral: FunctionComponent = () => {
     {
       title: 'Date of Birth',
       render: (rowData: LeaguePlayer) => {
-        return rowData.player.dob;
+        return dayjs(rowData.player.dob).format('MM/DD/YYYY');
       },
     },
     {

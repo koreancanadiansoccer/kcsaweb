@@ -20,6 +20,12 @@ import { useMutation, useQuery } from '@apollo/client';
 import Divider from '@material-ui/core/Divider';
 import Checkbox from '@material-ui/core/Checkbox';
 import Chip from '@material-ui/core/Chip';
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import dayjs from 'dayjs';
 
 import {
   CREATE_LEAGUE_PLAYER,
@@ -210,7 +216,7 @@ export const CreateLeaguePlayersModal: FunctionComponent<CreateLeaguePlayersModa
       {
         title: 'Date of Birth',
         render: (rowData: LeaguePlayer) => {
-          return rowData.player.dob;
+          return dayjs(rowData.player.dob).format('MM/DD/YYYY');
         },
       },
       {
@@ -339,16 +345,26 @@ export const CreateLeaguePlayersModal: FunctionComponent<CreateLeaguePlayersModa
 
                     <Box ml={1}>
                       <Typography variant="body1">DOB</Typography>
-                      <Input
-                        value={newLeaguePlayer.dob}
-                        placeholder="date of birth"
-                        type="date"
-                        onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-                          const copy = [...newLeaguePlayers];
-                          copy[idx] = { ...copy[idx], dob: evt.target.value };
-                          setNewLeaguePlayers(copy);
-                        }}
-                      />
+                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardDatePicker
+                          openTo={'year'}
+                          autoOk
+                          variant="inline"
+                          inputVariant="outlined"
+                          label="DOB"
+                          format="MM/dd/yyyy"
+                          placeholder="mm/dd/yyyy"
+                          error={!newLeaguePlayer?.dob}
+                          value={newLeaguePlayer.dob}
+                          InputAdornmentProps={{ position: 'start' }}
+                          onChange={(date) => {
+                            const copy = [...newLeaguePlayers];
+                            copy[idx] = { ...copy[idx], dob: date };
+
+                            setNewLeaguePlayers(copy);
+                          }}
+                        />
+                      </MuiPickersUtilsProvider>
                     </Box>
                   </Box>
                 )
@@ -361,7 +377,7 @@ export const CreateLeaguePlayersModal: FunctionComponent<CreateLeaguePlayersModa
             onClick={() => {
               const newLeaguePlayerCopy = [
                 ...newLeaguePlayers,
-                { firstName: '', lastName: '', dob: '' },
+                { firstName: '', lastName: '', dob: null },
               ];
 
               setNewLeaguePlayers(newLeaguePlayerCopy);
