@@ -11,6 +11,7 @@ import omit from 'lodash/omit';
 import LogoGrey from '../../assets/logo_grey.svg';
 import { LeagueTeam } from '../../types/team';
 import { StandingTable } from '../standing_table/StandingTable';
+import { Image } from '../image/Image';
 import {
   LeaguePageStandingHeader,
   LeaguePageMobileStandingHeader,
@@ -39,10 +40,12 @@ const generateStandingData = (
             onClick={() => history.push(`/teams/${leagueTeam.id}`)}
             pl={isMobile ? 2 : 18}
           >
-            <img
-              src={leagueTeam.team.teamLogoURL || LogoGrey}
-              alt="league-tab-standing"
+            <Image
+              teamLogoURL={leagueTeam.team.teamLogoURL}
+              defaultImg={LogoGrey}
+              className="schedule-mobile-logos"
             />
+
             <div>{leagueTeam.team.name.toUpperCase()}</div>
           </Box>
         ),

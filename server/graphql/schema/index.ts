@@ -41,6 +41,7 @@ import { logout } from './mutations/logout';
 import { updateDashboard } from './mutations/updateDashboard';
 import { registerLeagueTeam } from './mutations/registerLeagueTeam';
 import { inviteLeagueTeam } from './mutations/inviteLeagueTeam';
+import { createCloudinarySignature } from './mutations/createCloudinarySigned';
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -90,6 +91,7 @@ const Mutation = new GraphQLObjectType({
     updateDashboard,
     registerLeagueTeam,
     inviteLeagueTeam,
+    createCloudinarySignature,
   },
 });
 

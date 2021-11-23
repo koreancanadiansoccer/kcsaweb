@@ -21,8 +21,9 @@ import { ageOptions } from '../../../types/age.enum';
 import { Button } from '../../../components/button/Button';
 import { Input } from '../../../components/input/Input';
 import { ImgDropzone } from '../../../components/dropzone/DropZone';
-import { useImgUpload } from '../../../hooks/useImgUpload';
+import { useCloudinaryUpload } from '../../../hooks/useCloudinaryUpload';
 import { Select, ColorSelect } from '../../../components/select/Select';
+import { Image } from '../../../components/image/Image';
 import { colorSelectOptions } from '../../../utils/color';
 import { TeamContext } from '../../../context/team';
 import {
@@ -31,7 +32,6 @@ import {
   UpdateTeamResult,
 } from '../../../graphql/teams/update_team.mutation';
 import { parseError } from '../../../graphql/client';
-import { ResourceType } from '../../../types/resource.enum';
 
 /**
  * Show and allow update to general team info
@@ -43,7 +43,7 @@ export const AdminTeamGeneral: FunctionComponent = () => {
   const [file, setFile] = useState<File>();
   const [fileLink, setFileLink] = useState('');
 
-  const { generateUploadUrls } = useImgUpload();
+  const { generateSignature } = useCloudinaryUpload();
 
   const hasNoChanges = useMemo(
     () => isEqual(team, origTeam) && !file,
@@ -66,15 +66,11 @@ export const AdminTeamGeneral: FunctionComponent = () => {
     try {
       let teamLogoURL = team.teamLogoURL;
 
-      // If new logo was added, prepare for upload.
+      // replaced with cloudinary.
       if (file?.name && file?.type) {
-        // Set file name: {TEAM-NAME}-{TEAM-AGETYPE}
         const fileName = `${team.name}-${team.teamAgeType}`.toLocaleLowerCase();
-        teamLogoURL = await generateUploadUrls(
-          file,
-          fileName,
-          ResourceType.LOGO
-        );
+        const cloudinaryResultId = await generateSignature(file, fileName);
+        teamLogoURL = cloudinaryResultId;
       }
 
       const res = await updateTeamMutation({
@@ -193,11 +189,9 @@ export const AdminTeamGeneral: FunctionComponent = () => {
 
         {team.teamLogoURL ? (
           <Box>
-            {/* Hack to reload img with same url: Append random unique query param */}
-            <img
-              src={`${team.teamLogoURL}?${Date.now()}`}
-              alt="team-logo"
-              style={{ width: '100px', height: '100px' }}
+            <Image
+              teamLogoURL={team.teamLogoURL}
+              className="admin-team-general-logo"
             />
           </Box>
         ) : (

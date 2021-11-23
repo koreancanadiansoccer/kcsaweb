@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 
 import LogoGrey from '../../../../assets/logo_grey.svg';
 import { MatchTeam } from '../../../../types/team';
+import { Image } from '../../../image/Image';
 
 interface ScheduleCardProps {
   date: string;
@@ -51,9 +52,9 @@ const UnstyledScheduledCard: FunctionComponent<ScheduleCardProps> = ({
             {/* Home team emblem and name */}
             <Box display="flex" flexDirection="column" alignItems="center">
               <Box width={80} minHeight={40}>
-                <img
-                  src={homeTeam.team.teamLogoURL || LogoGrey}
-                  alt="home team logo"
+                <Image
+                  teamLogoURL={homeTeam.team.teamLogoURL}
+                  defaultImg={LogoGrey}
                   className="scheulde-logo-card"
                 />
               </Box>
@@ -86,9 +87,9 @@ const UnstyledScheduledCard: FunctionComponent<ScheduleCardProps> = ({
               ml="auto"
             >
               <Box width={80} minHeight={40}>
-                <img
-                  src={awayTeam.team.teamLogoURL || LogoGrey}
-                  alt="away team logo"
+                <Image
+                  teamLogoURL={awayTeam.team.teamLogoURL}
+                  defaultImg={LogoGrey}
                   className="scheulde-logo-card"
                 />
               </Box>

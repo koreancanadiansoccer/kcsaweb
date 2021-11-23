@@ -16,6 +16,7 @@ import dayjs from 'dayjs';
 import LogoGrey from '../../assets/logo_grey.svg';
 import { Match } from '../../types/match';
 import { StandingTable } from '../standing_table/StandingTable';
+import { Image } from '../image/Image';
 import {
   LeaguePageScheduleHeader,
   LeaguePageMobileScheduleHeader,
@@ -45,9 +46,9 @@ const generateScheduleData = (match: Match, isMobile: boolean) => {
             <Box fontSize={14} mr={1}>
               {match.homeTeam.team.name.toUpperCase()}
             </Box>
-            <img
-              src={match.homeTeam.team.teamLogoURL || LogoGrey}
-              alt={match.homeTeam.team.name}
+            <Image
+              teamLogoURL={match.homeTeam.team.teamLogoURL}
+              defaultImg={LogoGrey}
               className="schedule-mobile-logos"
             />
           </Box>
@@ -86,10 +87,10 @@ const generateScheduleData = (match: Match, isMobile: boolean) => {
             justifyContent="center"
             onClick={() => history.push(`/teams/${match.awayTeam.id}`)}
           >
-            <img
+            <Image
+              teamLogoURL={match.awayTeam.team.teamLogoURL}
+              defaultImg={LogoGrey}
               className="schedule-mobile-logos"
-              src={match.awayTeam.team.teamLogoURL || LogoGrey}
-              alt={match.awayTeam.team.name}
             />
             <Box fontSize={14} ml={1}>
               {match.awayTeam.team.name.toUpperCase()}
@@ -107,9 +108,9 @@ const generateScheduleData = (match: Match, isMobile: boolean) => {
           onClick={() => history.push(`/teams/${match.homeTeam.id}`)}
         >
           <div>{match.homeTeam.team.name.toUpperCase()}</div>
-          <img
-            src={match.homeTeam.team.teamLogoURL || LogoGrey}
-            alt={match.homeTeam.team.name}
+          <Image
+            teamLogoURL={match.homeTeam.team.teamLogoURL}
+            defaultImg={LogoGrey}
           />
         </div>
       ),
@@ -122,10 +123,11 @@ const generateScheduleData = (match: Match, isMobile: boolean) => {
           className="away-team-logo"
           onClick={() => history.push(`/teams/${match.awayTeam.id}`)}
         >
-          <img
-            src={match.awayTeam.team.teamLogoURL || LogoGrey}
-            alt={match.awayTeam.team.name}
+          <Image
+            teamLogoURL={match.awayTeam.team.teamLogoURL}
+            defaultImg={LogoGrey}
           />
+
           <div>{match.awayTeam.team.name.toUpperCase()}</div>
         </div>
       ),

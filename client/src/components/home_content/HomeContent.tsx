@@ -11,6 +11,7 @@ import isEmpty from 'lodash/isEmpty';
 
 import LogoGrey from '../../assets/logo_grey.svg';
 import { LeagueTable } from '../league_table/LeagueTable';
+import { Image } from '../image/Image';
 import { LeagueSelect } from '../league_select/LeagueSelect';
 import { TableType } from '../../types/table_type';
 import { GallerySlide } from '../gallery_slide/GallerySlide';
@@ -35,10 +36,12 @@ const generateStandingData = (leagueTeams: LeagueTeam[]) => {
       return {
         club: (
           <div className="league-table-team-logo">
-            <img
-              src={leagueTeam.team.teamLogoURL || LogoGrey}
-              alt="hero-main"
+            <Image
+              teamLogoURL={leagueTeam.team.teamLogoURL}
+              defaultImg={LogoGrey}
+              className="scheulde-logo-card"
             />
+
             <div>{leagueTeam.team.name.toUpperCase()}</div>
           </div>
         ),
@@ -63,7 +66,11 @@ const generateScorerData = (leaguePlayers: LeaeguePlayerHomeViewer[]) => {
         name: `${leaguePlayer.player.firstName} ${leaguePlayer.player.lastName}`,
         club: (
           <div className="league-table-team-logo">
-            <img src={leaguePlayer.teamLogoURL || LogoGrey} alt="hero-main" />
+            <Image
+              teamLogoURL={leaguePlayer.teamLogoURL}
+              defaultImg={LogoGrey}
+              className="scheulde-logo-card"
+            />
             <div style={{ marginRight: '0.5rem' }}>
               {leaguePlayer.teamName.toUpperCase()}
             </div>

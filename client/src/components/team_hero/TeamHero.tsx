@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 
 import LogoGrey from '../../assets/logo_grey.svg';
 import { User } from '../../types/user';
+import { Image } from '../image/Image';
 
 interface TeamHeroProps {
   className?: string;
@@ -52,9 +53,9 @@ const UnstyledTeamHero: FunctionComponent<TeamHeroProps> = ({
         >
           {/* Logo */}
           <Box mb={3}>
-            <img
-              src={teamLogo ? teamLogo : LogoGrey}
-              alt="team-hero-main"
+            <Image
+              teamLogoURL={teamLogo}
+              defaultImg={LogoGrey}
               className="team-hero-mobile-img"
             />
           </Box>
@@ -96,9 +97,9 @@ const UnstyledTeamHero: FunctionComponent<TeamHeroProps> = ({
       >
         {/* Logo */}
         <Box>
-          <img
-            src={teamLogo ? teamLogo : LogoGrey}
-            alt="team-hero-main"
+          <Image
+            teamLogoURL={teamLogo}
+            defaultImg={LogoGrey}
             className="team-hero-img"
           />
         </Box>
